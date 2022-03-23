@@ -1,0 +1,38 @@
+{% extends 'bp_util_base.html' %}
+                {% block save_radio %}
+				<li class="active"><a href="{{url_for('eisenutil_bp.save')}}">Save</a>
+                {% endblock %}
+{% block content %}
+
+<h1>{% block title %} Save {% endblock %}</h1>
+<hr>
+<form method="post">
+
+    <div class="form-group">
+
+        <p>The parent directory of your radio stations.</p>
+        <hr>
+
+        <label for="Path_Save_To"><b>Directory Name</b> </label>
+            <input type="text" name="Path_Save_To"
+                   class="form-control"
+                   placeholder="{{save_to}}"
+                   value={{save_to}}
+                   id="Path_Save_To">
+    </div>
+    <div class="form-group">
+    <label>
+        <input type="file" style="display: none;">
+        <span style="margin-top:0px;color:#3498db;"> Click </span>
+    </label>
+        <pre>(Linux) /home/user_name/Downloads
+		<br>(Android) /storage/emulated/0/Music
+		<br>(Windows) Click: Copy a directory name
+		</pre>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </div>
+</form>
+        <hr>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'bp_util_base.html' %}
+                {% block new_radio %}
+                <li class="active"><a href="{{url_for('eisenutil_bp.create')}}">New</a>
+                {% endblock %}
+{% block content %}
+<h1>{% block title %} New {% endblock %}</h1>
+<hr>
+<form action="{{ url_for('eisenutil_bp.create') }}" method="POST" enctype="multipart/form-data">
+    <p>Add as many radios as you want.</p>
+    <p>Your Radio name is used as the folder name. Spaces will be removed.</p>
+    <p style="color:red;font-size:14px;"> App restart recommended!</p>
+
+    <div class="form-group">
+        <hr>
+        <label for="title"><b>Name</b> (no spaces)</label>
+        <input type="text"
+               name="title"
+               id="title"
+               placeholder="StarFM1"
+               class="form-control"
+               value="{{ request.form['title'] }}">
+    </div>
+    <!-- URL -->
+    <div class="form-group">
+        <label for="content"><b>URL</b> (web address)</label>
+        <textarea name="content"
+                  placeholder="http://mega.radio.fm:80/stream"
+                  class="form-control"
+                  id="content"  >{{ request.form['content'] }}</textarea>
+    </div>
+
+    <!-- Image Upload-->
+    <div class="form-group">
+        <label for="inputFile">Image input (jpg, png, bmp, gif, svg)</label>
+        <input class="form-control-file" type="file" name="inputFile" id="inputFile">
+    </div>
+
+    <!-- Text description -->
+    <div class="form-group">
+        <label for="text">Write Text</label>
+        <textarea class="form-control" name="text" id="text" rows="5" placeholder="Add a Description"></textarea>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+    </div>
+</form>
+<hr>
+
+{% endblock %}

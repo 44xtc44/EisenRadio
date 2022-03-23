@@ -1,0 +1,544 @@
+:root {
+    --background-color: #ccc;
+
+    --form-background: #ddd;
+    --form-text: #565454;
+    --hr-color: #eee;
+    --border-color: #eee;
+    --text-color: #f0f0f0;
+    --form-edit: #777777;
+    --opacity: 1;
+    --btn-opacity: 1;
+    --footer-color: rgba(0, 63, 92, 0.90);
+    --main-display-arrow: #bc5090;
+    --dot-for-radio-headline: #565454;
+    --lbl-div-audio: #FCA841;
+    --border-radius-12: 1.2em;
+    --ghetto-measurements-bottom-color: #d441fc;
+    --radio-station-headline: #565454;
+    --controls-background: #565454;
+    --canvasMaster: #ccc;
+
+}
+
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input[type='range'] {
+        overflow: hidden;
+        /* 10em; */
+        min-width: 40%;
+        max-width: 50%;
+        -webkit-appearance: none;
+        background-color: var(--background-color);
+        /* #9a905d; */
+        float: left;
+
+    }
+
+    input[type='range']::-webkit-slider-runnable-track {
+        height: 2em;
+        -webkit-appearance: none;
+        color: #13bba4;
+        margin-top: -0.1em;
+
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        width: 2em;
+        -webkit-appearance: none;
+        height: 2em;
+        cursor: ew-resize;
+        background: #434343;
+        box-shadow: -2em 0 0 2em #43e5f7;
+
+    }
+}
+
+body {
+    background: var(--background-color);
+}
+
+#audioWithControls {
+    border-radius: var(--border-radius-12);
+    opacity: var(--opacity);
+    width: 20em;
+    height: 3.5em;
+    font-family: Architects Daughter, Gloria Hallelujah, Roboto !important;
+    display: none;
+}
+
+#playBtn {
+    color: var(--lbl-div-audio) !important;
+    font-size: 1.5em;
+    display: block;
+    float: left;
+    display: none;
+}
+
+#pauseBtn {
+    color: var(--lbl-div-audio) !important;
+    font-size: 1.5em;
+    display: block;
+    float: left;
+    display: none;
+}
+
+.masterDisplay {
+    display: flex;
+    justify-content: center;
+    color: var(--lbl-div-audio) !important;
+    font-family: Roboto, sans-serif !important;
+    font-size: 1.5em;
+    text-decoration: none;
+    margin-left: 0.2em;
+    display: block;
+    overflow: hidden;
+    max-height: 4em;
+}
+
+.arrow-buttons-cell {
+    text-align: right;
+    max-height: 4em;
+}
+
+#arrow-down {
+    color: var(--main-display-arrow) !important;
+    font-size: 3em;
+    text-decoration: none;
+}
+
+#arrow-up {
+    color: var(--main-display-arrow) !important;
+    font-size: 3em;
+    text-decoration: none;
+}
+
+.ghetto-measurements-upper {
+    /* color: #4195fc; */
+    color: #d441fc;
+    font-family: Roboto, sans-serif !important;
+    width: 5em;
+    margin-left: 0em;
+    margin-right: 1em;
+    margin-top: .5em;
+    display: block;
+}
+
+.ghetto-measurements-bottom {
+    /* color: #4195fc; */
+
+    color: var(--ghetto-measurements-bottom-color);
+    /* #FCA841; */
+    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
+    text-align: center;
+
+    /*
+    overflow:hidden;
+    white-space: nowrap;
+    */
+}
+
+.ghetto-measurements-name {
+    /* color: #4195fc; */
+    color: #565454fc;
+    font-family: Finger Paint, Roboto, sans-serif !important;
+    text-decoration: none;
+    text-align: center;
+}
+
+#cacheList {
+    border-radius: var(--border-radius-12);
+    background-color: var(--footer-color);
+    border-color: var(--footer-color);
+    font-family: Roboto, sans-serif !important;
+    opacity: .95;
+    max-width: 10em;
+    display: none;
+}
+
+#cacheList:focus {
+    color: var(--lbl-div-audio) !important;
+}
+
+.radio-station-comment {
+    color: #565454fc;
+    font-family: Roboto, sans-serif !important;
+    font-size: small;
+    margin-left: 0.5em;
+}
+
+.dot-for-radio-headline {
+    color: var(--dot-for-radio-headline);
+    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
+    font-size: large;
+    text-decoration: none;
+    margin-left: 0.5em;
+}
+
+.radio-station-headline {
+    color: var(--radio-station-headline);
+    font-family: Roboto, Finger Paint, Gloria Hallelujah, Architects Daughter, sans-serif;
+    font-size: large;
+    text-decoration: none;
+}
+
+.radio-station-url {
+    color: var(--radio-station-headline);
+    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
+    cursor: cell;
+    display: inline;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:active {
+    color: var(--text-color) !important;
+}
+
+.progress {
+    margin: 1em;
+    background-color: var(--background-color);
+    opacity: var(--opacity);
+}
+
+.station-display input:placeholder-shown {
+    background-color: var(--form-background) !important;
+    border: 0.1em;
+    border-style: solid !important;
+    border-color: var(--border-color) !important;
+    font-family: Roboto, sans-serif !important;
+    font-size: large;
+    opacity: .8;
+}
+
+.station-display input:not(:placeholder-shown) {
+    background-color: var(--form-background) !important;
+    border: 0.2em;
+    border-style: solid !important;
+    border-color: #4195fc !important;
+    border-radius: 0.5em;
+    box-shadow: 0em 0em 0.4em #4195fc;
+    color: var(--form-text) !important;
+    font-family: Roboto, sans-serif !important;
+    font-size: large;
+}
+
+.button-rec-lis {
+    margin-bottom: 0em;
+    margin-top: 0em;
+    margin-left: 0em;
+}
+
+hr {
+    border-top: 0.1em solid var(--hr-color);
+}
+
+h1 {
+    border-radius: 0.8em;
+    border: 0.2em var(--border-color) solid;
+    color: brown;
+    text-align: center;
+    padding: 1em;
+    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
+
+}
+
+.pixies {
+    background-color: var(--background-color);
+}
+
+.pixies img {
+    border-radius: 1em;
+    opacity: var(--opacity);
+}
+
+pre {
+    background-color: var(--background-color);
+    color: #565454fc;
+    white-space: pre-line;
+    border: 0em;
+    background-origin: content-box;
+    padding: 0 0.2em;
+    text-align: justify;
+    font-family: roboto, arial, sans-serif;
+}
+
+/* navbar */
+
+
+.navbar {
+    background: var(--background-color);
+    font-family: Roboto, sans-serif !important;
+}
+
+.navbar-brand {
+    background: var(--background-color);
+}
+
+.navbar-toggle {
+    float: left !important;
+    margin-left: 1.5em;
+    background: var(--background-color);
+}
+
+.navbar-header.navbar-right.pull-right {
+    margin-right: 1.5em;
+    background: var(--background-color);
+    position: fixed;
+    z-index: 1000;
+}
+
+.navbar-right>li {
+    float: left;
+    background: var(--background-color);
+}
+
+/* footer */
+
+@media only screen and (max-width: 1080px) {
+    .console {
+        position: fixed;
+        bottom: 0em;
+        min-width: 100%;
+        z-index: 2;
+        left: 0em;
+        text-align: right;
+        border-radius: var(--border-radius-12);
+    }
+
+    .td_pic_and_buttons {
+        width: 13em;
+    }
+
+    .pix {
+        margin-bottom: 0.2em;
+        max-width: 12em;
+        max-height: 15em;
+    }
+
+    .radio-station-url {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 1081px) {
+    .console {
+        position: fixed;
+        bottom: 0em;
+        min-width: 30%;
+        z-index: 2;
+        left: 1em;
+        text-align: right;
+        border-radius: var(--border-radius-12);
+    }
+
+    .td_pic_and_buttons {
+        width: 21em;
+    }
+
+    .pix {
+        margin-bottom: 0.2em;
+        max-width: 20em;
+        max-height: 15em;
+    }
+
+    .radio-station-url {
+        display: block;
+    }
+}
+
+.colored_cells {
+    background-color: var(--footer-color);
+}
+
+#console_btn {
+    max-height:3.5em;
+}
+
+#canvas_cell {
+    text-align: center;
+    background-color: rgba(240, 240, 240, 0.0);
+}
+
+.visual_bar_canvas {
+    top: 0;
+    left: 0;
+    max-width: 8em;
+    max-height: 4em;
+    display: none;
+}
+
+#DivCanvasMaster {
+    background: var(--canvasMaster);
+    border-radius: var(--border-radius-12);
+    border: 0.0em var(--border-color) solid;
+    display: none;
+    width: 30em;
+    height: 14em;
+
+}
+
+#canvasMaster {
+    border-radius: var(--border-radius-12);
+    border: 0.1em var(--border-color) solid;
+    display: none;
+    width: 30em;
+    height: 14em;
+}
+
+#pageCover {
+    /* browser no longer play automatic audio, must have a user interaction */
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    bottom: 0em;
+    left: 0em;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 10000;
+
+}
+
+#pageCoverCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+.play_file_list {
+    color: var(--ghetto-measurements-bottom-color);
+    text-align: left;
+    display: table-cell;
+    vertical-align: left;
+}
+
+#fileUpload {
+    display: none;
+}
+
+#btn_local_play_submit {
+    display: none;
+}
+
+#playlist_title {
+    display: none;
+}
+
+#file_list {
+    color: var(--ghetto-measurements-bottom-color);
+}
+
+#playlist_section {
+    display: none;
+}
+
+.edit_buttons {
+    background-color: #565454;
+    color: var(--text-color);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    padding: 0.2em;
+    border-radius: 0.35em;
+    border: 0.1em var(--border-color) solid;
+    cursor: pointer;
+    min-width: 4.5em;
+    text-align: center;
+}
+
+#selectOverrideSpectrum {
+    border-radius: 0.3em;
+    max-width: 8em;
+    border-color: var(--border-color);
+    background-color: #565454;
+    color: var(--text-color);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    display: inline-block;
+}
+
+#quickView {
+    border-radius: 0.3em;
+    max-width: 6em;
+    border-color: var(--border-color);
+    background-color: #565454;
+    color: var(--text-color);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+}
+
+#timeRecordSelectAll {
+    border-radius: 0.3em;
+    max-width: 6em;
+    border-color: var(--border-color);
+    background-color: #565454;
+    color: var(--text-color);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+}
+
+.secondary_action_buttons {
+    background-color: #565454;
+    /* #565454  #337ab7 */
+    color: var(--text-color);
+    padding: 0.3em;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    border-radius: 0.35em;
+    cursor: pointer;
+    border: 0.1em var(--border-color) solid;
+}
+
+.box_secondary_action {
+    display: inline-block;
+    background: var(--background-color);
+    padding: 0.5em;
+    cursor: pointer;
+    opacity: 0.95;
+}
+
+.box_secondary_action *.secondary_action_drop_down {
+    background: var(--background-color);
+    color: var(--ghetto-measurements-bottom-color);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.wrap_secondary_action {
+    margin: 0 auto;
+    min-width: 25%;
+    text-align: center;
+    display: inline-block;
+}
+
+#bar_wrap_secondary_action {
+    left:0;
+    right:0;
+    text-align: center;
+}
+
+#scroll_top {
+    scroll-margin-top: 6em;
+    visibility:hidden;
+}
+
+#scroll_bottom {
+    height: 25em;
+    visibility:hidden;
+}
+
+table,
+th,
+td {
+    border: 0.0em solid black;
+    border-collapse: collapse;
+}

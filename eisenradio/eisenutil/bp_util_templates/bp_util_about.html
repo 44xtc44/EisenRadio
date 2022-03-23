@@ -1,0 +1,116 @@
+{% extends 'bp_util_base.html' %}
+            {% block about %}
+                <li class="active"><a href="{{url_for('eisenutil_bp.about')}}">About</a>
+            {% endblock %}
+{% block content %}
+
+    <h1>{% block title %} About {% endblock %}</h1>
+        <p>This App runs on Python Flask HTTP server and SQLite on your device.</p>
+        <p>Each radio shows title information like a full-blown hardware radio.</p>
+        <p>Style your App with your favorite images.</p>
+
+        <details>
+            <p> </p>
+
+            <dl>
+                <dt>Page unlock</dt>
+                <dd>Most browsers do not allow auto start of audio this time. User interaction is required.</dd>
+
+                <dt>Play local audio files</dt>
+                <dd>Select multiple files as play list. On PC use Ctrl + left click to collect the files.
+                    Prefer VLC Player or foobar2000 for *.aacp files.</dd>
+
+                <dt>Timer</dt>
+                <dd>Timer Stop! stops all streams immediately.</dd>
+
+                <dt>Spectrum Analyser</dt>
+                <dd>A Spectrum Analyser function is randomly chosen. Remember, a standard Browser will never
+                    show an internet radio in a Spectrum Analyser due to the CORS restrictions, see the pypi project website.
+                    Turn your favorite sound maximum loud, with extra Gain (slider), to see more action.
+                </dd>
+
+                <dt>"Reload" your browser window</dt>
+                <dd>Delete page cache and old cookies from listen and caching content before. Useful if you start a new session.
+                    Mobiles do not own a F5 refresh button.</dd>
+
+                <dt>Internet radio won't play?</dt>
+                <dd>Some internet radios change bit rate, stream file type, user limits, and split into multiple streams.
+                    Append /sid=1 to the URL. As an example: http://85.195.88.149:11810/<b>sid=1</b>.
+                </dd>
+
+                <dt>Radio picture clickable</dt>
+                <dd>Click on the picture of your radio. Go to the directory of the radio listing site.
+                    You can left-click the audio element, to copy the link of a better stream URL. </dd>
+
+                <dt>Hunt for your preferred Radio URL.</dt>
+                <dd>
+                    <a href="{{ url_for('eisenutil_bp.static', filename='/images/getaradiourl.svg') }}">
+                    I made a Post-it for you.
+                    </a></dd>
+
+            </dl>
+            <br>
+
+            <p>Get radio urls at Shoutcast 'Directory', take a playlist and open it with a text editor."
+                <a href="https://duckduckgo.com/?q=http%3A%2F%2Fdirectory.shoutcast.com%2F&t=hc&va=o&ia=web">
+                    DuckDuckGo ShoutCast</a>
+            </p>
+            <p>IceCast is an other software used to stream radio content to users.
+                <a href="https://duckduckgo.com/?q=http%3A%2F%2Fdir.xiph.org%2Fgenres&t=hc&va=o&ia=web">
+                    DuckDuckGo IceCast</a>
+            </p>
+            <p>German wiki.ubuntuusers.de tells you how to get even more stream urls from international search engines.
+                <a href="https://wiki.ubuntuusers.de/Internetradio/Streamadressen_ermitteln/">
+                    wiki.ubuntuusers.de</a>
+            </p>
+        </details>
+        <p>
+        </p>
+        <p>
+           License on the python package server <a href="https://pypi.org/project/eisenradio/"> project eisenradio</a>
+        </p>
+        <p>All images, except python, &#169; 2022 René Horn</p>
+        <p>Have fun!</p>
+        <hr>
+
+        <p>Use "Save" tab in navigation bar to change the record path.</p>
+		<p style="color:brown;font-size:14px;">{{ download_path }}</p>
+
+        <p>Database Path</p>
+        <p style="color:brown;font-size:14px;">{{ db_path }}</p>
+        <p>Delete the database if you uninstall, or reinstall. An existing database will not be overwritten.</p>
+        <p>Android user delete the /Music/Eisenradio/eisenradio_android.db, or the folder.</p>
+        <hr>
+        <form id="formABC" action="{{ url_for('eisenutil_bp.about') }}" method="post">
+
+            <div class="form-group">
+                {% if is_browser_on %}{% set browser = "ON" %}{% endif -%}
+                {% if not is_browser_on %}{% set browser = "OFF" %}{% endif -%}
+
+                <input class="btn btn-primary btn-sm" type="submit" value="{{browser}}" name="browser" id="12">
+                <label for="12"><b>Browser auto start</b></label>
+				
+            </div>
+        </form>
+        <hr>
+		
+        <div class="container">
+          <div class="row">
+            <div class="col-sm">
+
+
+            </div>
+            <div class="col-sm" style="text-align:center">
+
+                <img src="{{ url_for('eisenutil_bp.static', filename='/images/python-powered-w-100x40.png') }}"
+                     alt="https://www.python.org/"
+                     style="width:100px;height:40px;">
+            </div>
+            <div class="col-sm" style="text-align:right">
+				
+            </div>
+          </div>
+        </div>
+
+        <hr>
+{% endblock %}

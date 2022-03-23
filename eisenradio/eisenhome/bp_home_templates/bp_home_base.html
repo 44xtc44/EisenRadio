@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Jquery Prod BEFORE BOOTsh-->
+       <script type="text/javascript"
+         src="{{ url_for('eisenhome_bp.static', filename='/jquery/jquery-3.6.0.min.js') }}">
+       </script>
+
+      <!-- google fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Architects%20Daughter">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gloria%20Hallelujah">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Finger%20Paint">
+
+      <!-- Bootstrap CSS -->
+        <!-- Latest compiled and minified CSS -->
+       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+
+        <!-- Stylesheet -->
+        <link rel="stylesheet" href="{{ url_for('eisenhome_bp.static', filename= 'css/style.css') }}">
+        <!-- FAVICON -->
+        <link rel="shortcut icon" href="{{ url_for('eisenhome_bp.static', filename='favicon.ico') }}">
+        
+    <title>{% block title %} {% endblock %}</title>
+  </head>
+  <body>
+    <noscript>Please enable JavaScript in your browser</noscript>
+
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <!-- url_for blueprint-name.route -->
+      <a class="navbar-brand" href="{{ url_for('eisenhome_bp.index')}}">Home</a>
+
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        {% block new_radio %}
+        <li><a href="{{url_for('eisenutil_bp.create')}}">New</a>
+        {% endblock %}
+        </li>
+        {% block save_radio %}
+        <li><a href="{{url_for('eisenutil_bp.save')}}">Save</a>
+        {% endblock %}
+        </li>
+          {% block tools %}
+        <li><a href="{{url_for('eisenutil_bp.tools')}}">Tools</a>
+        {% endblock %}
+        </li>
+        {% block about %}
+        <li><a href="{{url_for('eisenutil_bp.about')}}">About</a>
+        {% endblock %}
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+<div class="container">
+  <footer></footer>
+</div>
+    <hr>
+    <div class="container">
+	    {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+		{% endfor %}
+
+        {% block content %} {% endblock %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

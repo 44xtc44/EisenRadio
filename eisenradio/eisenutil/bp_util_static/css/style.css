@@ -1,0 +1,73 @@
+    /*
+blueprint route;
+to show difference in blueprint routes, a background image and a 'blue' favicon is used;
+*/
+
+    :root {
+        --background-color: #d9d9d9;
+        --hr-color: #eee;
+        --border-color: #cccccc;
+    }
+
+    body {
+        background: #d9d9d9;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .wrapper {
+        background: url(body-background.png)
+    }
+
+    hr {
+        border-top: 1px solid var(--hr-color);
+    }
+
+    h1 {
+        border: 2px var(--border-color) solid;
+        color: brown;
+        text-align: center;
+        padding: 10px;
+        font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
+
+    }
+
+    h3 {
+        color: brown;
+        padding: 10px;
+        font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
+
+    }
+
+    .navbar {
+
+        background: var(--background-color);
+    }
+
+    .navbar-brand {
+        background: var(--background-color);
+    }
+
+
+    /* navbar */
+    .navbar-toggle {
+        float: left !important;
+        margin-left: 15px;
+        background: var(--background-color);
+    }
+
+    .navbar-header.navbar-right.pull-right {
+        margin-right: 15px;
+        background: var(--background-color);
+    }
+
+    .navbar-right>li {
+        float: left;
+        background: var(--background-color);
+    }
+
+    dt {
+        color: brown;
+        margin-top: 0.5em;
+
+    }

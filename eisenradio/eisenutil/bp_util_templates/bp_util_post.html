@@ -1,0 +1,11 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+    <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
+    <span class="badge badge-primary">{{ post['created'] }}</span>
+    <p>Go to Radio Web Site:
+        <a href="{{ url_port }}">{{ url_port }}</a>
+        <span>(works if radio is ShoutCast or IceCast)</span>
+    </p>
+
+{% endblock %}

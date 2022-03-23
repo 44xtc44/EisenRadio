@@ -1,0 +1,421 @@
+
+{% extends 'bp_home_base.html' %}
+
+{% block content %}
+
+	<hr>
+	<h1>{% block title %} Your Eisen Radio! {% endblock %}</h1>
+	<hr>
+
+		<div class="pixies">
+			<img src="   {{ url_for('eisenhome_bp.static', filename='/images/frontpage/eisenposter350.png') }}"
+				 srcset="{{ url_for('eisenhome_bp.static', filename='/images/frontpage/eisenposter350.png') }} 480w,
+				 		 {{ url_for('eisenhome_bp.static', filename='/images/frontpage/eisenposter620.png') }} 720w,
+				 		 {{ url_for('eisenhome_bp.static', filename='/images/frontpage/eisenposter950.png') }} 1080w"
+				 alt="">
+		</div>
+
+		<p id="scroll_top"></p>
+
+		<div class="progress" style="position: relative;">
+		  <div class="progress-bar bg-success"
+			   role="progressbar"
+			   id="progress_record_all"
+			   style=" width: 25%; position: absolute;z-index: 1;"
+			   aria-valuenow="25"
+			   aria-valuemin="0"
+			   aria-valuemax="100"
+			   >
+		  </div>
+		</div>
+
+		<div id="bar_wrap_secondary_action">
+			<div class="wrap_secondary_action">
+
+			    <div class="box_secondary_action">
+
+							{% if combo_master_timer %}{% set timer=combo_master_timer %}{% endif -%}
+							<label for="timeRecordSelectAll">
+							<select class="form-control" aria-label="Timer select"
+									name="timeRecordSelectAll"
+									id="timeRecordSelectAll"
+									style="width:auto;"
+									onchange="setTimer(value)">
+
+									<option class="" value="0" >timer</option>
+									<option class="secondary_action_drop_down" value="-1" > Stop!</option>
+									<option class="secondary_action_drop_down" value="1" > 1</option>
+									<option class="secondary_action_drop_down" value="2" > 2</option>
+									<option class="secondary_action_drop_down" value="4" > 4</option>
+									<option class="secondary_action_drop_down" value="6" > 6</option>
+									<option class="secondary_action_drop_down" value="8" > 8</option>
+									<option class="secondary_action_drop_down" value="12" > 12</option>
+									<option class="secondary_action_drop_down" value="24" > 24</option>
+							</select>
+							</label>
+			    </div>
+			    <div class="box_secondary_action"
+						onclick="setColor('view')">
+
+					<label class="secondary_action_buttons">
+							<span>
+								dark mode
+							</span>
+					</label>
+			    </div>
+
+			    <div class="box_secondary_action">
+
+					<div class="">
+						<label for="selectOverrideSpectrum">
+							<select class="form-control"
+									name="selectOverrideSpectrum"
+									id="selectOverrideSpectrum"
+									style="width:auto;"
+									data-toggle="tooltip" data-html="false" data-placement="left"
+									title="permanent animation"
+									onclick="overrideSpectrumAnalyser()">
+
+									<option class="" value="0" >random</option>
+									<option class="secondary_action_drop_down" value="1" > draw</option>
+									<option class="secondary_action_drop_down" value="2" > rotated</option>
+									<option class="secondary_action_drop_down" value="3" > bars</option>
+									<option class="secondary_action_drop_down" value="4" > flow field</option>
+									<option class="secondary_action_drop_down" value="5" > star field</option>
+
+									<!--  -->
+							</select>
+						</label>
+					</div>
+
+					<label class="secondary_action_buttons"
+						   onclick="cookie_toggle_show_visuals()">
+
+							<span id="analyserBadge">show</span>
+							<span>Spectrum</span>
+							<span>Analyser</span>
+					</label>
+			    </div>
+
+				<div class="box_secondary_action">
+
+					<div class="play_file_list">
+
+
+						<div id="file_list_shuffle">
+							<label for="checkbox_shuffle">
+  									<input type="checkbox" id="checkbox_shuffle" name="checkbox_shuffle" class="box_secondary_action"
+         						checked> Shuffle
+							</label>
+						</div>
+					</div>
+						<form id="form_play_local" enctype="multipart/form-data">
+							<label class="secondary_action_buttons" >
+								<input type="file"
+								   	id="fileUpload"
+								   	accept="audio/*"
+								   	multiple
+								   	onchange="update_file_list()"/>
+								<span id="fileupload_span">play local</span>
+							</label>
+							  <button id="btn_local_play_submit" type='submit'>Submit</button>
+						</form>
+			    	</div>
+					<div class="box_secondary_action">
+
+						<label for="quickView">
+          					<select  class="form-control"
+			  							id="quickView"
+			  							onChange="location = this.value;quickView.options[0].selected = true;">
+                	     				<option value="">jump</option>
+
+										{% for post in posts%}
+
+										<option class="secondary_action_drop_down"
+												value=#dot_{{post['id']}}>{{ post['title'] }}</option>
+
+										{% endfor%}
+          					</select>
+						</label>
+			    	</div>
+					<div class="box_secondary_action"
+							onclick="location.reload(true)">
+
+									<label class="secondary_action_buttons">
+											<span>reload</span>
+									</label>
+			    	</div>
+
+			</div>
+		</div>
+
+
+
+
+
+		<hr id="playlist_section">
+			<div id="file_list" style="scroll-margin-top: 4em;">
+			</div>
+
+			<div class="playlist_title">
+				<div class="station-display">
+					<input type="text"
+							value="{{ request.form['title']}}"
+							readonly="readonly"
+							class="form-control"
+							id="playlist_title">
+				</div>
+			</div>
+
+    {% for post in posts%}
+		{% if not status_listen_btn_dict[post['id']] %}{% set listen_class='btn btn-primary' %} {% endif -%}
+		{% if status_listen_btn_dict[post['id']] %}{% set listen_class='btn btn-danger' %} {% endif -%}
+
+		{% if not status_record_btn_dict[post['id']] %}{% set record_class='btn btn-primary' %}{% endif -%}
+		{% if status_record_btn_dict[post['id']] %}{% set record_class='btn btn-danger' %}{% endif -%}
+
+		{% if not post['pic_comment'] %}{% set pic_comment='' %}{% endif -%}
+		{% if post['pic_comment'] %}{% set pic_comment=post['pic_comment'] %}{% endif -%}
+		<hr>
+
+	   <div class="table-pic-edit-note" style="margin-bottom:0.4em;">
+
+			<table border=0 style="width:100%;border-spacing:1em;">
+			<tr>
+				<td>
+					<div  style=" scroll-margin-top: 5em;float: left;" id=dot_{{post['id']}}></div>
+						<span class="dot-for-radio-headline">&#8231;&nbsp;
+						</span>
+
+
+						<span class="radio-station-headline">
+							{{ post['title'] }}
+						</span>
+
+						<p class="radio-station-url"
+							  onclick="location = this.value;"
+							  id=request_icy_url_{{post['id']}}>
+						</p>
+						<p></p>
+
+				</td>
+				<td style="width:1em">
+
+				</td>
+				<td colspan="2">
+
+					<div class="ghetto-measurements-name">
+
+									<span
+										id=icy_name_{{post['id']}}>
+									</span>
+
+					</div>
+
+				</td>
+			</tr>
+			<tr>
+				<td class="td_pic_and_buttons">
+					<div class="pixies">
+					<a href="{{ url_for('eisenutil_bp.post', post_id=post['id']) }}">
+						<img class="pix" src="data:{{post['pic_content_type']}};base64, {{post['pic_data']}}"  
+									alt="">
+					</a>
+					</div>
+				</td>
+				<td style="width:1em">
+
+				</td>
+				<td style="vertical-align:bottom;text-align:left;">
+
+					<span class="ghetto-measurements-upper"
+						  id=request_time_{{post['id']}}>
+					</span>
+					<span class="ghetto-measurements-upper"
+						  id=request_suffix_{{post['id']}}>
+					</span>
+					<span class="ghetto-measurements-upper"
+						  id=request_icy_br_{{post['id']}}>
+					</span>
+
+					<div class="visual_bar_div" id="container_{{post['id']}}">
+						<canvas class="visual_bar_canvas" id="canvas_{{post['id']}}"></canvas>
+					</div>
+
+
+					<div class="box_secondary_action"
+						onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'"
+						 style="padding-left: 0em">
+
+						<label class="edit_buttons">
+							Edit
+						</label>
+			    	</div>
+
+
+
+				</td>
+				<td style="vertical-align:top;">
+					<div class="radio-station-comment">
+						    <p></p>
+							<pre class="pic_comment">{{ pic_comment }}</pre>
+					</div>
+
+
+				</td>
+			</tr>
+			
+			</table>
+		</div>
+
+		<div class="station-display">
+			   <!-- placeholder=Display_{{post['id']}} -->
+			<input type="text"
+				placeholder=Display_{{ loop.index0 + 1}}
+				value="{{ request.form['title']}}"
+				readonly="readonly"
+				name=Display_{{post['id']}}
+				id=Display_{{post['id']}}
+				class="form-control">
+				
+		</div>
+	   <div class="table-buttons-radio-li" style="margin-top:0.4em;">
+
+			<table border=0 style="width:100%;">
+			<tr>
+				<td style=" vertical-align: top;" class="td_pic_and_buttons">
+					<!-- Buttons 																Buttons-->
+					<div class="button-rec-lis">
+						<button class="{{record_class}}" data-id="record"
+							name="Record_{{post['id']}}"
+							id=Record{{post['id']}}>Record</button>
+
+						<button class="{{listen_class}}" data-id="listen"
+							name="Listen_{{post['id']}}"
+							id={{post['id']}}>Listen</button>
+					</div>
+
+				</td>
+				<td style="width:1em">
+
+				</td>
+				<td>
+
+					<div class="ghetto-measurements-bottom"
+						 id=request_icy_genre_{{post['id']}}>
+					</div>
+
+				</td>
+			</tr>
+			</table>
+	   </div>
+
+
+	<!--	<hr> -->
+    {% endfor%}
+
+
+		<div class="push-up"
+			 id="scroll_bottom">
+		</div>
+
+
+		<div id="pageCover" class="due_to_the_browser_restrictions_must_activate_audio_by_user_interaction">
+			<canvas id="pageCoverCanvas"></canvas>
+		</div>
+
+
+	<div class="footer_wrap_div">
+
+
+
+
+		<div class="console">
+			<table border=0 style="width:100%;margin-bottom:0em;border-collapse: collapse;">
+				<tr>
+					<td id="canvas_cell" colspan="3">
+
+						<div id="CanvasMasterWrapper">
+							<div id="canvasMasterBackLight"></div>
+							<div id="DivCanvasMaster">
+								<canvas id="canvasMaster"></canvas>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="colored_cells" id="console_btn">
+
+						{% if current_station %}{% set station=current_station %}{% endif -%}
+						{% if current_table_id %}{% set station_id=current_table_id %}{% endif -%}
+						<div class="masterDisplay" >
+							<span id="playBtn"> &nbsp; ► &nbsp; </span>
+							<span id="pauseBtn"> &nbsp; ||  &nbsp; </span>
+							<span > &nbsp;&nbsp;&nbsp;&nbsp;</span>
+					 		<span id="currentRadioName"></span>
+						</div>
+					</td>
+
+					<td class="colored_cells">
+						<div class="arrow-buttons-cell">
+							<label for="arrow-up">
+								<a href="#scroll_top"
+							   		id="arrow-up"><span style="margin-right: 0.5em; margin-left: 0.5em">▲</span>
+								</a>
+							</label>
+							<label for="arrow-down">
+								<a href="#scroll_bottom"
+							   		id="arrow-down"><span style="margin-right: 1.2em">▼</span>
+								</a>
+							</label>
+						</div>
+					</td>
+
+					<td class="colored_cells">
+
+						<!-- CACHE Control - --------------------------------------------------- CACHE Control --->
+                 		<form action="" name="CACHE" >
+                 		    <select  class="form-control"
+									  id="cacheList"
+									  onChange="location = this.value;cacheList.options[0].selected = true;"
+									 data-toggle="tooltip" data-html="false"
+									 title="keeps track of your records"  data-placement="left">
+                 		        <option id="cacheList0" value="sw">(ಠ_ಠ)</option>
+                 		    </select>
+                 		</form>
+
+					</td>
+
+				</tr>
+
+				<tr>
+					<!-- Audio Control - ------src={{url}}-------------------------------------- Audio Control --->
+					<td colspan="2" class="colored_cells">
+						{% if listen_last_url %}{% set url=listen_last_url %}{% endif -%}
+        		     		<audio controls autoplay preload=metadata
+								   id="audioWithControls"
+								   src={{url}}>
+									Not supported audio. Please use VLC or another Browser.
+							</audio>
+
+						<input id="audioVolumeController" type="range" value="25"
+							data-toggle="tooltip" data-html="false" title="Volume: increase output ">
+
+						<input id="audioGainController"
+							   type="range" value="1" min="1" max="3" step="0.1"
+							data-toggle="tooltip" data-html="false" title="Gain: increase input (preamp); may distort; max. 300%">
+
+					</td>
+					<td>
+					</td>
+
+				</tr>
+			</table>
+		</div>
+	</div>
+ <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/jquery/jquery-3.6.0.min.js') }}"></script>
+ <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/ea_index.js') }}"></script>
+ <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/animate.js') }}"></script>
+
+{% endblock %}
+
