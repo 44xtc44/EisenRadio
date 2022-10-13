@@ -1,34 +1,41 @@
 Eisenradio - a Web radio expandable collection
----
+==============================================
+
+ ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
+ 
  * Organize your web radios; delete and update, backup and restore
- * Freedom: Style your app with pictures, import a poem, song text, or a funny comment to have a good time
- * Cool feature: Create a shuffled playlist within a local audio files folder in seconds
- * More action: A ping variable shows the response time and a spectrum analyser the frequency range
- * Speed: Travel through the app at breakneck speed, thanks to the smart design of the controls 
- * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android _file_ manager
+ * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
+ * Create a shuffled playlist within a local audio files folder in seconds
+ * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android file manager
  * https://pypi.org/project/eisenradio-apk/
 
 Eisenradio - the boring details 
----
- * A REST API app on blueprints and application factory of the flask microframework with a SQLite database
- * First Internet Radio App that can run a Spectrum Analyser in a Web Browser (Feb,2022)
- * Eisenradio uses its own API and adjusts the buffer size for a given bit rate
- * Backup and restore are easy work with the help of an optional exported, human-readable *ini file
- * Eisenradio uses Pythons sys.path; it will find its modules on the dark side of the moon
- * The Android APK Package uses Python Kivy for multi-touch and promotes the app to "foreground service" (not get killed)
- * Backend (server) opens the connection, buffers the internet stream and presents it to localhost IP: 127.0.0.1
- * Frontend (browser) controls the backend, plays internet and local audio and has a spectrum analyser at your disposal
+-------------------------------
+ * REST API app on blueprints and ApplicationFactory of the Flask microframework with a SQLite database
+ * First Internet Radio App that can run a Spectrum Analyser in a Web browser (Feb,2022)
+ * A local Python Flask Web Server connects to the radio server in behalf of you. Your browser connects to Flask
+   * Backend (server) opens the connection, buffers the radio stream and presents it to localhost IP: 127.0.0.1
+   * Frontend (browser) controls the backend, plays internet and local audio playlists
+   * Browser audio element connects `http://localhost:5050/sound/classic` that streams `http://37.251.146.169:8000/streamHD`
+   * Closing the browser does not disconnect the server listen (buffer discarded) nor streaming connections
+ * Plays and repairs aac plus files; play (1.3), repairs since version (1.4); 
+ * Backup and restore are easy work with the help of an optional ex/imported human-readable *ini file
+ * Blacklist feature for recorded files (titles); delete only once 
+   * lists can be ex/imported via a json dictionary file to other devices
+ * playing local audio uses the web server multiple file upload feature
+ * Multithreading allows you an unlimited number of radio connections at the same time, until the ISP Bandwidth limit hits
+ * Android APK Package uses Python Kivy for multi-touch and promotes the app to "foreground service" (to not get killed)
 
- 
-		""" sketch """
+    
+         """ sketch """  
 
-	     |B |               |S | Flask web server, Header[Werkzeug/2.0.2 Python/3.10.1]
-	     |r |listen         |e |-------> starRadio
-	     |o |------->   <-- |r |
-	     |w |GhettoRecorder |v |-------> planetRadio
-	     |s |--->    <----- |e |
-	     |e |               |r |-------> satteliteRadio
-	     |r |               |  |
+         |B |               |S | Flask web server, Header[Werkzeug/2.0.2 Python/3.10.1]
+         |r |listen         |e |-------> starRadio
+         |o |------->   <-- |r |
+         |w |GhettoRecorder |v |-------> planetRadio
+         |s |--->    <----- |e |
+         |e |               |r |-------> satteliteRadio
+         |r |               |  |
          net: localhost     net: internet
          CORS: accept       CORS: deny
          audioNode: 1,-1    audioNode: 0, 0
@@ -37,10 +44,21 @@ Eisenradio - the boring details
     Cross-Origin Resource Sharing mechanism (CORS) 
     i.a. prevents a Browser from analysing audio from internet
     
+command line 
+------------
+
+    > $ eisenradio-cmd   # console menu, no frontend, no animation, no RAM (2mb + blacklist.json)
+    > $ eisenradio-gui   # complete app with HTML Frontend
+
+ * console runs with the EisenRadio file Export of 'settings.ini'; "Tools/Export/Names and URL's" menu
+ * console menu option: 4 -- Set path to config, settings.ini, then all other options are available
+ * GhettoRecorder package settings.ini is compatible
+ 
+
 
 pip install
--
-	""" xxs Linux xxs """
+-----------
+    """ xxs Linux xxs """
     $ pip3 install eisenradio
     $ python3 -m eisenradio.wsgi  # watch flask
 
@@ -56,9 +74,11 @@ pip install
 
 Pytest
 ---
-> ~ ... /test/functional$ python3 -m pytest -s    # -s print to console
+Shows how to init a flask instance and perform some tests on it. More hints in the test comments.
 
-find the modified test db in ./app_writable/db
+    > ~ ... /eisenradio $ pytest -s    # -s print to console
+
+Is now part of the testautomation with flake8 and tox on GitHub.
 
 Uninstall
 ---

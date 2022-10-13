@@ -1,0 +1,6 @@
+pytest>=6.0
+pytest-cov>=2.0
+mypy>=0.9.10
+flake8>=3.9
+tox>=3.24
+

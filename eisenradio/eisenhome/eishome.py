@@ -3,13 +3,14 @@ import threading
 from time import sleep
 from flask import jsonify, request, flash, redirect, url_for
 
+from eisenradio.eisenhome import watchdog
+from eisenradio.eisenutil import monitor_records, config_html
 import eisenradio.lib.ghetto_recorder as ghetto
 from eisenradio.lib.eisdb import get_db_connection, status_read_status_set, get_download_dir
 from eisenradio.api import ghettoApi
 
-
 first_run_index = True
-listen_btn = False
+first_run_audio_activated = False
 
 status_listen_btn_dict = {}  # {table id 15: 1 } on
 status_record_btn_dict = {}
@@ -17,304 +18,376 @@ radios_in_view_dict = {}
 ghettoApi.init_lis_btn_dict(status_listen_btn_dict)
 ghettoApi.init_rec_btn_dict(status_record_btn_dict)
 ghettoApi.init_radios_in_view(radios_in_view_dict)
-
+stop_blacklist_writer = False
+ghettoApi.init_ghetto_stop_blacklist_writer(stop_blacklist_writer)
+# the drop-down dialog of active recorder in console to jump to the recorder stations
 active_streamer_dict = {}
 
-last_btn_id = None  # current button pressed, or btn predecessor / to redraw, if next is pressed / first is null->err
-listen_last_url = None
+last_btn_id_global = None  # current button pressed, or btn predecessor
 combo_master_timer = 0
 progress_master_percent = 0
 
 
 def index_first_run(posts):
+    """startup of app
+
+    global first_run_index var set to mark first run
+    prepare app to run in a clean state
+    check write protected folder,
+    start app relevant daemons (threads),
+    - timer,
+    - blacklist_writer and
+    - watchdog (dev) for info print on terminal of app status
+    * feed_status_btn_dicts(posts): create button dicts for listen and record
+    * feed_radios_in_view_dict(posts): create dict to resolve {db table id: radio name}
+    * config_html.tools_feature_settings_get_rows(): check all "Tools" features have db entries, if not create
+        find the row numbers for features in eisenutil/config_html.py
+    """
     global first_run_index
     if first_run_index:
         first_run_index = False
         check_write_protected()
-        ghetto.GBase.pool.submit(progress_timer)
+        start_progress_timer_daemon()
+        monitor_records.start_blacklist_writer_daemon()
+        watchdog.start_watchdog_daemon()
 
-        for row in posts:
-            # init btn not pressed
-            status_listen_btn_dict[row['id']] = 0
-            status_record_btn_dict[row['id']] = 0
-
+        feed_status_btn_dicts(posts)
         feed_radios_in_view_dict(posts)
+        config_html.tools_feature_settings_get_rows()
+
+
+def feed_status_btn_dicts(posts):
+    """reset all button tracker dicts to zero {table_id: button off}"""
+    for row in posts:
+        # init btn not pressed
+        status_listen_btn_dict[row['id']] = 0
+        status_record_btn_dict[row['id']] = 0
 
 
 def feed_radios_in_view_dict(posts):
+    """dict for resolving {id: radio_name} without open db connection everytime"""
     for row in posts:
         # api
         radios_in_view_dict[row['id']] = status_read_status_set(False, 'posts', 'title', row['id'])
 
 
 def curr_radio_listen():
-    current_station = ''
-    current_table_id = ''
-    for key_table_id, val in status_listen_btn_dict.items():
-        if val:
-            current_station = status_read_status_set(False, 'posts', 'title', key_table_id)
-            current_table_id = key_table_id
-    return current_station, current_table_id
+    """returns active listening radio id and name for page refresh"""
+    current_station, current_id = "", ""
+    for table_id, btn_down in status_listen_btn_dict.items():
+        if btn_down:
+            current_station = radios_in_view_dict[table_id]
+            current_id = table_id
+            break
+    return current_station, current_id
 
 
 def index_posts_clicked(post_request):
-    # this version does not have a relay server
-    global listen_btn
-    global last_btn_id
-    global listen_last_url
+    """if rec return index_posts_record(),
 
-    try:
-        button_list = post_request['name'].split('_')
-    except KeyError:
-        return
-    table_id = button_list[1]
-    button = button_list[0]
-    current_station = ''
+    if listen return index_posts_clicked_already or return index_posts_clicked_new()
+    first separation of action flow for rec and listen
+    return False, deactivate btn of a newly created radio to introduce no source of error
+    simplify reading, got either clicked new or already clicked listen btn
+    """
+    table_id = post_request['table_id']
+    action = post_request['action']
+    message = 'app restart required to use a new radio'
 
-    if button == 'Listen':  # turn values, update button status dict
-
-        try:
-            # new radio not yet in dict, deactivate till restart, buttons have no function
-            rv = status_listen_btn_dict[int(table_id)]
-            rv_station_lis = status_read_status_set(False, 'posts', 'title', table_id)
-        except KeyError:
-            return False
-        if status_listen_btn_dict[int(table_id)]:  # button was down
-            status_listen_btn_dict[int(table_id)] = 0
-            dispatch_master(int(table_id), 'Listen', 0)
-            if not last_btn_id == table_id:
-                return jsonify({'result': 'auto_click, no_audio_action', 'table_ident': current_station,
-                                'radio_table_id': table_id, 'class_val': post_request['class_val']})
-        else:
-            status_listen_btn_dict[int(table_id)] = 1  # button just pressed, register state, new station
-
-            if not last_btn_id == table_id:  # other btn pressed
-                if listen_btn:  # was playing before actual btn
-                    switch_btn = last_btn_id  # press abandoned btn, play new url
-                    last_btn_id = table_id
-                    listen_last_url = query_radio_url(table_id)  # radio url
-                    dispatch_master(int(table_id), 'Listen', 1)
-                    current_station = status_read_status_set(False, 'posts', 'title', table_id)
-                    # trigger auto_click
-                    return jsonify(
-                        {'former_button_to_switch': switch_btn,
-                         'query_url': listen_last_url,
-                         'if not last_btn_id == table_id': '------ last_btn_id --------',
-                         'result': 'activate_audio', 'table_ident': current_station, 'radio_table_id': table_id,
-                         'class_val': post_request['class_val']})
-
-            dispatch_master(int(table_id), 'Listen', 1)
-
-        listen_last_url = query_radio_url(table_id)  # radio url
-        last_btn_id = table_id
-
-        listen_btn = False
-        for val in status_listen_btn_dict:
-            if status_listen_btn_dict[val]:
-                listen_btn = True
-                break
-
-        if listen_btn:
-            current_station = status_read_status_set(False, 'posts', 'title', table_id)
-            return jsonify(
-                {'result': 'activate_audio', 'former_button_to_switch': False, 'buttons': button,
-                 'query_url': listen_last_url,
-                 'table_ident': current_station, 'radio_table_id': table_id, 'class_val': post_request['class_val']})
-        else:
-            listen_last_url = ''
-            return jsonify(
-                {'result': 'deactivate_audio', 'former_button_to_switch': False, 'buttons': button,
-                 'query_url': listen_last_url,
-                 'table_ident': current_station, 'radio_table_id': table_id, 'class_val': post_request['class_val']})
-
-    if button == 'Record':
-        try:
-            rv = status_record_btn_dict[int(table_id)]
-        except KeyError:
+    if action == 'Record':
+        if int(table_id) not in status_record_btn_dict.keys():
+            print(message)
             return False
 
-        conn = get_db_connection()
-        rec_station = status_read_status_set(False, 'posts', 'title', table_id)
-        conn.close()
+        return index_posts_record(table_id)
 
-        if status_record_btn_dict[int(table_id)]:
-            del active_streamer_dict[rec_station]
-            status_record_btn_dict[int(table_id)] = 0
-            dispatch_master(int(table_id), 'Record', 0)
+    if action == 'Listen':
+        if int(table_id) not in status_listen_btn_dict.keys():
+            print(message)
+            return False
+
+        radio_name = status_read_status_set(False, 'posts', 'title', table_id)
+        if status_listen_btn_dict[int(table_id)]:  # 1, hello auto clicker; or on/off press
+            return index_posts_clicked_already(table_id, radio_name)
         else:
-            active_streamer_dict[rec_station] = str(table_id)
-            status_record_btn_dict[int(table_id)] = 1
-            dispatch_master(int(table_id), 'Record', 1)
+            return index_posts_clicked_new(table_id, radio_name)
 
-    """make combo box with anchor jumper"""
-    json_str = ''
-    for streamer_name, streamer_id in active_streamer_dict.items():
-        json_str = json_str + str(streamer_name) + '=' + str(streamer_id) + ','
-    if not json_str:
-        json_str = str('empty_json')
 
+def index_posts_clicked_new(table_id, radio_name):
+    """set global var last_btn_id_global, activate js auto clicker, announce sound endpoint for radio name
+
+    fresh listen button press
+    activate auto clicker to reset abandoned btn status (color)
+    JavaScript module gets sound endpoint url with current port number for html audio element
+    vars
+    'result': 'activate_audio', - js calls reloadAudioElement()
+    'button_to_switch': 'Listen_' + btn_to_switch, - press abandoned listen button
+    'radio_name': radio_name,
+    'radio_id': table_id
+    'sound_endpoint': "http://localhost:" + ghettoApi.work_port + "/sound/"  - js audio connect to port number url
+    """
+    global last_btn_id_global
+
+    status_listen_btn_dict[int(table_id)] = 1  # button down
+    dispatch_master(int(table_id), 'Listen', 1)
+
+    # last_btn_id_global init None, first radio not trigger click
+    btn_to_switch = last_btn_id_global  # feed js auto clicker
+    button_id = 'Listen_' + btn_to_switch if btn_to_switch is not None else None
+
+    last_btn_id_global = table_id
     return jsonify(
-        {'result': 'no_audio_result',
-         'buttons': button, 'rec_btn_id': table_id, 'streamer': json_str,
-         'former_button_to_switch': False,
-         'query_url': listen_last_url,
-         'radio_table_id': table_id, 'class_val': post_request['class_val']})
+        {'result': 'activate_audio',
+         'button_to_switch': button_id,
+         'radio_name': radio_name,
+         'radio_id': table_id,
+         'sound_endpoint': "http://localhost:" + ghettoApi.work_port + "/sound/"
+         })
+
+
+def index_posts_clicked_already(table_id, radio_name):
+    """if js auto clicker send table_id for radio;
+    if self pressed on/off, fill global var last_btn_id_global and deactivate audio --> better store it in api
+
+    This thing here is about pressed LISTEN buttons.
+    If listen button pressed, java auto clicker event is possible and change the button type (color).
+    Auto clicker launches the whole event $("button").click(function () {} from $(document).ready(function () {
+    AFTER the original button was pressed.
+    Two scenarios for a 1 in status_listen_btn_dict[int(table_id)]:
+    1) auto clicker
+    2) same listen button was pressed on/off (twice)
+
+    autoclicker vars
+    'autoClicker': table_id
+    self pressed btn vars
+    'result': 'deactivate_audio',
+    'radio_name': radio_name,
+    'radio_id': "noId"         // tell all functions there is no listener active,
+    'last_listen_id': table_id // but the style function must run to create a (minimal) record style, if active
+    """
+    global last_btn_id_global
+
+    status_listen_btn_dict[int(table_id)] = 0
+    dispatch_master(int(table_id), 'Listen', 0)
+    # to make it clear 'button_to_switch' auto clicker var from index_posts_clicked_new is for NEW btn down evt
+    if not last_btn_id_global == table_id:  # js press abandoned btn, not the same btn id, call style funct to reset var
+        return jsonify({'autoClicker': table_id})    # to enable only minimal display if record in on
+    else:
+        last_btn_id_global = None  # same id, twice pressed, reset var
+        return jsonify(
+            {'result': 'deactivate_audio',
+             'radio_name': radio_name,
+             'radio_id': "noId",
+             'last_listen_id': table_id
+             })
+
+
+def index_posts_record(table_id):
+    """ call dispatch_master( id record on/off)
+    return names and table ids of all streamer to js
+        and id of current activated/deactivated rec
+    make a combo box with anchor to jump to the rec radio from console
+    vars
+    'streamer': json_streamer - write name to the stream watcher drop-down dialog in console
+    """
+    conn = get_db_connection()
+    radio_name = status_read_status_set(False, 'posts', 'title', table_id)
+    conn.close()
+
+    if status_record_btn_dict[int(table_id)]:
+        del active_streamer_dict[radio_name]
+        status_record_btn_dict[int(table_id)] = 0
+        dispatch_master(int(table_id), 'Record', 0)
+    else:
+        active_streamer_dict[radio_name] = str(table_id)
+        status_record_btn_dict[int(table_id)] = 1
+        dispatch_master(int(table_id), 'Record', 1)
+
+    # make combo box with anchor jumper from active_streamer_dict
+    json_streamer = ''
+    for streamer_name, streamer_id in active_streamer_dict.items():
+        json_streamer = json_streamer + str(streamer_name) + '=' + str(streamer_id) + ','
+    if not json_streamer:
+        json_streamer = str('empty_json')
+
+    return jsonify({'streamer': json_streamer, 'streamerId': table_id})
 
 
 def query_radio_url(table_id):
-    str_url = status_read_status_set(
-        False, 'posts', 'content', table_id)
-    return str_url
+    """return streaming url of radio"""
+    radio_url = status_read_status_set(False, 'posts', 'content', table_id)
+    return radio_url
 
 
 def set_radio_path(table_id):
-    radio_path = status_read_status_set(
-        False, 'posts', 'download_path', table_id)
-    ghetto.GBase.radio_base_dir = radio_path
+    """overwrite default path of ghetto_recorder.GBase.radio_base_dir with
+    parent download_path
+    create child dir with radio name
+
+    GhettoRecorder stores streams by default under the current directory of settings.ini
+    """
+    parent_dir = status_read_status_set(False, 'posts', 'download_path', table_id)
+    radio_name = status_read_status_set(False, 'posts', 'title', table_id)
+    ghetto.GBase.radio_base_dir = parent_dir
+    child_dir = os.path.join(parent_dir, radio_name)
+    ghetto.GBase.make_directory(child_dir)
 
 
-def dispatch_master(table_id, button, status):
+def dispatch_master(table_id, button, btn_status):
+    """divide action for listen and rec, returns nothing
+
+    prepare writing to dicts with radio name as key
+    btn_status is 0 or 1, off or on
+    """
     set_radio_path(table_id)
-    str_radio = status_read_status_set(
-        False, 'posts', 'title', table_id)
+    radio_name = status_read_status_set(False, 'posts', 'title', table_id)
 
     if button == 'Listen':
-        dispatch_listen_btn(str_radio, table_id, status)
+        dispatch_listen_btn(radio_name, table_id, btn_status)
 
     if button == 'Record':
-        dispatch_record_btn(str_radio, table_id, status)
+        dispatch_record_btn(radio_name, table_id, btn_status)
 
 
-def dispatch_listen_btn(str_radio, table_id, lis_btn_pressed):
+def dispatch_listen_btn(radio_name, table_id, lis_btn_pressed):
+    """calls dispatch_record_start() if btn pressed, del from active dict if btn released, returns nothing
 
+    write into listen activ dict if listen btn down or not
+    tells the recorder dispatcher to start threads with listen action string
+    """
     if lis_btn_pressed:
-        ghetto.GRecorder.listen_active_dict[str_radio] = True
+        ghetto.GRecorder.listen_active_dict[radio_name] = True
         if not status_record_btn_dict[table_id]:  # rec btn not pressed
-            ghetto.GRecorder.record_active_dict[str_radio] = False    # rec not active
-
-        dispatch_record_title(table_id, False, True)    # id, record, listen
+            ghetto.GRecorder.record_active_dict[radio_name] = False  # rec not active
+        dispatch_record_start(table_id, 'listen')
 
     if not lis_btn_pressed:
-        ghetto.GRecorder.listen_active_dict[str_radio] = False
-        if not status_record_btn_dict[table_id]:
-            dispatch_recorder_stop(table_id)
+        ghetto.GRecorder.listen_active_dict[radio_name] = False
 
 
-def dispatch_record_btn(str_radio, table_id, rec_btn_pressed):
+def dispatch_record_btn(radio_name, table_id, rec_btn_pressed):
+    """calls dispatch_record_start() if btn pressed, del from active dict if btn released, returns nothing
 
+    write into record_active_dict if radio shall be active rec or not
+    check if listen btn is down and writes status to listen active dict
+    recorder dispatcher shall start threads with record action string
+    """
     if rec_btn_pressed:
-        ghetto.GRecorder.record_active_dict[str_radio] = True
+        ghetto.GRecorder.record_active_dict[radio_name] = True
         if not status_listen_btn_dict[table_id]:  # listen btn not pressed
-            ghetto.GRecorder.listen_active_dict[str_radio] = False
+            ghetto.GRecorder.listen_active_dict[radio_name] = False
 
-        dispatch_record_title(table_id, True, False)    # id, record, listen
+        dispatch_record_start(table_id, 'record')
 
     if not rec_btn_pressed:
-        ghetto.GRecorder.record_active_dict[str_radio] = False
-        if not ghetto.GRecorder.listen_active_dict[str_radio]:
-            dispatch_recorder_stop(table_id)
+        ghetto.GRecorder.record_active_dict[radio_name] = False  # rec thread stops, parameter action 'record'
 
 
-def dispatch_recorder_stop(table_id):
+def dispatch_record_start(table_id, action):
+    """call dispatch_record_is_alive(), if alive check is playlist & start radio else write error dict, returns nothing
 
-    str_radio = status_read_status_set(
-        False, 'posts', 'title', table_id)
-    # stop recorder threads
-    ghetto.GBase.dict_exit[str_radio] = True
-    try:
-        sleep(2)
-        if status_listen_btn_dict[table_id]:
-            dispatch_record_title(table_id, False, True)
-    except KeyError:
-        pass
+    test if server is alive, writes dict_error entry if url had failed
+    if target server address is a playlist url m3u or pls,
+    must read the playlist url first and extract radio url
+    start threads with either listen or record action string to stop 'em separate if both listen and rec are active
+    """
+    radio_name = status_read_status_set(False, 'posts', 'title', table_id)
+    radio_url = status_read_status_set(False, 'posts', 'content', table_id)
 
+    playlist_url = dispatch_record_is_alive(radio_name, radio_url)
+    if playlist_url is not None:
+        radio_url = playlist_url
 
-def dispatch_record_title(table_id, record, listen):
-
-    str_radio = status_read_status_set(False, 'posts', 'title', table_id)
-    str_url = status_read_status_set(False, 'posts', 'content', table_id)
-
-    ghetto.GBase.dict_exit[str_radio] = False
-
-    # test for alive, container docker or snap, and playlist / data_base_auto
-    str_checked_url_m3u = ghetto.check_alive_playlist_container(str_radio, str_url)
-    if str_checked_url_m3u:
-        # replace m3u with real url in database
-        conn = get_db_connection()
-        # print('UPDATE posts SET content = ? WHERE id = ?', (str(str_checked_url_m3u), str(table_id)))
-        conn.execute('UPDATE posts SET content = ? WHERE id = ?', (str(str_checked_url_m3u), str(table_id)))
-        conn.commit()
-        conn.close()
-        str_url = str_checked_url_m3u
-
-    try:
-        print(ghetto.GBase.dict_error[str_radio])  # show connection error in display
-    except KeyError:
-        # no error, no key exists
-        """ ghetto.record starts all radio relevant threats"""
-        if record:
-            ghetto.record(str_radio=str_radio, url=str_url, str_action='record')
-        if listen:
-            ghetto.record(str_radio=str_radio, url=str_url, str_action='listen')
-        return True
+    if radio_name not in ghetto.GNet.dict_error.keys():
+        ghetto.record(radio_name, radio_url, action)
     else:
-        ghetto.GBase.dict_exit[str_radio] = True
-        return False
+        print(ghetto.GNet.dict_error[radio_name])
+        ghetto.GBase.dict_exit[radio_name] = True  # end all threads of a failed radio; if any
 
 
-def display_clean_titles():
-    conn = get_db_connection()
-    records = conn.execute('select id from posts').fetchall()
-    for id_num in records:
-        conn.execute('UPDATE posts SET display = ? WHERE id = ?', (None, id_num[0]))
-    conn.commit()
-    conn.close()
+def dispatch_record_is_alive(radio_name, radio_url):
+    """call is_radio_online(), return url of first server in playlist, or return None
+
+    test if server is alive, if not writes in error dict, later display msg in html
+    if url is a playlist, it grabs the first url from playlist, mostly the best quality
+    https://streams.br.de/bayern1obb_2.m3u
+    """
+    radio_url = ghetto.is_radio_online(radio_name, radio_url)
+    if radio_url:
+        return radio_url
+    return
+
+
+def start_progress_timer_daemon():
+    """run progress_timer()"""
+    threading.Thread(name="progress_timer", target=progress_timer, daemon=True).start()
+
+
+def tear_down_after_timer_hit():
+    """clean up to not confuse (buttons pressed, show online ...) if return to start page after timer hit"""
+    ghettoApi.stop_blacklist_writer = True
+    if len(ghetto.GBase.dict_exit) > 0:
+        for recorder in ghetto.GBase.dict_exit:
+            ghetto.GBase.dict_exit[recorder] = True
+    for table_id in status_listen_btn_dict.keys():
+        status_listen_btn_dict[table_id] = 0
+    for table_id in status_record_btn_dict.keys():
+        status_record_btn_dict[table_id] = 0
+    active_streamer_dict.clear()
 
 
 def progress_timer():
+    """calculate remaining time until full stop of app, returns nothing
 
-    global combo_master_timer   # combo in Tk/Tcl for drop-down dialog on ghetto_recorder package, first front-end
-    global progress_master_percent   # separate for future us; go to single timer for each radio
+    stops ALL radio threads by writing ghetto.GBase.dict_exit[radio name] = True
+    combo_master_timer -- val from browser in hours (default 0), -1 stops def, last loop
+    progress_master_percent -- calculates percent of passed seconds (default 0)
 
-    current_timer = 0
+    feed progress_master_percent global for route endpoint response to ajax updateMasterProgress()
+    """
+    global combo_master_timer  # combo in Tk/Tcl for drop-down dialog on ghetto_recorder package, the first GUI
+    global progress_master_percent  # separate for future use; go to single timer for each radio
+
+    up_count_timer = 0
     while 1:
         if combo_master_timer:
             if int(combo_master_timer) <= -1:
-                combo_time = 1
+                seconds_to_run = 1  # must get more than 100 in percent calc, may not divide by zero; init exit
             else:
-                combo_time = (int(combo_master_timer) * 60 * 60)  # * 60
-            percent = progress_bar_percent(current_timer, combo_time)
+                seconds_to_run = (int(combo_master_timer) * 60 * 60)  # * 60
+            percent = progress_bar_percent(up_count_timer, seconds_to_run)
             if percent:
                 progress_master_percent = percent
             else:
                 progress_master_percent = 0
-                current_timer = 0
+                up_count_timer = 0
 
             if percent >= 100:
-                found = 0
-                for _ in ghetto.GBase.dict_exit:
-                    found += 1
-                if found:
-                    for recorder in ghetto.GBase.dict_exit:
-                        ghetto.GBase.dict_exit[recorder] = True
+                tear_down_after_timer_hit()
 
         if not combo_master_timer:
-            current_timer = 0
+            up_count_timer = 0
             progress_master_percent = 0
 
-        current_timer += 1
+        up_count_timer += 1
         sleep(1)
 
 
-def progress_bar_percent(current_timer, max_value):
-    if not max_value:
+def progress_bar_percent(up_count_timer, seconds_to_run):
+    """calculate percent from passed by seconds and seconds to run, return float percent value
+
+    return if zero is argument, because of division
+    float for pytest type, since it could be sometimes int
+    """
+    if not seconds_to_run:
         return False
     # doing some math, p = (P * 100) / G, percent = (math.percentage value * 100) / base
-    cur_percent = round((current_timer * 100) / max_value, 4)  # 0,0001 for 24h reaction to show
-    return cur_percent
+    cur_percent = round((up_count_timer * 100) / seconds_to_run, 4)  # 0,0001 for 24h reaction to show in html
+    return float(cur_percent)
 
 
 def print_request_values(values):
+    """helper to get all possible info printed from request"""
     for val in values:
         print(' -- start print --')
         print(f'\tval in request.form.values(): {val}')
@@ -326,12 +399,17 @@ def print_request_values(values):
 
 
 def check_write_protected():
+    """write test b"\x03".hex() = 03, flash message if ok or not, redirect to start page
+
+    to inform user if download directory is not writeable
+    """
     try:
         download_dir = os.path.abspath(get_download_dir())
     except TypeError:
         return
     if download_dir is None:
         flash('Can not write to folder! No folder specified.', 'danger')
+        flash('Use SAVE option from menu.', 'warning')
         return redirect(url_for('eisenhome_bp.index'))
     if download_dir:
         write_file = download_dir + '/eisen_write_test'
@@ -339,10 +417,11 @@ def check_write_protected():
             with open(write_file, 'wb') as record_file:
                 record_file.write(b'\x03')
             os.remove(write_file)
-        except OSError:    # master of desaster
+        except OSError:  # master of desaster
             flash('Can not write to folder!.' + download_dir, 'danger')
+            flash('Use SAVE option from menu.', 'warning')
             return redirect(url_for('eisenhome_bp.index'))
     if not download_dir:
         flash('Can not write to folder! no folder specified' + download_dir, 'danger')
+        flash('Use SAVE option from menu.', 'warning')
         return redirect(url_for('eisenhome_bp.index'))
-
