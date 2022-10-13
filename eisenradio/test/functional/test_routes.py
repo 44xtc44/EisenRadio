@@ -1,6 +1,7 @@
 import json
 import unittest
-from eisenradio import create_app  # __init__
+from os import environ, remove
+from eisenradio import create_app_dev  # __init__
 from eisenradio.instance.config_apfac import write_config, remove_config
 
 
@@ -9,20 +10,32 @@ from eisenradio.instance.config_apfac import write_config, remove_config
 
 
 class TestRouteHome(unittest.TestCase):
-    """ radio DB table id ( radio 0-9  ) """
-    radio_to_delete = int(3)
+    """ test of flask from the JS side to Python backend
+    db is created from schema
+
+    Setup:
+        write_config():
+            write environment variables and load 'em as OS vars with load_dotenv() , flask is not started yet
+    Init:
+        create_app_dev(5050, True):
+            __init__.py flask, load context app.app_context(),
+            update flask config with OS vars so flask knows db, app.config.update(DATABASE=environ['DATABASE'],...)
+    Test:
+        radio DB table id ( radio 0-9  )
+    """
+
+    radio_to_delete = int(3)  # radio table id 3
 
     def setUp(self):
-        print(f"\n\t --------------------test-setUp-----START----\n")
-        # remove_config()
-        write_config('test')  # write_config('test', True)  for an empty db, other test setup
-        print(f"\t --------------------test-setUp-----END-----\n")
+        print("\n\t --------------------test-setUp-----START----\n")
+        write_config()
+        print("\t --------------------test-setUp-----END-----\n")
 
     def test_route_home(self):
         from eisenradio.lib.eisdb import status_read_status_set
         from eisenradio.eisenhome import routes as home_routes
 
-        app = create_app(True)  # True is test
+        app = create_app_dev(5050, True)  # True is test
 
         print('\n ... Begin: def test_route_home()')
 
@@ -42,20 +55,20 @@ class TestRouteHome(unittest.TestCase):
         assert home_routes.eisenhome_bp.template_folder == 'bp_home_templates'
         assert home_routes.eisenhome_bp.static_url_path == '/bp_home_static'
 
-        print(""" /setcookiedark """)
+        print(""" /cookie_set_dark """)
 
-        rv = web.get('/setcookiedark')
+        rv = web.get('/cookie_set_dark')
         assert rv.status_code == 200
         assert 'Eisenkekse sind die besten' in rv.data.decode('utf-8')
 
-        print(""" /getcookiedark (json style) """)
+        print(""" /cookie_get_dark (json style) """)
 
-        rv = web.get('/getcookiedark')
+        rv = web.get('/cookie_get_dark')
         data = json.loads(rv.get_data(as_text=True))
         assert rv.status_code == 200
         assert data['darkmode'] == 'darkmode'
 
-        print(""" /getcookiedark (flask client.cookie_jar style) """)
+        print(""" /cookie_get_dark (flask client.cookie_jar style) """)
 
         cookie = next(
             (cookie for cookie in web.cookie_jar if cookie.name == "eisen-cookie"),
@@ -64,11 +77,12 @@ class TestRouteHome(unittest.TestCase):
         assert cookie is not None
         assert cookie.value == "darkmode"
 
-        print(""" /delcookiedark """)
+        print(""" /cookie_del_dark """)
 
-        rv = web.post('/delcookiedark',
-                      headers={"X-Requested-With": "XMLHttpRequest"},
-                      follow_redirects=True, )
+        rv = web.post(
+            '/cookie_del_dark',
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            follow_redirects=True, )
         cookie = rv.headers.getlist('Set-Cookie')
         cookie_val = cookie[0]  # nice one row list :(
         cook_list = cookie_val.split(';')
@@ -76,22 +90,24 @@ class TestRouteHome(unittest.TestCase):
         assert rv.status_code == 200
         assert b'necesito nuevas cookies' in rv.data
 
-        timer = int(8)
-        rv = web.post('/index_posts_combo',
-                      data=dict(timeRecordSelectAll=timer),
-                      follow_redirects=True,
-                      content_type='application/x-www-form-urlencoded',
-                      )
+        timer = int(8)   # 8 hours
+        rv = web.post(
+            '/index_posts_combo',
+            data=dict(timeRecordSelectAll=timer),
+            follow_redirects=True,
+            content_type='application/x-www-form-urlencoded',
+        )
         data = json.loads(rv.get_data(as_text=True))
         assert data == timer
         assert rv.status_code == 200
 
-        print(""" /getcookiedark """)
+        print(""" /index_posts_percent """)
 
-        rv = web.post('/index_posts_percent',
-                      follow_redirects=True,
-                      content_type='application/x-www-form-urlencoded',
-                      )
+        rv = web.get(
+            '/index_posts_percent',
+            follow_redirects=True,
+            content_type='application/x-www-form-urlencoded',
+        )
         data = json.loads(rv.get_data(as_text=True))
         assert rv.status_code == 200
         assert data['result'] == 0
@@ -100,21 +116,26 @@ class TestRouteHome(unittest.TestCase):
 
         from eisenradio.api import ghettoApi
         # mocking
-        ghettoApi.ghetto_radios_metadata_text = {'Korean_Pop': 'OVAN 오반 - I Need You 어떻게 지내',
-                                                 'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
-                                                 'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'}
+        ghettoApi.current_song_dict = {
+            'Korean_Pop': 'OVAN 오반 - I Need You 어떻게 지내',
+            'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
+            'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
+        }
         ghettoApi.radios_in_view_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
 
         # testing
-        rv = web.get('/display_info',
-                     follow_redirects=True,
-                     content_type='application/x-www-form-urlencoded',
-                     )
+        rv = web.get(
+            '/display_info',
+            follow_redirects=True,
+            content_type='application/x-www-form-urlencoded',
+        )
         data = json.loads(rv.get_data(as_text=True))
         assert rv.status_code == 200
-        assert data['result'] == {'2': 'OVAN 오반 - I Need You 어떻게 지내',
-                                  '3': 'Henrik Freischlader Band - Take The Blame',
-                                  '6': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'}
+        assert data['updateDisplay'] == {
+            '2': 'OVAN 오반 - I Need You 어떻게 지내',
+            '3': 'Henrik Freischlader Band - Take The Blame',
+            '6': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
+        }
 
         print(""" /page_flash """)
 
@@ -142,7 +163,7 @@ class TestRouteHome(unittest.TestCase):
         assert rv.status_code == 200
         assert 'Radio is active. No deletion.' in parsed  # flash message
 
-        print(""" /<int:id>/delete  must FAIL, active Record """)
+        print(" /<int:id>/delete  must FAIL, active Record ")
 
         eisen_radio.status_listen_btn_dict[self.radio_to_delete] = 0
         eisen_radio.status_record_btn_dict[self.radio_to_delete] = 1
@@ -151,7 +172,7 @@ class TestRouteHome(unittest.TestCase):
         assert rv.status_code == 200
         assert 'Radio is active. No deletion.' in parsed  # flash message
 
-        print(""" /<int:id>/delete  DELETE action """)
+        print(" /<int:id>/delete  DELETE action ")
 
         eisen_radio.status_listen_btn_dict[self.radio_to_delete] = 0
         eisen_radio.status_record_btn_dict[self.radio_to_delete] = 0
@@ -160,14 +181,22 @@ class TestRouteHome(unittest.TestCase):
         assert rv.status_code == 200
         assert 'was successfully deleted' in parsed
 
-        print(""" query MUST fail, radio not in store! """)
+        print(" query MUST fail, radio not in store! ")
         rv_db = status_read_status_set(False, 'posts', 'title', str(self.radio_to_delete))
         assert rv_db == "column not in table posts, status_read_status_set"
-        print(""" column deleted """)
+        print(" column deleted ")
 
         print('--- fin ----')
 
     def tearDown(self):
-        print(f"\n\t --------------------test-tearDown -----START----\n")
+        print("\n\t --------------------test-tearDown -----START----\n")
         remove_config()
-        print(f"\n\t --------------------test-tearDown -----END----\n")
+        self.remove_test_db()
+        print("\n\t --------------------test-tearDown -----END----\n")
+
+    @staticmethod
+    def remove_test_db():
+        try:
+            remove(environ['DATABASE'])
+        except OSError:
+            pass

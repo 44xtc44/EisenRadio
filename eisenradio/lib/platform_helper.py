@@ -1,6 +1,12 @@
+""" helper for flask to open or not open a browser window
+display information about system for Snap user to avoid black box feeling
+"""
 import os
 import webbrowser
 from eisenradio.lib.eisdb import status_read_status_set
+from eisenradio.api import ghettoApi
+
+flask_srv_url = "http://localhost:" + str(ghettoApi.work_port) + "/"
 
 
 def get_env_snap():
@@ -19,18 +25,18 @@ def get_env_snap():
 
 def get_env_docker():
     print('\n\tEisenRadio App in Docker Container\n')
-    print('\tUse url "http://localhost:5050/" to connect your Browser.\n')
+    print(f'\tUse url {flask_srv_url} to connect your Browser.\n')
 
 
 def open_browser():
-    print('\n\t---> Use url "http://localhost:5050/" to connect your Browser. <---\n')
+    print(f'\n\t---> Use url {flask_srv_url} to connect your Browser. <---\n')
 
     is_enabled = status_read_status_set(False, 'eisen_intern', 'browser_open', '1')
     if is_enabled:
-        print(f' Browser auto start: Enabled\n')
-        webbrowser.open('http://localhost:5050', new=2)
+        print(' Browser auto start: Enabled\n')
+        webbrowser.open(flask_srv_url, new=2)
     if not is_enabled:
-        print(f' Browser auto start: Disabled\n')
+        print(' Browser auto start: Disabled\n')
 
 
 def main():

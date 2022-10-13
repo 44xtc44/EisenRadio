@@ -1,0 +1,5 @@
+[console_scripts]
+eisen-console = eisenradio.cmd:main
+
+[gui_scripts]
+eisen-gui = eisenradio.gui:main

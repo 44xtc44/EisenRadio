@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>eisenradio package &mdash; EisenRadio  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css-style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> EisenRadio
+            <img src="_static/aircraft_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Technical Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Feature Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indexStructure.html">main page &lt;div&gt; and JS load order</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sketch.html">technical sketch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipInstall.html">pip install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="knownProblems.html">known problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EisenRadio</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>eisenradio package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/eisenradio.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="eisenradio-package">
+<h1>eisenradio package<a class="headerlink" href="#eisenradio-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="eisenradio.api.html">eisenradio.api package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.api.html#module-eisenradio.api">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.Api"><code class="docutils literal notranslate"><span class="pre">Api</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.Api.init_app"><code class="docutils literal notranslate"><span class="pre">Api.init_app()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi"><code class="docutils literal notranslate"><span class="pre">GhettoApi</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_aac_repair_log"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_aac_repair_log()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_current_song_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_current_song_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_all_blacklists_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_all_blacklists_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_audio_stream"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_audio_stream()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_blacklist_enabled_global"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_blacklist_enabled_global()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_dict_error"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_dict_error()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_listen_active_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_listen_active_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_measurements"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_measurements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_recorder_new_title"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_recorder_new_title()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_show_analyser"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_show_analyser()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_skipped_in_session_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_skipped_in_session_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_ghetto_stop_blacklist_writer"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_ghetto_stop_blacklist_writer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_lis_btn_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_lis_btn_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_path_ghetto_blacklist"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_path_ghetto_blacklist()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_radio_active"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_radio_active()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_radios_in_view"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_radios_in_view()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_rec_btn_dict"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_rec_btn_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoApi.init_work_port"><code class="docutils literal notranslate"><span class="pre">GhettoApi.init_work_port()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoTest"><code class="docutils literal notranslate"><span class="pre">GhettoTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.api.html#eisenradio.api.GhettoTest.init_test_thread_killer"><code class="docutils literal notranslate"><span class="pre">GhettoTest.init_test_thread_killer()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eisenradio.eisenhome.html">eisenradio.eisenhome package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenhome.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenhome.html#module-eisenradio.eisenhome.eishome">eisenradio.eisenhome.eishome module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.check_write_protected"><code class="docutils literal notranslate"><span class="pre">check_write_protected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.curr_radio_listen"><code class="docutils literal notranslate"><span class="pre">curr_radio_listen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.dispatch_listen_btn"><code class="docutils literal notranslate"><span class="pre">dispatch_listen_btn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.dispatch_master"><code class="docutils literal notranslate"><span class="pre">dispatch_master()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.dispatch_record_btn"><code class="docutils literal notranslate"><span class="pre">dispatch_record_btn()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.dispatch_record_is_alive"><code class="docutils literal notranslate"><span class="pre">dispatch_record_is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.dispatch_record_start"><code class="docutils literal notranslate"><span class="pre">dispatch_record_start()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.feed_radios_in_view_dict"><code class="docutils literal notranslate"><span class="pre">feed_radios_in_view_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.feed_status_btn_dicts"><code class="docutils literal notranslate"><span class="pre">feed_status_btn_dicts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.index_first_run"><code class="docutils literal notranslate"><span class="pre">index_first_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.index_posts_clicked"><code class="docutils literal notranslate"><span class="pre">index_posts_clicked()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.index_posts_clicked_already"><code class="docutils literal notranslate"><span class="pre">index_posts_clicked_already()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.index_posts_clicked_new"><code class="docutils literal notranslate"><span class="pre">index_posts_clicked_new()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.index_posts_record"><code class="docutils literal notranslate"><span class="pre">index_posts_record()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.print_request_values"><code class="docutils literal notranslate"><span class="pre">print_request_values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.progress_bar_percent"><code class="docutils literal notranslate"><span class="pre">progress_bar_percent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.progress_timer"><code class="docutils literal notranslate"><span class="pre">progress_timer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.query_radio_url"><code class="docutils literal notranslate"><span class="pre">query_radio_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.set_radio_path"><code class="docutils literal notranslate"><span class="pre">set_radio_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.start_progress_timer_daemon"><code class="docutils literal notranslate"><span class="pre">start_progress_timer_daemon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.eishome.tear_down_after_timer_hit"><code class="docutils literal notranslate"><span class="pre">tear_down_after_timer_hit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenhome.html#module-eisenradio.eisenhome.routes">eisenradio.eisenhome.routes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.all_radio_table_ids_and_names_get"><code class="docutils literal notranslate"><span class="pre">all_radio_table_ids_and_names_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_del_dark"><code class="docutils literal notranslate"><span class="pre">cookie_del_dark()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_del_show_visuals"><code class="docutils literal notranslate"><span class="pre">cookie_del_show_visuals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_get_dark"><code class="docutils literal notranslate"><span class="pre">cookie_get_dark()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_get_show_visuals"><code class="docutils literal notranslate"><span class="pre">cookie_get_show_visuals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_set_dark"><code class="docutils literal notranslate"><span class="pre">cookie_set_dark()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.cookie_set_show_visuals"><code class="docutils literal notranslate"><span class="pre">cookie_set_show_visuals()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.degrade_animation_level_get"><code class="docutils literal notranslate"><span class="pre">degrade_animation_level_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.degrade_animation_level_set"><code class="docutils literal notranslate"><span class="pre">degrade_animation_level_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.display_info"><code class="docutils literal notranslate"><span class="pre">display_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.index_posts_combo"><code class="docutils literal notranslate"><span class="pre">index_posts_combo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.index_posts_percent"><code class="docutils literal notranslate"><span class="pre">index_posts_percent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.page_flash"><code class="docutils literal notranslate"><span class="pre">page_flash()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.station_get"><code class="docutils literal notranslate"><span class="pre">station_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.streamer_get"><code class="docutils literal notranslate"><span class="pre">streamer_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.routes.tools_radio_config_get"><code class="docutils literal notranslate"><span class="pre">tools_radio_config_get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenhome.html#module-eisenradio.eisenhome.watchdog">eisenradio.eisenhome.watchdog module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.report_active_radio_threads"><code class="docutils literal notranslate"><span class="pre">report_active_radio_threads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.report_failed_thread_names"><code class="docutils literal notranslate"><span class="pre">report_failed_thread_names()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.report_failed_thread_names_assert_dict"><code class="docutils literal notranslate"><span class="pre">report_failed_thread_names_assert_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.report_failed_thread_names_build_dict"><code class="docutils literal notranslate"><span class="pre">report_failed_thread_names_build_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.run_watchdog"><code class="docutils literal notranslate"><span class="pre">run_watchdog()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.scenario_kill_thread"><code class="docutils literal notranslate"><span class="pre">scenario_kill_thread()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenhome.html#eisenradio.eisenhome.watchdog.start_watchdog_daemon"><code class="docutils literal notranslate"><span class="pre">start_watchdog_daemon()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenhome.html#module-eisenradio.eisenhome">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eisenradio.eisenutil.html">eisenradio.eisenutil package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.aac_repair">eisenradio.eisenutil.aac_repair module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair"><code class="docutils literal notranslate"><span class="pre">AacRepair</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.byte_calc"><code class="docutils literal notranslate"><span class="pre">AacRepair.byte_calc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.log_writer"><code class="docutils literal notranslate"><span class="pre">AacRepair.log_writer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.repair_multi_files"><code class="docutils literal notranslate"><span class="pre">AacRepair.repair_multi_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.repair_one_file"><code class="docutils literal notranslate"><span class="pre">AacRepair.repair_one_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.tool_aacp_repair_head"><code class="docutils literal notranslate"><span class="pre">AacRepair.tool_aacp_repair_head()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.aac_repair.AacRepair.tool_aacp_repair_tail"><code class="docutils literal notranslate"><span class="pre">AacRepair.tool_aacp_repair_tail()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.browser_stream">eisenradio.eisenutil.browser_stream module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.browser_stream.get_stream_content_type"><code class="docutils literal notranslate"><span class="pre">get_stream_content_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.browser_stream.stream_audio_feed"><code class="docutils literal notranslate"><span class="pre">stream_audio_feed()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.config_html">eisenradio.eisenutil.config_html module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.config_html.tools_feature_on_off_state_in_db"><code class="docutils literal notranslate"><span class="pre">tools_feature_on_off_state_in_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.config_html.tools_feature_settings_create_default"><code class="docutils literal notranslate"><span class="pre">tools_feature_settings_create_default()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.config_html.tools_feature_settings_get_rows"><code class="docutils literal notranslate"><span class="pre">tools_feature_settings_get_rows()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.config_html.tools_feature_status_in_db"><code class="docutils literal notranslate"><span class="pre">tools_feature_status_in_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.config_html.tools_feature_toggle_show_html_config"><code class="docutils literal notranslate"><span class="pre">tools_feature_toggle_show_html_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.eisutil">eisenradio.eisenutil.eisutil module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.eisen_write_test"><code class="docutils literal notranslate"><span class="pre">eisen_write_test()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.is_in_db_view"><code class="docutils literal notranslate"><span class="pre">is_in_db_view()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.make_folder"><code class="docutils literal notranslate"><span class="pre">make_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.parse_url_simple_url"><code class="docutils literal notranslate"><span class="pre">parse_url_simple_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.radio_listen_button_get"><code class="docutils literal notranslate"><span class="pre">radio_listen_button_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.radio_name_get"><code class="docutils literal notranslate"><span class="pre">radio_name_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.radio_start_page_url_get"><code class="docutils literal notranslate"><span class="pre">radio_start_page_url_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.remove_blank"><code class="docutils literal notranslate"><span class="pre">remove_blank()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.eisutil.remove_special_chars"><code class="docutils literal notranslate"><span class="pre">remove_special_chars()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.monitor_records">eisenradio.eisenutil.monitor_records module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#feature">Feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.blacklist_enabled_button_outfit_get"><code class="docutils literal notranslate"><span class="pre">blacklist_enabled_button_outfit_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.del_single_title_del_indexes"><code class="docutils literal notranslate"><span class="pre">del_single_title_del_indexes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.del_single_title_get_del_indexes"><code class="docutils literal notranslate"><span class="pre">del_single_title_get_del_indexes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.del_single_title_master"><code class="docutils literal notranslate"><span class="pre">del_single_title_master()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.del_single_title_write"><code class="docutils literal notranslate"><span class="pre">del_single_title_write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.delete_all_blacklists"><code class="docutils literal notranslate"><span class="pre">delete_all_blacklists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.delete_blacklist"><code class="docutils literal notranslate"><span class="pre">delete_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.dump_radio_blacklist_from_col"><code class="docutils literal notranslate"><span class="pre">dump_radio_blacklist_from_col()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.feature_blacklist_switch_status"><code class="docutils literal notranslate"><span class="pre">feature_blacklist_switch_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.feed_api_radios_blacklists"><code class="docutils literal notranslate"><span class="pre">feed_api_radios_blacklists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.fill_radio_display_col"><code class="docutils literal notranslate"><span class="pre">fill_radio_display_col()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.json_loads_blacklist"><code class="docutils literal notranslate"><span class="pre">json_loads_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.run_blacklist_writer"><code class="docutils literal notranslate"><span class="pre">run_blacklist_writer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.sort_dictionary_by_value"><code class="docutils literal notranslate"><span class="pre">sort_dictionary_by_value()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.start_blacklist_writer_daemon"><code class="docutils literal notranslate"><span class="pre">start_blacklist_writer_daemon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.status_api_blacklist_set"><code class="docutils literal notranslate"><span class="pre">status_api_blacklist_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.status_db_blacklist_get"><code class="docutils literal notranslate"><span class="pre">status_db_blacklist_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.monitor_records.update_radios_blacklists"><code class="docutils literal notranslate"><span class="pre">update_radios_blacklists()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.request_info">eisenradio.eisenutil.request_info module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.active_buttons"><code class="docutils literal notranslate"><span class="pre">active_buttons()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.header_data_read"><code class="docutils literal notranslate"><span class="pre">header_data_read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.header_from_api_read"><code class="docutils literal notranslate"><span class="pre">header_from_api_read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_header_info"><code class="docutils literal notranslate"><span class="pre">request_header_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_icy_br_api"><code class="docutils literal notranslate"><span class="pre">request_icy_br_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_icy_genre_api"><code class="docutils literal notranslate"><span class="pre">request_icy_genre_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_icy_name_api"><code class="docutils literal notranslate"><span class="pre">request_icy_name_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_icy_url_api"><code class="docutils literal notranslate"><span class="pre">request_icy_url_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_icy_view_id_api"><code class="docutils literal notranslate"><span class="pre">request_icy_view_id_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_suffix_api"><code class="docutils literal notranslate"><span class="pre">request_suffix_api()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.request_info.request_time_api"><code class="docutils literal notranslate"><span class="pre">request_time_api()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.routes">eisenradio.eisenutil.routes module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.about"><code class="docutils literal notranslate"><span class="pre">about()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.delete_info"><code class="docutils literal notranslate"><span class="pre">delete_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.edit"><code class="docutils literal notranslate"><span class="pre">edit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.header_info"><code class="docutils literal notranslate"><span class="pre">header_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.listen_info"><code class="docutils literal notranslate"><span class="pre">listen_info()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.post"><code class="docutils literal notranslate"><span class="pre">post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.sound"><code class="docutils literal notranslate"><span class="pre">sound()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.stream_watcher"><code class="docutils literal notranslate"><span class="pre">stream_watcher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools"><code class="docutils literal notranslate"><span class="pre">tools()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_aacp_repair"><code class="docutils literal notranslate"><span class="pre">tools_aacp_repair()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_aacp_repair_log"><code class="docutils literal notranslate"><span class="pre">tools_aacp_repair_log()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_blacklist_overview"><code class="docutils literal notranslate"><span class="pre">tools_blacklist_overview()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_blacklist_skipped"><code class="docutils literal notranslate"><span class="pre">tools_blacklist_skipped()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_delete_all"><code class="docutils literal notranslate"><span class="pre">tools_delete_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_export_blacklists"><code class="docutils literal notranslate"><span class="pre">tools_export_blacklists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_export_ini"><code class="docutils literal notranslate"><span class="pre">tools_export_ini()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_radio_blacklist"><code class="docutils literal notranslate"><span class="pre">tools_radio_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_radio_blacklist_del_from_list"><code class="docutils literal notranslate"><span class="pre">tools_radio_blacklist_del_from_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_radio_blacklist_set"><code class="docutils literal notranslate"><span class="pre">tools_radio_blacklist_set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_radio_html_settings"><code class="docutils literal notranslate"><span class="pre">tools_radio_html_settings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_upload_blacklists"><code class="docutils literal notranslate"><span class="pre">tools_upload_blacklists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.routes.tools_upload_ini"><code class="docutils literal notranslate"><span class="pre">tools_upload_ini()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.stopped_stations">eisenradio.eisenutil.stopped_stations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.stopped_stations.inactive_id_read"><code class="docutils literal notranslate"><span class="pre">inactive_id_read()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil.tools">eisenradio.eisenutil.tools module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.delete_all_radios"><code class="docutils literal notranslate"><span class="pre">delete_all_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.dump_radio_blacklist"><code class="docutils literal notranslate"><span class="pre">dump_radio_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.dump_radio_export_backup"><code class="docutils literal notranslate"><span class="pre">dump_radio_export_backup()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.dump_write_radio_blacklist"><code class="docutils literal notranslate"><span class="pre">dump_write_radio_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.export_radios"><code class="docutils literal notranslate"><span class="pre">export_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.export_radios_dump"><code class="docutils literal notranslate"><span class="pre">export_radios_dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.get_export_path"><code class="docutils literal notranslate"><span class="pre">get_export_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.get_radios"><code class="docutils literal notranslate"><span class="pre">get_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.radio_spare_image"><code class="docutils literal notranslate"><span class="pre">radio_spare_image()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists"><code class="docutils literal notranslate"><span class="pre">upload_blacklists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists_dump"><code class="docutils literal notranslate"><span class="pre">upload_blacklists_dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists_get_radio_names_from_db"><code class="docutils literal notranslate"><span class="pre">upload_blacklists_get_radio_names_from_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists_import"><code class="docutils literal notranslate"><span class="pre">upload_blacklists_import()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists_merge"><code class="docutils literal notranslate"><span class="pre">upload_blacklists_merge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_blacklists_write"><code class="docutils literal notranslate"><span class="pre">upload_blacklists_write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_radios"><code class="docutils literal notranslate"><span class="pre">upload_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_radios_db_get_download_path"><code class="docutils literal notranslate"><span class="pre">upload_radios_db_get_download_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_radios_db_import_ini"><code class="docutils literal notranslate"><span class="pre">upload_radios_db_import_ini()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_radios_read_global"><code class="docutils literal notranslate"><span class="pre">upload_radios_read_global()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.eisenutil.html#eisenradio.eisenutil.tools.upload_radios_read_stations"><code class="docutils literal notranslate"><span class="pre">upload_radios_read_stations()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.eisenutil.html#module-eisenradio.eisenutil">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eisenradio.lib.html">eisenradio.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.eisdb">eisenradio.lib.eisdb module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.db_get_id_from_name"><code class="docutils literal notranslate"><span class="pre">db_get_id_from_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.delete_db"><code class="docutils literal notranslate"><span class="pre">delete_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.delete_radio"><code class="docutils literal notranslate"><span class="pre">delete_radio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.enum_radios"><code class="docutils literal notranslate"><span class="pre">enum_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.get_db_connection"><code class="docutils literal notranslate"><span class="pre">get_db_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.get_db_path"><code class="docutils literal notranslate"><span class="pre">get_db_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.get_db_smaller"><code class="docutils literal notranslate"><span class="pre">get_db_smaller()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.get_download_dir"><code class="docutils literal notranslate"><span class="pre">get_download_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.get_post"><code class="docutils literal notranslate"><span class="pre">get_post()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.install_new_db"><code class="docutils literal notranslate"><span class="pre">install_new_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.render_picture"><code class="docutils literal notranslate"><span class="pre">render_picture()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.eisdb.status_read_status_set"><code class="docutils literal notranslate"><span class="pre">status_read_status_set()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_blacklist">eisenradio.lib.ghetto_blacklist module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_blacklist.run_blacklist_writer"><code class="docutils literal notranslate"><span class="pre">run_blacklist_writer()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_blacklist.skipped_in_session"><code class="docutils literal notranslate"><span class="pre">skipped_in_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_blacklist.start_ghetto_blacklist_writer_daemon"><code class="docutils literal notranslate"><span class="pre">start_ghetto_blacklist_writer_daemon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_blacklist.update_radios_blacklists"><code class="docutils literal notranslate"><span class="pre">update_radios_blacklists()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_container">eisenradio.lib.ghetto_container module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_container.container_copy_settings"><code class="docutils literal notranslate"><span class="pre">container_copy_settings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_container.container_parent_dir"><code class="docutils literal notranslate"><span class="pre">container_parent_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_container.container_setup_use"><code class="docutils literal notranslate"><span class="pre">container_setup_use()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_http_srv">eisenradio.lib.ghetto_http_srv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_http_srv.TerminalRequestHandler"><code class="docutils literal notranslate"><span class="pre">TerminalRequestHandler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_http_srv.TerminalRequestHandler.content_type"><code class="docutils literal notranslate"><span class="pre">TerminalRequestHandler.content_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_http_srv.TerminalRequestHandler.do_GET"><code class="docutils literal notranslate"><span class="pre">TerminalRequestHandler.do_GET()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_http_srv.TerminalRequestHandler.fifo_http_chunk_queue"><code class="docutils literal notranslate"><span class="pre">TerminalRequestHandler.fifo_http_chunk_queue</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_http_srv.TerminalRequestHandler.port"><code class="docutils literal notranslate"><span class="pre">TerminalRequestHandler.port</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_ini">eisenradio.lib.ghetto_ini module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni"><code class="docutils literal notranslate"><span class="pre">GIni</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.config_global"><code class="docutils literal notranslate"><span class="pre">GIni.config_global</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.config_path_write"><code class="docutils literal notranslate"><span class="pre">GIni.config_path_write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.config_stations"><code class="docutils literal notranslate"><span class="pre">GIni.config_stations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.global_blacklist_enable_write"><code class="docutils literal notranslate"><span class="pre">GIni.global_blacklist_enable_write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.global_config_get"><code class="docutils literal notranslate"><span class="pre">GIni.global_config_get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.global_custom_blacklist"><code class="docutils literal notranslate"><span class="pre">GIni.global_custom_blacklist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.global_custom_path"><code class="docutils literal notranslate"><span class="pre">GIni.global_custom_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.global_record_path_write"><code class="docutils literal notranslate"><span class="pre">GIni.global_record_path_write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.radio_base_dir"><code class="docutils literal notranslate"><span class="pre">GIni.radio_base_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.radio_names_dict"><code class="docutils literal notranslate"><span class="pre">GIni.radio_names_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.radio_names_list"><code class="docutils literal notranslate"><span class="pre">GIni.radio_names_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.record_path_test"><code class="docutils literal notranslate"><span class="pre">GIni.record_path_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.settings_dir"><code class="docutils literal notranslate"><span class="pre">GIni.settings_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.settings_path"><code class="docutils literal notranslate"><span class="pre">GIni.settings_path</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_ini.GIni.show_items_ini_file"><code class="docutils literal notranslate"><span class="pre">GIni.show_items_ini_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_menu">eisenradio.lib.ghetto_menu module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.parent_record_path_change"><code class="docutils literal notranslate"><span class="pre">parent_record_path_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.blacklist"><code class="docutils literal notranslate"><span class="pre">blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.blacklist_is_enabled"><code class="docutils literal notranslate"><span class="pre">blacklist_is_enabled()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.blacklist_off"><code class="docutils literal notranslate"><span class="pre">blacklist_off()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.blacklist_on"><code class="docutils literal notranslate"><span class="pre">blacklist_on()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.config_path_change"><code class="docutils literal notranslate"><span class="pre">config_path_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.menu_blacklist"><code class="docutils literal notranslate"><span class="pre">menu_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.menu_find_config"><code class="docutils literal notranslate"><span class="pre">menu_find_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.menu_main"><code class="docutils literal notranslate"><span class="pre">menu_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.menu_path"><code class="docutils literal notranslate"><span class="pre">menu_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#id0"><code class="docutils literal notranslate"><span class="pre">parent_record_path_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.path_change"><code class="docutils literal notranslate"><span class="pre">path_change()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.path_validate_input"><code class="docutils literal notranslate"><span class="pre">path_validate_input()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record"><code class="docutils literal notranslate"><span class="pre">record()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record_create_folder_radio_name"><code class="docutils literal notranslate"><span class="pre">record_create_folder_radio_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record_create_radio_url_dict"><code class="docutils literal notranslate"><span class="pre">record_create_radio_url_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record_read_radios"><code class="docutils literal notranslate"><span class="pre">record_read_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record_validate_input"><code class="docutils literal notranslate"><span class="pre">record_validate_input()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.record_validate_radio_name"><code class="docutils literal notranslate"><span class="pre">record_validate_radio_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.remove_special_chars"><code class="docutils literal notranslate"><span class="pre">remove_special_chars()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.terminal_record_all_radios_get"><code class="docutils literal notranslate"><span class="pre">terminal_record_all_radios_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.terminal_record_blacklist_enabled_get"><code class="docutils literal notranslate"><span class="pre">terminal_record_blacklist_enabled_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.terminal_record_global_custom_path_get"><code class="docutils literal notranslate"><span class="pre">terminal_record_global_custom_path_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.terminal_record_radio_base_dir_get"><code class="docutils literal notranslate"><span class="pre">terminal_record_radio_base_dir_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_menu.terminal_record_settings_dir_get"><code class="docutils literal notranslate"><span class="pre">terminal_record_settings_dir_get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_meta">eisenradio.lib.ghetto_meta module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta"><code class="docutils literal notranslate"><span class="pre">GMeta</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.current_song_dict"><code class="docutils literal notranslate"><span class="pre">GMeta.current_song_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.ghetto_measure"><code class="docutils literal notranslate"><span class="pre">GMeta.ghetto_measure</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_get_display_extract"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_get_display_extract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_get_display_info"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_get_display_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_header_info"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_header_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_icy_info"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_icy_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_request"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.metadata_stream_get"><code class="docutils literal notranslate"><span class="pre">GMeta.metadata_stream_get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_meta.GMeta.remove_special_chars"><code class="docutils literal notranslate"><span class="pre">GMeta.remove_special_chars()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_net">eisenradio.lib.ghetto_net module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet"><code class="docutils literal notranslate"><span class="pre">GNet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.bit_rate_dict"><code class="docutils literal notranslate"><span class="pre">GNet.bit_rate_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.bit_rate_url"><code class="docutils literal notranslate"><span class="pre">GNet.bit_rate_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.content_type_dict"><code class="docutils literal notranslate"><span class="pre">GNet.content_type_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.dict_error"><code class="docutils literal notranslate"><span class="pre">GNet.dict_error</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.is_server_alive"><code class="docutils literal notranslate"><span class="pre">GNet.is_server_alive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.load_url"><code class="docutils literal notranslate"><span class="pre">GNet.load_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_net.GNet.stream_filetype_url"><code class="docutils literal notranslate"><span class="pre">GNet.stream_filetype_url()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.ghetto_recorder">eisenradio.lib.ghetto_recorder module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase"><code class="docutils literal notranslate"><span class="pre">GBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.dict_exit"><code class="docutils literal notranslate"><span class="pre">GBase.dict_exit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.make_directory"><code class="docutils literal notranslate"><span class="pre">GBase.make_directory()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.radio_base_dir"><code class="docutils literal notranslate"><span class="pre">GBase.radio_base_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.remove_special_chars"><code class="docutils literal notranslate"><span class="pre">GBase.remove_special_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.terminal_blacklist_name"><code class="docutils literal notranslate"><span class="pre">GBase.terminal_blacklist_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.terminal_http_server_avail_flag"><code class="docutils literal notranslate"><span class="pre">GBase.terminal_http_server_avail_flag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.terminal_http_server_thread_name"><code class="docutils literal notranslate"><span class="pre">GBase.terminal_http_server_thread_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.terminal_radio_list"><code class="docutils literal notranslate"><span class="pre">GBase.terminal_radio_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.terminal_run"><code class="docutils literal notranslate"><span class="pre">GBase.terminal_run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GBase.this_time"><code class="docutils literal notranslate"><span class="pre">GBase.this_time()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder"><code class="docutils literal notranslate"><span class="pre">GRecorder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_cache_the_file"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_cache_the_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.audio_stream_queue_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.audio_stream_queue_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_ask_bit_rate"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_ask_bit_rate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_await_head"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_await_head()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#id1"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_cache_the_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_calc_chunk_size"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_calc_chunk_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_copy_file"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_copy_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_empty_queue"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_empty_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_head"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_head()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_path_transfer_test"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_path_transfer_test()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_rec"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_rec()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_record_trace"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_record_trace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_remove_file"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_remove_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_request"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_request()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_reset_file_offset"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_reset_file_offset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_tail"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_tail()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_teardown"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_teardown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.g_recorder_write_queue"><code class="docutils literal notranslate"><span class="pre">GRecorder.g_recorder_write_queue()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.http_srv_object_create"><code class="docutils literal notranslate"><span class="pre">GRecorder.http_srv_object_create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.listen_active_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.listen_active_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.metadata_main"><code class="docutils literal notranslate"><span class="pre">GRecorder.metadata_main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.path_record_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.path_record_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.playlist_m3u"><code class="docutils literal notranslate"><span class="pre">GRecorder.playlist_m3u()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.record_acp_fff1_sync_word_header"><code class="docutils literal notranslate"><span class="pre">GRecorder.record_acp_fff1_sync_word_header()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.record_acp_fff1_sync_word_tail"><code class="docutils literal notranslate"><span class="pre">GRecorder.record_acp_fff1_sync_word_tail()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.record_active_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.record_active_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.record_write_first"><code class="docutils literal notranslate"><span class="pre">GRecorder.record_write_first()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.record_write_last"><code class="docutils literal notranslate"><span class="pre">GRecorder.record_write_last()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.recorder_new_title_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.recorder_new_title_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.skipped_in_session_dict"><code class="docutils literal notranslate"><span class="pre">GRecorder.skipped_in_session_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.GRecorder.start_write_command"><code class="docutils literal notranslate"><span class="pre">GRecorder.start_write_command</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.is_radio_online"><code class="docutils literal notranslate"><span class="pre">is_radio_online()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.record"><code class="docutils literal notranslate"><span class="pre">record()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.record_start_radio"><code class="docutils literal notranslate"><span class="pre">record_start_radio()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.resolve_playlist"><code class="docutils literal notranslate"><span class="pre">resolve_playlist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.signal_handler"><code class="docutils literal notranslate"><span class="pre">signal_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_blacklist_enable"><code class="docutils literal notranslate"><span class="pre">terminal_blacklist_enable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_custom_record_path_get"><code class="docutils literal notranslate"><span class="pre">terminal_custom_record_path_get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_feed_record"><code class="docutils literal notranslate"><span class="pre">terminal_feed_record()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_main"><code class="docutils literal notranslate"><span class="pre">terminal_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_main_thread_loop"><code class="docutils literal notranslate"><span class="pre">terminal_main_thread_loop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_populate_new_blacklist"><code class="docutils literal notranslate"><span class="pre">terminal_populate_new_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_remove_offline_radios"><code class="docutils literal notranslate"><span class="pre">terminal_remove_offline_radios()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_test_record_server"><code class="docutils literal notranslate"><span class="pre">terminal_test_record_server()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_update_blacklist"><code class="docutils literal notranslate"><span class="pre">terminal_update_blacklist()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.ghetto_recorder.terminal_write_blacklist"><code class="docutils literal notranslate"><span class="pre">terminal_write_blacklist()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib.platform_helper">eisenradio.lib.platform_helper module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.platform_helper.get_env_docker"><code class="docutils literal notranslate"><span class="pre">get_env_docker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.platform_helper.get_env_snap"><code class="docutils literal notranslate"><span class="pre">get_env_snap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.platform_helper.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="eisenradio.lib.html#eisenradio.lib.platform_helper.open_browser"><code class="docutils literal notranslate"><span class="pre">open_browser()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eisenradio.lib.html#module-eisenradio.lib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-eisenradio.app">
+<span id="eisenradio-app-module"></span><h2>eisenradio.app module<a class="headerlink" href="#module-eisenradio.app" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-eisenradio.cmd">
+<span id="eisenradio-cmd-module"></span><h2>eisenradio.cmd module<a class="headerlink" href="#module-eisenradio.cmd" title="Permalink to this heading"></a></h2>
+<p>cmd module, imports ghetto_recorder and calls ghetto_recorder.terminal_main()
+Module call:</p>
+<blockquote>
+<div><p>Python3 -m eisenradio.cmd</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Command line menu:</dt><dd><p>use menu option: 4 – Set path to config, settings.ini</p>
+</dd>
+</dl>
+</section>
+<section id="module-eisenradio.db">
+<span id="eisenradio-db-module"></span><h2>eisenradio.db module<a class="headerlink" href="#module-eisenradio.db" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.db.convert_ascii">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.db.</span></span><span class="sig-name descname"><span class="pre">convert_ascii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.db.convert_ascii" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.db.empty_db_from_schema">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.db.</span></span><span class="sig-name descname"><span class="pre">empty_db_from_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.db.empty_db_from_schema" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.db.make_db_from_schema">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.db.</span></span><span class="sig-name descname"><span class="pre">make_db_from_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.db.make_db_from_schema" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.db.render_picture">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.db.</span></span><span class="sig-name descname"><span class="pre">render_picture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byte_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">de_enc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.db.render_picture" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-eisenradio.wsgi">
+<span id="eisenradio-wsgi-module"></span><h2>eisenradio.wsgi module<a class="headerlink" href="#module-eisenradio.wsgi" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.wsgi.wsgi_app">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.wsgi.</span></span><span class="sig-name descname"><span class="pre">wsgi_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a_port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.wsgi.wsgi_app" title="Permalink to this definition"></a></dt>
+<dd><p>PROD
+import this def, make multiple instances of flask app on various ports
+tell flask app the port num, so all functions are happy</p>
+</dd></dl>
+
+</section>
+<section id="module-eisenradio">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eisenradio" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.create_app">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.</span></span><span class="sig-name descname"><span class="pre">create_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.create_app" title="Permalink to this definition"></a></dt>
+<dd><p>flask prod application factory
+prod</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eisenradio.create_app_dev">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.</span></span><span class="sig-name descname"><span class="pre">create_app_dev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eisenradio.create_app_dev" title="Permalink to this definition"></a></dt>
+<dd><p>dev</p>
+<p>dev</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="eisenradio.script_path">
+<span class="sig-prename descclassname"><span class="pre">eisenradio.</span></span><span class="sig-name descname"><span class="pre">script_path</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'C:\\Users\\rene_\\PycharmProjects\\eisenradio_dev\\eisenradio'</span></em><a class="headerlink" href="#eisenradio.script_path" title="Permalink to this definition"></a></dt>
+<dd><p>Flask application factory with blueprints</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, René Horn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

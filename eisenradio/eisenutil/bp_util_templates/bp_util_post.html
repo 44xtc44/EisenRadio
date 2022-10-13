@@ -1,11 +1,24 @@
 {% extends 'bp_util_base.html' %}
 
 {% block content %}
-    <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
-    <span class="badge badge-primary">{{ post['created'] }}</span>
-    <p>Go to Radio Web Site:
-        <a href="{{ url_port }}">{{ url_port }}</a>
-        <span>(works if radio is ShoutCast or IceCast)</span>
-    </p>
+<h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
+<span class="badge badge-primary">{{ post['created'] }}</span>
+<p>Go to Radio Web Site:
+    <a href="{{ url_port }}">{{ url_port }}</a>
+    <span>(works if radio is ShoutCast or IceCast)</span>
+</p>
+<hr>
+
+
+<div class="divBookMarkActionButtons">
+   <p class="pEditRadioSettings" onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">
+       Edit Radio {{ post['title'] }} &#128395;
+   </p>
+    <div class="btn-orange"
+         id="divEditRadioSettings"
+         onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">Edit
+    </div>
+
+</div>
 
 {% endblock %}

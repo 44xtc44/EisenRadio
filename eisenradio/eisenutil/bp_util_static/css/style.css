@@ -7,12 +7,52 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
         --background-color: #d9d9d9;
         --hr-color: #eee;
         --border-color: #cccccc;
+        --text-color: #f0f0f0;
+        --minHeight: 50em;
     }
 
+    label {
+        font-family: Roboto, arial, sans-serif;
+        font-size: 1em;
+        font-weight: 500;
+    }
+
+    .form-control {
+        border: .5em coral;
+        background-color: white;
+        resize: none;
+        outline: none;
+        box-shadow: 1.0em 2.0em 1.5em silver;
+	    border-radius: 2em;
+    }
+
+    pre {
+        border: .5em coral;
+        background-color: whiteSmoke;
+        resize: none;
+        outline: none;
+    }
+
+    summary {
+      cursor: pointer;
+    }
+
+    summary > * {
+      display: inline;
+    }
+
+    @keyframes fadeInAnimation {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+
+
     body {
-        background: #d9d9d9;
-        padding: 0px;
-        margin: 0px;
+        background: var(--background-color);
+        padding: 0em;
+        margin: 0em;
+        font-family: roboto, arial, sans-serif;
     }
 
     .wrapper {
@@ -20,23 +60,45 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
     }
 
     hr {
-        border-top: 1px solid var(--hr-color);
+        border-top: .1em solid var(--hr-color);
+    }
+
+    section {
     }
 
     h1 {
-        border: 2px var(--border-color) solid;
-        color: brown;
+        border-radius: 0.5em;
+        border: .06em solid;
+        color: white;
+        background-color: coral;
         text-align: center;
-        padding: 10px;
-        font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
-
+        padding: 0.2em;
+        font-family: Architects Daughter, Gloria Hallelujah, Roboto;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     }
 
     h3 {
         color: brown;
-        padding: 10px;
-        font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
+        padding: 0.1em;
+        font-family: Architects Daughter, Gloria Hallelujah, Roboto;
+        text-align: center;
+        animation-name: fadeInAnimation;
+        animation-duration: 2s;
+    }
 
+    h5 {
+        color: brown;
+        padding: 0.1em;
+        font-family: Roboto;
+    }
+
+    .divHeadLine3 {
+        width:80%;
+    }
+
+    .divFadeIn {
+      animation-name: fadeInAnimation;
+      animation-duration: 2s;
     }
 
     .navbar {
@@ -52,12 +114,12 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
     /* navbar */
     .navbar-toggle {
         float: left !important;
-        margin-left: 15px;
+        margin-left: 1.5em;
         background: var(--background-color);
     }
 
     .navbar-header.navbar-right.pull-right {
-        margin-right: 15px;
+        margin-right: 1.5em;
         background: var(--background-color);
     }
 
@@ -70,4 +132,584 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
         color: brown;
         margin-top: 0.5em;
 
+    }
+
+    .pEditRadioSettings {
+        font-family: Roboto, arial, sans-serif;
+        font-size: 110%;
+        cursor:hand;
+    }
+
+    .divBookMarkBar {
+        width: 100%;
+        text-align: center;
+    }
+
+    .divDivColorWrapper {
+        width: 80%;
+        border-radius: 0.5em;
+        background-color: BlanchedAlmond;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+
+    .divBookMarkLeft270deg {
+        width: 80%;
+        min-height: 6em;
+        border-radius: 0.5em;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        margin-left: 0em;
+        margin-right: 0em;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+
+    .divBookMarkLeft {
+        float: left;
+        width: 20%;
+        min-height: 6em;
+        border-top-left-radius: 0.5em;
+        border-bottom-left-radius: 0.5em;
+        background-color: coral;
+        color: white;
+        /* center content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .divBookMarkRight{
+        float: right;
+        min-height: 6em;
+        border-top-right-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+        width: 80%;
+        background-color: BlanchedAlmond;
+
+    }
+
+    .divBookMarkActionButtons {
+        position: inline-block;
+        background-color: BlanchedAlmond;
+        border-radius: 0.5em;
+        min-height: 6em;
+        text-align: left;
+        /* border: medium dashed green; */
+    }
+
+    .divToolsRadioButtons{
+        position: inline-block;
+        background-color: BlanchedAlmond;
+        /* margin: top bottom left right */
+        margin-left: 0em;
+        width: 80%;
+        border-radius: 0.5em;
+        font-family: Roboto, arial, sans-serif;
+    }
+
+    .divExtendedToolsInfoWrapper {
+        position: inline-block;
+        background-color: BlanchedAlmond;
+        margin-left: 0em;
+        margin-top: 1.5em;
+        width: 80%;
+        border-radius: 0.5em;
+        font-family: Roboto, arial, sans-serif;
+        font-size: 95%;
+        text-align: left;
+    }
+
+    .divExtendedToolsInfo {
+        position: inline-block;
+        margin-left: 0.5em;
+    }
+
+    p.pActionButtons {
+        color: black;
+        font-size: 95%;
+        font-family: Roboto, arial, sans-serif;
+    }
+
+    .infoText {
+        margin-top: 0.2em;
+        margin-left: 0.5em;
+        text-align: left;
+    }
+
+    p.pBookMark {
+        color: black;
+        font-size: 85%;
+    }
+
+    .spanBookMark {
+        font-family: Roboto, arial, sans-serif;
+    }
+
+    .radioAllBlacklistsBtnHeader {
+        font-family: Roboto, arial, sans-serif;
+        font-size: 1.2em;
+    }
+
+    .exImConfigs {
+        font-family: Roboto, arial, sans-serif;
+        font-size: 1.1em;
+        margin: .0em 0.2em .0em 0.2em;
+        color: IndianRed;
+    }
+
+    .blacklist_div {
+        left:0;
+        right:0;
+        text-align: left;font-family: Roboto, arial, sans-serif;
+    }
+
+
+    label {
+        font-family: Roboto, arial, sans-serif;
+    }
+
+    #aacpRepairDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+    #monitorRecordsDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+    #exportDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+    #importDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+    #deleteDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+    #configEisenradioDiv {
+        display: none;
+        min-height: var(--minHeight);
+    }
+
+
+    .toolsSubHeadlines {
+        cursor: pointer;
+    }
+
+    .divToolsSpacer {
+        height: 1em;
+        background-color: var(--background-color);
+    }
+
+    #aacRepairButton {
+        width: 6em;
+        margin-top: 2em;
+    }
+
+    #blackListSetButton {
+        width: 6em;
+    }
+
+    #blackListOverViewButton {
+        width: 6em;
+        margin-top: 1em;
+    }
+
+    #exportUrlButton {
+        width: 6em;
+    }
+
+    #exportBlackListButton {
+        width: 6em;
+    }
+
+    #importUrlButton {
+        width: 6em;
+        margin-top: 2em;
+    }
+
+    #importBlackListButton {
+        width: 6em;
+        margin-top: 2em;
+    }
+
+    #delAllRadiosButton {
+        width: 6em;
+    }
+
+    #scroll_bottom {
+        height: 25em;
+        visibility:hidden;
+    }
+
+    #scroll_top {
+        scroll-margin-top: 6em;
+        visibility:hidden;
+    }
+
+    .divUploadSelectorButtons {
+        padding-bottom: 1em;
+        padding-left: 0em;
+    }
+
+    .uploadSelectorButtons {
+        background-color: #bc5050;
+        color: var(--text-color);
+        font-family: Roboto, arial, sans-serif;
+        font-size: small;
+        font-weight: 300;
+        padding: 0.2em;
+        border-radius: 0.35em;
+        border: 0.15em var(--border-color) solid;
+        border-color: #ccc;
+        cursor: pointer;
+        width: 8em;
+        height: 2.3em;
+        /*center item horizon, vertical*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .uploadSelectorButtons:hover{
+        background-color: #bc5060;
+        border-color: #adadad;
+    }
+
+    .divConfirmDialog {
+        /* js alerts kill selenium tests, use div */
+        background-color: #C8C8C8;
+        border-radius: 0.8em;
+        position: fixed;
+        margin: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 50%;
+        height: 30%;
+        z-index: 10000;
+        display: none;
+        animation-name: fadeInAnimation;
+        animation-duration: 1s;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+
+    .divCenterConfirmationItems {
+        /* center content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .divCenterConfirmationItems button {
+        width: 6em;
+        margin: 1em
+    }
+
+    .divConfirmDialogAliasButton button {
+        width: 6em;
+    }
+
+    .btn-light-blue {
+            background: #51A3B8;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em #387796;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top: 0;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-light-blue:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px #387796;
+            transition: all .2s;
+    }
+
+    .btn-light-brown {
+            background: #8d6e63;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em #6d4c41;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top: 0;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-light-brown:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px #6d4c41;
+            transition: all .2s;
+    }
+
+    .btn-orange {
+            background: orange;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em darkOrange;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top: 0;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-orange:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px darkOrange;
+            transition: all .2s;
+    }
+
+    .btn-green {
+            background: seaGreen;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em darkGreen;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top:0em;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:0 0.5em;
+            min-width: 6em;
+            text-align: center;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-green:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px darkGreen;
+            transition: all .2s;
+    }
+
+    .btn-red {
+            background: red;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em darkRed;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top: 0;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:0 0.5em;
+            min-width: 6em;
+            text-align: center;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-red:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px darkRed;
+            transition: all .2s;
+    }
+
+    .btn-grey {
+            background: silver;
+            font-size: 1em;
+            color: white;
+            border-radius: 0.7em;
+            box-shadow: 0 0.7em 0em grey;
+            display: inline-block;
+            transition: all .2s;
+            padding: 0.75em 1em;
+            top: 0;
+            cursor: pointer;
+            /* margin: top bottom left right */
+            margin:0 0.5em;
+            min-width: 6em;
+            text-align: center;
+            /* margin: top bottom left right */
+            margin:1em 1em 1em 1em;
+    }
+
+    .btn-grey:active {
+            top: 0.3em;
+            box-shadow: 0 0.2em 0px grey;
+            transition: all .2s;
+    }
+
+            /*
+    loader Animation
+        */
+
+    .loaderAnimation {
+        background-image: radial-gradient(circle farthest-corner at center, #3C4B57 0%, #1C262B 100%);
+        position: absolute;
+        top: calc(50% - 32px);
+        left: calc(50% - 32px);
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        perspective: 800px;
+    }
+
+    .inner {
+        position: absolute;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .inner.one {
+        left: 0%;
+        top: 0%;
+        animation: rotate-one 1s linear infinite;
+        border-bottom: 3px solid #EFEFFA;
+    }
+
+    .inner.two {
+        right: 0%;
+        top: 0%;
+        animation: rotate-two 1s linear infinite;
+        border-right: 3px solid #EFEFFA;
+    }
+
+    .inner.three {
+        right: 0%;
+        bottom: 0%;
+        animation: rotate-three 1s linear infinite;
+        border-top: 3px solid #EFEFFA;
+    }
+
+    @keyframes rotate-one {
+        0% {
+          transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+        }
+    }
+
+    @keyframes rotate-two {
+        0% {
+          transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+        }
+    }
+
+    @keyframes rotate-three {
+        0% {
+          transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+        }
+        100% {
+          transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+        }
+    }
+
+            /*
+    DIV for loader Animation
+        */
+
+    .divLoaderAnimationDialog {
+        background-color: darkSlateGray;
+        opacity: 0.8;position: fixed;
+        margin: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 6em;
+        height: 6em;
+        border-radius: 3em;
+        border: .2em var(--border-color) solid;
+        z-index: 100;
+        display: none;
+    }
+
+    .divCenterAnimationLoaderItems {
+        /* center content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #divAacRepairLogInfoText {
+        text-align: center;
+    }
+    #divAacRepairLogInfoText #caller_aacRepairLog_repair{
+        min-width: 10em;
+    }
+
+    .divBarToolsBg {
+        width: 100%;
+        /* center content */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .divToolsBgColor {
+        /*to make the text absolute*/
+        position: relative;
+        width: 100%;
+        border-radius: 0.5em;
+        background-color: PapayaWhip;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+
+
+    }
+
+    .divToolsBodyText {
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        text-align: left;
+        color: black;
+    }
+
+    #div_caller_windowsPathClick {
+        border-radius: .2em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: Salmon;
+        color: white;
+        width: 3em;
+        cursor: pointer;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px inset;
+    }
+
+    #divPythonPoweredImage {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* FIN */
+    div {
+        border: 0.0em solid black;
     }
