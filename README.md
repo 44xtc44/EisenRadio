@@ -1,5 +1,5 @@
 Eisenradio - a Web radio expandable collection
----
+==============================================
  * Organize your web radios; delete and update, backup and restore
  * Freedom: Style your app with pictures, import a poem, song text, or a funny comment to have a good time
  * Cool feature: Create a shuffled playlist within a local audio files folder in seconds
@@ -9,7 +9,7 @@ Eisenradio - a Web radio expandable collection
  * https://pypi.org/project/eisenradio-apk/
 
 Eisenradio - the boring details 
----
+-------------------------------
  * A REST API app on blueprints and application factory of the flask microframework with a SQLite database
  * First Internet Radio App that can run a Spectrum Analyser in a Web Browser (Feb,2022)
  * Eisenradio uses its own API and adjusts the buffer size for a given bit rate
