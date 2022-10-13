@@ -1,0 +1,29 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+<hr>
+<h1>{% block title %} Blacklists {% endblock %}</h1>
+<hr>
+<div class="blacklist_div">
+    <div>
+        Session skip count: {{skip_count}}
+        <hr>
+        {% for radio in radios_dict.values()%}
+        {% if radio in streamer_name_list %}
+        {% set btn_color='btn btn-success btn-sm' %}
+        {% else -%}
+        {% set btn_color='btn btn-warning btn-sm' %}
+        {% endif -%}
+        <span class="radioAllBlacklistsBtnHeader">{{radio}} </span> {{radio_blacklist_count[radio]}}
+        <form action="{{ url_for('eisenutil_bp.tools_radio_blacklist', radio_name=radio) }}">
+            <button type="submit" class="{{btn_color}}">Blacklist</button>
+        </form>
+        <p></p>
+        {% endfor %}
+
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+

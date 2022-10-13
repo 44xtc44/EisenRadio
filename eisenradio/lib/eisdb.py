@@ -1,34 +1,30 @@
 import sqlite3
 import base64
-import shutil
-from os import path, makedirs, environ, remove
+
+from os import path, makedirs, remove
 from pathlib import Path as Pathlib_path
-from flask import flash, current_app
+from flask import flash
 from werkzeug.exceptions import abort
-from eisenradio.db import make_db_from_schema, empty_db_from_schema
+from eisenradio.db import make_db_from_schema
 from eisenradio.api import api
 
 
 def get_db_path():
-
-    try:
-        db = environ['DATABASE']
-        return db
-    except KeyError:
-        db = current_app.config["DATABASE"]
-        return db
+    return api.config['DATABASE']
 
 
 def get_db_connection():
-
-    db = get_db_path()
-    conn = sqlite3.connect(str(db))
+    conn = sqlite3.connect(api.config['DATABASE'])
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def status_read_status_set(set_status, table, column, table_id):
-    # sqlite does not allow dynamic table or column assignment, user handbook
+    """return value of db or set a value in db
+
+    helper function for often used queries
+    can only set values in eisen_intern table
+    """
     col_value = ''
 
     conn = get_db_connection()
@@ -66,34 +62,22 @@ def status_read_status_set(set_status, table, column, table_id):
 
 
 def get_download_dir():
-    dir_path = ''
+    """return download dir, return None if db is empty"""
     conn = get_db_connection()
-
-    records = conn.execute('select id from posts').fetchall()
-    if not records:
-        print(f' No Radio in Database! Create a radio and set Save path in navigation bar')
-        flash('No Radio in Database! Create a radio and set Save path in navigation bar', 'warning')
-        return False
-    for row_name_id in records:
-        if row_name_id[0]:
-            """take first item"""
-            dir_path = conn.execute('SELECT download_path FROM posts WHERE id = ? ;', [str(row_name_id[0])]).fetchone()
-            conn.close()
-            break
-        if not row_name_id[0]:
-            dir_path = False
-            break
-
-    if dir_path:
-        return dir_path[0]
-    if not dir_path:
-        print(f' No Radio in Database! Create a radio and set Save path in navigation bar')
-        flash('No Radio in Database! Create a radio and set Save path in navigation bar', 'warning')
-    return False
+    column = conn.execute('SELECT download_path FROM posts').fetchall()
+    conn.close()
+    if column:
+        if column[0]:
+            for row in column:
+                return row[0]
+    message = ' No Radio in Database! Create a radio and set Save path in navigation bar'
+    print(message)
+    flash(message, 'warning')
+    return
 
 
 def get_db_smaller():
-    db = get_db_path()
+    db = api.config['DATABASE']
     conn = sqlite3.connect(db, isolation_level=None)
     conn.execute("VACUUM")
     conn.close()
@@ -119,68 +103,28 @@ def get_post(post_id):
 
 
 def install_new_db(db_path):
-
-    schema_db = ''
-
-    is_snap_device = 'SNAP' in environ
-    if not is_snap_device:
-        # get root of app, rip off one subdir from script dir .go up
-        schema_dir = path.dirname(path.dirname(__file__))
-        schema_db = path.join(schema_dir, 'database.db')
-    if is_snap_device:
-        schema_dir = environ["SNAP_USER_COMMON"]
-        schema_db = path.join(schema_dir, 'pre_configured.db')
-
-    db_env = path.abspath(environ['DATABASE'])
-    db_flask = path.abspath(api.config.get("DATABASE"))
-
-    if str(db_env) != str(db_flask):
-        print(f' -ValueError->{db_env}<-ValueError- environ')
-        print(f' -ValueError->{db_flask}<-ValueError- api')
-        raise ValueError("\nDatabase path do not match in os env and flask env!\nMost likely no clean up in Test; "
-                         "RESTART!\nrh")
-
-    """ if not path exists """
+    """make db from schema"""
     if not path.exists(db_path):
         try:
             makedirs(path.dirname(db_path))
         except FileExistsError:
             pass
 
-    this_db = Pathlib_path(db_path)
-    testing = environ["TESTING"]
-    if testing == 'False':
-        if not this_db.is_file():
-            make_db_from_schema()
+    if not Pathlib_path(db_path).is_file():
+        make_db_from_schema(Pathlib_path(db_path))
 
-    if testing == 'True':
-        if this_db.is_file():
-            remove(this_db)
 
-        empty_db = environ["EMPTY_DB"]
-        print(f' environ["EMPTY_DB"] for Test ->{environ["EMPTY_DB"]}<- in eisdb.py')
-
-        if empty_db == 'True':
-            empty_db_from_schema()
-        if empty_db == 'False':
-            make_db_from_schema()
-        shutil.move(str(schema_db), db_path)
-
-    if not this_db.is_file():
-        shutil.move(str(schema_db), db_path)
+def delete_db(db_path):
+    if Pathlib_path(db_path).is_file():
+        remove(Pathlib_path(db_path))
 
 
 def delete_radio(radio_id):
     conn = get_db_connection()
-    try:
-        conn.execute('DELETE FROM posts WHERE id = ?', (str(radio_id),))
-        conn.commit()
-        conn.close()
-        get_db_smaller()
-    except KeyError:
-        conn.close()
-        return False
+    conn.execute('DELETE FROM posts WHERE id = ?', (str(radio_id),))
+    conn.commit()
     conn.close()
+    get_db_smaller()
     return True
 
 

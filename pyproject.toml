@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools >= 42.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eisenradio"
+version = "2.0"
+description = "Play radio. Style your App."
+keywords = ['audio', 'aac repair', 'aacp repair',]
+license = {text = "MIT License"}
+readme = "README.md"
+requires-python = ">=3.6"
+dynamic = ['authors',]
+
+# [tool.setuptools.packages.find] still beta, need [options] 'packages = find:' in setup.cfg
+# where = ["eisenradio"]
+
+classifiers = [
+    "Framework :: Flask",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: OS Independent",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Android",
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Sound/Audio :: Capture/Recording",
+]
+dependencies = [
+    "Flask~=2.0.2",
+    "Werkzeug~=2.0.2",
+    "certifi~=2021.10.8",
+    "click~=8.0.3",
+    "configparser~=5.0.2",
+    'pytest~=6.2.5',
+    "python-dotenv~=0.19.2",
+    "requests~=2.25.1",
+    "setuptools~=57.0.0",
+    "waitress~=2.0.0",
+]
+
+[project.scripts]
+eisenradio-cmd = "eisenradio.cmd:main"
+
+[project.gui-scripts]
+eisenradio-gui = "eisenradio.gui:main"
+
+[tool.pytest.ini_options]
+addopts = "--cov=eisenradio"
+testpaths = "eisenradio"
+
+[tool.mypy]
+mypy_path = "eisenradio"
+check_untyped_defs = true
+disallow_any_generics = true
+ignore_missing_imports = true
+no_implicit_optional = true
+show_error_codes = true
+strict_equality = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+no_implicit_reexport = true

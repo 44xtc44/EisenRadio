@@ -1,12 +1,9 @@
 import base64
 import os
 import sqlite3
-from pathlib import Path as Pathlib_path
-import click
-from flask import current_app, g
-from flask.cli import with_appcontext
 
 static_images = os.path.dirname(os.path.abspath(__file__)) + "/static/images/styles/small/"
+# static_images = os.path.dirname(os.path.abspath(__file__)) + "/static/images/styles/small/"
 save_parent_folder = "/storage/emulated/0/Music/EisenRadio"
 script_path = os.path.dirname(__file__)
 
@@ -27,63 +24,11 @@ def render_picture(byte_data, de_enc):
     return render_pic
 
 
-def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(
-            current_app.config['DATABASE'],
-            detect_types=sqlite3.PARSE_DECLTYPES
-        )
-        g.db.row_factory = sqlite3.Row
-
-    return g.db
-
-
-def close_db(e=None):
-    db = g.pop('db', None)
-
-    if db is not None:
-        db.close()
-
-
-def init_db():
-    db = get_db()
-
-    with current_app.open_resource((os.path.join(script_path, 'schema.sql'))) as file_schema:
-        db.executescript(file_schema.read().decode('utf8'))
-    make_db_from_schema()
-
-
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
-
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
-
-
-def make_db_from_schema():
+def make_db_from_schema(db_path):
     # # # # custom filled db # # #
-    connection = ''
-    is_snap_device = 'SNAP' in os.environ
-    is_android_device = 'ANDROID_STORAGE' in os.environ
 
-    if not is_snap_device:
-        connection = sqlite3.connect((os.path.join(script_path, 'database.db')))
-    if is_android_device:
-        return
-    if is_snap_device:
-        # not overwrite db from old version, where an existing 'database.db' was copied
-        snap_db = Pathlib_path(os.path.join(os.environ["SNAP_USER_COMMON"], 'pre_configured.db'))
-        if snap_db.is_file():
-            return
-        if not snap_db.is_file():
-            connection = sqlite3.connect(str(snap_db))
-
+    # connection = sqlite3.connect((os.path.join(script_path, 'database.db')))
+    connection = sqlite3.connect(str(db_path))
     with open((os.path.join(script_path, 'schema.sql'))) as f:
         connection.executescript(f.read())
 
@@ -96,15 +41,24 @@ def make_db_from_schema():
         ('classic',
          'http://37.251.146.169:8000/streamHD',
          save_parent_folder,
-         '',
+         'recontextualize next-generation vortals, engineer plug-and-play experiences, deploy dynamic action-items, '
+         'synthesize transparent relationships, transition next-generation mindshare, morph dynamic paradigms, '
+         'orchestrate end-to-end initiatives, incubate frictionless content, revolutionize efficient e-services, '
+         'redefine impactful users, engage leading-edge eyeballs, envisioneer 24/365 deliverables, incentivize viral '
+         'infomediaries, whiteboard clicks-and-mortar experiences, generate B2C e-commerce, envisioneer extensible '
+         'convergence, morph 24/7 experiences, utilize customized e-services, strategize customized systems, '
+         'scale proactive markets, exploit bleeding-edge partnerships, repurpose integrated infrastructures, '
+         'seize cutting-edge relationships, brand enterprise e-services, morph value-added partnerships, '
+         'recontextualize customized communities, enable magnetic web services, maximize cutting-edge relationships,'
+         'integrate front-end synergies, embrace one-to-one supply-chains, leverage proactive functionalities',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-brown_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('goa_psi',
-         'http://amoris.sknt.ru:8004/stream',
+        ('goa_psy',
+         'https://amoris.sknt.ru/goa.mp3',
          save_parent_folder,
          '',
          "image/png",
@@ -114,7 +68,7 @@ def make_db_from_schema():
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
         ('time_machine',
-         'http://98.211.68.9:8765/listen',
+         'http://98.211.68.9:8765',
          save_parent_folder,
          'usa - Classic Old Time Radio, Sci Fi, Comedy, Drama',
          "image/png",
@@ -143,12 +97,22 @@ def make_db_from_schema():
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('relax',
-         'https://listen.openstream.co/6781/audio',
+        ('YeahMon',
+         'http://c3.radioboss.fm:8095/autodj',
          save_parent_folder,
          '',
          "image/jpeg",
          convert_ascii(static_images + "mixer-construction-site.jpg"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('playUrban',
+         'http://live.playradio.org:9090/UrbanHD',
+         save_parent_folder,
+         '',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-red_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
@@ -158,7 +122,7 @@ def make_db_from_schema():
          save_parent_folder,
          '',
          "image/png",
-         convert_ascii(static_images + "radio3d-style-white-red_120x200.png"))
+         convert_ascii(static_images + "radio3d-style-white-violet_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
@@ -173,22 +137,69 @@ def make_db_from_schema():
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('Boradio',
-         'http://www.boradio.nl:8000/aacp',
+        ('zenStyle',
+         'https://radio4.cdm-radio.com:18004/stream-mp3-Zen',
          save_parent_folder,
-         'aacp file format, vlc can read it',
+         'recontextualize next-generation vortals, engineer plug-and-play experiences, deploy dynamic action-items, '
+         'synthesize transparent relationships, transition next-generation mindshare, morph dynamic paradigms, '
+         'orchestrate end-to-end initiatives, incubate frictionless content, revolutionize efficient e-services, '
+         'redefine impactful users, engage leading-edge eyeballs, envisioneer 24/365 deliverables, incentivize viral '
+         'infomediaries, whiteboard clicks-and-mortar experiences, generate B2C e-commerce, envisioneer extensible '
+         'convergence, morph 24/7 experiences, utilize customized e-services, strategize customized systems, '
+         'scale proactive markets, exploit bleeding-edge partnerships, repurpose integrated infrastructures, '
+         'seize cutting-edge relationships, brand enterprise e-services, morph value-added partnerships, '
+         'recontextualize customized communities, enable magnetic web services, maximize cutting-edge relationships,'
+         'integrate front-end synergies, embrace one-to-one supply-chains, leverage proactive functionalities',
          "image/png",
-         convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
+         convert_ascii(static_images + "radio3d-style-white-white_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('B2',
-         'https://radiob2-national.cast.addradio.de/radiob2/national/mp3/high/stream.mp3?ar-distributor=ffa0',
+        ('Paloma',
+         'https://pool.radiopaloma.de/RADIOPALOMA.mp3',
          save_parent_folder,
-         'german (deutsch) only',
+         'Berlin /Germany',
          "image/png",
-         convert_ascii(static_images + "radio3d-style-white-violet_120x200.png"))
+         convert_ascii(static_images + "radio3d-style-white-brown_120x200.png"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('Bayern1',
+         'https://streams.br.de/bayern1obb_2.m3u',
+         save_parent_folder,
+         '*m3u playlist server, redirect to first server in the list \n'
+         'Bavaria / Germany \n',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-black_120x200.png"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('Reggae',
+         'http://hd.lagrosseradio.info:8000/lagrosseradio-reggae-192.mp3',
+         save_parent_folder,
+         'Paris / France \n\n'
+         'recontextualize next-generation vortals  \n'
+         'engineer plug-and-play experiences \n'
+         'deploy dynamic action-items \n'
+         'synthesize transparent relationships \n'
+         'transition next-generation mindshare \n'
+         'morph dynamic paradigms \n'
+         'orchestrate end-to-end initiatives \n'
+         'incubate frictionless content \n'
+         'revolutionize efficient e-services \n'
+         'redefine impactful users \n'
+         'engage leading-edge eyeballs \n'
+         'envisioneer 24/365 deliverables \n'
+         'incentivize viral infomediaries \n'
+         'generate B2C e-commerce \n'
+         'envisioneer extensible convergence \n'
+         'morph 24/7 experiences \n'
+         'utilize customized e-services \n',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
         )
     connection.commit()
     connection.close()

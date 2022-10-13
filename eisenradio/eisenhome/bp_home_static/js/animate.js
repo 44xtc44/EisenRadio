@@ -1,5 +1,44 @@
-const hueArray = [0,30,60,120,150,180,210,240,270,300,330];
-const floatingMultiply = [0.5,2,4,8]
+/* *
+ * Animate spectrum analyzer on a canvas
+ * canvas works like svg image, you can draw layer one background, layer two trees and so on,
+ *   then call animation frame to show the computed image on screen
+ *     function one draws background, function two draws trees ..., the order of calling the functions counts
+ * themes, numbers:
+ * 1 draw       - the original analyzer
+ * 2 rotated    - circle colored, with radio names, snapshot of canvas used as background to save cpu
+ * 3 bars       - old school bar animation with flow field background
+ * 4 flow field - analyzer circles around a midpoint,
+ * 5 star field - analyzer flies over a star field, fireFox broke animation as usual, so no blur,
+ *                init of this guy is rather big in the calling function visualiseAudio() since we have multi layers and randomized vars
+ *
+ * paletteArray                            - create gradient stops for 2 rotated background, each row is a palette
+ * countUpDownInclusiveInt()               - get random integer between two int, inclusive the boundaries
+ * pageCoverAnimation()                    - nowadays one must get approval to play audio in browser, click animation
+ * class Particle                          - used for pageCoverAnimation(), moving circles that connect if coming closer
+ * initParticles(canvas, context, fill, stroke, numParticles, maxSize, minSize)
+ * animateParticle(ctx, animation)         -
+ * class flowFieldEffect - background effect of rotating bars
+ * floatingStageMove(x,y,radius,color,ctx) - 4 flow field;
+ * initFloatingStage() - 4 flow field
+ * drawStage()                             - 4 flow field, draw a circle and animate it with color fade in/out
+ * rotateVisualiserGradient()              - 2 rotated, first run frame, create a snapshot of the outcome to use it as
+ *                                            background for the animation
+ * rotateVisualiser()                      - 2 rotated, spectrum analyzer in a circle, star like
+ * starFieldCirclesMove(x,y,radius,color,ctx) - 5 star field; circling orange stars left and right, each function call one layer
+ * initStarFieldCircles(x,y)                  - 5 star field;
+ * starFieldAnalyser()                        - 5 star field; draws the analyser layer
+ * starField ()                               - 5 star field; draws star field layer
+ *
+ * animatedBars()     - 3 bars, has initFlowFieldEnv() as background layer
+ * initFlowFieldEnv() - instance of flowFieldEffect draws random rotating bars, used for 3 bars and 4 flow field as background
+ * initStarFieldEnv() - speed and star size for 5 star field
+ * draw()             - 1 draw; standard analyser
+ * visualiseAudio()   - erase (slice) global lists, init and call analyser theme functions
+ * selectSpectrumAnalyser()            - html called; calls visualiseAudio()
+ * selectSpectrumAnalyserSelect(value) - html called; bottom console select, calls selectSpectrumAnalyser()
+ * stopVisualise(e)                    - stops animation frame, stops running analyser functions
+ */
+const floatingMultiply = [1,2,4]
 const paletteArray = [
                         ['#dc8665','#138086','#534666','#cd7672','#eeb462'],
                         ['#e8a49c','#3c4cad','#240e8b','#f04393','#f9c449'],
@@ -24,13 +63,14 @@ const paletteArray = [
                         ['#e0f0ea','#95adbe','#574f7d','#503a65','#3c2a4d'],
                         ['#ffa822','#134e6f','#ff6150','#1ac0c6','#dee0e6']
 ];
+/* colors which can be assigned by name, so somebody made already a selection of good colors */
 const STAR_NUM = 88;
-const STAR_SPEED = 0.01;
+const STAR_SPEED = 0.005;
 
 var counter = 0;
-var firstRun = true;
-var currentRadio;
-var snapShot, snapShot2, clone_snapShot;
+var firstRun = true;   // for animations to make snapshot or set other vars, global reset in stopVisualise()
+var archivedRadioName = currentRadioName.innerText;
+var snapShotGradient;
 var particlesColorSwitch = false;
 var canvasMasterGlobalAlpha = 1;
 var hueColor;
@@ -49,15 +89,55 @@ var animatedFunctionInterval = 1000/60;
 var animatedFunctionTimer = 0;
 var animatedFunctionLastTime = 0;
 var direction = 1;
-var requestIdAnimationFrame = undefined;
-var requestIdFieldAnimation = undefined;
+var requestIdXflowFieldAnimation;    // flowFieldEffect
+var requestId1drawAnimationFrame;
+var requestId2rotateVisualiserAnimationFrame;
+var requestId3animatedBarsAnimationFrame;
+var requestId4floatingStageAnimationFrame;
+var requestId5starFieldAnimationFrame;
+var requestId5starFieldAnalyserAnimationFrame;
+var inflateAnim;
 var floatingMultiplyNum;
-
+var analyserRandomGlobal;
+var activeListenId  = "noId";      // animation, only call functions if listen is selected
+var activeRecordId = "noRecId";    // compare with activeListenId id, no match no call; animation kills itself on second call and continues
 
 let ctx;
 let flowFieldAnimation;
-document.getElementById('currentRadioName').innerText = 'Eisenradio';
 
+function countUpDownInclusiveInt(min, max) {
+
+    if (animatedFunctionTimer >= max) {direction = 0;}
+    if (animatedFunctionTimer <= min ) {direction = 1;}
+    if (direction == 1) {animatedFunctionTimer++;}
+    if (direction == 0) {animatedFunctionTimer--;}
+    return animatedFunctionTimer;
+}
+;
+
+let pageCoverAniFrame
+function pageCoverAnimation() {
+    // remove for trails
+    let cover = pageCoverCanvas
+    cover.width = window.innerWidth;
+    cover.height = window.innerHeight;
+
+    pageCoverAniFrame = requestAnimationFrame(pageCoverAnimation);
+    animateParticle(pageCoverCanvasCtx, 'lineAnimation');
+    if ((counter % 240) == 0) {
+        if (particlesColorSwitch) {
+            // initParticles (canvas, context, fill, stroke, numParticles, maxSize, minSize)
+            initParticles(pageCoverCanvas, pageCoverCanvasCtx, 'SandyBrown', 'gold', 16, 16, 12);
+            particlesColorSwitch = false;
+        } else {
+            initParticles(pageCoverCanvas, pageCoverCanvasCtx, 'coral', 'gold', 16, 16, 12);
+            particlesColorSwitch = true;
+        }
+        counter = 0;
+    }
+    counter++;
+}
+;
 class Particle {
 
     constructor (canvas, ctx, fill, stroke, maxSize, minSize) {
@@ -97,7 +177,6 @@ function initParticles (canvas, context, fill, stroke, numParticles, maxSize, mi
     }
 }
 ;
-
 function animateParticle(ctx, animation) {
     for(let i = 0; i < particlesArray.length; i++) {
 
@@ -108,7 +187,7 @@ function animateParticle(ctx, animation) {
                 const dx = particlesArray[i].x - particlesArray[j].x;
                 const dy = particlesArray[i].y - particlesArray[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);   // coord. particle x and particle y; hypotenuse; a²+b²=c²
-                if (distance < 100) {
+                if (distance < 150) {
                     ctx.beginPath();
                     ctx.strokeStyle = particlesArray[i].color;
                     ctx.lineWidth = particlesArray[i].size/10;
@@ -126,7 +205,6 @@ function animateParticle(ctx, animation) {
     }
 }
 ;
-
 class flowFieldEffect {
     // private fields   version 1.1.4 crashes on Snap manjaro 'Uncaught SyntaxError: private fields are not currently supported
     //                  the app is dead   firefox 86  snap firefox 96 not better, since default 86 version is started
@@ -167,7 +245,10 @@ class flowFieldEffect {
         this.ctx.lineTo(x + Math.cos(angle) * 30, y + Math.sin(angle) * 30);
         this.ctx.stroke();
     }
-    animate(timeStamp){     // requestAnimationFrame() feeds timeStamp, is an instance so bind is used to loop it
+    /*  requestAnimationFrame() feeds timeStamp, requestIdXflowFieldAnimation has the frame count
+    is an instance so bind is used to loop it
+    */
+    animate(timeStamp){
         const deltaTime = timeStamp - this.lastTime;
         this.lastTime = timeStamp;
         if(this.timer > this.interval){
@@ -178,6 +259,10 @@ class flowFieldEffect {
             if (!darkBody) {
                 this.ctx.fillStyle = 'rgb(0,0,0,1)'; //"#565454";
                 this.ctx.fillRect(0,0,this.width,this.height);
+            } else {
+                this.ctx.fillStyle = 'rgba(26,26,26,0.85)';
+                this.ctx.fillRect(0,0,this.width,this.height);
+
             }
             this.radius += this.radiusVelocity;
 
@@ -194,7 +279,7 @@ class flowFieldEffect {
             this.timer += deltaTime;
         }
 
-        requestIdFieldAnimation = requestAnimationFrame(this.animate.bind(this));
+        requestIdXflowFieldAnimation = requestAnimationFrame(this.animate.bind(this));
     }
 }
 function floatingStageMove(x,y,radius,color,ctx) {
@@ -253,6 +338,8 @@ function drawStage(){
 function floatingStage() {
    // ctx.arc(x, y, radius, startAngle, endAngle [, counterclockwise]);
 
+
+
     analyserNode.fftSize = 128;
     const bufferLength = analyserNode.frequencyBinCount;
     const barWidth = 5;
@@ -290,30 +377,9 @@ function floatingStage() {
         canvasMasterCtx.restore();
     }
     countUpDownInclusiveInt(0, 128);
-    requestIdAnimationFrame = window.requestAnimationFrame(floatingStage);
+
+    requestId4floatingStageAnimationFrame = window.requestAnimationFrame(floatingStage);
 };
-
-function pageCoverAnimation() {
-    // remove for trails
-    let cover = pageCoverCanvas
-    cover.width = window.innerWidth;
-    cover.height = window.innerHeight;
-
-    requestAnimationFrame(pageCoverAnimation);
-    animateParticle(pageCoverCanvasCtx, 'lineAnimation');
-    if ((counter % 60) == 0) {
-        if (particlesColorSwitch) {
-            initParticles(pageCoverCanvas, pageCoverCanvasCtx, 'SandyBrown', 'gold', 20, 20, 1);
-            particlesColorSwitch = false;
-        } else {
-            initParticles(pageCoverCanvas, pageCoverCanvasCtx, 'coral', 'gold', 10, 20, 1);
-            particlesColorSwitch = true;
-        }
-        counter = 0;
-    }
-    counter++;
-}
-;
 
 function rotateVisualiserGradient(){
     const bufferLength = analyserNode.frequencyBinCount;
@@ -342,34 +408,14 @@ function rotateVisualiserGradient(){
         const hue = i * 32;
         canvasMasterCtx.fillStyle = 'hsl(' + hue + ',100%,50%)';
         canvasMasterCtx.font = '18px Finger Paint';
-        canvasMasterCtx.fillText(currentRadio, 60, 50);
+        
+        canvasMasterCtx.fillText(currentRadioName.innerText, 60, 50);
         canvasMasterCtx.restore();
     }
     canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);   // write on Gradient layer
-    snapShot = canvasMasterCtx.getImageData(0, 0, canvasMaster.width, canvasMaster.height);
+    snapShotGradient = canvasMasterCtx.getImageData(0, 0, canvasMaster.width, canvasMaster.height);
 }
 ;
-
-function rotateVisualiserFillText(){
-    const bufferLength = analyserNode.frequencyBinCount;
-      // write name
-    canvasMasterCtx.clearRect(0, 0, canvasMaster.width, canvasMaster.height);
-    canvasMasterCtx.fillStyle = 'rgb(0,0,0,0.01)';  // see through for radio name save translate can write on
-    for (let i = 0; i < bufferLength; i++) {
-        canvasMasterCtx.save();
-        canvasMasterCtx.translate(canvasMaster.width / 2, canvasMaster.height / 2);
-        canvasMasterCtx.rotate(i * Math.PI * 8 / bufferLength);
-        const hue = i * 32;
-        canvasMasterCtx.fillStyle = 'hsl(' + hue + ',100%,50%)';
-        canvasMasterCtx.font = '18px Finger Paint';
-        canvasMasterCtx.fillText(currentRadio, 60, 50);
-        canvasMasterCtx.restore();
-    }
-    canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);   // write on Gradient layer
-    snapShot2 = canvasMasterCtx.getImageData(0, 0, canvasMaster.width, canvasMaster.height);
-}
-;
-
 function rotateVisualiser() {
 
     analyserNode.fftSize = 128;
@@ -388,8 +434,16 @@ function rotateVisualiser() {
         // rotateVisualiserFillText();
         firstRun = false;
     }
+    // modulo is frame count, browser paints 60 times per second
+    if ((counter % 90) == 0) {
+        if (!(archivedRadioName == currentRadioName.innerText)){
+            rotateVisualiserGradient();
+            archivedRadioName = currentRadioName.innerText;
+        }
+    }
+    counter++;
     // normal run
-    canvasMasterCtx.putImageData(snapShot, 0, 0);
+    canvasMasterCtx.putImageData(snapShotGradient, 0, 0);
     canvasMasterCtx.fill();
     canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);
 
@@ -407,7 +461,7 @@ function rotateVisualiser() {
         x += barWidth;
         canvasMasterCtx.restore();
     }
-    requestIdAnimationFrame = window.requestAnimationFrame(rotateVisualiser);
+    requestId2rotateVisualiserAnimationFrame = window.requestAnimationFrame(rotateVisualiser);
 };
 
 function starFieldCirclesMove(x,y,radius,color,ctx) {
@@ -432,11 +486,11 @@ function starFieldCirclesMove(x,y,radius,color,ctx) {
     }
     this.draw = () => {
         // color overwritten
-        this.ctx.lineWidth = 0.5;
+        this.ctx.lineWidth = 3;
         this.ctx.beginPath();
         this.ctx.arc(this.x,this.y,this.radius,0,Math.PI * 2);
-        this.ctx.fillStyle = 'rgb(219, 111, 52)';
-        this.ctx.strokeStyle = 'red';
+        this.ctx.fillStyle = 'coral';
+        this.ctx.strokeStyle = 'OrangeRed';
         this.ctx.stroke();
         this.ctx.fill();
         this.ctx.closePath;
@@ -452,7 +506,38 @@ function initStarFieldCircles(x,y) {
 }
 ;
 
+function starFieldAnalyser(){
+    analyserNode.fftSize = 128;
+    const bufferLength = analyserNode.frequencyBinCount;
+    const barWidth = 4;
+    const dataArray = new Uint8Array(bufferLength);
+    x = 0;
+    analyserNode.getByteFrequencyData(dataArray);
+    // reset shadow from star layer
+    // canvasMasterCtx.shadowColor = '';
+    // canvasMasterCtx.shadowBlur = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i] * 0.31;
+        canvasMasterCtx.save();
+        canvasMasterCtx.translate(canvasMaster.width / 2, canvasMaster.height / 2);
+        canvasMasterCtx.rotate(i * Math.PI * 8 / bufferLength);
+        const hue = i * 15;
+        canvasMasterCtx.fillStyle = 'hsl(' + hue + ',100%,50%)';
+        canvasMasterCtx.globalCompositeOperation = 'source-over';  // default, but to remember
+        canvasMasterCtx.fillRect(0, 0, barWidth, barHeight);
+        x += barWidth;
+        canvasMasterCtx.restore();
+    }
+    requestId5starFieldAnalyserAnimationFrame = window.requestAnimationFrame(starFieldAnalyser);
+}
+;
+
 function starField () {
+
+    /* firefox freezes if one shadow blur is on */
+    // canvasMasterCtx.shadowColor = 'coral';
+    // canvasMasterCtx.shadowBlur = 3;
 
     analyserNode.fftSize = 128;
     const bufferLength = analyserNode.frequencyBinCount;
@@ -468,9 +553,8 @@ function starField () {
     canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);
     // stars
     canvasMasterCtx.fillStyle = 'white';
-    canvasMasterCtx.strokeStyle = 'gold';
-    canvasMasterCtx.lineWidth = 0.5;
-    // let startTime = Date.now();
+    canvasMasterCtx.strokeStyle = 'Yellow';
+    canvasMasterCtx.lineWidth = 1;
 
     for (let i = 0; i < STAR_NUM; i++) {
         let xPosition = stars[i].x
@@ -502,26 +586,14 @@ function starField () {
         stars[i].x = xPosition;
         stars[i].y = yPosition;
     }
-    // analyser
-    for (let i = 0; i < bufferLength; i++) {
-        barHeight = dataArray[i] * 0.31;
-        canvasMasterCtx.save();
-        canvasMasterCtx.translate(canvasMaster.width / 2, canvasMaster.height / 2);
-        canvasMasterCtx.rotate(i * Math.PI * 8 / bufferLength);
-        const hue = i * 15;
-        canvasMasterCtx.fillStyle = 'hsl(' + hue + ',100%,50%)';
-        canvasMasterCtx.globalCompositeOperation = 'source-over';  // default, but to remember
-        canvasMasterCtx.fillRect(0, 0, barWidth, barHeight);
-        x += barWidth;
-        canvasMasterCtx.restore();
-    }
-    // let endTime = Date.now() - startTime;
+
     $.each(starFieldParticles, function (idx, val) {
         let particle = val;
         particle.update();
         particle.draw();
     });
-    requestIdAnimationFrame = window.requestAnimationFrame(starField);
+
+    requestId5starFieldAnimationFrame = window.requestAnimationFrame(starField);
     counter++;
 }
 ;
@@ -561,8 +633,33 @@ function animatedBars() {
     }
 
     counter++;
-    requestIdAnimationFrame = window.requestAnimationFrame(animatedBars);
+    requestId3animatedBarsAnimationFrame = window.requestAnimationFrame(animatedBars);
 };
+
+function initFlowFieldEnv(){
+
+    fieldAnimationRandom = Math.random() * (0.02 - 0.005) + 0.005;    // floor whole num, Math.floor(Math.random() * (max - min + 1)) + min;
+    fieldCellRandom = getRandomIntInclusive(10,14);
+    flowField = new flowFieldEffect(canvasMasterCtx,canvasMaster.width, canvasMaster.height, null);
+    flowField.animate(0);
+}
+;
+
+function initStarFieldEnv(){
+
+    for (let i = 0; i < STAR_NUM; i++) {
+        let speedMultiplier = Math.random() * 0.75 + 0.5;
+        let starSize = Math.random() * 0.04  //0.026;
+        stars[i] = {
+            r: Math.random() * starSize * canvasMaster.width / 2,
+            x: Math.floor(Math.random() * canvasMaster.width),
+            y: Math.floor(Math.random() * canvasMaster.height),
+            xVelocity: xVelocity * speedMultiplier,
+            yVelocity: yVelocity * speedMultiplier
+        }
+    }
+}
+;
 
 function draw() {
 
@@ -576,8 +673,12 @@ function draw() {
     canvasMasterCtx.lineWidth = 1.0;
     let darkBody = getBodyColor();
     if (darkBody) {
+        canvasMasterCtx.fillStyle = 'rgba(26,26,26,0.85)';
+        canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);
         canvasMasterCtx.strokeStyle = 'rgb(219, 111, 52)';
     } else {
+        canvasMasterCtx.fillStyle = 'rgba(204,204,204,0.95)';
+        canvasMasterCtx.fillRect(0, 0, canvasMaster.width, canvasMaster.height);
         canvasMasterCtx.strokeStyle = 'red';
     }
     canvasMasterCtx.beginPath();
@@ -598,50 +699,12 @@ function draw() {
     }
     canvasMasterCtx.stroke();
 
-    requestIdAnimationFrame = window.requestAnimationFrame(draw);
+    requestId1drawAnimationFrame = window.requestAnimationFrame(draw);
 };
 
-function initFlowFieldEnv(){
-
-    fieldAnimationRandom = Math.random() * (0.02 - 0.005) + 0.005;    // floor whole num, Math.floor(Math.random() * (max - min + 1)) + min;
-    fieldCellRandom = getRandomIntInclusive(10,14);
-    flowField = new flowFieldEffect(canvasMasterCtx,canvasMaster.width, canvasMaster.height, null);
-    flowField.animate(0);
-}
-;
-
-function initStarFieldEnv(){
-
-    for (let i = 0; i < STAR_NUM; i++) {
-        let speedMultiplier = Math.random() * 0.75 + 0.5;
-        let starSize = Math.random() * 0.026;
-        stars[i] = {
-            r: Math.random() * starSize * canvasMaster.width / 2,
-            x: Math.floor(Math.random() * canvasMaster.width),
-            y: Math.floor(Math.random() * canvasMaster.height),
-            xVelocity: xVelocity * speedMultiplier,
-            yVelocity: yVelocity * speedMultiplier
-        }
-    }
-}
-;
-
-function popper_org() {
-    canvasMasterCtx.clearRect(0,0,canvasMaster.width,canvasMaster.height);
-    $.each(floatingStageParticles, function (idx, val) {
-        let particle = val;
-        particle.update();
-        particle.draw();
-    });
-
-    requestIdAnimationFrame = window.requestAnimationFrame(popper);
-}
-;
-
-function visualiseAudio(var_canvas) {
+function visualiseAudio() {
+    // this is java and stop means somewhere in the future, while all other vars are applied now
     stopVisualise();
-    currentRadio = document.getElementById('currentRadioName').innerText;
-    if(currentRadio === 'Eisenradio'){return;}
 
     spectrumAnalyserActive = true;
     animatedFunctionTimer = 0;
@@ -662,35 +725,56 @@ function visualiseAudio(var_canvas) {
 
     try {
 
-        if (analyserRandom == 1) { draw(); }
-        if (analyserRandom == 2) {
-                                    snapShot = undefined;
-                                    rotateVisualiser(); }
-        if (analyserRandom == 3) {
-                                    initFlowFieldEnv();
-                                    animatedBars(0); }
-        if (analyserRandom == 4) {
-                                    initFloatingStage();
-                                    initFlowFieldEnv();
-                                    hueColor = hueArray[getRandomIntInclusive(0,10)]
-                                    floatingMultiplyNum = getRandomIntInclusive(0,(floatingMultiply.length - 1));
-                                    floatingStage(); }
-        if (analyserRandom == 5) {
-                                    initStarFieldEnv();
-                                    let x = canvasMaster.width * 0.2;
-                                    let y = canvasMaster.height/2;
-                                    initStarFieldCircles(x,y);
-                                    x = canvasMaster.width * 0.8;
-                                    y -= getRandomIntInclusive(0,25);
-                                    initStarFieldCircles(x,y);
-                                    starField();
+        if (analyserRandomGlobal == 1) {
+                                        draw();
+
+                                    }
+        if (analyserRandomGlobal == 2) {
+                                        rotateVisualiser();
+                                     }
+        if (analyserRandomGlobal == 3) {
+                                        initFlowFieldEnv();
+                                        animatedBars(0);
+                                    }
+        if (analyserRandomGlobal == 4) {
+                                        initFloatingStage();
+                                        initFlowFieldEnv();
+                                        hueColor = getRandomIntInclusive(0,360);
+                                        // add multiplier to spin color spectrum multiple times
+                                        floatingMultiplyNum = floatingMultiply[getRandomIntInclusive(0,2)];  // three items
+                                        floatingStage();
+                                    }
+        if (analyserRandomGlobal == 5) {
+                                        // to understand this guy, each function is a drawing layer on top of each other on canvas (paper)
+                                        // like a cheap movie, simulate driving in a city situation in front of a green screen
+                                        initStarFieldEnv();
+                                        let upDown = getRandomIntInclusive(0,1)
+                                        if (upDown == 0) {preFix = "-"} else {preFix = "" }
+                                        let x = canvasMaster.width * 0.15;
+                                        let y = canvasMaster.height/2 -  (preFix + (getRandomIntInclusive(0,30)));
+                                        // one, set position of companion stars outside horizontal level and away from middle
+                                        initStarFieldCircles(x,y);
+                                        upDown = getRandomIntInclusive(0,1)
+                                        if (upDown == 0) {preFix = "-"} else {preFix = "" }
+                                        x = canvasMaster.width * 0.85;
+                                        y = canvasMaster.height/2 - (preFix + (getRandomIntInclusive(0,40)));
+                                        // two
+                                        initStarFieldCircles(x,y);
+                                        starField();
+                                        starFieldAnalyser();
         }
 
-        if (analyserRandom == 6) {
-                                    // initFloatingStage();
-                                    // popper();
-                                    initPopper();
-                                    }
+        if (analyserRandomGlobal == 6) {
+        }
+                                         // always called
+                                        setTimeout(function () {
+                                            if(htmlSettingsDictGlobal["checkboxConfigAnimation"]){
+                                                if(!(activeListenId == "noId")){
+                                                    window.cancelAnimationFrame(inflateAnim);
+                                                    svgAnimationMain();
+                                                }
+                                            }
+                                        }, 1000);
 
     } catch (error) { console.error(error); }
 
@@ -698,19 +782,60 @@ function visualiseAudio(var_canvas) {
 ;
 
 function selectSpectrumAnalyser() {
-
+/* selector on page start */
     let selectOverrideSpectrum = document.getElementById('selectOverrideSpectrum').value
+
     if (selectOverrideSpectrum == 0) {
-        analyserRandom = Math.round(Math.random() * 4 + 1);    // 4 options;  3 + 1
+        analyserRandomGlobal = Math.round(Math.random() * 4 + 1);    // 4 options;  3 + 1
     } else {
-        analyserRandom = selectOverrideSpectrum;
+        analyserRandomGlobal = selectOverrideSpectrum;
     }
-    visualiseAudio(null);
+    visualiseAudio();
+}
+;
+function selectSpectrumAnalyserSelect(value) {
+/* select a spectrum analyser on console */
+    let selectOverrideSpectrum = document.getElementById('selectOverrideSpectrum');
+    selectOverrideSpectrum.value = value;
+    selectSpectrumAnalyser();
 }
 ;
 
-function overrideSpectrumAnalyser() {
-    stopVisualise();
-    selectSpectrumAnalyser();
+function stopVisualise(e) {    // had to insert this event
+/* mess with multiple animations switching horror ;)
+ * update: animation can shut down itself, if gets the chance; see disableCanvasMasterAnimation(), [Baustelle];
+ */
+     try {
+        window.cancelAnimationFrame(inflateAnim);
+    } catch (error) { console.error(error); }
+
+    try {
+        window.cancelAnimationFrame(requestId5starFieldAnalyserAnimationFrame);
+    } catch (error) { console.error(error); }
+    try {
+        // be aware that this guy is drawn at first as a background (if used)
+        // if multiple functions draw, each function must be killed
+        window.cancelAnimationFrame(requestIdXflowFieldAnimation);
+    } catch (error) { console.error(error); }
+    try {
+        window.cancelAnimationFrame(requestId5starFieldAnimationFrame);
+    } catch (error) { console.error(error); }
+    try {
+        window.cancelAnimationFrame(requestId4floatingStageAnimationFrame);
+    } catch (error) { console.error(error); }
+    try {
+        window.cancelAnimationFrame(requestId3animatedBarsAnimationFrame);
+    } catch (error) { console.error(error); }
+    try {
+        window.cancelAnimationFrame(requestId2rotateVisualiserAnimationFrame);
+    } catch (error) { console.error(error); }
+    try {
+        window.cancelAnimationFrame(requestId1drawAnimationFrame);
+    } catch (error) { console.error(error); }
+    spectrumAnalyserActive = false;
+    try {
+        window.cancelAnimationFrame(pageCoverAniFrame);
+    } catch (error) { console.error(error); }
+
 }
 ;

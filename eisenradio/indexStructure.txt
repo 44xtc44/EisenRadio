@@ -1,0 +1,64 @@
+Project overview div structure with position and partial critical settings (z-index) for quicker restructuring and error tracking in css
+
+. most animation svg are <use> tags in a div container; original drawings are 100px high, width can differ
+  no viewport, most used is hardcoded scale to fit in the scene, which could be better made in a central dispatcher function
+  to have more control if changes are made
+. animation of <use> and <div> differs in some ways
+  <use> can be animated within the <svg></svg> borders only with "transform", moving -> disappears in the border of the svg,
+   see clouds and satellite; zindex of <use> elements is the written order
+  <div> can be moved with all css style attributes and zindex within the whole html page, so a <div> encapsulated <use> can
+  "leave" the <svg>
+----------- start page ----------
+loaderAnimation div set for bright and dark style
+
+level_1 divStartPageFadeIn         - {-} small fade in effekt for start page, effect broken since audio needs user interaktion
+                                          one sees the page already, for user interaction an overlay div with animation
+
+      {% block title %}      jinja start
+ level_2 frontPic                  - {justify-content:center;align-items:center;} a teaser pic for fun and the software store
+ level_2 progress                  - {position:relative;} progress bar base for timer
+  level_3 divProgressBar           - {position: absolute;z-index: 1;} progress bar
+ level_2 bar_wrap_secondary_action - {-}wrap to position the internal center, secondary menu items like dark mode, timer, spectrum analyser
+  level_3 wrap_secondary_action    - {text-align: center} nothing special here
+ level_2 divPlayListContainer      - {-} current played file name, a list of files on injected div elements to color em
+
+<h5 class="divCacheListFeedAnchorJump" id=dot_{{post['id']}}> jump top anchor
+
+----------- radio ----------
+ level_2 divRadioContainer           - {position:relative;} hull, each radio styling for header, buttons...
+
+ <div>                               -  without name to group radio and comment, comment at bottom
+  level_3 divRadioFrontPlate         - {position:relative,z-index:2;max-width:1000px;justify-content: center;align-items: center;}
+                                       position every styling here, also absolute or grid style, or relative
+   level_4 divMainAnimationContainer - {-}
+    level_5 animatedBackGround         - {position: absolute;z-index:0;overflow:hidden;} sky and ocean
+                                         svg 1000x1000 bottom is the rectangle tuxStageSky
+    level_5 divSvgBuoy                 - {position: absolute;z-index:10;} Edit button buoy with blinking top
+    level_5 divSvgScrewHeadTopRight    - {position: absolute;z-index:2;} screw head rotated
+    level_5 divSvgGlasBreakTopRight    - {position: absolute;z-index:1;} glas break simulation
+    level_5 divSvgScrewHeadTopLeft     - {position: absolute;z-index:2;}
+    level_5 divSvgScrewHeadBottomLeft  - {position: absolute;z-index:2;}
+    level_5 divSvgScrewHeadBottomRight - {position: absolute;z-index:2;}
+    level_5 divSvgFlatSpeaker          - {position: absolute;z-index:2;} speaker big for left
+    level_5 divSvgFlatSpeakerTopRight  - {position: absolute;z-index:2;} speaker small for right
+
+    level_5 divCenterMovingSvgs        - {position:relative;z-index:3;} inhabitants can move over screws and speaker
+                                          zeppelin,penguin,ice floe,ballon,aircraft
+                                          <use>: divSvgZ1,gTux,divSvgIceTux,divSvgB1,
+                                            divA1AirCraft (scaling overwrites parachutes instance scale) with extra
+                                            divDragRopeA1AirCraft
+                                          JS: parachutes [position: absolute;z-index:3;], divs created in parent divA1AirCraft
+     level_6 divAnimationContainer     - {[position: absolute;] } spawn point for moving divs
+
+   level_4 divHeaderShadow         - {position: absolute;} was shadow and reverse gradient for (ALL) linear gradient style tryout; only shadow
+   level_4 divMeasurementsUpper    - {position: absolute;z-index:2;} redesigned, keep name, badge with speed, kb/s
+   level_4 divGracefulDegradation  - {position: absolute;z-index:11;} be sure to have the CPU buttons always working
+   level_4 divBtnContainer         - {position:relative} listen, record buttons
+    level_5 divBtnAbsWrapper       - {position:absolute;}
+     level_6 divStationGenre       - {-}
+     level_6 divPictureRow         - {position:relative;}
+     level_6 divButtons            - {position:relative;z-index:10;}be sure to have the buttons always working
+   level_4 divStationDisplayGrid   - {position: absolute;z-index:2;} stay before the buoy
+
+  level_3 divCustomText - custom text outside the radio to get a "painting in museum with description effect"
+ </div>

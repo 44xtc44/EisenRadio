@@ -1,10 +1,10 @@
 :root {
     --background-color: #ccc;
 
-    --form-background: #ddd;
-    --form-text: #565454;
+    --form-background: ivory;
+    --form-text: black;
     --hr-color: #eee;
-    --border-color: #eee;
+    --border-color: #fff;
     --text-color: #f0f0f0;
     --form-edit: #777777;
     --opacity: 1;
@@ -14,48 +14,75 @@
     --dot-for-radio-headline: #565454;
     --lbl-div-audio: #FCA841;
     --border-radius-12: 1.2em;
-    --ghetto-measurements-bottom-color: #d441fc;
-    --radio-station-headline: #565454;
+    --ghetto-measurements-bottom-color: ivory;
+    --ghetto-measurements-upper-color: ivory;
+    --radio-station-headline: Gray;
+    /* hardcoded in radio_styles.js, pb switch dark mode */
     --controls-background: #565454;
     --canvasMaster: #ccc;
-
+    --max-comment-text-height: 10em;
+    --pic-comment-head: #565454;
+    --divButton-color: dimGray;
+    --secondaryBtnHooverCol: darkSlateGray;
+    --radio-station-url: black;
+    --colorPlayListAndDropDown: black;
+    --tux-top:2em;
+    --tux-left:-5em;
 }
 
-/*Chrome*/
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    input[type='range'] {
-        overflow: hidden;
-        /* 10em; */
-        min-width: 40%;
-        max-width: 50%;
-        -webkit-appearance: none;
-        background-color: var(--background-color);
-        /* #9a905d; */
-        float: left;
-
-    }
-
-    input[type='range']::-webkit-slider-runnable-track {
-        height: 2em;
-        -webkit-appearance: none;
-        color: #13bba4;
-        margin-top: -0.1em;
-
-    }
-
-    input[type='range']::-webkit-slider-thumb {
-        width: 2em;
-        -webkit-appearance: none;
-        height: 2em;
-        cursor: ew-resize;
-        background: #434343;
-        box-shadow: -2em 0 0 2em #43e5f7;
-
-    }
+svg {
+    display: inline !important;
 }
 
 body {
     background: var(--background-color);
+}
+
+hr {
+    border-top: 0.1em solid var(--hr-color);
+}
+
+h1 {
+    border-radius: 0.5em;
+    border: .06em var(--border-color) solid;
+    color: white;
+    background-color: coral;
+    text-align: center;
+    padding: 0.2em;
+    font-family: Architects Daughter, Gloria Hallelujah, Roboto;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+h3 {
+    color: #333;
+    padding: 0.1em;
+    font-family: Roboto;
+    text-align: left;
+    animation-name: fadeInAnimation;
+    animation-duration: 2s;
+}
+
+summary {
+    cursor: pointer;
+}
+
+summary>* {
+    display: inline;
+}
+
+.prePicComment {
+    /* the text input comment, pre element output for a radio */
+    background-color: var(--background-color);
+    color: #565454fc;
+    border: 0em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    text-align: justify;
+    font-family: roboto, arial, sans-serif;
+}
+
+#currentRadioName {
+    /* console current active radio */
+    font-size: 1.4em;
 }
 
 #audioWithControls {
@@ -70,7 +97,6 @@ body {
 #playBtn {
     color: var(--lbl-div-audio) !important;
     font-size: 1.5em;
-    display: block;
     float: left;
     display: none;
 }
@@ -78,72 +104,100 @@ body {
 #pauseBtn {
     color: var(--lbl-div-audio) !important;
     font-size: 1.5em;
-    display: block;
     float: left;
     display: none;
 }
 
-.masterDisplay {
-    display: flex;
-    justify-content: center;
+#nextBtn {
     color: var(--lbl-div-audio) !important;
-    font-family: Roboto, sans-serif !important;
-    font-size: 1.5em;
-    text-decoration: none;
-    margin-left: 0.2em;
-    display: block;
-    overflow: hidden;
-    max-height: 4em;
+    font-size: 1em;
+    float: left;
+    display: none;
 }
 
-.arrow-buttons-cell {
-    text-align: right;
-    max-height: 4em;
+#prevBtn {
+    color: var(--lbl-div-audio) !important;
+    font-size: 1em;
+    float: left;
+    display: none;
 }
 
-#arrow-down {
-    color: var(--main-display-arrow) !important;
-    font-size: 3em;
-    text-decoration: none;
+.icyName {
+    /* name of radio station from header */
+    font-family: Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
+    text-shadow: 0px 1px 1px #333333;
+    color: hsl(324, 70%, 45%);
+    animation: wheelHueColor 33.33s infinite;
 }
 
-#arrow-up {
-    color: var(--main-display-arrow) !important;
-    font-size: 3em;
-    text-decoration: none;
+@keyframes wheelHueColor {
+
+    from,
+    to {
+        color: hsl(324, 70%, 45%);
+    }
+
+    10% {
+        color: hsl(360, 65%, 45%);
+    }
+
+    20% {
+        color: hsl(36, 80%, 45%);
+    }
+
+    30% {
+        color: hsl(72, 75%, 35%);
+    }
+
+    40% {
+        color: hsl(108, 65%, 35%);
+    }
+
+    50% {
+        color: hsl(144, 75%, 35%);
+    }
+
+    60% {
+        color: hsl(180, 75%, 35%);
+    }
+
+    70% {
+        color: hsl(216, 60%, 45%);
+    }
+
+    80% {
+        color: hsl(252, 65%, 50%);
+    }
+
+    90% {
+        color: hsl(288, 60%, 40%);
+    }
 }
 
 .ghetto-measurements-upper {
+    /* ms, suffix, bit rate */
     /* color: #4195fc; */
-    color: #d441fc;
-    font-family: Roboto, sans-serif !important;
+    color: var(--ghetto-measurements-upper-color);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
     width: 5em;
-    margin-left: 0em;
-    margin-right: 1em;
-    margin-top: .5em;
+    text-align: left;
+    margin-left: 1.3em;
+    margin-top: 0.5em;
     display: block;
+    /*text-shadow:0px 3px 4px #333333; */
 }
 
-.ghetto-measurements-bottom {
+.ghettoMeasurements {
     /* color: #4195fc; */
 
     color: var(--ghetto-measurements-bottom-color);
-    /* #FCA841; */
+    /* #FCA841; white-space: pre-line; */
     font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
     text-align: center;
-
-    /*
-    overflow:hidden;
-    white-space: nowrap;
-    */
-}
-
-.ghetto-measurements-name {
-    /* color: #4195fc; */
-    color: #565454fc;
-    font-family: Finger Paint, Roboto, sans-serif !important;
-    text-decoration: none;
-    text-align: center;
+    text-shadow: 0px 3px 4px #333333;
 }
 
 #cacheList {
@@ -160,11 +214,13 @@ body {
     color: var(--lbl-div-audio) !important;
 }
 
-.radio-station-comment {
-    color: #565454fc;
+.radioStationComment {
+    color: var(--pic-comment-head);
     font-family: Roboto, sans-serif !important;
     font-size: small;
     margin-left: 0.5em;
+    display: flex;
+    justify-content: center;
 }
 
 .dot-for-radio-headline {
@@ -177,20 +233,26 @@ body {
 
 .radio-station-headline {
     color: var(--radio-station-headline);
-    font-family: Roboto, Finger Paint, Gloria Hallelujah, Architects Daughter, sans-serif;
-    font-size: large;
+    font-family: Roboto, Gloria Hallelujah, Architects Daughter, sans-serif;
+    font-size: 2em;
+    /*shift right, down, blur, opa*/
+    text-shadow: 0px 0px 0px #333333;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .radio-station-url {
-    color: var(--radio-station-headline);
-    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
-    cursor: cell;
+    /* :hoover is not working with animations today */
+    font-family: Roboto, sans-serif;
+    font-size: 1.1em;
+    cursor: pointer;
     display: inline;
     overflow: hidden;
     white-space: nowrap;
-
+    vertical-align: center;
+    color: var(--radio-station-url);
 }
+
 
 .btn-primary,
 .btn-primary:hover,
@@ -202,71 +264,58 @@ body {
 }
 
 .progress {
+    position: relative;
     margin: 1em;
     background-color: var(--background-color);
     opacity: var(--opacity);
 }
 
-.station-display input:placeholder-shown {
-    background-color: var(--form-background) !important;
-    border: 0.1em;
-    border-style: solid !important;
-    border-color: var(--border-color) !important;
-    font-family: Roboto, sans-serif !important;
-    font-size: large;
-    opacity: .8;
+#divProgressBar {
+    width: 25%;
+    position: absolute;
+    z-index: 1;
 }
 
-.station-display input:not(:placeholder-shown) {
-    background-color: var(--form-background) !important;
-    border: 0.2em;
-    border-style: solid !important;
-    border-color: #4195fc !important;
-    border-radius: 0.5em;
-    box-shadow: 0em 0em 0.4em #4195fc;
-    color: var(--form-text) !important;
-    font-family: Roboto, sans-serif !important;
-    font-size: large;
+#divButtonRecord {
+    margin: 0 auto;
+    min-width: 25%;
+    text-align: left;
+    display: inline-block;
 }
 
-.button-rec-lis {
-    margin-bottom: 0em;
-    margin-top: 0em;
-    margin-left: 0em;
+
+#divButtonListen {
+    margin: 0 auto;
+    min-width: 25%;
+    text-align: right;
+    display: inline-block;
+    padding-right: 1em;
 }
 
-hr {
-    border-top: 0.1em solid var(--hr-color);
+#frontPic {
+    /* image container */
+    justify-content: center;
+    align-items: center;
+    border: 1em;
+    opacity: var(--opacity);
 }
 
-h1 {
-    border-radius: 0.8em;
-    border: 0.2em var(--border-color) solid;
-    color: brown;
-    text-align: center;
-    padding: 1em;
-    font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto;
-
+#frontPic img {
+    border-radius: 2em;
 }
 
 .pixies {
-    background-color: var(--background-color);
+    /* image container js makes float left or not */
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1em;
 }
 
 .pixies img {
     border-radius: 1em;
-    opacity: var(--opacity);
-}
-
-pre {
-    background-color: var(--background-color);
-    color: #565454fc;
-    white-space: pre-line;
-    border: 0em;
-    background-origin: content-box;
-    padding: 0 0.2em;
-    text-align: justify;
-    font-family: roboto, arial, sans-serif;
+    max-height: 5em;
 }
 
 /* navbar */
@@ -299,99 +348,6 @@ pre {
     background: var(--background-color);
 }
 
-/* footer */
-
-@media only screen and (max-width: 1080px) {
-    .console {
-        position: fixed;
-        bottom: 0em;
-        min-width: 100%;
-        z-index: 2;
-        left: 0em;
-        text-align: right;
-        border-radius: var(--border-radius-12);
-    }
-
-    .td_pic_and_buttons {
-        width: 13em;
-    }
-
-    .pix {
-        margin-bottom: 0.2em;
-        max-width: 12em;
-        max-height: 15em;
-    }
-
-    .radio-station-url {
-        display: none;
-    }
-}
-
-@media only screen and (min-width: 1081px) {
-    .console {
-        position: fixed;
-        bottom: 0em;
-        min-width: 30%;
-        z-index: 2;
-        left: 1em;
-        text-align: right;
-        border-radius: var(--border-radius-12);
-    }
-
-    .td_pic_and_buttons {
-        width: 21em;
-    }
-
-    .pix {
-        margin-bottom: 0.2em;
-        max-width: 20em;
-        max-height: 15em;
-    }
-
-    .radio-station-url {
-        display: block;
-    }
-}
-
-.colored_cells {
-    background-color: var(--footer-color);
-}
-
-#console_btn {
-    max-height:3.5em;
-}
-
-#canvas_cell {
-    text-align: center;
-    background-color: rgba(240, 240, 240, 0.0);
-}
-
-.visual_bar_canvas {
-    top: 0;
-    left: 0;
-    max-width: 8em;
-    max-height: 4em;
-    display: none;
-}
-
-#DivCanvasMaster {
-    background: var(--canvasMaster);
-    border-radius: var(--border-radius-12);
-    border: 0.0em var(--border-color) solid;
-    display: none;
-    width: 30em;
-    height: 14em;
-
-}
-
-#canvasMaster {
-    border-radius: var(--border-radius-12);
-    border: 0.1em var(--border-color) solid;
-    display: none;
-    width: 30em;
-    height: 14em;
-}
-
 #pageCover {
     /* browser no longer play automatic audio, must have a user interaction */
     width: 100%;
@@ -399,9 +355,8 @@ pre {
     position: fixed;
     bottom: 0em;
     left: 0em;
-    background: rgba(255, 255, 255, 0.3);
-    z-index: 10000;
-
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 1000;
 }
 
 #pageCoverCanvas {
@@ -414,6 +369,7 @@ pre {
     text-align: left;
     display: table-cell;
     vertical-align: left;
+    margin-bottom: 2em;
 }
 
 #fileUpload {
@@ -429,63 +385,111 @@ pre {
 }
 
 #file_list {
-    color: var(--ghetto-measurements-bottom-color);
+    /* playlist files as a list of divs */
+    color: var(--colorPlayListAndDropDown);
+    scroll-margin-top: 6em;
+    padding-bottom: 1em;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
 }
 
 #playlist_section {
     display: none;
 }
 
+.divEqu {
+    position: absolute;
+    top: -7em;
+    left: -8em;
+    display: none;
+}
+
+.divEditButtons {
+    position: absolute;
+    top: 0em;
+    left: -1.5em;
+}
+
 .edit_buttons {
-    background-color: #565454;
+    /* button made from div */
     color: var(--text-color);
     font-family: Roboto, arial, sans-serif;
     font-size: 1em;
     font-weight: 300;
     padding: 0.2em;
     border-radius: 0.35em;
-    border: 0.1em var(--border-color) solid;
+    border: 0.1em var(--border-color);
     cursor: pointer;
     min-width: 4.5em;
-    text-align: center;
+    max-width: 6em;
+    left: 2em;
+    /* hard center */
+    display: flex;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+
+}
+
+.edit_buttons:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 2s ease;
 }
 
 #selectOverrideSpectrum {
     border-radius: 0.3em;
     max-width: 8em;
     border-color: var(--border-color);
-    background-color: #565454;
+    background-color: var(--divButton-color);
     color: var(--text-color);
     font-family: Roboto, arial, sans-serif;
     font-size: 1em;
     font-weight: 300;
     display: inline-block;
+    width: auto;
+}
+
+#selectOverrideSpectrum:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 2s ease;
 }
 
 #quickView {
     border-radius: 0.3em;
     max-width: 6em;
     border-color: var(--border-color);
-    background-color: #565454;
+    background-color: var(--divButton-color);
     color: var(--text-color);
     font-family: Roboto, arial, sans-serif;
     font-size: 1em;
     font-weight: 300;
+}
+
+#quickView:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 2s ease;
 }
 
 #timeRecordSelectAll {
+    width: auto;
     border-radius: 0.3em;
     max-width: 6em;
     border-color: var(--border-color);
-    background-color: #565454;
+    background-color: var(--divButton-color);
     color: var(--text-color);
     font-family: Roboto, arial, sans-serif;
     font-size: 1em;
     font-weight: 300;
 }
 
-.secondary_action_buttons {
-    background-color: #565454;
+#timeRecordSelectAll:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 1s ease;
+}
+
+.labelSecondaryActionButtons {
+    /* play local file, upload dilemma, use a label to simulate button */
+    background-color: var(--divButton-color);
     /* #565454  #337ab7 */
     color: var(--text-color);
     padding: 0.3em;
@@ -497,6 +501,29 @@ pre {
     border: 0.1em var(--border-color) solid;
 }
 
+.labelSecondaryActionButtons:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 1s ease;
+}
+
+.divSecondaryActionsButton {
+    background-color: var(--divButton-color);
+    /* #565454  #337ab7 */
+    color: var(--text-color);
+    padding: 0.3em;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 300;
+    border-radius: 0.35em;
+    cursor: pointer;
+    border: 0.1em var(--border-color) solid;
+}
+
+.divSecondaryActionsButton:hover {
+    background-color: var(--secondaryBtnHooverCol);
+    transition: background-color 1s ease;
+}
+
 .box_secondary_action {
     display: inline-block;
     background: var(--background-color);
@@ -505,12 +532,15 @@ pre {
     opacity: 0.95;
 }
 
+
 .box_secondary_action *.secondary_action_drop_down {
     background: var(--background-color);
-    color: var(--ghetto-measurements-bottom-color);
+    color: var(--colorPlayListAndDropDown);
     font-family: Roboto, arial, sans-serif;
     font-size: 1em;
     font-weight: 500;
+    border: 1px solid #fff;
+    overflow: hidden;
 }
 
 .wrap_secondary_action {
@@ -521,24 +551,881 @@ pre {
 }
 
 #bar_wrap_secondary_action {
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     text-align: center;
 }
 
 #scroll_top {
     scroll-margin-top: 6em;
-    visibility:hidden;
+    visibility: hidden;
 }
 
 #scroll_bottom {
     height: 25em;
-    visibility:hidden;
+    visibility: hidden;
 }
 
-table,
-th,
-td {
+.divCacheListFeedAnchorJump {
+    scroll-margin-top: 6em;
+    float: left;
+    color: darkSlateGray;
+}
+
+#spanButtonRecord {
+    margin-left: 0.0em;
+    margin-right: 0.5em;
+    /*gap listen btn*/
+}
+
+#spanButtonListen {
+    margin-right: 1.2em;
+}
+
+#isOnlineDot {
+    vertical-align: middle;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 0.4em;
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+#divPlayListAnimation {
+    /* hides the animation until called from js , display flex */
+    position: relative;
+    display: flex;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.0);
+    width: 100%;
+
+    /* display flex in js is essential */
+    justify-content: center;
+    align-items: center;
+}
+
+#canvasPlayListAnimation {
+    /* canvas behind svg use -1 z-index */
+    z-index: -1;
+    /* calc in js anim
+    top: 0em;
+    left: 0em; */
+    position: absolute;
+    display: inline-block;
+    background-color: rgba(255, 100, 25, .0);
+    border-radius: 1.5em;
+    width: 30em;
+    height: 15em;
+}
+
+.divStartPageFadeIn {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 2em;
+    border: .2em solid green;
+}
+
+.divRadioContainer {
+    /* only container for pos absolute, has height to work on it */
+    position: relative;
+    /*background-color: rgba(255, 255, 255, 0.0);*/
+    margin-left: 1em;
+    margin-right: 3em;
+    margin-bottom: 5em;
+    margin-top: 5em;
+    height: 100%;
+    width: 100%;
+}
+
+.animatedBackGround {
+/* to position divRadioFrontPlate
+ * need z-index lower than overlay div, like rec listen btn
+ * z-index:1;top:0em;left:0em;width:100%;height:auto;
+ */
+    position: absolute;
+    z-index: 0;
+    top: 0em;
+    left: 0em;
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: hidden;
+}
+
+.animatedBackGround use {
+    border-radius: 2em;
+}
+
+.divRadioFrontPlate {
+    /* set color for the whole active radio background */
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+
+    top: 0em;
+    left: 0em;
+    height: 100%;
+    max-width: 1000px;
+}
+
+.divPictureRow {
+    position: relative;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.0);
+    border-radius: 1.5em;
+    margin-bottom: .5em;
+    width: 100%;
+    text-align: center;
+}
+
+.divHeaderShadow {
+    /* box for radio name, was before a shadow div for linear-gradient overlay, radio_styles.js */
+    display: none;
+}
+
+.divCenterMovingSvgs {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.0);
+    border-radius: 1.5em;
+    vertical-align: bottom;
+    left: 18em;
+    top: 18em;
+}
+
+.divBtnContainer {
+    /*min-height:20em; to keep button on start screen away from each other, pic has max 15em */
+    position: relative;
+    width: 30%;
+    height: auto;
+    min-height: 5em;
+}
+
+.divBtnAbsWrapper {
+    /* omg, set top left only in js, set back ind del func */
+    position: absolute;
+    z-index: 10;
+    left: -2em;
+}
+
+.divBarButtonsGrid {
+    /* no more grids */
+    display: grid;
+    grid-gap: 5%;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    left: -10em;
+}
+
+.divUrlShowInHeader {
+    display: inline-block;
+    padding-left: 1em;
+    margin-bottom: 0.5em;
+}
+
+.divStationDisplayGrid {
+    /*  inline-block to set margin top and bottom */
+    position: absolute;
+    display: none;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 50%;
+    text-align: center;
+    color: var(--form-text);
+    font-family: Roboto, sans-serif !important;
+    text-shadow: 0px 1px 1px #333333;
+    bottom: 1em;
+    left: 5em;
+    z-index: 102;
+
+}
+
+.divCustomText {
+    /* custom text, has scrollbar annihilator
+ *  pre element "styles" the text and keeps it floating or block text
+ */
+    display: none;
+    position: relative;
+    max-height: var(--max-comment-text-height);
+    cursor: pointer;
+    bottom: -1em;
+    left: 5em;
+    width: 80%;
+
+    /* remove scrollbars - needs also div::-webkit-scrollbar {display: none;} for Chrome, Safari, and Opera */
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    scrollbar-width: none;
+    /* for Firefox */
+}
+
+.divStationDisplay {
+    padding: .8em;
+    border-radius: 1.5em;
+}
+
+.divAnimationContainer {
+    /* speaker and svg */
+    position: absolute;
+}
+
+.divSvgB1 {
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 0em;
+    left: 0em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgZ1 {
+    /* zeppelin
+*/
+    display: none;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    left: -10em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgFlatSpeaker {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 2em;
+    left: -2em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgFlatSpeakerTopRight {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 5em;
+    right: 2.2em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgScrewHeadBottomLeft {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    bottom: 2.5em;
+    left: 0em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgScrewHeadTopRight {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 0em;
+    right: 2.2em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgGlasBreakTopRight {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: -1.75em;
+    right: 4.55em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgScrewHeadTopLeft {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    top: 0em;
+    left: 0.2em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgScrewHeadBottomRight {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    bottom: 2.5em;
+    right: 2.5em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgBuoy {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    bottom: 0em;
+    right: 15em;
+    max-width: 8em;
+    max-height: 15em;
+    cursor: pointer;
+    border: .2em solid none;
+}
+
+.divMeasurementsUpper {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    width: auto;
+}
+
+.toggleAnimals {
+    z-index:1001;
+}
+
+.divGracefulDegradation {
+    /* animation feature choice, first class, economy */
+    display: none;
+    position: absolute;
+    z-index: 10;
+    bottom: 5em;
+    right: -2em;
+
+    color: var(--ghetto-measurements-upper-color);
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+.divA1AirCraft {
+    display: none;
+    position: absolute;
+    z-index: -1;
+    top: -15em;
+    left: 10em;
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divHorizon {
+    /* html horizon of ocean for sat to disappear, at transform must switch to all element DOM calculation
+ * svg ,.getBBox() shows org. static position of element (also at transform time),
+ * dom, .getBoundingClientRect() counts position from top left html corner
+ * target is to calc translated sat pos and horizon with .getBoundingClientRect().y value
+ */
+    position: absolute;
+    top: -1em;
+    left: 0em;
+    width: .2em;
+    height: .2em;
+    /* border: .1em solid red; */
+}
+
+.divDragRopeA1AirCraft {
+    /* parent of js parachutes divs */
+    position: absolute;
+    z-index: 4;
+    top: -15em;
+}
+
+.divWriteToDisk {
+    /* golden disk sized and rotated if shown */
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 0em;
+    left: -2em;
+    max-width: 1em;
+    max-height: 1em;
+    transform: scale(.8, .8);
+}
+
+.divSvgIceTux {
+/* ice floe */
+    display: none;
+    position: absolute;
+    z-index: 30;
+    width: 100%;
+    top: 2em;
+    left: var(--tux-left);
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgTux {
+/* tux svg */
+    display: none;
+    position: absolute;
+    z-index: 31;
+    width: 100%;
+    top: 3em;
+    left: var(--tux-left);
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgPolarBear {
+/* polar bear svg */
+    display: none;
+    position: absolute;
+    z-index: 31;
+    width: 100%;
+    top: 3em;
+    left: var(--tux-left);
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvglaGata {
+/* la Gata del Diablo svg */
+    display: none;
+    position: absolute;
+    z-index: 31;
+    width: 100%;
+    top: 3em;
+    left: var(--tux-left);
+    max-width: 1em;
+    max-height: 1em;
+}
+
+.divSvgTux path {
+    stroke-dasharray: 3000;
+    stroke-dashoffset: 100;
+    animation: animateTux 10s infinite;
+}
+
+@keyframes animateTux {
+
+    from {
+        stroke-dashoffset: 100;
+    }
+
+    to {
+        stroke-dashoffset: 3000px;
+    }
+}
+
+div::-webkit-scrollbar {
+    /* remove scrollbars */
+    display: none;
+    /* for Chrome, Safari, and Opera */
+}
+
+.divButtons {
+    position: relative;
+    z-index: 10;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.divStationGenre {
+    position: relative;
+    z-index: 100;
+    display: inline-block;
+    vertical-align: center;
+    cursor: pointer;
+    font-family: roboto, arial, sans-serif;
+}
+
+@media only screen and (max-width: 1080px) {
+.console {
+/* glue the console left and right, so it will not pressed down by android in upright mode, hopefully */
+	position: fixed;
+	left:0em;
+	bottom:0em;
+    width: 100%;
+    text-align: right;
+	background-color: var(--footer-color);
+    }
+}
+
+@media all and (orientation:portrait) {
+/* Styles for Portrait screen */
+}
+@media all and (orientation:landscape) {
+/* Styles for Landscape screen */
+}
+
+.console {
+    /* wrapper div for console canvas, player, up down arrows ... */
+    position: fixed;
+    bottom: 0.5em;
+    z-index: 101;
+    left: 1em;
+    border-radius: var(--border-radius-12);
+}
+
+#consoleHidden {
+    /* hidden console */
+    display: none;
+    position: fixed;
+    bottom: 0.5em;
+    z-index: 120;
+    left: 10em;
+}
+
+.consoleToggle {
+    color: var(--form-text);
+    font-family: Roboto, sans-serif !important;
+    text-shadow: 0px 1px 1px #333333;
+    padding: 0.3em;
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1.4em;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+#divCanvasMasterWrapper {
+/* make a relative div to give absolute div a point to nail on
+ * div is empty and collapses, so must use minus for positioning
+ */
+    position: absolute;
+    width: 30em;
+    max-height: 15em;
+}
+
+#divCanvasMaster {
+    /* absolute div in relative div,
+so specify upper lef corner of (here collapsed) parent
+*/
+    position: absolute;
+    top: -14.5em;
+    left: 0em;
+    z-index: 12;
+    margin-bottom: 0em;
+    /* init width */
+    width: 30em;
+    height: 14em;
+    border-radius: var(--border-radius-12);
+    border: 0.0em var(--border-color) solid;
+    animation: moveToDock 2s ease 1;
+    /* get order to display from cookie request
+    cookie_start_set_text_show_visuals()
+    */
+    display: none;
+}
+
+@keyframes moveToDock {
+    0% {
+        top: -5em;
+        left: 0em;
+    }
+}
+
+#divHiddenButtons {
+/* animation selector, canvasSelect;
+ * screen btn in console, divCanvasCallBackBtn; unhidden if canvas is clicked
+ */
+    position: absolute;
+    top: -2em;
+    left: 0em;
+    display: none;
+}
+
+#divCanvasCallBackBtn {
+    /* call canvas back to start position */
+    //float: right;
+    z-index: 13;
+    width: 4em;
+    height: 1.4em;
+    margin-right: 0.6em;
+    background-color: var(--footer-color);
+    border-radius: 0.6em;
+    color: var(--lbl-div-audio);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 0.1em;
+}
+
+
+#canvasMaster {
+    /*  THE canvas */
+    z-index: 100;
+    border-radius: var(--border-radius-12);
+    border: 0.1em var(--border-color) solid;
+    display: none;
+    width: 30em;
+    height: 14em;
+    cursor: move;
+    animation: rotateTheCanvas 2s ease-out 1;
+}
+
+@keyframes rotateTheCanvas {
+    0% {
+        transform: rotateX(240deg);
+    }
+
+    100% {
+        transform: rotateX(360deg);
+    }
+}
+
+#canvasSelect {
+    /* set animation value in upper select to trigger onChange evt */
+    margin-top: 0.1em;
+    margin-left: 0.6em;
+    border-radius: 0.6em;
+    background: var(--footer-color);
+    color: var(--lbl-div-audio);
+    outline: none;
+    border: 0em;
+}
+
+#canvasSelect *.secondary_action_drop_down {
+    background: var(--footer-color);
+    color: var(--lbl-div-audio);
+    font-family: Roboto, arial, sans-serif;
+    font-size: 1em;
+    font-weight: 500;
+    outline: none;
+    border: 0em;
+}
+
+#divCanvasSelect {
+    float: left;
+    text-align: center;
+    margin-bottom: 0em;
+}
+
+.containerConsoleButtons {
+    /* font-size: 3.5em; except masterDisplay
+
+play, pause, for- backward
+*/
+    background-color: var(--footer-color);
+    width: 100%;
+    width: 30em;
+    border-radius: var(--border-radius-12);
+    border: 0.1em var(--border-color) solid;
+    display: inline-block;
+}
+
+.masterDisplay {
+    color: var(--lbl-div-audio);
+    font-family: Roboto, sans-serif !important;
+    font-size: 1.2em;
+    text-decoration: none;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    display: inline-block;
+}
+
+.consoleButtonsAlignCenter {
+    margin-right: 0em;
+    display: inline-block;
+}
+
+.consoleButtonsAlignRight {
+    float: right;
+    vertical-align: top;
+    font-size: 3em;
+    line-height: 100%;
+}
+
+#arrow-down {
+    color: var(--main-display-arrow) !important;
+    text-decoration: none;
+}
+
+#arrow-up {
+    color: var(--main-display-arrow) !important;
+    text-decoration: none;
+}
+
+#spanArrowUP {
+    margin-right: 1.0em;
+    margin-left: 1em;
+}
+
+#spanArrowDown {
+    margin-right: 0.5em;
+}
+
+.consoleButtonsAlignLeft {
+    float: left;
+    vertical-align: top;
+    font-size: 1.2em;
+}
+
+.controllerSlider {
+    display: inline-block;
+    width: 100%;
+}
+
+.pushUpConsole {
+    width: 100%;
+    height: 0.5em;
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    /* slider in console */
+    input[type='range'] {
+        overflow: hidden;
+        /* 10em; */
+        min-width: 40%;
+        max-width: 50%;
+        -webkit-appearance: none;
+        background-color: var(--background-color);
+        /* #9a905d; */
+        float: left;
+
+    }
+
+    input[type='range']::-webkit-slider-runnable-track {
+        height: 2.0em;
+        -webkit-appearance: none;
+        color: #13bba4;
+        margin-top: -0.1em;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+        width: 2em;
+        -webkit-appearance: none;
+        height: 2em;
+        cursor: ew-resize;
+        background: #434343;
+        box-shadow: -2em 0 0 2em #43e5f7;
+
+    }
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/*
+loader Animation
+    */
+
+.loaderAnimationBright {
+    background-image: radial-gradient(circle farthest-corner at center, #3C4B57 0%, #1C262B 100%);
+    position: absolute;
+    top: calc(50% - 32px);
+    left: calc(50% - 32px);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    perspective: 800px;
+}
+
+.loaderAnimation {
+    position: absolute;
+    top: calc(50% - 32px);
+    left: calc(50% - 32px);
+    width: 3.5em;
+    height: 3.5em;
+    box-shadow:
+        inset 0 0 50px #fff,
+        inset 20px 0 80px #f0f,
+        inset -20px 0 80px #0ff,
+        inset 20px 0 300px #f0f,
+        inset -20px 0 300px #0ff,
+        0 0 50px #fff,
+        -10px 0 80px #f0f,
+        10px 0 80px #0ff;
+    border-radius: 50%;
+}
+
+.inner {
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.inner.one {
+    left: 0%;
+    top: 0%;
+    animation: rotate-one 1s linear infinite;
+    border-bottom: 3px solid #EFEFFA;
+}
+
+.inner.two {
+    right: 0%;
+    top: 0%;
+    animation: rotate-two 1s linear infinite;
+    border-right: 3px solid #EFEFFA;
+}
+
+.inner.three {
+    right: 0%;
+    bottom: 0%;
+    animation: rotate-three 1s linear infinite;
+    border-top: 3px solid #EFEFFA;
+}
+
+@keyframes rotate-one {
+    0% {
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+    }
+}
+
+@keyframes rotate-two {
+    0% {
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+    }
+}
+
+@keyframes rotate-three {
+    0% {
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+    }
+}
+
+/*
+DIV for loader Animation
+    */
+
+.divLoaderAnimationDialog {
+    opacity: .8;
+    position: fixed;
+    margin: auto;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 10%;
+    height: 10%;
+    z-index: 10000;
+    display: none;
+}
+
+.divCenterAnimationLoaderItems {
+    /* center content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div {
     border: 0.0em solid black;
-    border-collapse: collapse;
 }

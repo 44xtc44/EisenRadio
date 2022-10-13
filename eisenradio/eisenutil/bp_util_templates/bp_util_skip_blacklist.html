@@ -1,0 +1,30 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+<hr>
+
+<h1>{% block title %} {{ radio_name }} - Session Skipped {% endblock %}</h1>
+
+<hr>
+
+<div class="blacklist_div">
+    <div>
+
+        <a href={{radio_start_page_url}}><p>return to {{ radio_name }}</p></a>
+
+        <p>List of titles skipped during this session:</p>
+        <p>{{ skip_count }} skipped</p>
+
+        <ul>
+            {% for value in skiplist%}
+            <li>
+                {{ value }}
+            </li>
+            {% endfor%}
+        </ul>
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+

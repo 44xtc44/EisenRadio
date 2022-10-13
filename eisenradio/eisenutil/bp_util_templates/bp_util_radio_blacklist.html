@@ -1,0 +1,64 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+<hr>
+
+<h1>{% block title %} {{ radio_name }} - Records {% endblock %}</h1>
+
+<hr>
+<div class="blacklist_div">
+
+    <a href={{radio_start_page_url}}><p>return to {{ radio_name }}</p></a>
+
+    <p>{{ skip_count }} skipped during session</p>
+    <form action="{{ url_for('eisenutil_bp.tools_blacklist_skipped', radio_name=radio_name) }}">
+        <button type="submit" class="btn btn-warning btn-sm"
+                id="button_radio_skipped">skipped
+        </button>
+    </form>
+    <hr>
+
+    <div class="divBookMarkBar" id="divShowResultDeleteBlackList">
+        <div class="divExtendedToolsInfoWrapper">
+            <div class="divExtendedToolsInfo" id="idDivResultTextDeleteBlackList">
+            </div>
+        </div>
+    </div>
+
+    <div>
+        {{ counter }} items in list
+        <p>
+            <label for="checkbox_whole_radio_blacklist">
+                <input type="checkbox" id=checkbox_whole_radio_blacklist> delete list
+            </label>
+        </p>
+
+        <p>
+            <button id="button_radio_blacklist" class="btn btn-danger btn-sm"
+                    onclick="delFromBlacklist({{ counter }}, '{{ radio_name }}' )"> Delete
+            </button>
+        </p>
+
+        <p> select titles to delete from list</p>
+
+        <ul>
+            {% for key, value in sorted_title_dict.items()%}
+            {% set loopIndex=loop.index0 + 1 %}
+            <li>
+                <label for="check_radio_blacklist_{{ loopIndex }}">
+                    <input type="checkbox"
+                           id="check_radio_blacklist_{{ loopIndex }}"
+                           value="{{ key }}"> {{ value }}
+
+                </label>
+            </li>
+            {% endfor%}
+
+        </ul>
+
+    </div>
+</div>
+
+<hr>
+{% endblock %}
+

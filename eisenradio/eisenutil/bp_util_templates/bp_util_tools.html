@@ -1,80 +1,606 @@
 {% extends 'bp_util_base.html' %}
-            {% block tools %}
-                <li class="active"><a href="{{url_for('eisenutil_bp.about')}}">Tools</a>
-            {% endblock %}
+
 {% block content %}
 
-    <h1>{% block title %} Tools {% endblock %}</h1>
+<p id="scroll_top"></p>
+<h1>{% block title %} Tools {% endblock %}</h1>
+<hr>
 
-        <hr>
-                    <h3>Export</h3>
-                    <p>Export, Backup Radio Names and URLs from database to settings.ini file. ("Save" path)</p>
-                    <p></p>
-                    <form id="export_all_radios_form" action="{{ url_for('eisenutil_bp.tools_export_ini') }}" method="post">
-                        <div class="form-group">
-                            <input class="btn btn-primary btn-sm"
-                                   type="submit"
-                                   id="export_all_radios"
-                                   value="Export"
-                                   onclick=""
-                                   name="post_export_to_ini">
-                            <label for="export_all_radios"> Path: {{ export_path }}
-                            </label>
-                        </div>
-                    </form>
-        <hr>
-
-
-                    <h3>Import</h3>
-                    <p style="font-size: 1.5;">Import (restore or append) Names and URLs from *.ini file
-                        to database. Remember to set the "Save" path. :)</p>
-                    <p>
-                        You can create a settings.ini on a tablet or PC and then import it on your mobile/cell phone.
-                    </p>
-                    <p style="color:red;"> App restart required! </p>
-                    <p></p>
-
-
-                    <form id="form_upload" action="{{ url_for('eisenutil_bp.tools_upload_ini') }}" method="post" enctype="multipart/form-data">
-                        <div>
-                          <label for="inputFile">Choose *.ini file to import.</label>
-                          <input type="file" id="inputFile" name="inputFile">
-                        </div>
-                        <p></p>
-                        <div>
-                          <button class="btn btn-primary btn-sm">Import</button>
-                        </div>
-                    </form>
-
-                    <p></p>
-                    <div>
-                        <p>ini looks like so (mandatory [STATIONS] and your list):</p>
+    <div id="divConfigEisenradio">
+        <h3 id="configEisenradioHeadline" class="toolsSubHeadlines" onclick="configEisenradioShow();">config</h3>
+    </div>
+<section id="configEisenradio"  data-title="reduce energy use and fun">
+        <div id="configEisenradioDiv">
+            <div class="divBookMarkBar">
+                <div class="divBookMarkLeft270deg">
+                    <div class="divBookMarkLeft">
+                        <p>change config</p>
                     </div>
-                    <pre>
-                    <br>[STATIONS]
-		            <br>BLUES_UK = http://149.255.59.3:8232/stream
-		            <br>hr3 = http://metafiles.gl-systemhaus.de/hr/hr3_2.m3u
-                    <br>pop24 = http://rosewellpop.radioca.st:80/streams/128kbps
-		            </pre>
-
-        <hr>
-                    <h3>Delete</h3>
-                    <p style="font-size: 1.5;">Delete all Radios.</p>
-                    <p style="color:red;">Then restart the app.</p>
-
-                    <p></p>
-                    <form id="del_all_radios_form" action="{{ url_for('eisenutil_bp.tools_delete_all') }}" method="post">
-                        <div class="form-group">
-                            <input class="btn btn-primary btn-sm"
-                                   type="submit"
-                                   id="del_all_radios"
-                                   value="Delete"
-                                   onclick="return confirm('Are you sure you want to delete all radios?')"
-                                   name="post_delete_all_radios">
-                            <label for="del_all_radios">
-                            </label>
+                    <div class="divBookMarkRight">
+                        <div class="infoText">
+                            <p class="pBookMark">Use all features and tools except animations.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divDivColorWrapper">
+                <div class="divBookMarkBar">
+                    <div class="divExtendedToolsInfoWrapper">
+                        <div class="divExtendedToolsInfo" id="configEisenradioCheckBoxDiv">
+                            <h5>Permanent settings</h5>
+                                <!--- Style --------->
+                            <p>
+                                <label for="checkboxConfigStyle">
+                                    <input type="checkbox" id="checkboxConfigStyle" {{style_check_box_checked}}>
+                                </label>
+                                {{style_check_box_msg}}
+                            </p>
+
+                            <!--- Animation --------->
+                            <p>
+                                <label for="checkboxConfigAnimation">
+                                    <input type="checkbox" id="checkboxConfigAnimation" {{animation_check_box_checked}}>
+                                </label>
+                                {{animation_check_box_msg}}
+                            </p>
+                            <p>
+                                <label for="checkboxConfigFrontPigs">
+                                    &emsp;&emsp;<input type="checkbox" id="checkboxConfigFrontPigs" {{front_pigs_check_box_checked}}>
+                                </label>
+                                {{front_pigs_check_box_msg}}
+                            </p>
+                            <p>
+                                <label for="checkboxConfigBalloon">
+                                    &emsp;&emsp;<input type="checkbox" id="checkboxConfigBalloon" {{balloon_check_box_checked}}>
+                                </label>
+                                {{balloon_check_box_msg}}
+                            </p>
+                            <p>
+                                <label for="checkboxConfigFlatSpeaker">
+                                    &emsp;&emsp;<input type="checkbox" id="checkboxConfigFlatSpeaker" {{speaker_check_box_checked}}>
+                                </label>
+                                {{speaker_check_box_msg}}
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+                 <div class="divBookMarkActionButtons">
+                     <div class="btn-orange"
+                          id="configEisenradioBtn"
+                          onclick="configEisenradioUpdate();">Update
+                     </div>
+
+                 </div>
+            </div>
+
+        </div>
+</section>
+
+<hr>
+
+    <div id="divMonitorRecordsHeadline">
+        <h3 id="monitorRecordsHeadline" class="toolsSubHeadlines" onclick="monitorRecordsShow()">Monitor Recordings</h3>
+    </div>
+<section id="sectionMonitorRecords" data-title="Monitor Records and Blacklists">
+    <div id="monitorRecordsDiv">
+
+        <div class="divBookMarkBar">
+            <div class="divBookMarkLeft270deg">
+                <div class="divBookMarkLeft">
+                    <p>Monitor</p>
+                </div>
+
+                <div class="divBookMarkRight">
+                    <div class="infoText">
+                        <p class="pBookMark">Enhancement for the record button.</p>
+                        <p class="pBookMark">&#{{blacklist_check_box_info}}; delete unwanted titles once<br>
+                                             &#{{blacklist_check_box_info}}; show rate of occurrence<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{ url_for('eisenutil_bp.tools_radio_blacklist_set') }}">
+            <div class="form-group">
+                <input class="{{btn_color}}"
+                       type="submit"
+                       id="blackListSetButton"
+                       value="{{button_label}}"
+                       style="display:none;">
+            </div>
+        </form>
+
+        <div class="divBookMarkBar">
+            <div class="divBookMarkLeft270deg">
+                <div class="divBookMarkActionButtons">
+                    {% if enabled %}
+                    {% set btn_color='green' %}
+                    {% else -%}
+                    {% set btn_color='grey' %}
+                    {% endif -%}
+                    <div class="btn-{{btn_color}}"
+                         id="caller_divConfirmDialog_BlackListEnable"
+                         onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'block');">{{button_label}}
+                    </div>
+
+                    <span class="spanBookMark">{{button_message}}</span>
+                </div>
+            </div>
+        </div>
+
+         <div class="divConfirmDialogAliasButton">
+             <div class="divConfirmDialog" id="divConfirmDialogBlackListSet">
+                 <h3 class="toolsSubHeadlines" >Confirm Switch</h3>
+                 <div class="divCenterConfirmationItems">
+                     <div class="btn-green"
+                         id="caller_blackListSetButton_Switch"
+                         onclick="autoClickButton('caller_blackListSetButton_.');callLoaderAnimation();">OK
+                     </div>
+                     <div class="btn-red"
+                         id="confirmDialogBlackListSet"
+                         onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'none');">Cancel
+                     </div>
+                 </div>
+             </div>
+
+             <button class="{{btn_color}}"
+                     id="caller_blackListSetButton_."
+                     onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'block');"
+                     style="display:none;">{{button_label}}
+             </button>
+         </div>
+
+         <form action="{{ url_for('eisenutil_bp.tools_blacklist_overview') }}">
+             <button type="submit"
+                     id="blackListOverViewButton"
+                     class="btn btn-warning btn-sm"
+                     style="display:none;">Blacklists
+             </button>
+         </form>
+
+        <div class="divBookMarkBar">
+            <div class="divBookMarkLeft270deg">
+                <div class="divBookMarkActionButtons">
+                    <div class="btn-orange"
+                         id="caller_blackListOverViewButton_Blacklists"
+                         onclick="autoClickButton('caller_blackListOverViewButton_.');">Blacklists
+                    </div>
+                    <span class="spanBookMark">Jump to blacklists overview.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+
+
+    <div id="divAacpRepairHeadline">
+        <h3 id="aacpRepairHeadline" class="toolsSubHeadlines" onclick="aacpRepairDivShow()">aacp file repair</h3>
+    </div>
+<section id="sectionAacRepair"  data-title="AACP Repair">
+
+    <div id="aacpRepairDiv">
+        <div class="divBookMarkBar">
+            <div class="divBookMarkLeft270deg">
+                <div class="divBookMarkLeft">
+                    <p>AAC</p>
+                </div>
+                <div class="divBookMarkRight">
+                    <div class="infoText">
+                        <p class="pBookMark">Browser stops playing faulty aac files.</p>
+                        <p class="pBookMark">Repaired COPY(s) in:&nbsp;<b>{{ export_path }}</b> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divBookMarkBar">
+            <div class="divBookMarkLeft270deg">
+                <div class="divBookMarkActionButtons">
+
+                    <form id="form_aacp_repair" action="{{ url_for('eisenutil_bp.tools_aacp_repair') }}" method="post"
+                          enctype="multipart/form-data">
+                        <div class="infoText">
+
+                                <input type="file" id="fileUploadAcpRepair" name="fileUploadAcpRepair"
+                                        style="display:none"
+                                        accept=".aac, .aacp" multiple/>
+
+                            <div>
+                                <button class="btn btn-primary btn-sm"
+                                            id="aacRepairButton"
+                                            style="display:none;">repair
+                                </button>
+
+                                <div class="btn-light-brown"
+                                    id="caller_fileUploadAcpRepair_repair"
+                                    onclick="autoClickButton('caller_fileUploadAcpRepair_.');">select files
+                                </div>
+
+                                <div class="btn-light-blue"
+                                    id="caller_aacRepairButton_repair"
+                                    onclick="autoClickButton('caller_aacRepairButton_.');callLoaderAnimation();"
+                                        >repair
+                                </div>
+                            </div>
+
+                        </div>
+
                     </form>
-    <hr>
+                </div>
+            </div>
+        </div>
+
+        <div class="divBookMarkBar">
+            <div class="divExtendedToolsInfoWrapper">
+                <div class="divExtendedToolsInfo">
+                    <div id="divShowUploadFilesAcpRepair">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divDivColorWrapper">
+            <div class="divBookMarkBar">
+                <div class="divExtendedToolsInfoWrapper">
+                    <div class="divExtendedToolsInfo">
+
+                        <p class="pActionButtons">
+                            Choose <span class="exImConfigs">*aac or *aacp</span>
+                            files. Other selected file types will be ignored.
+                        </p>
+                        <p class="pActionButtons">Repairs any files, including older Eisenradio versions and GhettoRecorder stand-alone package.<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<hr>
+
+    <div id="divExportHeadline">
+        <h3 id="exportHeadline" class="toolsSubHeadlines" onclick="exportShow()">Export</h3>
+    </div>
+<section id="sectionExport"  data-title="Export of Radio Names,URLs and Blacklists">
+        <div id="exportDiv">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkLeft">
+                            <p>Export</p>
+                        </div>
+                        <div class="divBookMarkRight">
+                            <div class="infoText">
+
+                                <p class="pBookMark">Backup Radio Names and URLs</p>
+                                <p class="pBookMark">Export BlackLists, merge with other devices</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="divDivColorWrapper">
+                <div class="divBookMarkBar">
+                    <div class="divToolsRadioButtons">
+                        <input id="toolsExpURL" type="radio" name="sameNameExp" value="url" onclick="divShowExportUrls();" checked>
+                        <label for="toolsExpURL"> Names and URLs</label>
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <input id="toolsExpTrace" type="radio" name="sameNameExp" value="trace" onclick="divShowExportBlacklists();">
+                        <label for="toolsExpTrace"> Blacklists</label>
+                    </div>
+                </div>
+            </div>
+            <div id="div_toolsExportUrl">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkActionButtons">
+                            <div class="btn-light-blue"
+                                id="caller_exportUrlButton_Export"
+                                onclick="autoClickButton('caller_exportUrlButton_.');">Export
+                            </div>
+
+                            <span class="exImConfigs"><b>{{ export_path }}\settings.ini</b></span>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="form_exportUrl" action="{{ url_for('eisenutil_bp.tools_export_ini') }}" method="post"
+                      enctype="multipart/form-data">
+                    <div>
+                        <button class="btn btn-primary btn-sm"
+                                id="exportUrlButton"
+                                style="display:none;">Export</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+            <div id="div_toolsExportTracLists" style="display: none">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkActionButtons">
+                            <div class="btn-orange"
+                                id="caller_exportBlackListButton_Export"
+                                onclick="autoClickButton('caller_exportBlackListButton_.');">Export
+                            </div>
+
+                            <span class="exImConfigs"><b>{{ export_path }}\blacklist.json</b></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <form id="form_exportBlackList" action="{{ url_for('eisenutil_bp.tools_export_blacklists') }}" method="post"
+                      enctype="multipart/form-data">
+                    <div>
+                        <button class="btn btn-warning btn-sm"
+                                id="exportBlackListButton"
+                                style="display:none;">Export</button>
+                    </div>
+
+                </form>
+                <p>&nbsp;</p>
+
+            </div>
+        </div>
+</section>
+<hr>
+
+    <div id="divImportHeadline">
+        <h3 id="importHeadline" class="toolsSubHeadlines" onclick="importShow()">Import</h3>
+    </div>
+<section id="sectionImport"  data-title="Import of Radio Names,URLs and Blacklists">
+        <div id="importDiv">
+
+            <div id="div_Import">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkLeft">
+                            <p>Import</p>
+                        </div>
+                        <div class="divBookMarkRight">
+                            <div class="infoText">
+                                <p class="pBookMark">Import (restore or append) Radio Names and URLs.</p>
+                                <p class="pBookMark">Restore, merge Lists with titles to ignore.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divDivColorWrapper">
+                    <div class="divBookMarkBar">
+                        <div class="divToolsRadioButtons">
+                            <input id="toolsImpURL" type="radio" name="sameNameImp" value="url" onclick="divShowImportUrls();" checked>
+                            <label for="toolsImpURL">Names and URLs</label>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <input id="toolsImpTrace" type="radio" name="sameNameImp" value="trace" onclick="divShowImportBlacklists();">
+                            <label for="toolsImpTrace"> Blacklists</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="div_toolsImport">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkActionButtons">
+                            <div class="btn-light-brown"
+                                    id="caller_fileUploadUrls_Import"
+                                    onclick="autoClickButton('caller_fileUploadUrls_Import');"
+                                    >
+                                    select *.ini file
+                            </div>
+                            <div class="btn-light-blue"
+                                id="caller_importUrlButton_Import"
+                                onclick="autoClickButton('caller_importUrlButton_.');callLoaderAnimation();">Import
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divBookMarkBar">
+                    <div class="divExtendedToolsInfoWrapper">
+                        <div class="divExtendedToolsInfo">
+                            <div id="divShowUploadFilesUrls">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="form_upload" action="{{ url_for('eisenutil_bp.tools_upload_ini') }}" method="post"
+                      enctype="multipart/form-data">
+                    <div>
+                        <input type="file" id="fileUploadUrls" name="fileUploadUrls"
+                               style="display:none"
+                               accept=".ini">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary btn-sm" id="importUrlButton" style="display:none">Import</button>
+                    </div>
+                </form>
+
+                <div class="divDivColorWrapper">
+                    <div class="divBookMarkBar">
+                        <div class="divExtendedToolsInfoWrapper">
+                            <div class="divExtendedToolsInfo">
+                                <p>Remember to set the "Save" path. :)<br>
+                                You can export a settings.ini and import it on a second device.
+                                </p>
+                                <p style="color:red;">App restart required!</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divBookMarkBar">
+                        <div class="divExtendedToolsInfoWrapper">
+                            <div class="divExtendedToolsInfo">
+                                <p>Mandatory [STATIONS] and your list:</p>
+                                <pre>
+                                     <br>[STATIONS]
+        	    	                 <br>BLUES_UK = http://149.255.59.3:8232/stream
+        	    	                 <br>hr3 = http://metafiles.gl-systemhaus.de/hr/hr3_2.m3u
+                                     <br>pop24 = http://rosewellpop.radioca.st:80/streams/128kbps
+        	    	            </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="div_toolsImportTraceLists" style="display: none">
+
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkLeft270deg">
+                        <div class="divBookMarkActionButtons">
+                            <div class="btn-light-brown"
+                                id="caller_fileUploadBlackLists_Import"
+                                onclick="autoClickButton('caller_fileUploadBlackLists_Import');">select *json file
+                            </div>
+
+                            <div class="btn-orange"
+                                id="caller_importBlackListButton_Import"
+                                onclick="autoClickButton('caller_importBlackListButton_.');callLoaderAnimation();">Import
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divBookMarkBar">
+                    <div class="divExtendedToolsInfoWrapper">
+                        <div class="divExtendedToolsInfo">
+                            <div id="divShowUploadFilesBlackLists">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="form_upload_trace_lists" action="{{ url_for('eisenutil_bp.tools_upload_blacklists') }}" method="post"
+                      enctype="multipart/form-data">
+                    <div>
+                        <input type="file" id="fileUploadBlackLists" name="fileUploadBlackLists"
+                               style="display:none"
+                               accept=".json">
+                    </div>
+                    <div>
+                        <button class="btn btn-warning btn-sm"
+                                id="importBlackListButton"
+                                style="display:none">Import</button>
+                    </div>
+                </form>
+                <div class="divDivColorWrapper">
+                    <div class="divBookMarkBar">
+                        <div class="divExtendedToolsInfoWrapper">
+                            <div class="divExtendedToolsInfo">
+                                <p>Import lists with titles you don't like to be on your device again.</p>
+                                <p>GhettoRecorder blacklists can be imported.</p>
+                                <p>An imported list will be merged with the corresponding radio list.<br>
+                                It is possible to rename a radio in the json file to grab its list.<br>
+                                    Please copy the radio name (upper- and lowercase stuff).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divBookMarkBar">
+                        <div class="divExtendedToolsInfoWrapper">
+                            <div class="divExtendedToolsInfo">
+                                <p>*json file looks like so:</p>
+                                <pre>
+                                    <br>"Eisenradio message": "\"This is a json formatted dictionary.
+        	    	                <br>"time_machine": [
+        	    	                <br>"Murder at Midnight - 12 The Man Who Died Yesterday",
+                                    <br>"The Adventures of Philip Marlowe - The Fox's Tail",
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<hr>
+
+    <div id="divDeleteHeadline">
+        <h3 id="deleteHeadline" class="toolsSubHeadlines" onclick="deleteShow()">Delete</h3>
+    </div>
+<section id="sectionDeleteAll"  data-title="Wipe out radio table in Database">
+        <div id="deleteDiv">
+
+            <div class="divBookMarkBar">
+                <div class="divBookMarkLeft270deg">
+                    <div class="divBookMarkLeft">
+                        <p>Delete</p>
+                    </div>
+                    <div class="divBookMarkRight">
+                        <div class="infoText">
+                            <p class="pBookMark">Deletes all of the radios from the database.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divDivColorWrapper">
+                <div class="divBookMarkBar">
+                    <div class="divBookMarkActionButtons">
+                        <div class="btn-light-blue"
+                            id="caller_delAllRadiosButton_."
+                            onclick="divConfirmDialog('divConfirmDialogDeleteAll', 'block');">Delete
+                        </div>
+                    </div>
+                </div>
+                <div class="divBookMarkBar">
+                    <div class="divExtendedToolsInfoWrapper">
+                        <div class="divExtendedToolsInfo">
+                            <p>Delete all Radios. (confirmation dialog)</p>
+                            <p style="color:red;">Then restart the app.</p>
+                            <svg width="400px" height="400px"><use href=#gParachuteOne transform="scale(3,3)"></use></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="del_all_radios_form" action="{{ url_for('eisenutil_bp.tools_delete_all') }}" method="post">
+                    <input class="btn btn-primary btn-sm"
+                           type="submit"
+                           id="delAllRadiosButton"
+                           value="Delete"
+                           name="post_delete_all_radios" style="display:none;">
+                    <label for="delAllRadiosButton">
+                    </label>
+            </form>
+
+            <div>
+                <div class="divConfirmDialog" id="divConfirmDialogDeleteAll">
+                    <h3 class="toolsSubHeadlines" >Confirm Deletion</h3>
+
+                    <div class="divCenterConfirmationItems">
+                        <div class="btn-green"
+                            id="caller_delAllRadiosButton_Delete"
+                            onclick="autoClickButton('caller_delAllRadiosButton_.');callLoaderAnimation();">OK
+                        </div>
+                        <div class="btn-red"
+                            id="confirmDialogDelAllCancel"
+                            onclick="divConfirmDialog('divConfirmDialogDeleteAll', 'none');">Cancel
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <div class="push-up"
+                 id="scroll_bottom">
+            </div>
+        </div>
+</section>
+
+<hr>
 
 {% endblock %}

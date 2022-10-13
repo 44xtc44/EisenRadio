@@ -1,0 +1,31 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+<div class="divFadeIn">
+<hr>
+<div class="divBookMarkBar">
+    <div class="divBookMarkLeft270deg">
+        <div class="divBookMarkActionButtons">
+                <div class="infoText" id="divAacRepairLogInfoText">
+                    <div class="btn-orange"
+                        id="caller_aacRepairLog_repair"
+                        onclick="aacRepairPullLog();"
+                            >aac(p) Repair Log
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="divBookMarkBar" id="divShowResultAcpRepair">
+    <div class="divExtendedToolsInfoWrapper">
+        <div class="divExtendedToolsInfo" id="idDivResultTextAcpRepair">
+        </div>
+    </div>
+</div>
+
+<hr>
+</div>
+{% endblock %}
+
