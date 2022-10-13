@@ -9,7 +9,7 @@ description = "Play radio. Style your App."
 keywords = ['audio', 'aac repair', 'aacp repair',]
 license = {text = "MIT License"}
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 dynamic = ['authors',]
 
 # [tool.setuptools.packages.find] still beta, need [options] 'packages = find:' in setup.cfg
