@@ -10,7 +10,6 @@ pack_version = "1.2"
 pack_description = "Play radio. Style your App."
 
 INSTALL_REQUIRES = [
-    'flask_cors',
     'configparser~=5.2.0',
     'requests~=2.26.0',
     'urllib3~=1.26.7',
