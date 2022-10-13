@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.0"
+version = "2.1"
 description = "Play radio. Style your App."
 keywords = ['audio', 'aac repair', 'aacp repair',]
 license = {text = "MIT License"}
