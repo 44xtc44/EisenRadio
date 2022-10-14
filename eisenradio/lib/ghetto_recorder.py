@@ -139,6 +139,8 @@ class GBase:
 class GRecorder:
     """ recorder
     Dictionaries:
+        current_song_dict = {}  - each thread writes the new title to the station key name {station : title}
+        ghettoApi.init_current_song_dict(current_song_dict)
         path_record_dict = {}    - {radio : //home//box/Download//hr3//Mittelstandskinder ohne Strom - kalt [Rmx]}
         start_write_command = {} - recorder head thread set command to start recording
         record_active_dict = {}  - button press true/false record / command line version writes also here
@@ -197,6 +199,8 @@ class GRecorder:
 
     need to make more use of ghettoApi to get this guy smaller and more readable; perhaps split api
     """
+    current_song_dict = {}  # each thread writes the new title to the station key name {station : title}
+    ghettoApi.init_current_song_dict(current_song_dict)
     path_record_dict = {}  # current title attached to the record path {station : file path}
     start_write_command = {}  # recorder head thread set command to start recording
     record_active_dict = {}  # button press true/false
@@ -796,6 +800,8 @@ def record(str_radio, url, str_action):
     # GBase.radio_base_dir set for html in eishome.set_radio_path(), and here terminal, if active
     if GBase.terminal_run:
         GBase.radio_base_dir = terminal_custom_record_path_get()
+        if not GBase.radio_base_dir:
+            return
     dir_save = os.path.join(GBase.radio_base_dir, str_radio)
     record_start_radio(str_radio, url, stream_suffix, dir_save, str_action)
     print(f".. run .. {str_radio}  {url} [{GNet.bit_rate_dict[str_radio]} kB/s]")
@@ -851,9 +857,12 @@ def terminal_custom_record_path_get():
      """
     custom_path = ghetto_menu.terminal_record_global_custom_path_get()
     if not custom_path:
-        path = ghetto_menu.terminal_record_radio_base_dir_get()
+        print("--> no path to record files ..")
+        return False
     else:
-        path = custom_path
+        base_dir = ghetto_menu.terminal_record_radio_base_dir_get()
+        path = os.path.join(custom_path, base_dir)
+    GBase.radio_base_dir = path
     return path
 
 
@@ -1023,6 +1032,14 @@ def terminal_main():
     ghetto_recorder.py  - main module, GBase.radio_base_dir pulled from ghetto_ini to avoid circular import
     ghettoApi           - reuse methods of Eisenradio to avoid import problems, push blacklist name ..., __init__.py
     settings.ini        - configuration file
+
+    Record_path:
+    ------------
+    one, same folder as this module
+    two, path from [GLOBAL] setting
+    three, container path
+    four, set path from menu option
+    terminal_custom_record_path_get() set GBase.radio_base_dir and shows in menu;
 
     Container:
     ----------

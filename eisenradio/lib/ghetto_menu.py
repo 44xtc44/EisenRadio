@@ -77,7 +77,7 @@ def menu_main():
 
 def menu_path():
     menu_options = {
-        1: 'New parent path for recorded titles',
+        1: 'New parent path for recorded radios. Write to config.',
         2: 'Back to Main Menu',
     }
 
@@ -159,15 +159,19 @@ def record():
     """ init all dicts in ghetto_ini.GIni, show the list of radios to choose from
     Functions
         GIni.record_path_test()    - test if configparser can read config file
+        GIni.global_config_get(print_config=True) - fill path vars,
         GIni.show_items_ini_file() - show the main menu headline and description
     """
     print('\toption \'record\'')
-    # print(f'\t dirs: {GIni.radio_base_dir} {GIni.settings_path} {GIni.settings_dir}')
-    # print(f'\t test: {GIni.record_path_test()} ')
+    if record_path_get():
+        GIni.global_config_get(print_config=True)
+        GIni.show_items_ini_file()
+
+
+def record_path_get():
     if not GIni.record_path_test():
         return False
-    else:
-        GIni.show_items_ini_file()
+    return True
 
 
 def record_read_radios():
@@ -269,10 +273,7 @@ def record_create_folder_radio_name(radio_name):
     """ create parent folder and radio child folder """
     parent_dir = GIni.radio_base_dir
     custom_dir = terminal_record_global_custom_path_get()
-    if len(custom_dir) == 0:
-        path = os.path.join(parent_dir, radio_name)
-    else:
-        path = os.path.join(custom_dir, radio_name)
+    path = os.path.join(custom_dir, parent_dir, radio_name)
     try:
         os.makedirs(path, exist_ok=True)
         print(f"\t{path}")

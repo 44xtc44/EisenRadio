@@ -14,8 +14,6 @@ class GMeta:
     Dictionaries:
         ghetto_measure = {}     - header information dump and request time measure
         ghettoApi.init_ghetto_measurements(ghetto_measure)
-        current_song_dict = {}  - each thread writes the new title to the station key name {station : title}
-        ghettoApi.init_current_song_dict(current_song_dict)
 
     Methods:
         metadata_request(url) - pull the metadata by telling server {'Icy-MetaData' "is" '1'}, get binary data content
@@ -26,8 +24,6 @@ class GMeta:
      """
     ghetto_measure = {}  # header information dump and request time measure
     ghettoApi.init_ghetto_measurements(ghetto_measure)
-    current_song_dict = {}  # each thread writes the new title to the station key name {station : title}
-    ghettoApi.init_current_song_dict(current_song_dict)
 
     @staticmethod
     def metadata_request(url):

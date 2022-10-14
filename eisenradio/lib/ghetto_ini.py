@@ -13,7 +13,6 @@ class GIni:
     choice of radios can be made via list index number or name of the radio
     Dictionaries:
         radio_names_list = []  : list to search radio name via character
-        module_dir                    : dir of calling module
         radio_base_dir                : recorder parent dir
         settings_path                 : full path name of config file
         settings_dir                  : dir path of config file
@@ -31,13 +30,13 @@ class GIni:
      """
 
     radio_names_list = []       # search radio name via character
-    module_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-    radio_base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "radiostations")
-    settings_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings.ini")  # same folder as module
+    radio_base_dir = "radios"
+    this_module_path = os.path.dirname(os.path.abspath(__file__))
+    settings_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "settings.ini")
     settings_dir = os.path.dirname(settings_path)
     config_stations = {}          # radio, url pairs
     config_global = {}            # extra infos like different path SAVE_TO_DIR = f:\2, BLACKLIST_ENABLE = True
-    global_custom_path = ""       # custom parent directory for records
+    global_custom_path = settings_dir  # custom parent directory for records; via menu option set path or [GLOBAL] path
     global_custom_blacklist = ""  # blacklist feature on/off
 
     @staticmethod
@@ -52,7 +51,7 @@ class GIni:
             print("--> GIni.show_items_ini_file(), can not find configuration section [STATIONS] - proceed")
             return
 
-        with open(os.path.join(GIni.module_dir, "ghetto_recorder.ascii"), "r") as reader:
+        with open(os.path.join(GIni.this_module_path, "ghetto_recorder.ascii"), "r") as reader:
             print(reader.read())
 
         GIni.radio_names_list = []
@@ -147,11 +146,9 @@ class GIni:
     def config_path_write(custom_path):
         """ find settings.ini and blacklist.json
         write the path variables
-        used, if files are not in the same folder as the main module (ghetto_recorder)
+        used, if config file is not in the same folder as the main module (ghetto_recorder)
         Menu, 'Set path to config, settings.ini'
         """
         path = str(Pathlib_path(custom_path))
-        GIni.settings_dir = path
         GIni.settings_path = os.path.join(path, "settings.ini")
-        GIni.radio_base_dir = path
         GIni.global_custom_path = path
