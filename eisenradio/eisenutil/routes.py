@@ -2,13 +2,14 @@ import os
 import eisenradio.eisenutil.eisutil as eis_util
 import eisenradio.eisenutil.browser_stream as browser_stream
 import eisenradio.eisenutil.stopped_stations as stopped_stations
+from aacrepair import AacRepair
 from flask import Blueprint, render_template, request, url_for, flash, redirect, make_response, jsonify, Response
 from eisenradio.eisenutil import request_info
 from eisenradio.eisenutil import tools as util_tools
 from eisenradio.lib import eisdb as lib_eisdb
 from eisenradio.api import api, ghettoApi
 from eisenradio.eisenutil import monitor_records as mon_rec
-from eisenradio.eisenutil import aac_repair
+# from eisenradio.eisenutil import aac_repair
 from eisenradio.eisenutil import config_html
 
 blacklist_enabled_global = False
@@ -122,9 +123,11 @@ def tools_aacp_repair():
         return render_template('bp_util_aac_repair.html')
 
     f_dict = {f.filename: f.read() if f.filename[-5:] == ".aacp" or f.filename[-4:] == ".aac" else None for f in files}
-
-    aac_rep = aac_repair.AacRepair(f_dict)
-    aac_rep.repair_multi_files()
+    export_path = lib_eisdb.get_download_dir()
+    aac_rep = AacRepair(export_path, f_dict)
+    aac_rep.repair()
+    ghettoApi.aac_repair_log.clear()
+    ghettoApi.aac_repair_log = aac_rep.log_list
     return render_template('bp_util_aac_repair.html')
 
 
