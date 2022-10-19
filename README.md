@@ -1,8 +1,9 @@
 Eisenradio - a Web radio expandable collection
 ==============================================
 
- ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
  ![alt logo of eisenradio](/docs/source/aircraft_logo.png)
+ ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
+ 
  * Organize your web radios; delete and update, backup and restore
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
