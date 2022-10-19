@@ -4,3 +4,4 @@ mypy>=0.9.10
 flake8>=3.9
 tox>=3.24
 aacrepair~=0.3
+ghettorecorder~=2.4.1
