@@ -1,7 +1,8 @@
 import certifi
 from flask import Flask
 from os import path, environ
-from eisenradio.api import api, ghettoApi
+from eisenradio.api import api
+from ghettorecorder import ghettoApi
 
 # android ssl fix
 environ['SSL_CERT_FILE'] = certifi.where()

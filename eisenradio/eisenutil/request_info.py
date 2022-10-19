@@ -1,5 +1,5 @@
 import concurrent.futures
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 
 def header_data_read():

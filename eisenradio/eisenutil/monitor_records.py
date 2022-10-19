@@ -21,7 +21,7 @@ import threading
 import time
 
 import eisenradio.lib.eisdb as eisen_db
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 all_blacklists_dict = {}
 ghettoApi.init_ghetto_all_blacklists_dict(all_blacklists_dict)

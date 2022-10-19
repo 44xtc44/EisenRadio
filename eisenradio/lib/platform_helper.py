@@ -4,7 +4,7 @@ display information about system for Snap user to avoid black box feeling
 import os
 import webbrowser
 from eisenradio.lib.eisdb import status_read_status_set
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 flask_srv_url = "http://localhost:" + str(ghettoApi.work_port) + "/"
 

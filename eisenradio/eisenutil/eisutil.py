@@ -1,6 +1,6 @@
 import os
 from flask import flash
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 
 def make_folder(this_folder):

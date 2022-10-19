@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 import eisenradio.eisenhome.eishome as eis_home
 from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
 from eisenradio.eisenutil import config_html
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 # Blueprint Configuration
 eisenhome_bp = Blueprint(

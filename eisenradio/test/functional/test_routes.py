@@ -114,7 +114,7 @@ class TestRouteHome(unittest.TestCase):
 
         print(""" /display_info """)
 
-        from eisenradio.api import ghettoApi
+        from ghettorecorder import ghettoApi
         # mocking
         ghettoApi.current_song_dict = {
             'Korean_Pop': 'OVAN 오반 - I Need You 어떻게 지내',

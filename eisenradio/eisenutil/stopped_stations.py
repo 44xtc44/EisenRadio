@@ -1,5 +1,5 @@
 import eisenradio.eisenutil.request_info as request_info
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 
 def inactive_id_read():

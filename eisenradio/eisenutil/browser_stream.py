@@ -1,6 +1,6 @@
 from os import environ
 from time import sleep
-from eisenradio.api import ghettoApi
+from ghettorecorder import ghettoApi
 
 
 def stream_audio_feed(name):
