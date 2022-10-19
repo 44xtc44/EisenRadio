@@ -5,9 +5,9 @@ from flask import jsonify, request, flash, redirect, url_for
 
 from eisenradio.eisenhome import watchdog
 from eisenradio.eisenutil import monitor_records, config_html
-import eisenradio.lib.ghetto_recorder as ghetto
 from eisenradio.lib.eisdb import get_db_connection, status_read_status_set, get_download_dir
 from ghettorecorder import ghettoApi
+import ghettorecorder.ghetto_recorder as ghetto
 
 first_run_index = True
 first_run_audio_activated = False

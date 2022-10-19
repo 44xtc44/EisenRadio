@@ -2,7 +2,7 @@ import threading
 import time
 from ghettorecorder import ghettoApi
 from eisenradio.api import ghettoTest
-from eisenradio.lib import ghetto_recorder as ghetto
+from ghettorecorder import ghetto_recorder as ghetto
 
 radio_active = False
 ghettoApi.init_radio_active(radio_active)

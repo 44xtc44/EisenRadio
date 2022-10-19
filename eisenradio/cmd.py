@@ -7,7 +7,7 @@ console command is 'eisen-console'
 """
 import sys
 from os import path
-from eisenradio.lib import ghetto_recorder
+from ghettorecorder import ghetto_recorder
 # load standard path set
 this_dir = path.abspath(path.join(path.dirname(__file__)))
 api_dir = path.abspath(path.join(path.dirname(__file__), 'api'))
