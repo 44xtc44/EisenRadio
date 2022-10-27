@@ -28,6 +28,15 @@ class EisenRadioStyles{
         this.radioName = options.radioName;
         this.listen = false;
         this.record = false;
+
+        this.defaultAnimal = "divSvgTux_";   // "divSvgTux_" + activeListenId : full div name (div + button num)
+        this.animal = this.defaultAnimal;    // update() refresh it
+        this.index = 0;
+        this.animalDivList = [
+            "divSvgTux_",
+            "divSvgPolarBear_",
+            "divSvglaGata_"
+            ];  // child div id have an underscore
     }
     recordStyle(){
         /* return if record switched off;
@@ -231,6 +240,20 @@ class EisenRadioStyles{
             document.getElementById('radioStationComment_' + this.radioId).style.boxShadow = "";
             document.getElementById('radioStationComment_' + this.radioId).style.backgroundColor = "";
         }
+    }
+    updateAnimals(){
+    /* call next animal from list
+     * must disable the old div
+     */
+     try{
+        let divDisable = this.animal + activeListenId;
+        document.getElementById(divDisable).style.display = "none";
+
+     } catch (error) {console.log("--> error AnimalDefaultDivSvG() ",error);}
+
+        this.index += 1;
+        if (this.index > this.animalDivList.length -1) {this.index = 0;}
+        this.animal = this.animalDivList[this.index];  // new animal div from list
     }
 }
 ;
