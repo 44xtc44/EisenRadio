@@ -35,7 +35,7 @@ class TestRouteHome(unittest.TestCase):
         from eisenradio.lib.eisdb import status_read_status_set
         from eisenradio.eisenhome import routes as home_routes
 
-        app = create_app_dev(5050, True)  # True is test
+        app = create_app_dev(5050)
 
         print('\n ... Begin: def test_route_home()')
 
