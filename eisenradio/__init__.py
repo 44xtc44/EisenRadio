@@ -14,7 +14,7 @@ script_path = path.dirname(__file__)
 """ 'Home' and 'Util' load modules, templates, styles, favicon from its own project folders """
 
 
-def create_app(work_port):  # must be None
+def create_app(work_port):
     """ flask prod application factory
     prod
     """
@@ -60,10 +60,12 @@ def create_app(work_port):  # must be None
         return app
 
 
-def create_app_dev(work_port, test=None):  # must be None
-    """dev
-
-    dev
+def create_app_dev(work_port):
+    """test
+    hours of senseless tries to start test by ... app.config.from_object('config.TestConfig')
+    in review of countless internet writings, many flask prod test automations use .env to load prod env from file and
+    read from os.Environment variables
+    test
     """
     app = Flask('eisenradio')
 
@@ -71,22 +73,6 @@ def create_app_dev(work_port, test=None):  # must be None
 
         api.init_app(app)
         ghettoApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
-
-        if test is not None:
-            """------------- TEST RUN -------------------
-            exec  write_config('test') at first from pytest"""
-            # write_config('test')
-            # remove in teardown
-
-        if not test:
-            # environ['WERKZEUG_RUN_MAIN'] = 'true'
-            is_snap_device = 'SNAP' in environ  # write in [SNAP_USER_COMMON]
-            is_android_device = 'ANDROID_STORAGE' in environ
-
-            if not is_snap_device and not is_android_device:
-                # write_config('dev')
-                # remove_config()
-                app.config.from_object('config.DevConfig')
 
         # helper stuff
         from eisenradio.lib.platform_helper import main as start_frontend
@@ -109,9 +95,4 @@ def create_app_dev(work_port, test=None):  # must be None
         )
 
         create_install_db(app.config['DATABASE'])
-
-        if test:
-            print(f"\tTEST!!!:       {app.config}\n")
-        if not test:
-            start_frontend()
         return app
