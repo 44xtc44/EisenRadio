@@ -207,39 +207,9 @@ const zeppelinColorOrder = ["z1Body_RearFinUpperRear",
 ]
 function toggleAnimalDefaultDivSvG() {
 /* html call: toggle between animals */
-    animalDefaultDivSvG.update();
+    eisenStylesDict["eisenRadio_" + activeListenId].updateAnimals();
 }
 ;
-class AnimalDefaultDivSvG {
-/* target: announce new animation for "defaultFrontAnimation()" to show
- *          switch one index further on update()
- * instance: let animalDefaultDivSvG = new AnimalDefaultDivSvG(); animalDefaultDivSvG.update();
- */
-    constructor(){
-        this.animalDefaultDivSvg = "divSvgTux_";   // "divSvgTux_" + activeListenId : full div name (div + button num)
-        this.animal = this.animalDefaultDivSvg;    // update() refresh it
-        this.index = 0;
-        this.animalDivList = [
-            "divSvgTux_",
-            "divSvgPolarBear_",
-            "divSvglaGata_"
-            ];  // child div id have an underscore
-    }
-    update(){
-    /* call next from list
-     * must disable the old div
-     */
-     try{
-        let divDisable = this.animal + activeListenId;
-        document.getElementById(divDisable).style.display = "none";
-     } catch (error) {console.log("--> error AnimalDefaultDivSvG() ",error);}
-
-        this.index += 1;
-        if (this.index > this.animalDivList.length -1) {this.index = 0;}
-        this.animal = this.animalDivList[this.index];  // new animal div from list
-    }
-}
-
 class CountUpDown{
 /* target: endless count up, down
  *   count up and down for alternating direction or color fade in out, step is per frame;
@@ -1326,7 +1296,8 @@ function defaultFrontAnimation(smoothVolume, powerLevelDict){
     try {
         let ypsilonTranslation;  // fine tune position of animal up or down
         // enable animal
-        let animSvg = document.getElementById(animalDefaultDivSvG.animal + activeListenId);  // toggleAnimalDefaultDivSvG()
+        let animalContainer = eisenStylesDict["eisenRadio_" + activeListenId].animal + activeListenId;
+        let animSvg = document.getElementById(animalContainer);
         animSvg.style.display = "inline-block";
         // enable ice floe
         let divSvgIceTux = document.getElementById("divSvgIceTux_" + activeListenId); // ice floe  
@@ -1974,8 +1945,6 @@ function touchMoveItemsEventListenerSet () {
 
 /*                      -- Instances --
  */
-
-let animalDefaultDivSvG = new AnimalDefaultDivSvG(); // update() to a new animal div for "defaultFrontAnimation()"
 
 // class was designed for the speaker with three animated bars and rewritten to be reusable universal in its boundaries
 let infSpeaker = new PowerSwitch({path: document.querySelectorAll("#gSvgSpeakerFlatWaves path")});// animate speaker dynamic fake waves
