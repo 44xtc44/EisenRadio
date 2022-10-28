@@ -1,14 +1,17 @@
 Eisenradio - a Web radio expandable collection
 ==============================================
 
- ![alt logo of eisenradio](/docs/source/aircraft_logo.png)
- ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
+   ![alt logo of eisenradio](https://github.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo.png)
+   ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
+  
  
  * Organize your web radios; delete and update, backup and restore
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
  * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android file manager
  * https://pypi.org/project/eisenradio-apk/
+
+GitHub: https://github.com/44xtc44/eisenradio
 
 Eisenradio - the boring details 
 -------------------------------
@@ -47,15 +50,12 @@ Eisenradio - the boring details
     
 command line 
 ------------
+Eisenradio is using the 'GhettoRecorder' package https://pypi.org/project/GhettoRecorder/
 
-    > $ eisenradio-cmd   # console menu, no frontend, no animation, no RAM (2mb + blacklist.json)
-    > $ eisenradio-gui   # complete app with HTML Frontend
+    $ ghettorecorder
 
- * console runs with the EisenRadio file Export of 'settings.ini'; "Tools/Export/Names and URL's" menu
- * console menu option: 4 -- Set path to config, settings.ini, then all other options are available
- * GhettoRecorder package settings.ini is compatible
- 
-
+You can export your ``settings.ini and blacklist.json`` 
+via "Tools/Export/Names and URL's" menu from your database.
 
 pip install
 -----------
