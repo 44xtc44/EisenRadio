@@ -46,15 +46,6 @@ class SnapConfig(Config):
     PYTEST = False
 
 
-class DevConfig(Config):
-    FLASK_ENV = 'development'
-    DEBUG = True
-    TESTING = True
-    DATABASE_URI = os.path.join(radio_db_dir, 'database_dev.db')
-    DATABASE = os.path.join(radio_db_dir, 'database_dev.db')
-    PYTEST = False
-
-
 class TestConfig(Config):
     """pep 257 senseless class because unit test can not convince flask to load it, I give up here
 
