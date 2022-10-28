@@ -60,7 +60,7 @@ def create_app(work_port):
         return app
 
 
-def create_app_dev(work_port):
+def create_app_test(work_port):
     """test
     hours of senseless tries to start test by ... app.config.from_object('config.TestConfig')
     in review of countless internet writings, many flask prod test automations use .env to load prod env from file and
