@@ -1,3 +1,6 @@
+""" Flask application factory with blueprints
+'Home' and 'Util' load modules, templates, styles, favicon from its own project folders
+"""
 import certifi
 from flask import Flask
 from os import path, environ
@@ -8,10 +11,6 @@ from ghettorecorder import ghettoApi
 environ['SSL_CERT_FILE'] = certifi.where()
 
 script_path = path.dirname(__file__)
-
-""" Flask application factory with blueprints  """
-
-""" 'Home' and 'Util' load modules, templates, styles, favicon from its own project folders """
 
 
 def create_app(work_port):
@@ -26,7 +25,6 @@ def create_app(work_port):
         ghettoApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
 
         is_snap_device = 'SNAP' in environ  # write in [SNAP_USER_COMMON]
-
         is_android_device = 'ANDROID_STORAGE' in environ
 
         if not is_snap_device and not is_android_device:
@@ -63,8 +61,7 @@ def create_app(work_port):
 def create_app_test(work_port):
     """test
     hours of senseless tries to start test by ... app.config.from_object('config.TestConfig')
-    in review of countless internet writings, many flask prod test automations use .env to load prod env from file and
-    read from os.Environment variables
+    use .env loader to load config in OS vars, then app.config.update() from those vars
     test
     """
     app = Flask('eisenradio')
@@ -95,4 +92,6 @@ def create_app_test(work_port):
         )
 
         create_install_db(app.config['DATABASE'])
+
+        start_frontend()
         return app
