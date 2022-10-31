@@ -9,9 +9,10 @@ Eisenradio - a Web radio expandable collection
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
  * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android file manager
- * https://pypi.org/project/eisenradio-apk/
+ * Android: https://pypi.org/project/eisenradio-apk/
+ * Snap: https://snapcraft.io/eisenradio
+ * GitHub: https://github.com/44xtc44/eisenradio
 
-GitHub: https://github.com/44xtc44/eisenradio
 
 Eisenradio - the boring details 
 -------------------------------
@@ -52,6 +53,7 @@ command line
 ------------
 Eisenradio is using the 'GhettoRecorder' package https://pypi.org/project/GhettoRecorder/
 
+    echo "call the command line main menu:" 
     $ ghettorecorder
 
 You can export your ``settings.ini and blacklist.json`` 
