@@ -1,31 +1,7 @@
 # Configuration file for the Sphinx documentation builder.
-
+import os
 import sys
-from os import path
-
-this_dir = path.abspath(path.join(path.dirname(__file__)))
-app_root = path.dirname(this_dir)
-pack_root = path.dirname(app_root)
-
-# sys.path.append(path.abspath('ext/sphinx_rtd_theme'))
-
-eisen_dir = path.join(pack_root, 'eisenradio')
-docs_dir = path.join(pack_root, 'docs')
-source_dir = path.join(docs_dir, 'source')
-
-api_dir = path.join(eisen_dir, 'api')
-home_dir = path.join(eisen_dir, 'eisenhome')
-utils_dir = path.join(eisen_dir, 'eisenutils')
-instance_dir = path.join(eisen_dir, 'instance')
-lib_dir = path.join(eisen_dir, 'lib')
-sys.path.append(this_dir)
-sys.path.append(api_dir)
-sys.path.append(home_dir)
-sys.path.append(utils_dir)
-sys.path.append(instance_dir)
-sys.path.append(lib_dir)
-print(sys.path)
-print(f"--- eisen_dir {eisen_dir}")
+sys.path.insert(0, os.path.abspath('../..'))
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 #
