@@ -1,19 +1,20 @@
 """ monitor_records module description
 
-    read all database blacklists from all radios into 'all_blacklists_dict'
-    radio writes new title in 'recorder_new_title_dict[radio]'
-    blacklist_writer updates all_blacklists_dict and updates the blacklist of each radio in db
+    Info
+        read all database blacklists from all radios into 'all_blacklists_dict'
+        radio writes new title in 'recorder_new_title_dict[radio]'
+        blacklist_writer updates all_blacklists_dict and updates the blacklist of each radio in db
 
-    normal behavior - recorder copies new file (delete existing file)
-    monitored - recorder compares title with all_blacklists_dict[radio] list,
-               copy new file only if title is not found in blacklist
+        Case
+           normal behavior - recorder copies new file (delete existing file)
+           monitored - recorder compares title with all_blacklists_dict[radio] list,
+           copy new file only if title is not found in blacklist
 
     Feature
-    -------
-    route endpoints added to utils route to create an DB entry for blacklist feature, can check status from java
-    ghettoApi got a variable to break the run_blacklist_writer() loop, if timer is set
-    Tools menu got Export/Import options
-    Tools Export/Import menus are displayed or hidden Html Div elements (bp_utils.js)
+       route endpoints added to utils route to create an DB entry for blacklist feature, can check status from java
+       ghettoApi got a variable to break the run_blacklist_writer() loop, if timer is set
+       Tools menu got Export/Import options
+       Tools Export/Import menus are displayed or hidden Html Div elements (bp_utils.js)
 """
 import copy
 import json
@@ -104,13 +105,12 @@ def update_radios_blacklists():
     """for loop to update blacklists for all currently active recorder
 
     pseudo sample
-    ------
-    recorder file dict :    recorder_new_title_dict['radio5'] = 'ASAP - I want to be part of the blacklist'
-    recorder compares:          all_blacklists_dict['radio5'] = ['The Listies - I am on a list', 'OMG - Mee Too']
-    comparison
-    blacklist_writer: if recorder_new_title_dict['radio5'] value NOT in all_blacklists_dict['radio5'] list
-    then
-    blacklist_writer: all_blacklists_dict['radio5'].append(recorder_new_title_dict['radio5'] value)
+       recorder file dict -    recorder_new_title_dict['radio5'] = 'ASAP - I want to be part of the blacklist'
+       recorder compares  -        all_blacklists_dict['radio5'] = ['The Listies - I am on a list', 'OMG - Mee Too']
+       comparison
+       blacklist_writer: if recorder_new_title_dict['radio5'] value NOT in all_blacklists_dict['radio5'] list
+       then
+       blacklist_writer: all_blacklists_dict['radio5'].append(recorder_new_title_dict['radio5'] value)
     """
     # make a copy of dict to prevent 'RuntimeError: dictionary changed size during iteration'
     recorder_new_cp = copy.deepcopy(ghettoApi.recorder_new_title_dict)

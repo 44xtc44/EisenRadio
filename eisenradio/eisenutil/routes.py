@@ -32,17 +32,22 @@ def tools_radio_html_settings():
     send a message log to JS
 
     show_html_animation:
-        show/hide all animations
+       show/hide all animations
+
     show_html_style:
-        show/hide css style
+       show/hide css style
+
     show_html_front_pigs:
-        not actually pigs, but penguin, bear and tiger
+       not actually pigs, but penguin, bear and tiger
+
     show_html_ballon:
-         show/hide all aircraft related animations, balloon, parachute drop
+        show/hide all aircraft related animations, balloon, parachute drop
+
     show_html_speaker:
-        remove speaker animation
+       remove speaker animation
+
     return:
-        list of messages for each config item to allow easy loop in js with list made from divs
+       list of messages for each config item to allow easy loop in js with list made from divs
     """
     on = 1
     off = 0
@@ -279,9 +284,10 @@ def tools_export_blacklists():
 
 @eisenutil_bp.route('/tools_upload_blacklists', methods=['POST'])
 def tools_upload_blacklists():
-    """call upload_blacklists() to upload blacklists to server db, return flash message if ok or not, except on error
+    """ call upload_blacklists to upload blacklists to server db
 
-    restore the blacklists from *json file
+    Return
+       flash message if ok or not, except on error, restore the blacklists from json file
     """
     file = request.files['fileUploadBlackLists']
     try:
@@ -352,18 +358,18 @@ def tools_upload_ini():
 def tools():
     """ render TOOLS page
 
-    html config status switch checkboxes
+    Info
+       html config status switch checkboxes
+       button to switch blacklist feature on/off
+       blacklist_check_box_off is the digit part of a deselected checkbox unicode symbol
+       in html hardcoded is & and # since I can not transfer those characters (don't know why)
+       display path for exported files (same as parent download path)
 
-    button to switch blacklist feature on/off
-        blacklist_check_box_off is the digit part of a deselected checkbox unicode symbol
-            in html hardcoded is & and # since I can not transfer those characters (don't know why)
-    display path for exported files (same as parent download path)
     vars
-    export_path - parent directory of radio folders
-    button_label - blacklist feature button text
-    button_message - blacklist feature info
-    enabled - blacklist feature on or off
-
+       export_path - parent directory of radio folders
+       button_label - blacklist feature button text
+       button_message - blacklist feature info
+       enabled - blacklist feature on or off
     """
     html_animation_row = 3
     html_style_row = 4
@@ -425,14 +431,16 @@ def tools():
 def about():
     """ render ABOUT page
 
-    'POST'
-    switch browser autostart val (0,1) in db, redirect to refresh the page with updated btn value
-    'GET'
-    called from menu, returns var to show download and db path on page
+    POST
+       switch browser autostart val (0,1) in db, redirect to refresh the page with updated btn value
+
+    GET
+       called from menu, returns var to show download and db path on page
+
     vars
-    is_browser_on - reflect db entry for autostart on btn value
-    download_path - parent directory of radio folders
-    db_path - location of eisenradio database
+       is_browser_on - reflect db entry for autostart on btn value
+       download_path - parent directory of radio folders
+       db_path - location of eisenradio database
     """
     if request.method == 'POST':
         if request.form['browser']:

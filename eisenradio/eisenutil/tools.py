@@ -1,16 +1,21 @@
 """Tools menu Tools function except Monitor Records (monitor_records.py)
 
 delete all radios - from db
-    delete_all_radios()
+   delete_all_radios()
+
 export radios - names and urls
-    export_radios()
+   export_radios()
+
 export blacklists
-    dump_radio_blacklist()
-import radios - upload, since we are a webserver
-    upload_radios() - master function, upload_ prefix
-    radio_spare_image() - get random image for radio
+   dump_radio_blacklist()
+
+import radios
+   we are a webserver, upload
+   upload_radios() - master function, upload_ prefix
+   radio_spare_image() - get random image for radio
+
 import blacklists
-    upload_blacklists() - master function, upload_ prefix
+   upload_blacklists() - master function, upload_ prefix
 """
 import configparser
 import json
@@ -133,11 +138,14 @@ def upload_radios_read_stations(config, str_ini):
 def upload_radios_db_import_ini(station_dict, download_ini_path=None):
     """import names and urls from station_dict into db, function returns nothing
 
-    keyword argument: download_ini_path - two scenarios for None
-        restore all radios after complete deletion,
-        append new radios and no download path available
-    import only unknown radios
-    download path is preferred from db, then ini, then write a message as path
+    argument:
+       download_ini_path - two scenarios for None
+       restore all radios after complete deletion,
+       append new radios and no download path available
+
+    Info
+       import only unknown radios
+       download path is preferred from db, then ini, then write a message as path
     """
 
     conn = eisen_db.get_db_connection()

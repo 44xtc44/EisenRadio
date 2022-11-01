@@ -29,6 +29,7 @@ Contents
    sketch
    pipInstall
    knownProblems
+   modules
 
 Indices and tables
 ==================
