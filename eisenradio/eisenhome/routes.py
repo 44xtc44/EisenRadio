@@ -235,14 +235,14 @@ def skipped_records_get():
     """return json list of all radios that skipped writing a record file due to the blacklist
     empty dict if nothing skipped
     """
-    skipped_records_list = [1, 2]
+    skipped_records_list = []
     eisenApi.init_radio_id_dict()
     eisenApi.init_skipped_record_eisen_dict()
+
     for radio in eisenApi.skipped_record_eisen_dict.keys():
         if eisenApi.get_skipped_record(radio):
             skipped_records_list.append(eisenApi.radio_id_dict[radio])
 
-    # mock a skip until fully implemented, selenium, skipped_records_list = [2, 1, 3]
     return jsonify({'skippedRecordsGet': skipped_records_list})
 
 
