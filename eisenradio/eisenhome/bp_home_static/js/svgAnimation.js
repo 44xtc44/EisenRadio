@@ -11,6 +11,7 @@
  * class SimpleCounter      - looks simple, provides masses of counters and can be used to smooth in/out a movement
  * class PowerSwitch        - switch html/svg elements on/off, colorize, flash them and restore original color (Am I a data center backup restore specialist; consultant)
  * toggleWriteToDiskAnimation() - a rotating svg image of a disc shows active record (inkscape image of a unicode symbol, that not liked to rotate)
+ * skipRecordShowMessageInABottle() - sipped record!, info by showing a message in a bottle image with 'skip' label for the radio
  * dimRadioForAnimation()   - press genre text as button to hide headline and information badge
  * dimRadioForAnimationExec - called by dimRadioForAnimation() with a timer to prevent bug "need dblClick"
  * class Shaker             - can make micro movements; annoying advertisements; used for animateGenreClickTeaser() after 30min
@@ -706,6 +707,37 @@ function toggleWriteToDiskAnimation(){
                         }
                     }
                 } catch (error) {console.log(".toggleWriteToDiskAnimation() ", error);}
+            }
+        }
+    });
+}
+;
+function skipRecordShowMessageInABottle(){
+/**
+ * must be called on a regular basis:
+ *       if skipped record file by using the blacklist for current LISTEN Radio,
+ *       info by showing a message in a bottle image with 'skip' label for the radio
+ *       anim instances created on startup; shake, updown, move right ...
+ *       server keeps track of skipped record, must send only once per skip
+ */
+    let req = $.ajax({
+        type: 'GET',
+        url: "/skipped_records_get",
+        cache: false,
+    });
+    req.done(function (data) {
+        if (data.skippedRecordsGet) {
+            let skipList = data.skippedRecordsGet;
+            if(skipList.includes(activeListenId)) {
+                let bottle = document.getElementById("divMessageInABottle_" + activeListenId);
+                bottle.style.display = "inline-block";
+                bottle.style.top = "-6em";
+                bottle.style.left = "1em";
+                bottle.style.transform = "scale(0.8,0.8)";
+                setTimeout(function (){
+                    bottle.style.display = "none";
+                }, 10000);
+
             }
         }
     });
@@ -2074,7 +2106,7 @@ let a1AirCraftLLightPSwitch = new PowerSwitch({path: document.querySelectorAll("
 let a1AirCraftMoveSinCos  = new MoveSinCos();  // calc y for given x and angle
 let a1AirCraftUpDown      = new CountUpDown(-30, 0, 1/Math.PI/5);  // over wing rotation
 
-let genreShaker           = new Shaker();
+let genreShaker           = new Shaker(); // show that genre is clickable
 let genreSimpleCounter    = new SimpleCounter();  // teaser to show that genre text is clickable
 
 let animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // animal Z rotation in deg and step

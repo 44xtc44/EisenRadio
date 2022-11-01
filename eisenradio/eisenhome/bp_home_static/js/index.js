@@ -116,6 +116,7 @@ $(document).ready(function () {
     degradeAnimationsWriteDict();       // dict of currently allowed animations
     touchMoveItemsEventListenerSet();   // make div touchable for mobile or touchscreen, svgAnimation.js
 
+    setInterval(skipRecordShowMessageInABottle, 15006);
     setInterval(deleteInfo, 10005);
     setInterval(headerInfo, 10004);
     setInterval(toggleCacheListShowSelectBox, 5003);

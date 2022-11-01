@@ -229,6 +229,16 @@ def streamer_get():
     return jsonify({'streamerGet': streamer_dict})
 
 
+@eisenhome_bp.route('/skipped_records_get', methods=['GET'])
+def skipped_records_get():
+    """return json list of all radios that skipped writing a record file due to the blacklist
+    empty dict if nothing skipped
+    """
+    # mock a skip until fully implemented
+    skipped_records_list = ["2", "1", "3", ]
+    return jsonify({'skippedRecordsGet': skipped_records_list})
+
+
 @eisenhome_bp.route('/cookie_set_show_visuals', methods=['GET', 'POST'])
 def cookie_set_show_visuals():
     """spectrum analyser cookie
