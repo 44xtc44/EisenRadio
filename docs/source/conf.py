@@ -46,10 +46,15 @@ print(f"--- eisen_dir {eisen_dir}")
 #     """
 #     return True
 
+# -- Project information -----------------------------------------------------
+# !!! indentation of sphinx is mostly 3 leading spaces, code 4, block need one free line above and colon for head
+# pip install -U sphinx
 # pip install sphinx-rtd-theme
 # pip install sphinxcontrib-napoleon
 # Use sphinx-apidoc to build your API documentation:
-# $ sphinx-apidoc -f -o docs/source   /projectdir   (use full paths for both, __init__.py in the project folders)
+# $ cd docs
+# $ sphinx-apidoc -f -o source/ ../eisenradio/   (use full paths for both, __init__.py in the project folders)
+# make html; .\make html, on powerShell
 
 # Docstring Sections¶
 # All of the following section headers are supported:
