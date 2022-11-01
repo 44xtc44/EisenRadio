@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.1"
+version = "2.2"
 description = "Play radio. Style your App."
 keywords = ['audio', 'aac repair', 'aacp repair',]
-license = {text = "MIT License"}
-readme = "README.md"
+license = {file = "LICENSE.rst"}
+readme = "README.rst"
 requires-python = ">=3.7"
 dynamic = ['authors',]
 
@@ -27,6 +27,8 @@ classifiers = [
     "Topic :: Sound/Audio :: Capture/Recording",
 ]
 dependencies = [
+    "aacrepair~=0.3",
+    "ghettorecorder~=2.4.3",
     "Flask~=2.0.2",
     "Werkzeug~=2.0.2",
     "certifi~=2021.10.8",
@@ -38,12 +40,6 @@ dependencies = [
     "setuptools~=57.0.0",
     "waitress~=2.0.0",
 ]
-
-[project.scripts]
-eisenradio-cmd = "eisenradio.cmd:main"
-
-[project.gui-scripts]
-eisenradio-gui = "eisenradio.gui:main"
 
 [tool.pytest.ini_options]
 addopts = "--cov=eisenradio"
