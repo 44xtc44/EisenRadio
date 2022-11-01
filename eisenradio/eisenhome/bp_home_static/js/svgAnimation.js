@@ -717,8 +717,8 @@ function skipRecordShowMessageInABottle(){
  * must be called on a regular basis:
  *       if skipped record file by using the blacklist for current LISTEN Radio,
  *       info by showing a message in a bottle image with 'skip' label for the radio
- *       anim instances created on startup; shake, updown, move right ...
- *       server keeps track of skipped record, must send only once per skip
+ *       parseInt(activeListenId) convert id to integer
+ *       server keeps track of skipped records and updates compare dict
  */
     let req = $.ajax({
         type: 'GET',
@@ -728,10 +728,10 @@ function skipRecordShowMessageInABottle(){
     req.done(function (data) {
         if (data.skippedRecordsGet) {
             let skipList = data.skippedRecordsGet;
-            if(skipList.includes(activeListenId)) {
+            if(skipList.includes(parseInt(activeListenId))) {
                 let bottle = document.getElementById("divMessageInABottle_" + activeListenId);
                 bottle.style.display = "inline-block";
-                bottle.style.top = "-6em";
+                bottle.style.top = "-5em";
                 bottle.style.left = "1em";
                 bottle.style.transform = "scale(0.8,0.8)";
                 setTimeout(function (){

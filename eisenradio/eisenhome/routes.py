@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, make_response, jsonify
 
 import eisenradio.eisenhome.eishome as eis_home
-from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
+from eisenradio.api import eisenApi
 from eisenradio.eisenutil import config_html
+from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
 from ghettorecorder import ghettoApi
 
 # Blueprint Configuration
@@ -234,8 +235,14 @@ def skipped_records_get():
     """return json list of all radios that skipped writing a record file due to the blacklist
     empty dict if nothing skipped
     """
-    # mock a skip until fully implemented
-    skipped_records_list = ["2", "1", "3", ]
+    skipped_records_list = [1, 2]
+    eisenApi.init_radio_id_dict()
+    eisenApi.init_skipped_record_eisen_dict()
+    for radio in eisenApi.skipped_record_eisen_dict.keys():
+        if eisenApi.get_skipped_record(radio):
+            skipped_records_list.append(eisenApi.radio_id_dict[radio])
+
+    # mock a skip until fully implemented, selenium, skipped_records_list = [2, 1, 3]
     return jsonify({'skippedRecordsGet': skipped_records_list})
 
 
