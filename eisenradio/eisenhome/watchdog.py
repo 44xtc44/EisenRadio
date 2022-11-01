@@ -22,6 +22,7 @@ def run_watchdog():
     while not ghettoApi.stop_blacklist_writer:
         # [print(f' {thread.name}') for thread in threading.enumerate()]
         report_active_radio_threads()
+        # print_active_radio_threads()
         # report_failed_thread_names()    # testing
         # rv = "True, radio connected." if rv else "No radio connected."
 
@@ -119,6 +120,13 @@ def report_active_radio_threads():
                 return True
     ghettoApi.radio_active = False
     return False
+
+
+def print_active_radio_threads():
+    """ print active thread names for debug, also from GhettoRecorder
+    """
+    for thread in threading.enumerate():
+        print(thread.name)
 
 
 def scenario_kill_thread(name_action_type_tuple):
