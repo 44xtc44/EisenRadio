@@ -4,14 +4,6 @@ eisenradio.eisenutil package
 Submodules
 ----------
 
-eisenradio.eisenutil.aac\_repair module
----------------------------------------
-
-.. automodule:: eisenradio.eisenutil.aac_repair
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 eisenradio.eisenutil.browser\_stream module
 -------------------------------------------
 

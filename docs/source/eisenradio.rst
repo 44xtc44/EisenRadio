@@ -39,6 +39,14 @@ eisenradio.db module
    :undoc-members:
    :show-inheritance:
 
+eisenradio.gui module
+---------------------
+
+.. automodule:: eisenradio.gui
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 eisenradio.wsgi module
 ----------------------
 
