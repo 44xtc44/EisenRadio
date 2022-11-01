@@ -4,15 +4,20 @@ Eisenradio - a Web radio expandable collection
    ![alt logo of eisenradio](https://github.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo.png)
    ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
   
- 
+Info
+----
  * Organize your web radios; delete and update, backup and restore
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
+ * grab radio content until ISP bandwidth limit hits, with my professional aacPlus repair
+ 
+Links
+----
+newest version on GitHub dev branch, then PyPi Package, Android or Snap, Docker
  * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android file manager
  * Android: https://pypi.org/project/eisenradio-apk/
  * Snap: https://snapcraft.io/eisenradio
  * GitHub: https://github.com/44xtc44/eisenradio
-
 
 Eisenradio - the boring details 
 -------------------------------
@@ -58,6 +63,7 @@ Eisenradio is using the 'GhettoRecorder' package https://pypi.org/project/Ghetto
 
 You can export your ``settings.ini and blacklist.json`` 
 via "Tools/Export/Names and URL's" menu from your database.
+Updated ``blacklist.json`` can be imported to your database.
 
 pip install
 -----------
