@@ -944,11 +944,11 @@ summary>* {
 
 .divMessageInABottle {
      /* MessageInABottle if record id skipped by using blacklist */
-    display: block;
+    display: none;
     position: absolute;
     width: 100%;
     top: -5em;
-    left: 2em;
+    left: -2em;
     max-width: 1em;
     max-height: 1em;
     transform: scale(.8, .8);
