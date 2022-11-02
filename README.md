@@ -58,14 +58,21 @@ Eisenradio - the boring details
     
 command line 
 ------------
-Eisenradio is using the 'GhettoRecorder' package https://pypi.org/project/GhettoRecorder/
+Start browser from command line   
 
-    echo "call the command line main menu:" 
+    $ eisenradio
+
+Call the command line app with one of two commands.
+
+    $ eisenradio-cmd
+
+Or, EisenRadio sits on top of 'GhettoRecorder' package https://pypi.org/project/GhettoRecorder/
+
     $ ghettorecorder
 
-You can export your ``settings.ini and blacklist.json`` 
+You can export your ``settings.ini`` and ``blacklist.json`` 
 via "Tools/Export/Names and URL's" menu from your database.
-Updated ``blacklist.json`` can be imported to your database.
+An updated ``blacklist.json`` can be imported into your database.
 
 pip install
 -----------
