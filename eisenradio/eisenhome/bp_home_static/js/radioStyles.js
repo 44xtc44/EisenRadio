@@ -128,6 +128,8 @@ class EisenRadioStyles{
                 document.getElementById('divMeasurementsUpper_' + this.radioId).style.boxShadow = "none";
                 document.getElementById('divMeasurementsUpper_' + this.radioId).style.bottom = "-5em";
                 document.getElementById('divMeasurementsUpper_' + this.radioId).style.right = "0em";
+                    // toggleAnimals switch hide
+                document.getElementById('toggleAnimals_' + this.radioId).style.display = "none";
                 /* Genre */
                 document.getElementById('divStationGenre_' + this.radioId).style.display = "none";
                 /* Display, switch off shadows if listen before */
@@ -186,6 +188,8 @@ class EisenRadioStyles{
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.borderRadius = "1.5em";
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.border = "2px solid rgba(255,255,255,0.1)";
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.boxShadow = "30px 30px 35px rgba(0,0,0,0.25)";
+                // toggleAnimals switch show
+            document.getElementById('toggleAnimals_' + this.radioId).style.display = "inline-block";
             /* title display */
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.left = "5em";  // set recorder back
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.display = "inline-block";
