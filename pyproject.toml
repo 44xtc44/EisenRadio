@@ -11,12 +11,6 @@ license = {file = "LICENSE.rst"}
 readme = "README.md"
 requires-python = ">=3.7"
 dynamic = ['authors',]
-
-[project.urls]
-homepage = "https://github.com/44xtc44"
-documentation = "https://eisenradio.readthedocs.io/"
-repository = "https://github.com/44xtc44/EisenRadio"
-
 classifiers = [
     "Framework :: Flask",
     "Programming Language :: Python :: 3",
@@ -27,6 +21,7 @@ classifiers = [
     "Operating System :: Android",
     "Development Status :: 5 - Production/Stable",
     "Topic :: Multimedia :: Sound/Audio :: Capture/Recording",
+
 ]
 dependencies = [
     "aacrepair~=0.3",
@@ -42,6 +37,11 @@ dependencies = [
     "setuptools~=57.0.0",
     "waitress~=2.0.0",
 ]
+
+[project.urls]
+homepage = "https://github.com/44xtc44"
+documentation = "https://eisenradio.readthedocs.io/"
+repository = "https://github.com/44xtc44/EisenRadio"
 
 [tool.pytest.ini_options]
 addopts = "--cov=eisenradio"
