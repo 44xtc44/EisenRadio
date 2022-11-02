@@ -1,11 +1,13 @@
 Technical Overview
-^^^^^^^^^^^^^^^^^^
+------------------
 Project is the successor of GhettoRecorder and shall provide a database and HTML frontEnd.
-How is this wired?
 
+How is this wired?
+^^^^^^^^^^^^^^^^^^
  Flask server is divided by two routes, home and utils. To separate start page from "Tools" and "About".
 
 Home
+^^^^
    indexStructure.txt:
       Project overview for raw div structure of start page to jump fast in and around.
 
@@ -30,6 +32,7 @@ Home
       floe by night)
 
 Utils
+^^^^^
    bp_utils.js:
       auto button press to hide buttons, write fake lists with parent, child
       divs to color log files, edit/delete blacklists, switch divs to show
@@ -46,15 +49,14 @@ Utils
 
    Python modules for:
       monitor recordings:
-	     write grabbed files into blacklists, lists can be edited
+      write grabbed files into blacklists, lists can be edited
 		 
       Aac file repair:
-	     needed to fix incorrectly recorded aac files (no timer used to quit), so playlist not stuck
+         needed to fix incorrectly recorded aac files (no timer used to quit), so playlist not stuck
 		 
-	  Export and Import:
+      Export and Import:
          radio settings with *ini files
          blacklists with *json files, dictionary style
 		 
       delete all:
-	     delete all radio table rows to restore from exported *ini file
-
+         delete all radio table rows to restore from exported *ini file
