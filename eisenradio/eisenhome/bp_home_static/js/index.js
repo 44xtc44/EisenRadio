@@ -829,9 +829,9 @@ function headerInfo() {
                 let bit_rate = val[5];
                 let icy_url = val[6];
 
-                document.getElementById('temp_' + station_id).innerHTML = "🐻‍❄"; // element can switch animals, former fake temp
-                document.getElementById('temp_' + station_id).style.cursor = "hand";
-                document.getElementById('temp_' + station_id).style.cursor = "pointer"; // html onclick="toggleAnimalDefaultDivSvG();
+                document.getElementById('toggleAnimals_' + station_id).innerHTML = "🐻‍❄"; // element can switch animals, former fake temperature
+                document.getElementById('toggleAnimals_' + station_id).style.cursor = "hand";
+                document.getElementById('toggleAnimals_' + station_id).style.cursor = "pointer"; // html onclick="toggleAnimalDefaultDivSvG();
                 document.getElementById('request_time_' + station_id).innerText = "" + response_time + " ms";
                 document.getElementById('request_suffix_' + station_id).innerText = "" + suffix;
                 document.getElementById('request_icy_br_' + station_id).innerText = "" + bit_rate + " kB/s";
