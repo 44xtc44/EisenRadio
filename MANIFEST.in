@@ -29,7 +29,6 @@ include eisenradio/eisenhome/bp_home_templates/bp_home_base.html
 include eisenradio/eisenhome/bp_home_templates/bp_home_index.html
 include eisenradio/eisenhome/bp_home_templates/bp_home_page_flash.html
 include eisenradio/eisenutil/__init__.py
-include eisenradio/eisenutil/aac_repair.py
 include eisenradio/eisenutil/browser_stream.py
 include eisenradio/eisenutil/config_html.py
 include eisenradio/eisenutil/eisutil.py
@@ -61,15 +60,6 @@ include eisenradio/instance/config.py
 include eisenradio/instance/config_apfac.py
 include eisenradio/lib/__init__.py
 include eisenradio/lib/eisdb.py
-include eisenradio/lib/ghetto_blacklist.py
-include eisenradio/lib/ghetto_container.py
-include eisenradio/lib/ghetto_http_srv.py
-include eisenradio/lib/ghetto_ini.py
-include eisenradio/lib/ghetto_menu.py
-include eisenradio/lib/ghetto_meta.py
-include eisenradio/lib/ghetto_net.py
-include eisenradio/lib/ghetto_recorder.py
-include eisenradio/lib/ghetto_recorder.ascii
 include eisenradio/lib/platform_helper.py
 include eisenradio/instance/.env
 include eisenradio/instance/config.py
