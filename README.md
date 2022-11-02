@@ -6,10 +6,12 @@ Eisenradio - a Web radio expandable collection
   
 Info
 ----
+ * Comic style animated internet radio
  * Organize your web radios; delete and update, backup and restore
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
- * grab radio content until ISP bandwidth limit hits, with my professional aacPlus repair
+ * grab content until ISP bandwidth limit hits
+ * includes professional aacPlus (on the fly) file repair
  
 Links
 ----
