@@ -102,42 +102,47 @@ class EisenRadioStyles{
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.boxShadow = "none";
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.bottom = "13.2em";
             document.getElementById('divMeasurementsUpper_' + this.radioId).style.right = "0em";
+                // toggleAnimals switch hide
+            document.getElementById('toggleAnimals_' + this.radioId).style.display = "none";
+            /* Genre */
+            document.getElementById('request_icy_genre_' + this.radioId).style.textShadow = "";
+            document.getElementById('request_icy_genre_' + this.radioId).style.fontFamily = "roboto,arial";
+            document.getElementById('request_icy_genre_' + this.radioId).style.fontSize = "100%";
             /* title display, moved to reduce empty space*/
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.left = "10em";
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.display = "inline-block";
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.fontSize = "large";
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.borderRadius = "1.5em";
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.marginTop = "1em";
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.marginBottom = "1em";
-            document.getElementById('divStationDisplayGrid_' + this.radioId).style.display = "inline-block";
             document.getElementById('divStationDisplayGrid_' + this.radioId).style.bottom = "8em";
-            document.getElementById('divStationDisplayGrid_' + this.radioId).style.left = "10em";
             /* buttons */
             document.getElementById('divBtnAbsWrapper_' + this.radioId).style.top = "6em";
             document.getElementById('request_icy_genre_' + this.radioId).style.textShadow = "";
-            /* stars gStarWrapper, gTuxStageStars*/
-
     }
     recordApplyStyle(){
         /* only apply changes if no listen is active */
 
         if(this.listen === false){
             /* record styled */
-            if(htmlSettingsDictGlobal["checkboxConfigStyle"] === 1){
-                /* Metrics, position must be reset in display del clean function */
-                document.getElementById('divMeasurementsUpper_' + this.radioId).style.display = "inline-block";
-                document.getElementById('divMeasurementsUpper_' + this.radioId).style.border = "none";
-                document.getElementById('divMeasurementsUpper_' + this.radioId).style.boxShadow = "none";
-                document.getElementById('divMeasurementsUpper_' + this.radioId).style.bottom = "-5em";
-                document.getElementById('divMeasurementsUpper_' + this.radioId).style.right = "0em";
-                    // toggleAnimals switch hide
-                document.getElementById('toggleAnimals_' + this.radioId).style.display = "none";
-                /* Genre */
-                document.getElementById('divStationGenre_' + this.radioId).style.display = "none";
-                /* Display, switch off shadows if listen before */
-                document.getElementById('divStationDisplayGrid_' + this.radioId).style.display = "inline-block";
-                document.getElementById('divStationDisplayGrid_' + this.radioId).style.left = "15em"; // del func back to 5em
-                document.getElementById('divStationDisplayGrid_' + this.radioId).style.border = "none";
-                document.getElementById('divStationDisplayGrid_' + this.radioId).style.boxShadow = "none";
-            }
+
+            /* Metrics, position must be reset in display del clean function */
+            document.getElementById('divMeasurementsUpper_' + this.radioId).style.display = "inline-block";
+            document.getElementById('divMeasurementsUpper_' + this.radioId).style.border = "none";
+            document.getElementById('divMeasurementsUpper_' + this.radioId).style.boxShadow = "none";
+            document.getElementById('divMeasurementsUpper_' + this.radioId).style.bottom = "-5em";
+            document.getElementById('divMeasurementsUpper_' + this.radioId).style.right = "0em";
+                // toggleAnimals switch hide
+            document.getElementById('toggleAnimals_' + this.radioId).style.display = "none";
+            /* Genre */
+            document.getElementById('request_icy_genre_' + this.radioId).style.textShadow = "";
+            document.getElementById('request_icy_genre_' + this.radioId).style.fontFamily = "roboto,arial";
+            document.getElementById('request_icy_genre_' + this.radioId).style.fontSize = "100%";
+            /* Display, switch off shadows if listen before */
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.display = "inline-block";
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.left = "15em"; // del func back to 5em
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.border = "none";
+            document.getElementById('divStationDisplayGrid_' + this.radioId).style.boxShadow = "none";
         }
     }
     listenApplyStyle(){
