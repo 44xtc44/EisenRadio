@@ -24,7 +24,7 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: Android",
     "Development Status :: 5 - Production/Stable",
-    "Topic :: Sound/Audio :: Capture/Recording",
+    "Topic :: Multimedia :: Sound/Audio :: Capture/Recording",
 ]
 dependencies = [
     "aacrepair~=0.3",
