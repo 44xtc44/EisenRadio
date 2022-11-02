@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.2.1"
+version = "2.2.2"
 description = "Play radio. Style your App."
-keywords = ['audio', 'aac repair', 'aacp repair',]
+keywords = ['audio', 'aac repair', 'aacp repair','aacrepair', 'aacprepair',]
 license = {file = "LICENSE.rst"}
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.6"
 dynamic = ['authors',]
 classifiers = [
     "Framework :: Flask",
@@ -42,6 +42,12 @@ dependencies = [
 homepage = "https://github.com/44xtc44"
 documentation = "https://eisenradio.readthedocs.io/"
 repository = "https://github.com/44xtc44/EisenRadio"
+
+[project.scripts]
+eisenradio-cmd = "eisenradio.cmd:main"
+
+[project.gui-scripts]
+eisenradio = "eisenradio.gui:main"
 
 [tool.pytest.ini_options]
 addopts = "--cov=eisenradio"
