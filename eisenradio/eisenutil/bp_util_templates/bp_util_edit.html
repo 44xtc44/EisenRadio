@@ -4,7 +4,7 @@
 <hr>
 <h1>{% block title %} Edit "{{ post['title'] }}" {% endblock %}</h1>
 <hr>
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" id="editFormPage">
     <!-- NAME-->
     <div class="form-group">
         <p>Here is the place to delete and edit the radio.</p>
@@ -26,12 +26,23 @@
     <!-- Image Upload-->
     <div class="form-group">
         <label for="inputFile">Image input (jpg, png, bmp, gif, svg)</label>
+
         <input class="form-control-file" type="file" name="inputFile" id="inputFile">
+    </div>
+
+
+    <div id="divTransparentImageLoad" data-dataSetRadio='{{post["title"]}}'>
+        <p>
+            <label>
+                <input type="checkbox" onclick="transparentImageLoad();" id="foo1">
+            Checkbox to immediately replace the old image with a transparent one
+            </label>
+        </p>
     </div>
 
     <!-- Text description -->
     <div class="form-group">
-        <label for="text">Write Text</label>
+        <p><label for="text">Write Text</label></p>
         <textarea class="form-control" name="text" id="text" rows="5"
                   placeholder="Your description">{{ post['pic_comment'] }}</textarea>
 
