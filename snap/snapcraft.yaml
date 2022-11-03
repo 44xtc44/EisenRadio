@@ -1,0 +1,36 @@
+---
+name: eisenradio
+version: '2.2.3'
+summary: Radio collection
+description: |
+  Web radio expandable collection with advanced features.
+  Give your radio a name, description and a nice picture.
+  Get information about the current broadcast, title and
+  news on a display.
+  Written in Python and Java script.
+
+grade: stable          # devel stable
+confinement: strict    # 'classic', 'devmode', 'strict'
+base: core18
+compression: lzo
+
+apps:
+  eisenradio:
+    command: usr/bin/python3 -m eisenradio.wsgi    # database cp in app.py
+    plugs:
+      - home
+      - network
+      - network-status
+      - network-bind
+      - desktop
+      - desktop-legacy
+      - wayland
+      - unity7
+
+parts:
+  eisenradio:
+    plugin: python
+    python-version: python3
+    source: .
+    python-packages:
+    - eisenradio==2.2.3

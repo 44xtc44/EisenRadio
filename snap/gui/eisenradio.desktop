@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=2.2.3
+Type=Application
+Terminal=true
+Exec=eisenradio
+Icon=${SNAP}/meta/gui/eisenradio.png
+Name=Eisenradio
+Comment=Listen and cache multiple Radio stations content.
+Categories=Audio;Utility;AudioVideo;
