@@ -205,6 +205,31 @@ def radio_spare_image():
     return img_base64, content_type
 
 
+def radio_transparent_image():
+    """return a transparent image for the radio and content-type for db """
+    this_dir = path.dirname(__file__)
+    # rip off one dir
+    app_root = path.dirname(this_dir)
+    img_path = path.join(app_root, 'static', 'images', 'styles', 'small', "radio_transparent.png")
+
+    with open(img_path, 'rb') as pic_reader:
+        image_bin = pic_reader.read()
+    img_base64 = eisen_db.render_picture(image_bin, 'encode')
+    content_type = 'image/png'
+    print(f".. radio_transparent_imageradio_transparent_image .{content_type} {img_base64}")
+    return img_base64, content_type
+
+
+def radio_transparent_image_db(radio_name):
+    """ return Nothing, replace former radio image with a transparent one """
+    conn = eisen_db.get_db_connection()
+    radio_image, image_content_type = radio_transparent_image()
+    conn.execute('UPDATE posts SET pic_data = ?, pic_content_type = ? WHERE id = ?;',
+                 (radio_image, image_content_type, radio_name))
+    conn.commit()
+    conn.close()
+
+
 def get_export_path():
     """return the download parent path for radios, or a helper string if no path exists yet"""
     download_path = eisen_db.get_download_dir()
