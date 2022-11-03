@@ -8,7 +8,7 @@ from flask import Blueprint, render_template, request, url_for, flash, redirect,
 from eisenradio.eisenutil import request_info
 from eisenradio.eisenutil import tools as util_tools
 from eisenradio.lib import eisdb as lib_eisdb
-from eisenradio.api import api
+from eisenradio.api import api, eisenApi
 from eisenradio.eisenutil import monitor_records as mon_rec
 from eisenradio.eisenutil import config_html
 
@@ -24,6 +24,17 @@ eisenutil_bp = Blueprint(
     static_folder='bp_util_static',
     static_url_path='/bp_util_static'
 )
+
+
+@eisenutil_bp.route('/tools_transparent_image_load', methods=['POST'])
+def tools_transparent_image_load():
+    """ return list to JS div list maker, replace standard random pic with a translucent one """
+    request_dict = request.form.to_dict()
+    radio_name = request_dict['radioName']
+    eisenApi.init_radio_id_dict()
+    util_tools.radio_transparent_image_db(eisenApi.radio_id_dict[radio_name])
+    msg_list = ["Radio got a beautiful transparent image."]
+    return jsonify({"transparentImageLoad": msg_list})
 
 
 @eisenutil_bp.route('/tools_radio_html_settings', methods=['POST'])
@@ -461,6 +472,7 @@ def create():
     """"render "New" radio page"""
     if request.method == 'POST':
         rv_req = request.form['title']
+
         title = eis_util.remove_blank(rv_req)
         name_in_db = eis_util.is_in_db_view(title)
         content = request.form['content']
@@ -482,6 +494,7 @@ def create():
             file = request.files['inputFile']
             content_type = file.content_type
             print(f' name {file.name} content-type {file.content_type}')
+
             try:
                 db_img = file.read()
                 radio_image = lib_eisdb.render_picture(db_img, 'encode')
@@ -575,9 +588,10 @@ def edit(id):
 
     if request.method == 'POST':
         rv_req = request.form['title']
+
         title = rv_req.replace(" ", "")
         content = request.form['content']
-
+        print(request.form)
         if not title:
             flash('Title is required!', 'warning')
         # Image, if empty keep db entry as it is
