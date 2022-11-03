@@ -71,6 +71,10 @@ You can export your ``settings.ini`` and ``blacklist.json``
 via "Tools/Export/Names and URL's" menu from your database.
 An updated ``blacklist.json`` can be imported into your database.
 
+* The default save path is in the package folder. You should change it via the menu options
+
+     ``/home/osboxes/.local/lib/python3.6/site-packages/ghettorecorder/radios``
+
 pip install
 -----------
     """ xxs Linux xxs """
