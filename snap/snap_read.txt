@@ -1,0 +1,22 @@
+$ sudo apt install snapcraft
+
+see https://forum.snapcraft.io/t/snapcraft-overview/8940
+
+sudo snap install snapcraft --classic
+snap install snap-store
+sudo apt install yamllint
+  yamllint snapcraft.yaml
+
+sudo snap install review-tools  # https://github.com/anonymouse64/review-tools -a howto
+
+$ snapcraft clean
+
+folder structure:
+
+/a_folder  :: --> open terminal /a_folder$ snapcraft --use-lxd (in a VM)
+  snapcraft.yaml
+  /snap
+    /gui   :: (snapd error) set permission 'for' lxd or 'other' full access; files & folder
+      package_name.desktop
+      package_name.png (or ico)
+      # package_name must match 'name: package_name ' line in snapcraft.yaml
