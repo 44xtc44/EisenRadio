@@ -68,6 +68,7 @@ include eisenradio/static/images/styles/small/mixer-construction-site.jpg
 include eisenradio/static/images/styles/small/mixer-reload.jpg
 include eisenradio/static/images/styles/small/mixer-tempelhof-airport.jpg
 include eisenradio/static/images/styles/small/drum_snail.png
+include eisenradio/static/images/styles/small/radio_transparent.png
 include eisenradio/static/images/styles/small/radio3d-style-neon-blue_120x200.png
 include eisenradio/static/images/styles/small/radio3d-style-white-black_120x200.png
 include eisenradio/static/images/styles/small/radio3d-style-white-blue_120x200.png
@@ -78,7 +79,6 @@ include eisenradio/static/images/styles/small/radio3d-style-whiteneongelb_120x20
 include eisenradio/static/images/styles/small/radio3d-style-white-neongreen_120x200.png
 include eisenradio/static/images/styles/small/radio3d-style-white-red_120x200.png
 include eisenradio/static/images/styles/small/radio3d-style-white-violet_120x200.png
-include eisenradio/static/images/styles/small/radio3d-style-white-white_120x200.png
 include eisenradio/test/functional/test_routes.py
 prune venv
 recursive-include docs *
