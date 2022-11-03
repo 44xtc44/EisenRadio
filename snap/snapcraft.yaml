@@ -16,7 +16,7 @@ compression: lzo
 
 apps:
   eisenradio:
-    command: usr/bin/python3 -m eisenradio.wsgi    # database cp in app.py
+    command: usr/bin/python3 -m eisenradio.wsgi
     plugs:
       - home
       - network
