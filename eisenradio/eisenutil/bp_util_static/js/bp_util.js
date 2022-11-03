@@ -522,3 +522,46 @@ function delFromBlacklist(counter, radioName) {
     });
 }
 ;
+
+function transparentImageLoad() {
+    /**
+     * load an transparent svg image on clicking checkbox id=checkboxTransparentImage / bp_util_edit.html
+     * server must response with a nice list of idle chitchat
+     */
+    callLoaderAnimation();
+    let divTransparentImageLoad = document.getElementById("divTransparentImageLoad");
+    let dataSetRadio = divTransparentImageLoad.dataset.datasetradio;  // small
+
+    let req = $.ajax({
+        type: 'POST',
+        url: "/tools_transparent_image_load",
+        cache: false,
+        data: {"radioName": dataSetRadio}
+
+    });
+    req.done(function (data) {
+        stopLoaderAnimation();
+
+        let response = data.transparentImageLoad;
+        console.log(response);
+
+        // prepare list writing with each line is a div
+        let parentDiv = document.getElementById('divTransparentImageLoad');
+        let divIdTag = "Webserver (Python Flask) response";
+        let fakeListElement = divIdTag;
+        divListMaker(parentDiv, divIdTag, fakeListElement);
+        let headLine = document.getElementById(divIdTag);
+        logHeadLineStyle(divIdTag);
+
+        response.forEach(function (line) {
+            divIdTag = line;
+            fakeListElement = line;
+            divListMaker(parentDiv, divIdTag, fakeListElement);
+        })
+
+    });
+
+
+
+}
+;
