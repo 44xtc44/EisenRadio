@@ -39,7 +39,7 @@ def tools_transparent_image_load():
 
 @eisenutil_bp.route('/tools_radio_html_settings', methods=['POST'])
 def tools_radio_html_settings():
-    """ update front-end settings: css style and animations in database
+    """ update front-end settings, css style and animations in database
     send a message log to JS
 
     show_html_animation:
@@ -75,14 +75,21 @@ def tools_radio_html_settings():
     row_db_html_speaker = 7
 
     request_dict = request.form.to_dict()
-
+    config_animation = True
+    msg_no_style_needed = ""
     for key, value in request_dict.items():
         if key == "checkboxConfigAnimation" and value == "true":
             show_html_animation = config_html.tools_feature_toggle_show_html_config(on, row_db_html_animation)
         if key == "checkboxConfigAnimation" and value == "false":
             show_html_animation = config_html.tools_feature_toggle_show_html_config(off, row_db_html_animation)
+            config_animation = False
         if key == "checkboxConfigStyle" and value == "true":
-            show_html_style = config_html.tools_feature_toggle_show_html_config(on, row_db_html_style)
+            # if no animation is selected the style is senseless
+            if not config_animation:
+                msg_no_style_needed = "--> no animation at all, deactivate style too"
+                show_html_style = config_html.tools_feature_toggle_show_html_config(off, row_db_html_style)
+            else:
+                show_html_style = config_html.tools_feature_toggle_show_html_config(on, row_db_html_style)
         if key == "checkboxConfigStyle" and value == "false":
             show_html_style = config_html.tools_feature_toggle_show_html_config(off, row_db_html_style)
         if key == "checkboxConfigFrontPigs" and value == "true":
@@ -111,6 +118,7 @@ def tools_radio_html_settings():
            f"inflated animals {msg_animals_value}",
            f"animated balloon {msg_balloon_value}",
            f"animated speaker {msg_speaker_value}",
+           msg_no_style_needed,
            ]
     return jsonify({"configEisenradioUpdate": msg})
 
