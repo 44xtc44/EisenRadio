@@ -1359,7 +1359,6 @@ function defaultStageHtmlElementsShow(){
         document.getElementById("animatedBackGround_" + activeListenId).style.display = "inline-block";   // svg sky, ocean
         document.getElementById("divSvgBuoy_" + activeListenId).style.display = "inline-block";
         document.getElementById("divSvgIceTux_" + activeListenId).style.display = "inline-block"; // the floe, scholle
-        document.getElementById("divSvgFlatSpeakerTopRight_" + activeListenId).style.display = "inline-block";
         document.getElementById("divSvgScrewHeadTopRight_" + activeListenId).style.display = "inline-block";
         document.getElementById("divSvgScrewHeadTopLeft_" + activeListenId).style.display = "inline-block";
         document.getElementById("divSvgScrewHeadBottomRight_" + activeListenId).style.display = "inline-block";
@@ -1374,6 +1373,8 @@ function defaultFlatSpeakerAnimation(){
     try{
         let speakerDiv = document.getElementById("divSvgFlatSpeaker_" + activeListenId);
         speakerDiv.style.display = "inline-block";
+        let speakerRightDiv = document.getElementById("divSvgFlatSpeakerTopRight_" + activeListenId);
+        speakerRightDiv.style.display = "inline-block";
     }
     catch (error) {}
 }

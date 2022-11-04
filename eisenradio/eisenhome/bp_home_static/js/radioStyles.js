@@ -147,8 +147,10 @@ class EisenRadioStyles{
     }
     listenApplyStyle(){
         /* enable animation */
-        if(htmlSettingsDictGlobal["checkboxConfigAnimation"]){
+        if(htmlSettingsDictGlobal["checkboxConfigAnimation"] === 1){
             document.getElementById('divAnimationContainer_' + this.radioId).style.display = "inline-block";
+        } else {
+            document.getElementById('divAnimationContainer_' + this.radioId).style.display = "none";
         }
         /* basic */
         if(htmlSettingsDictGlobal["checkboxConfigStyle"] === 0){
