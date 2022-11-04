@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.2.2"
+version = "2.2.4"
 description = "Play radio. Style your App."
-keywords = ['audio', 'aac repair', 'aacp repair','aacrepair', 'aacprepair',]
+keywords = ['aacp repair', 'aac repair']
 license = {file = "LICENSE.rst"}
 readme = "README.md"
 requires-python = ">=3.6"
