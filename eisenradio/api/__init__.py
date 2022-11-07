@@ -50,8 +50,8 @@ class EisenApi:
         """ init
 
         Attributes:
-           radio_id_name_dict . {starRadio: 1, planetRadio: 2} radio name to db table id mapping (from {id: name})
-           radio_name_id_dict . radios listed on startpage, key:db id, val: radio name shown on html
+           radio_name_id_dict . {id: name} {starRadio: 1, planetRadio: 2} radio name to db table id mapping
+           radio_id_name_dict . {name: id} radios listed on startpage, key:db id, val: radio name shown on html
            skipped_record_eisen_dict . {radio1: 2} compare list len of Ghetto skipped_in_session_dict with counter
            call_skipped_record_eisen_dict . endpoint call before get_skipped_record()
            lis_btn_dict . listen, radio get on/off entry for radio table id
@@ -60,9 +60,9 @@ class EisenApi:
            work_port . wsgi port number, for functions in java to connect to correct endpoint
            radio_active . shows if a thread is connected to the internet, green light in console
         """
-        self.radio_id_name_dict = {}
         self.radio_name_id_dict = {}
-        self.call_radio_id_name_dict = True
+        self.radio_id_name_dict = {}
+        self.call_radio_name_id_dict = True
         self.skipped_record_eisen_dict = {}
         self.call_skipped_record_eisen_dict = True
         self.lis_btn_dict = {}
@@ -71,18 +71,18 @@ class EisenApi:
         self.work_port = None
         self.radio_active = False
 
-    def init_radio_id_name_dict(self):
-        """ key is radio_id: val is name radio_id_name_dict {table_id: name},
-        radio_name_id_dict {name: table_id}
-        todo change names to better reflect purpose, radio_id_name_dict, radio_name_id_dict
+    def init_radio_name_id_dict(self):
+        """ key is radio_id: val is name radio_name_id_dict {table_id: name},
+        radio_id_name_dict {name: table_id}
+        todo change names to better reflect purpose, radio_name_id_dict, radio_id_name_dict
         """
-        if self.call_radio_id_name_dict:
-            self.radio_id_name_dict = {name: table_id for table_id, name in self.radio_name_id_dict.items()}
-            self.call_radio_id_name_dict = False
+        if self.call_radio_name_id_dict:
+            self.radio_name_id_dict = {name: table_id for table_id, name in self.radio_id_name_dict.items()}
+            self.call_radio_name_id_dict = False
 
-    def init_radio_name_id_dict(self, radio_name_id_dict):
+    def init_radio_id_name_dict(self, radio_id_name_dict):
         """ key:db id, val: radio name shown on html """
-        self.radio_name_id_dict = radio_name_id_dict
+        self.radio_id_name_dict = radio_id_name_dict
 
     def init_skipped_record_eisen_dict(self):
         """ get radio key name from GhettoApi all_blacklists_dict {radio1: [], radio2: []} ([] is title skip list)
