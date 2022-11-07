@@ -121,7 +121,7 @@ class TestRouteHome(unittest.TestCase):
             'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
             'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
         }
-        ghettoApi.radios_in_view_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
+        ghettoApi.radio_name_id_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
 
         # testing
         rv = web.get(

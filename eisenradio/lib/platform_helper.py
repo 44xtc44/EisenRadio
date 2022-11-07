@@ -3,10 +3,10 @@ display information about system for Snap user to avoid black box feeling
 """
 import os
 import webbrowser
+from eisenradio.api import eisenApi
 from eisenradio.lib.eisdb import status_read_status_set
-from ghettorecorder import ghettoApi
 
-flask_srv_url = "http://localhost:" + str(ghettoApi.work_port) + "/"
+flask_srv_url = "http://localhost:" + str(eisenApi.work_port) + "/"
 
 
 def get_env_snap():

@@ -1,13 +1,13 @@
 import threading
 import time
 from ghettorecorder import ghettoApi
-from eisenradio.api import ghettoTest
 from ghettorecorder import ghetto_recorder as ghetto
+from eisenradio.api import eisenApi, eisenTest
 
 radio_active = False
-ghettoApi.init_radio_active(radio_active)
+eisenApi.init_radio_active(radio_active)
 thread_killer = (False, False, False)
-ghettoTest.init_test_thread_killer(thread_killer)
+eisenTest.init_test_thread_killer(thread_killer)
 
 
 def start_watchdog_daemon():
@@ -26,7 +26,7 @@ def run_watchdog():
         # report_failed_thread_names()    # testing
         # rv = "True, radio connected." if rv else "No radio connected."
 
-        # print(f'\n\t blacklist_enabled {ghettoApi.blacklist_enabled_global}\n')
+        # print(f'\n\t blacklist_enabled {ghettoApi.blacklist_enable}\n')
 
         # [print(f'audio_stream_dict: {key}: {value}') for key, value in ghettoApi.ghetto_audio_stream_dict.items()]
 
@@ -110,15 +110,15 @@ def report_active_radio_threads():
     """return True if (any) radio threads are active, write True to ghettoApi.radio_active
 
     shows an active internet connection, also during playing local files
-    routes.delete_info() collects from ghettoApi.radio_active for js
+    routes.delete_info() collects from eisenApi.radio_active for js
     """
     search_list = ["record", "listen"]
     for thread in threading.enumerate():
         for string in search_list:
             if string in thread.name:
-                ghettoApi.radio_active = True
+                eisenApi.radio_active = True
                 return True
-    ghettoApi.radio_active = False
+    eisenApi.radio_active = False
     return False
 
 
@@ -141,7 +141,7 @@ def scenario_kill_thread(name_action_type_tuple):
     test if recording works, if same name radio listen thread is dead
     test record writing if metadata crash
     """
-    ghettoTest.thread_killer = name_action_type_tuple
+    eisenTest.thread_killer = name_action_type_tuple
 
 
 # ###### run scenario commands

@@ -1,10 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, make_response, jsonify
-
-import eisenradio.eisenhome.eishome as eis_home
-from eisenradio.api import eisenApi
 from eisenradio.eisenutil import config_html
+import eisenradio.eisenhome.eishome as eis_home
 from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
 from ghettorecorder import ghettoApi
+from eisenradio.api import eisenApi
 
 # Blueprint Configuration
 eisenhome_bp = Blueprint(
@@ -33,7 +32,7 @@ def index():
     * current_table_id - table id of listened station (default None)
     * listen_last_url - feed the audio element with url after page refresh (default None)
     """
-    local_host_sound_route = "http://localhost:" + ghettoApi.work_port + "/sound/"
+    local_host_sound_route = "http://localhost:" + str(eisenApi.work_port) + "/sound/"
     listen_last_url = ""
 
     posts = enum_radios()
@@ -184,7 +183,7 @@ def cookie_get_dark():
     listener_id = None
     for radio, listening in ghettoApi.listen_active_dict.items():
         if listening:
-            for r_id, name in ghettoApi.radios_in_view_dict.items():
+            for r_id, name in eisenApi.radio_name_id_dict.items():
                 if name == radio:
                     listener_id = r_id
                     break
@@ -236,12 +235,12 @@ def skipped_records_get():
     empty dict if nothing skipped
     """
     skipped_records_list = []
-    eisenApi.init_radio_id_dict()
+    eisenApi.init_radio_id_name_dict()
     eisenApi.init_skipped_record_eisen_dict()
 
     for radio in eisenApi.skipped_record_eisen_dict.keys():
         if eisenApi.get_skipped_record(radio):
-            skipped_records_list.append(eisenApi.radio_id_dict[radio])
+            skipped_records_list.append(eisenApi.radio_id_name_dict[radio])
 
     return jsonify({'skippedRecordsGet': skipped_records_list})
 
@@ -254,7 +253,7 @@ def cookie_set_show_visuals():
     """
     resp = make_response("disable visualisation")
     resp.set_cookie('eisen-cookie-visuals', 'show_visuals', max_age=60 * 60 * 24 * 365 * 2, secure=False, httponly=True)
-    ghettoApi.init_ghetto_show_analyser(False)
+    eisenApi.init_show_analyser(False)
     return resp
 
 
@@ -272,7 +271,7 @@ def cookie_get_show_visuals():
 def cookie_del_show_visuals():
     resp = make_response("bye\neisen-cookie-visuals")
     resp.set_cookie('eisen-cookie-visuals', max_age=-1)
-    ghettoApi.init_ghetto_show_analyser(True)
+    eisenApi.init_show_analyser(True)
     return resp
 
 
@@ -301,13 +300,13 @@ def display_info():
         id_text_dict = {}
         try:
             for radio_name, radio_text in ghettoApi.current_song_dict.items():
-                for radio_db_id, radio_title in ghettoApi.radios_in_view_dict.items():
+                for radio_db_id, radio_title in eisenApi.radio_name_id_dict.items():
                     if radio_name == radio_title:
                         if len(radio_text) > 0:
                             id_text_dict[str(radio_db_id)] = str(radio_text)
 
             for radio_name, radio_error in ghettoApi.ghetto_dict_error.items():
-                for radio_db_id, radio_title in ghettoApi.radios_in_view_dict.items():
+                for radio_db_id, radio_title in eisenApi.radio_name_id_dict.items():
                     if radio_name == radio_title:
                         id_text_dict[str(radio_db_id)] = str(radio_error)
         except Exception as error:
@@ -322,4 +321,4 @@ def all_radio_table_ids_and_names_get():
 
     build js style instance for each radio
     """
-    return jsonify({"eisenRadioCreateStyleInstances": ghettoApi.radios_in_view_dict})
+    return jsonify({"eisenRadioCreateStyleInstances": eisenApi.radio_name_id_dict})

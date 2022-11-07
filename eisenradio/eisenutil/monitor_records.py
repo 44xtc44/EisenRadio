@@ -24,6 +24,7 @@ import time
 import eisenradio.lib.eisdb as eisen_db
 from ghettorecorder import ghettoApi
 
+
 all_blacklists_dict = {}
 ghettoApi.init_ghetto_all_blacklists_dict(all_blacklists_dict)
 
@@ -47,7 +48,7 @@ def run_blacklist_writer():
             feed_api_radios_blacklists()
             first_run = False
 
-        if ghettoApi.blacklist_enabled_global:
+        if ghettoApi.blacklist_enable:
             update_radios_blacklists()
 
         for _ in range(5):
@@ -76,12 +77,12 @@ def status_api_blacklist_set(status):
     """switch status update api, return nothing"""
     if not status:
         # not enabled at all, no insert added a new row 2
-        ghettoApi.blacklist_enabled_global = False
+        ghettoApi.blacklist_enable = False
     if status:
         if int(status[0]) == 0:
-            ghettoApi.blacklist_enabled_global = False
+            ghettoApi.blacklist_enable = False
         if int(status[0]) == 1:
-            ghettoApi.blacklist_enabled_global = True
+            ghettoApi.blacklist_enable = True
 
 
 def blacklist_enabled_button_outfit_get(is_enabled):
@@ -304,15 +305,15 @@ def feature_blacklist_switch_status(status):
     first_run = False
     if not status:
         enabled = 1
-        ghettoApi.blacklist_enabled_global = True
+        ghettoApi.blacklist_enable = True
         first_run = True
     if status:
         if int(status[0]) == 0:
             enabled = 1
-            ghettoApi.blacklist_enabled_global = True
+            ghettoApi.blacklist_enable = True
         if int(status[0]) == 1:
             enabled = 0
-            ghettoApi.blacklist_enabled_global = False
+            ghettoApi.blacklist_enable = False
 
     conn = eisen_db.get_db_connection()
     if first_run:

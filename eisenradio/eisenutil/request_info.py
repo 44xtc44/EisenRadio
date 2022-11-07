@@ -1,5 +1,6 @@
 import concurrent.futures
 from ghettorecorder import ghettoApi
+from eisenradio.api import eisenApi
 
 
 def header_data_read():
@@ -17,8 +18,8 @@ def active_buttons():
 
     use set to remove duplicate ids if rec and listen is active
     """
-    active_btn_list = [radio_id for radio_id, btn_down in ghettoApi.rec_btn_dict.items() if btn_down]
-    listen_list = [radio_id for radio_id, btn_down in ghettoApi.lis_btn_dict.items() if btn_down]
+    active_btn_list = [radio_id for radio_id, btn_down in eisenApi.rec_btn_dict.items() if btn_down]
+    listen_list = [radio_id for radio_id, btn_down in eisenApi.lis_btn_dict.items() if btn_down]
     active_btn_list.extend(listen_list)
     return list(set(active_btn_list))
 
@@ -28,7 +29,7 @@ def header_from_api_read(active_btn_list):
 
     use map() built-in and ThreadPoolExecutor, but speed is not a requirement here
     """
-    name_list = [ghettoApi.radios_in_view_dict[radio_id] for radio_id in active_btn_list]
+    name_list = [eisenApi.radio_name_id_dict[radio_id] for radio_id in active_btn_list]
     with concurrent.futures.ThreadPoolExecutor() as executor:
         list_of_lists = list(executor.map(request_header_info, name_list))
     return list_of_lists
@@ -74,7 +75,7 @@ def request_suffix_api(name):
 def request_icy_view_id_api(name):
     rv = '---'
     try:
-        for key, val in ghettoApi.radios_in_view_dict.items():
+        for key, val in eisenApi.radio_name_id_dict.items():
             if val == name:
                 rv = key
     except KeyError:

@@ -1,19 +1,20 @@
 import os
-import eisenradio.eisenutil.eisutil as eis_util
-import eisenradio.eisenutil.browser_stream as browser_stream
-import eisenradio.eisenutil.stopped_stations as stopped_stations
+from flask import Blueprint, render_template, request, url_for, flash, redirect, make_response, jsonify, Response
 from aacrepair import AacRepair
 from ghettorecorder import ghettoApi
-from flask import Blueprint, render_template, request, url_for, flash, redirect, make_response, jsonify, Response
+import eisenradio.eisenutil.eisutil as eis_util
+from eisenradio.eisenutil import config_html
 from eisenradio.eisenutil import request_info
 from eisenradio.eisenutil import tools as util_tools
+from eisenradio.eisenutil import monitor_records as mon_rec
+import eisenradio.eisenutil.browser_stream as browser_stream
+import eisenradio.eisenutil.stopped_stations as stopped_stations
 from eisenradio.lib import eisdb as lib_eisdb
 from eisenradio.api import api, eisenApi
-from eisenradio.eisenutil import monitor_records as mon_rec
-from eisenradio.eisenutil import config_html
 
-blacklist_enabled_global = False
-ghettoApi.init_ghetto_blacklist_enabled_global(blacklist_enabled_global)
+
+blacklist_enable = False
+ghettoApi.init_blacklist_enable(blacklist_enable)
 aac_repair_log = []
 ghettoApi.init_aac_repair_log(aac_repair_log)
 
@@ -31,8 +32,8 @@ def tools_transparent_image_load():
     """ return list to JS div list maker, replace standard random pic with a translucent one """
     request_dict = request.form.to_dict()
     radio_name = request_dict['radioName']
-    eisenApi.init_radio_id_dict()
-    util_tools.radio_transparent_image_db(eisenApi.radio_id_dict[radio_name])
+    eisenApi.init_radio_id_name_dict()
+    util_tools.radio_transparent_image_db(eisenApi.radio_id_name_dict[radio_name])
     msg_list = ["Radio got a beautiful transparent image."]
     return jsonify({"transparentImageLoad": msg_list})
 
@@ -203,20 +204,20 @@ def tools_blacklist_overview():
     """creates a html page with buttons for every radio to go to the blacklists edit page, returns vars for page build
 
     vars
-    radios_dict - all radios loaded if start page is drawn ghettoApi.radios_in_view_dict
+    radios_dict - all radios loaded if start page is drawn ghettoApi.radio_name_id_dict
     streamer_name_list - change btn color for radios with active rec
     skip_count - user info how often titles of this radio were skipped during session because of using blacklist feature
     radio_blacklist_count = shows the count of blacklisted titles
     """
 
     skip_count = 0
-    view_dict = ghettoApi.radios_in_view_dict  # key db id: val name
+    view_dict = eisenApi.radio_name_id_dict  # key db id: val name
     skip_title_dict = ghettoApi.skipped_in_session_dict  # key radio: val title list
     blacklist_dict = ghettoApi.all_blacklists_dict
     streamer_name_list = []
     radio_blacklist_count = {}
 
-    for db_id, btn_pressed in ghettoApi.rec_btn_dict.items():
+    for db_id, btn_pressed in eisenApi.rec_btn_dict.items():
         if btn_pressed:
             streamer_name_list.append(view_dict[db_id])
     for title_list in skip_title_dict.values():
@@ -316,7 +317,7 @@ def tools_upload_blacklists():
         print(error)
         return f'Something went wrong. error :: {error}'
     if rv:
-        status = "Monitor Records is ON" if ghettoApi.blacklist_enabled_global else "Monitor Records is OFF"
+        status = "Monitor Records is ON" if ghettoApi.blacklist_enable else "Monitor Records is OFF"
         flash(f'{count} unwanted titles imported! Lists are loaded. {status}', 'success')
         return render_template('bp_util_flash.html')
     else:
@@ -676,7 +677,7 @@ def delete_info():
    json_is_data_transfer true if a radio is online (watchdog feeds)
     """
     json_stop_list = stopped_stations.inactive_id_read()
-    json_is_data_transfer = ghettoApi.radio_active
+    json_is_data_transfer = eisenApi.radio_active
     return jsonify({"stopped_result": json_stop_list, 'is_data_transfer': json_is_data_transfer})
 
 

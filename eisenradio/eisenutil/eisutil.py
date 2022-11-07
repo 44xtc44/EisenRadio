@@ -1,6 +1,6 @@
 import os
 from flask import flash
-from ghettorecorder import ghettoApi
+from eisenradio.api import eisenApi
 
 
 def make_folder(this_folder):
@@ -45,7 +45,7 @@ def eisen_write_test(write_file):
 
 
 def is_in_db_view(a_name):
-    for radio_name in ghettoApi.radios_in_view_dict.values():
+    for radio_name in eisenApi.radio_name_id_dict.values():
         if radio_name.lower() == a_name.lower():
             return True
     return False
@@ -66,27 +66,27 @@ def remove_special_chars(str_name):
 def radio_start_page_url_get(radio_name):
     """return the anchor point url with the port number of the server"""
     radio_id = ""
-    for id_num, name in ghettoApi.radios_in_view_dict.items():
+    for id_num, name in eisenApi.radio_name_id_dict.items():
         if name == radio_name:
             radio_id = id_num
-    port = ghettoApi.work_port
+    port = eisenApi.work_port
     radio_start_page_url = 'http://localhost:' + str(port) + '/#dot_' + str(radio_id)
     return radio_start_page_url
 
 
 def radio_listen_button_get():
     """ return complete id of current pressed listen button"""
-    l_list = [radio_id for radio_id, btn_down in ghettoApi.lis_btn_dict.items() if btn_down]
+    l_list = [radio_id for radio_id, btn_down in eisenApi.lis_btn_dict.items() if btn_down]
     button_id = "Listen_" + str(l_list[0]) if len(l_list) > 0 else ""
     return button_id
 
 
 def radio_name_get():
     """return name if id is in list else None"""
-    l_list = [radio_id for radio_id, btn_down in ghettoApi.lis_btn_dict.items() if btn_down]
+    l_list = [radio_id for radio_id, btn_down in eisenApi.lis_btn_dict.items() if btn_down]
     if len(l_list) > 0:
         radio_id = l_list[0]
-        return ghettoApi.radios_in_view_dict[radio_id]
+        return eisenApi.radio_name_id_dict[radio_id]
     return
 
 
