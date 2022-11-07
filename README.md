@@ -10,7 +10,6 @@ Info
  * Organize your web radios; delete and update, backup and restore
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
- * grab content until ISP bandwidth limit hits
  * includes on-the-fly aacPlus file repair as well as offline aac repair (aacPlus)
  
 Links
@@ -75,7 +74,7 @@ You can export your ``settings.ini`` and ``blacklist.json``
 via "Tools/Export/Names and URL's" menu from your database.
 An updated ``blacklist.json`` can be imported into your database.
 
-* The default save path is in the package folder. You should change it via the menu options
+* Command line save path is in the package folder. You should change it via the menu options
 
      ``/home/osboxes/.local/lib/python3.6/site-packages/ghettorecorder/radios``
 
