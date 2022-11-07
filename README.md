@@ -11,15 +11,16 @@ Info
  * Style your app with pictures, write a comment or import a poem, song or study text to have a good time
  * Create a shuffled playlist within a local audio files folder in seconds
  * grab content until ISP bandwidth limit hits
- * includes professional aacPlus (on the fly) file repair
+ * includes on-the-fly aacPlus file repair as well as offline aac repair (aacPlus)
  
 Links
 ----
-newest version on GitHub dev branch, then PyPi Package, Android or Snap, Docker
- * Android: download to mobile (link below .-apk), rename *WHL to *ZIP, extract with Android file manager
+clone the latest version from GitHub dev branch, change to the folder ``pip install -e .``
+ * Android: rename *WHL to *ZIP, extract with Android file manager
  * Android: https://pypi.org/project/eisenradio-apk/
  * Snap: https://snapcraft.io/eisenradio
  * GitHub: https://github.com/44xtc44/eisenradio
+ * Report an issue: https://github.com/44xtc44/eisenradio/issues
 
 Eisenradio - the boring details 
 -------------------------------
