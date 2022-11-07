@@ -15,10 +15,10 @@ first_run_audio_activated = False
 
 status_listen_btn_dict = {}  # {table id 15: 1 } on
 status_record_btn_dict = {}
-radio_name_id_dict = {}
+radio_id_name_dict = {}
 eisenApi.init_lis_btn_dict(status_listen_btn_dict)
 eisenApi.init_rec_btn_dict(status_record_btn_dict)
-eisenApi.init_radio_name_id_dict(radio_name_id_dict)
+eisenApi.init_radio_id_name_dict(radio_id_name_dict)
 stop_blacklist_writer = False
 ghettoApi.init_ghetto_stop_blacklist_writer(stop_blacklist_writer)
 # the drop-down dialog of active recorder in console to jump to the recorder stations
@@ -40,7 +40,7 @@ def index_first_run(posts):
     - blacklist_writer and
     - watchdog (dev) for info print on terminal of app status
     * feed_status_btn_dicts(posts): create button dicts for listen and record
-    * feed_radio_name_id_dict(posts): create dict to resolve {db table id: radio name}
+    * feed_radio_id_name_dict(posts): create dict to resolve {db table id: radio name}
     * config_html.tools_feature_settings_get_rows(): check all "Tools" features have db entries, if not create
         find the row numbers for features in eisenutil/config_html.py
     """
@@ -53,7 +53,7 @@ def index_first_run(posts):
         watchdog.start_watchdog_daemon()
 
         feed_status_btn_dicts(posts)
-        feed_radio_name_id_dict(posts)
+        feed_radio_id_name_dict(posts)
         config_html.tools_feature_settings_get_rows()
 
 
@@ -65,11 +65,11 @@ def feed_status_btn_dicts(posts):
         status_record_btn_dict[row['id']] = 0
 
 
-def feed_radio_name_id_dict(posts):
+def feed_radio_id_name_dict(posts):
     """dict for resolving {id: radio_name} without open db connection everytime"""
     for row in posts:
         # api
-        radio_name_id_dict[row['id']] = status_read_status_set(False, 'posts', 'title', row['id'])
+        radio_id_name_dict[row['id']] = status_read_status_set(False, 'posts', 'title', row['id'])
 
 
 def curr_radio_listen():
@@ -77,7 +77,7 @@ def curr_radio_listen():
     current_station, current_id = "", ""
     for table_id, btn_down in status_listen_btn_dict.items():
         if btn_down:
-            current_station = radio_name_id_dict[table_id]
+            current_station = radio_id_name_dict[table_id]
             current_id = table_id
             break
     return current_station, current_id

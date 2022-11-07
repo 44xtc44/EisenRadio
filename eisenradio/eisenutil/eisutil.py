@@ -45,7 +45,7 @@ def eisen_write_test(write_file):
 
 
 def is_in_db_view(a_name):
-    for radio_name in eisenApi.radio_name_id_dict.values():
+    for radio_name in eisenApi.radio_id_name_dict.values():
         if radio_name.lower() == a_name.lower():
             return True
     return False
@@ -66,7 +66,7 @@ def remove_special_chars(str_name):
 def radio_start_page_url_get(radio_name):
     """return the anchor point url with the port number of the server"""
     radio_id = ""
-    for id_num, name in eisenApi.radio_name_id_dict.items():
+    for id_num, name in eisenApi.radio_id_name_dict.items():
         if name == radio_name:
             radio_id = id_num
     port = eisenApi.work_port
@@ -86,7 +86,7 @@ def radio_name_get():
     l_list = [radio_id for radio_id, btn_down in eisenApi.lis_btn_dict.items() if btn_down]
     if len(l_list) > 0:
         radio_id = l_list[0]
-        return eisenApi.radio_name_id_dict[radio_id]
+        return eisenApi.radio_id_name_dict[radio_id]
     return
 
 

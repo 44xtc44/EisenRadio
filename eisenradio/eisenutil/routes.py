@@ -32,8 +32,8 @@ def tools_transparent_image_load():
     """ return list to JS div list maker, replace standard random pic with a translucent one """
     request_dict = request.form.to_dict()
     radio_name = request_dict['radioName']
-    eisenApi.init_radio_id_name_dict()
-    util_tools.radio_transparent_image_db(eisenApi.radio_id_name_dict[radio_name])
+    eisenApi.init_radio_name_id_dict()
+    util_tools.radio_transparent_image_db(eisenApi.radio_name_id_dict[radio_name])
     msg_list = ["Radio got a beautiful transparent image."]
     return jsonify({"transparentImageLoad": msg_list})
 
@@ -204,14 +204,14 @@ def tools_blacklist_overview():
     """creates a html page with buttons for every radio to go to the blacklists edit page, returns vars for page build
 
     vars
-    radios_dict - all radios loaded if start page is drawn ghettoApi.radio_name_id_dict
+    radios_dict - all radios loaded if start page is drawn ghettoApi.radio_id_name_dict
     streamer_name_list - change btn color for radios with active rec
     skip_count - user info how often titles of this radio were skipped during session because of using blacklist feature
     radio_blacklist_count = shows the count of blacklisted titles
     """
 
     skip_count = 0
-    view_dict = eisenApi.radio_name_id_dict  # key db id: val name
+    view_dict = eisenApi.radio_id_name_dict  # key db id: val name
     skip_title_dict = ghettoApi.skipped_in_session_dict  # key radio: val title list
     blacklist_dict = ghettoApi.all_blacklists_dict
     streamer_name_list = []

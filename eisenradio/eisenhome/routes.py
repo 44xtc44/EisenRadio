@@ -183,7 +183,7 @@ def cookie_get_dark():
     listener_id = None
     for radio, listening in ghettoApi.listen_active_dict.items():
         if listening:
-            for r_id, name in eisenApi.radio_name_id_dict.items():
+            for r_id, name in eisenApi.radio_id_name_dict.items():
                 if name == radio:
                     listener_id = r_id
                     break
@@ -235,12 +235,12 @@ def skipped_records_get():
     empty dict if nothing skipped
     """
     skipped_records_list = []
-    eisenApi.init_radio_id_name_dict()
+    eisenApi.init_radio_name_id_dict()
     eisenApi.init_skipped_record_eisen_dict()
 
     for radio in eisenApi.skipped_record_eisen_dict.keys():
         if eisenApi.get_skipped_record(radio):
-            skipped_records_list.append(eisenApi.radio_id_name_dict[radio])
+            skipped_records_list.append(eisenApi.radio_name_id_dict[radio])
 
     return jsonify({'skippedRecordsGet': skipped_records_list})
 
@@ -300,13 +300,13 @@ def display_info():
         id_text_dict = {}
         try:
             for radio_name, radio_text in ghettoApi.current_song_dict.items():
-                for radio_db_id, radio_title in eisenApi.radio_name_id_dict.items():
+                for radio_db_id, radio_title in eisenApi.radio_id_name_dict.items():
                     if radio_name == radio_title:
                         if len(radio_text) > 0:
                             id_text_dict[str(radio_db_id)] = str(radio_text)
 
             for radio_name, radio_error in ghettoApi.ghetto_dict_error.items():
-                for radio_db_id, radio_title in eisenApi.radio_name_id_dict.items():
+                for radio_db_id, radio_title in eisenApi.radio_id_name_dict.items():
                     if radio_name == radio_title:
                         id_text_dict[str(radio_db_id)] = str(radio_error)
         except Exception as error:
@@ -321,4 +321,4 @@ def all_radio_table_ids_and_names_get():
 
     build js style instance for each radio
     """
-    return jsonify({"eisenRadioCreateStyleInstances": eisenApi.radio_name_id_dict})
+    return jsonify({"eisenRadioCreateStyleInstances": eisenApi.radio_id_name_dict})

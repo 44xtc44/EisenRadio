@@ -122,8 +122,8 @@ class TestRouteHome(unittest.TestCase):
             'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
             'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
         }
-        eisenApi.radio_name_id_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
-
+        eisenApi.radio_id_name_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
+        print(eisenApi.radio_id_name_dict)
         # testing
         rv = web.get(
             '/display_info',

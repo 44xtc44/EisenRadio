@@ -29,7 +29,7 @@ def header_from_api_read(active_btn_list):
 
     use map() built-in and ThreadPoolExecutor, but speed is not a requirement here
     """
-    name_list = [eisenApi.radio_name_id_dict[radio_id] for radio_id in active_btn_list]
+    name_list = [eisenApi.radio_id_name_dict[radio_id] for radio_id in active_btn_list]
     with concurrent.futures.ThreadPoolExecutor() as executor:
         list_of_lists = list(executor.map(request_header_info, name_list))
     return list_of_lists
@@ -75,7 +75,7 @@ def request_suffix_api(name):
 def request_icy_view_id_api(name):
     rv = '---'
     try:
-        for key, val in eisenApi.radio_name_id_dict.items():
+        for key, val in eisenApi.radio_id_name_dict.items():
             if val == name:
                 rv = key
     except KeyError:
