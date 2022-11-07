@@ -31,7 +31,7 @@ class Api:
         return f"Flask application factory config: {self.config}"
 
 
-class GhettoTest:
+class EisenTest:
     def __init__(self):
         self.thread_killer = ()
 
@@ -41,26 +41,48 @@ class GhettoTest:
 
 
 class EisenApi:
-    """ attributes and methods only needed for eisenradio
-    todo:
-        refactor GhettoApi of GhettoRecorder package to transfer all those attributes to here
+    """ EisenRadio is a frontend and runs on top of GhettoRecorder
+    attributes needed only for eisenradio modules, some api modules connect to GhettoApi
+
     """
+
     def __init__(self):
         """ init
+
         Attributes:
-                radio_id_dict, {radio1: 1, radio2: 2} radio name to db table id mapping (from {id: name})
-                skipped_record_eisen_dict, {radio1: 2} compare list len of Ghetto skipped_in_session_dict with counter
-                call_skipped_record_eisen_dict, endpoint call before get_skipped_record()
+           radio_id_name_dict . {starRadio: 1, planetRadio: 2} radio name to db table id mapping (from {id: name})
+           radio_name_id_dict . radios listed on startpage, key:db id, val: radio name shown on html
+           skipped_record_eisen_dict . {radio1: 2} compare list len of Ghetto skipped_in_session_dict with counter
+           call_skipped_record_eisen_dict . endpoint call before get_skipped_record()
+           lis_btn_dict . listen, radio get on/off entry for radio table id
+           rec_btn_dict . record, radio get on/off entry for radio table id
+           show_analyser . cookie for analyser, can have db entry but want cookie to show howto
+           work_port . wsgi port number, for functions in java to connect to correct endpoint
+           radio_active . shows if a thread is connected to the internet, green light in console
         """
-        self.radio_id_dict = {}
-        self.call_radio_id_dict = True
+        self.radio_id_name_dict = {}
+        self.radio_name_id_dict = {}
+        self.call_radio_id_name_dict = True
         self.skipped_record_eisen_dict = {}
         self.call_skipped_record_eisen_dict = True
+        self.lis_btn_dict = {}
+        self.rec_btn_dict = {}
+        self.show_analyser = True
+        self.work_port = None
+        self.radio_active = False
 
-    def init_radio_id_dict(self):
-        if self.call_radio_id_dict:
-            self.radio_id_dict = {name: table_id for table_id, name in ghettoApi.radios_in_view_dict.items()}
-            self.call_radio_id_dict = False
+    def init_radio_id_name_dict(self):
+        """ key is radio_id: val is name radio_id_name_dict {table_id: name},
+        radio_name_id_dict {name: table_id}
+        todo change names to better reflect purpose, radio_id_name_dict, radio_name_id_dict
+        """
+        if self.call_radio_id_name_dict:
+            self.radio_id_name_dict = {name: table_id for table_id, name in self.radio_name_id_dict.items()}
+            self.call_radio_id_name_dict = False
+
+    def init_radio_name_id_dict(self, radio_name_id_dict):
+        """ key:db id, val: radio name shown on html """
+        self.radio_name_id_dict = radio_name_id_dict
 
     def init_skipped_record_eisen_dict(self):
         """ get radio key name from GhettoApi all_blacklists_dict {radio1: [], radio2: []} ([] is title skip list)
@@ -87,7 +109,27 @@ class EisenApi:
         else:
             return False
 
+    def init_lis_btn_dict(self, lis_btn_dict):
+        """ key:db id, val: 0 or 1, button down 1 """
+        self.lis_btn_dict = lis_btn_dict
+
+    def init_rec_btn_dict(self, rec_btn_dict):
+        """ key:db id, val: 0 or 1, button down 1 """
+        self.rec_btn_dict = rec_btn_dict
+
+    def init_show_analyser(self, show_analyser):
+        """ set cookie to show or hide spectrum analyser, true or false """
+        self.show_analyser = show_analyser
+
+    def init_work_port(self, work_port):
+        """ port number on startup in wsgi.py or app.py: write the sound endpoint url to java """
+        self.work_port = work_port
+
+    def init_radio_active(self, radio_active):
+        """ return True if a thread with action string record or listen is connected to the internet """
+        self.radio_active = radio_active
+
 
 api = Api()
-ghettoTest = GhettoTest()
+eisenTest = EisenTest()
 eisenApi = EisenApi()

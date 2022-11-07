@@ -4,8 +4,7 @@
 import certifi
 from flask import Flask
 from os import path, environ
-from eisenradio.api import api
-from ghettorecorder import ghettoApi
+from eisenradio.api import api, eisenApi
 
 # android ssl fix
 environ['SSL_CERT_FILE'] = certifi.where()
@@ -22,7 +21,7 @@ def create_app(work_port):
     with app.app_context():
 
         api.init_app(app)
-        ghettoApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
+        eisenApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
 
         is_snap_device = 'SNAP' in environ  # write in [SNAP_USER_COMMON]
         is_android_device = 'ANDROID_STORAGE' in environ
@@ -69,7 +68,7 @@ def create_app_test(work_port):
     with app.app_context():
 
         api.init_app(app)
-        ghettoApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
+        eisenApi.init_work_port(work_port)  # port to use; browser autostart, sound endpoint
 
         # helper stuff
         from eisenradio.lib.platform_helper import main as start_frontend
