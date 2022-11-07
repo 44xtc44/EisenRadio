@@ -2,6 +2,8 @@ import json
 import unittest
 from os import environ, remove
 from eisenradio import create_app_test  # __init__
+from ghettorecorder import ghettoApi
+from eisenradio.api import eisenApi
 from eisenradio.instance.config_apfac import write_config, remove_config
 
 
@@ -114,14 +116,13 @@ class TestRouteHome(unittest.TestCase):
 
         print(""" /display_info """)
 
-        from ghettorecorder import ghettoApi
         # mocking
         ghettoApi.current_song_dict = {
             'Korean_Pop': 'OVAN 오반 - I Need You 어떻게 지내',
             'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
             'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
         }
-        ghettoApi.radio_name_id_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
+        eisenApi.radio_name_id_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
 
         # testing
         rv = web.get(
