@@ -301,29 +301,40 @@ def feature_blacklist_switch_status(status):
     first run ever creates db entry for the feature,
     then switch and returns on or off
     """
-    enabled = 0
+    enabled = False
     first_run = False
-    if not status:
-        enabled = 1
-        ghettoApi.blacklist_enable = True
+    if status is None:
+        enabled = True
+        ghettoApi.blacklist_enable = enabled
         first_run = True
-    if status:
-        if int(status[0]) == 0:
-            enabled = 1
-            ghettoApi.blacklist_enable = True
-        if int(status[0]) == 1:
-            enabled = 0
-            ghettoApi.blacklist_enable = False
+    if status is not None:
+        blacklist_on = int(status[0])
+        if not blacklist_on:
+            enabled = True
+            ghettoApi.blacklist_enable = enabled
+        if blacklist_on:
+            enabled = False
+            ghettoApi.blacklist_enable = enabled
 
-    conn = eisen_db.get_db_connection()
     if first_run:
-        # first app had no further cols in db, so reuse the existing col and add row 2
-        conn.execute('INSERT INTO eisen_intern (browser_open) VALUES (?);', (enabled,))
+        feature_blacklist_insert_row(enabled)
     if not first_run:
-        conn.execute('UPDATE eisen_intern SET browser_open = ? WHERE id = ?;', (enabled, 2))
+        feature_blacklist_update_row(enabled)
+    return enabled
+
+
+def feature_blacklist_insert_row(enabled):
+    conn = eisen_db.get_db_connection()
+    conn.execute('INSERT INTO eisen_intern (browser_open) VALUES (?);', (enabled,))
     conn.commit()
     conn.close()
-    return enabled
+
+
+def feature_blacklist_update_row(enabled):
+    conn = eisen_db.get_db_connection()
+    conn.execute('UPDATE eisen_intern SET browser_open = ? WHERE id = ?;', (enabled, 2))
+    conn.commit()
+    conn.close()
 
 
 def fill_radio_display_col():
