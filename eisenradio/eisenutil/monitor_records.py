@@ -75,29 +75,29 @@ def status_db_blacklist_get():
 
 def status_api_blacklist_set(status):
     """switch status update api, return nothing"""
-    if not status:
+    if status is None:
         # not enabled at all, no insert added a new row 2
         ghettoApi.blacklist_enable = False
     if status:
-        if int(status[0]) == 0:
+        if not int(status[0]):
             ghettoApi.blacklist_enable = False
-        if int(status[0]) == 1:
+        if int(status[0]):
             ghettoApi.blacklist_enable = True
 
 
 def blacklist_enabled_button_outfit_get(is_enabled):
-    """read status feature enabled, return if enabled or not
+    """Read blacklist feature table row, return enabled or not.
 
     change btn color in Tools menu Monitor Records to reflect status
     called by @eisenutil_bp.route('/tools'
     """
     enabled = False
-    if not is_enabled:
+    if is_enabled is None:
         enabled = False
     if is_enabled:
-        if int(is_enabled[0]) == 0:
+        if not int(is_enabled[0]):
             enabled = False
-        if int(is_enabled[0]) == 1:
+        if int(is_enabled[0]):
             enabled = True
     return enabled
 
