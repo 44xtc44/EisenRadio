@@ -252,14 +252,14 @@ def del_single_title_del_indexes(asc_ord_del_idx, blacklist, radio):
     """
     log_list = ["--> index delete:"]
     print(asc_ord_del_idx)
-    i = 0
-    for idx in asc_ord_del_idx:
-        message = f'index:{idx}: {blacklist[idx + i]} [{idx + i}: index in altered list]'
+
+    for count, idx in enumerate(asc_ord_del_idx):
+        message = f'index:{idx}: {blacklist[idx + count]} [{idx + count}: index in altered list]'
         print(message)
         log_list.append(message)
-        del ghettoApi.all_blacklists_dict[radio][idx + i]
-        del blacklist[idx + i]
-        i -= 1
+        del ghettoApi.all_blacklists_dict[radio][idx + count]
+        del blacklist[idx + count]
+
     log_list.append("--> from this list:")
     return blacklist, log_list
 
