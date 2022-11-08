@@ -78,7 +78,7 @@ def status_api_blacklist_set(status):
     if status is None:
         # not enabled at all, no insert added a new row 2
         ghettoApi.blacklist_enable = False
-    if status:
+    if status is not None:
         if not int(status[0]):
             ghettoApi.blacklist_enable = False
         if int(status[0]):
@@ -295,7 +295,7 @@ def delete_all_blacklists(feature_enabled):
                 delete_blacklist(radio)
 
 
-def feature_blacklist_switch_status(status):
+def feature_blacklist_switch_status(table_row):
     """enables feature if status is None (no db table cell) or switch status if bool, writes status, return new status
 
     first run ever creates db entry for the feature,
@@ -303,23 +303,29 @@ def feature_blacklist_switch_status(status):
     """
     enabled = False
     first_run = False
-    if status is None:
+    if table_row is None:
         enabled = True
         ghettoApi.blacklist_enable = enabled
         first_run = True
-    if status is not None:
-        blacklist_on = int(status[0])
-        if not blacklist_on:
-            enabled = True
-            ghettoApi.blacklist_enable = enabled
-        if blacklist_on:
-            enabled = False
-            ghettoApi.blacklist_enable = enabled
+    if table_row is not None:
+        enabled = blacklist_enable(table_row)
 
     if first_run:
         feature_blacklist_insert_row(enabled)
     if not first_run:
         feature_blacklist_update_row(enabled)
+    return enabled
+
+
+def blacklist_enable(table_row):
+    blacklist_on = int(table_row[0])
+    enabled = False
+    if not blacklist_on:
+        enabled = True
+        ghettoApi.blacklist_enable = enabled
+    if blacklist_on:
+        enabled = False
+        ghettoApi.blacklist_enable = enabled
     return enabled
 
 
