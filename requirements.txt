@@ -1,8 +1,8 @@
 aacrepair~=0.4
-ghettorecorder~=2.4.5
+ghettorecorder==2.4.5
 Flask~=2.0.2
-Werkzeug~=2.0.2
-certifi~=2021.10.8
+Werkzeug>=2.2.3
+certifi>=2022.12.07
 configparser~=5.0.2
 pytest~=6.2.5
 python-dotenv~=0.19.2
