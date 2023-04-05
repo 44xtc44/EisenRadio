@@ -9,7 +9,7 @@ description = "Play radio. Style your App."
 keywords = ['aacp repair', 'aac repair']
 license = {file = "LICENSE.rst"}
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 dynamic = ['authors',]
 classifiers = [
     "Framework :: Flask",
