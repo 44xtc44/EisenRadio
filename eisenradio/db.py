@@ -57,8 +57,8 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('goa_psy',
-         'https://amoris.sknt.ru/goa.mp3',
+        ('deep_house',
+         'https://streaming-01.xtservers.com:7000/stream',
          save_parent_folder,
          '',
          "image/png",
@@ -67,8 +67,8 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('time_machine',
-         'http://98.211.68.9:8765',
+        ('audio_noir',
+         'http://104.192.169.54:8000/noir',
          save_parent_folder,
          'usa - Classic Old Time Radio, Sci Fi, Comedy, Drama',
          "image/png",
@@ -77,8 +77,8 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('nerd-sound-tracks',
-         'http://167.114.210.232:8259/stream',
+        ('anime_jp',
+         'http://streamingv2.shoutcast.com/japanimradio-tokyo',
          save_parent_folder,
          'sound tracks of japanese anime videos and games',
          "image/jpeg",
@@ -87,8 +87,8 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('BLUES_UK',
-         'http://149.255.59.3:8232/stream',
+        ('radio_pan_america',
+         'http://51.222.8.101:8000/stream',
          save_parent_folder,
          '',
          "image/jpeg",
