@@ -1,1 +1,2 @@
 https://github.com/ymyzk/tox-gh-actions/actions/runs/1225719591/workflow
+https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
