@@ -71,13 +71,10 @@ class TestRouteHome(unittest.TestCase):
         assert data['darkmode'] == 'darkmode'
 
         print(""" /cookie_get_dark (flask client.cookie_jar style) """)
-
-        cookie = next(
-            (cookie for cookie in web.cookie_jar if cookie.name == "eisen-cookie"),
-            None
-        )
-        assert cookie is not None
-        assert cookie.value == "darkmode"
+        a_lst = [c.key for c in list(web.cookie_jar)]
+        b_lst = [c.value for c in list(web.cookie_jar)]
+        assert "eisen-cookie" in a_lst
+        assert "darkmode" in b_lst
 
         print(""" /cookie_del_dark """)
 
