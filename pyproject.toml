@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.2.6"
+version = "2.2.7"
 description = "Play radio. Style your App."
-keywords = ['aacp repair', 'aac repair']
+keywords = ['eisenradio', 'aac repair']
 license = {file = "LICENSE.rst"}
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dynamic = ['authors',]
 classifiers = [
     "Framework :: Flask",
