@@ -6,4 +6,4 @@ certifi>=2022.12.07
 configparser~=5.0.2
 pytest~=6.2.5
 python-dotenv~=0.19.2
-waitress~=2.0.0
+waitress>=2.1.2
