@@ -42,6 +42,7 @@ repository = "https://github.com/44xtc44/EisenRadio"
 
 [project.scripts]
 eisenradio-cmd = "eisenradio.cmd:main"
+eisenradio-wsgi = "eisenradio.wsgi:main"
 
 [project.gui-scripts]
 eisenradio = "eisenradio.gui:main"
