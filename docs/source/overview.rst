@@ -55,8 +55,8 @@ Utils
          needed to fix incorrectly recorded aac files (no timer used to quit), so playlist not stuck
 		 
       Export and Import:
-         radio settings with *ini files
-         blacklists with *json files, dictionary style
+         radio settings with *ini* files
+         blacklists with *json* files, dictionary style
 		 
       delete all:
-         delete all radio table rows to restore from exported *ini file
+         delete all radio table rows to restore from exported *ini* file

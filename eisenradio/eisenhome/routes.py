@@ -84,12 +84,13 @@ def degrade_animation_level_set():
     """ degrade_animation_level_set() and degrade_animation_level_get() called on radio button change to
     write the js animationsAllowedDict new, so animation can see if run is allowed
 
-    write the animation level status for CPU to db, high is 1 (default in db), low is 0
-    ---> can only use 1 and 0 values since db writer uses on/off style, default is 1
-    config_html.tools_feature_settings_get_rows() compares actual rows number in db with rows hardcoded as a list
-        it calls tools_feature_settings_create_default(feature_without_row) to create the rows with default value
-    config_html.tools_feature_settings_get_rows is called on startup to write new rows if version upgrade of package
-    database row 8 for html_cpu
+    | write the animation level status for CPU to db, high is 1 (default in db), low is 0
+    | We can only use 1 and 0 values since db writer uses on/off style, default is 1.
+
+    | config_html.tools_feature_settings_get_rows() compares actual rows number in db with rows hardcoded as a list
+    | it calls tools_feature_settings_create_default(feature_without_row) to create the rows with default value
+    | config_html.tools_feature_settings_get_rows is called on startup to write new rows if version upgrade of package
+    | database row 8 for html_cpu
     """
     on = 1
     off = 0
