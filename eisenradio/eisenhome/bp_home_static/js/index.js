@@ -112,6 +112,7 @@ $(document).ready(function () {
     setColor("requestTheCookie");       // document.body color
     stationGet();                       // active listen db id and name if any to animate the correct div id and console name
     streamerGet();                      // active rec button list to rebuild watch drop down dialog
+    blacklistInfoOff();                 // disable sticky note info if blacklist feature is enabled by user
     eisenRadioCreateStyleInstances();   // each radio get an instance to make styles more easy if record is running; before, after, sim. to listen stuff
     degradeAnimationsWriteDict();       // dict of currently allowed animations
     touchMoveItemsEventListenerSet();   // make div touchable for mobile or touchscreen, svgAnimation.js
@@ -599,8 +600,29 @@ function streamerGet() {
 }
 ;
 
+function blacklistInfoOff() {
+/**
+ * disable sticky note info if blacklist feature is enabled by user
+ */
+    let req = $.ajax({
+        type: 'GET',
+        url: "/blacklist_status_get",
+        cache: false,
+    });
+    req.done(function (data) {
+
+        let blacklistPostIt = document.getElementById('blacklistPostIt');
+        if (data.blacklistStatus === "enabled") {
+            blacklistPostIt.style.display = "none";
+        } else {
+            blacklistPostIt.style.display = "inline-block";
+        }
+    });
+}
+;
+
 function cookie_set_show_visuals() {
-/*
+/**
  * spectrum analyser cookie
  */
     let req;

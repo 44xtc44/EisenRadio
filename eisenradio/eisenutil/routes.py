@@ -715,3 +715,13 @@ def sound(radio_name):
     response.headers['Cache-Control'] = 'no-store'
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
+
+
+@eisenutil_bp.route('/blacklist_status_get', methods=['GET'])
+def blacklist_status_get():
+    """return *enabled* if user has switched on the feature
+    """
+    html_blacklist_row = 2
+    blacklist_enabled = config_html.tools_feature_on_off_state_in_db(html_blacklist_row)
+    ret_val = "enabled" if blacklist_enabled else "false"
+    return jsonify({"blacklistStatus": ret_val})
