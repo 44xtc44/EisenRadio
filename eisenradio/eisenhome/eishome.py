@@ -30,19 +30,9 @@ progress_master_percent = 0
 
 
 def index_first_run(posts):
-    """startup of app
+    """startup
 
-    global first_run_index var set to mark first run
-    prepare app to run in a clean state
-    check write protected folder,
-    start app relevant daemons (threads),
-    - timer,
-    - blacklist_writer and
-    - watchdog (dev) for info print on terminal of app status
-    * feed_status_btn_dicts(posts): create button dicts for listen and record
-    * feed_radio_id_name_dict(posts): create dict to resolve {db table id: radio name}
-    * config_html.tools_feature_settings_get_rows(): check all "Tools" features have db entries, if not create
-        find the row numbers for features in eisenutil/config_html.py
+    :params: posts: dump of table posts
     """
     global first_run_index
     if first_run_index:
@@ -58,7 +48,10 @@ def index_first_run(posts):
 
 
 def feed_status_btn_dicts(posts):
-    """reset all button tracker dicts to zero {table_id: button off}"""
+    """reset all button tracker dicts to zero {table_id: button off}
+
+    :params: posts: db dump of table posts
+    """
     for row in posts:
         # init btn not pressed
         status_listen_btn_dict[row['id']] = 0
@@ -66,14 +59,20 @@ def feed_status_btn_dicts(posts):
 
 
 def feed_radio_id_name_dict(posts):
-    """dict for resolving {id: radio_name} without open db connection everytime"""
+    """dict for resolving {id: radio_name} without open db connection everytime
+
+    :params: posts: db dump of table posts
+    """
     for row in posts:
         # api
         radio_id_name_dict[row['id']] = status_read_status_set(False, 'posts', 'title', row['id'])
 
 
 def curr_radio_listen():
-    """returns active listening radio id and name for page refresh"""
+    """active radio
+
+    :returns: tuple of two, active listening radio id and name for page refresh
+    """
     current_station, current_id = "", ""
     for table_id, btn_down in status_listen_btn_dict.items():
         if btn_down:
@@ -117,15 +116,11 @@ def index_posts_clicked(post_request):
 def index_posts_clicked_new(table_id, radio_name):
     """set global var last_btn_id_global, activate js auto clicker, announce sound endpoint for radio name
 
-    fresh listen button press
-    activate auto clicker to reset abandoned btn status (color)
-    JavaScript module gets sound endpoint url with current port number for html audio element
-    vars
-    'result': 'activate_audio', - js calls reloadAudioElement()
-    'button_to_switch': 'Listen_' + btn_to_switch, - press abandoned listen button
-    'radio_name': radio_name,
-    'radio_id': table_id
-    'sound_endpoint': "http://localhost:" + eisenApi.work_port + "/sound/"  - js audio connect to port number url
+    | fresh listen button press
+    | activate auto clicker to reset abandoned btn status (color)
+    | JavaScript module gets sound endpoint url with current port number for html audio element
+    | vars
+    | 'sound_endpoint': "http://localhost:" + eisenApi.work_port + "/sound/"  - js audio connect to port number url
     """
     global last_btn_id_global
 
@@ -185,11 +180,11 @@ def index_posts_clicked_already(table_id, radio_name):
 
 def index_posts_record(table_id):
     """ call dispatch_master( id record on/off)
-    return names and table ids of all streamer to js
-        and id of current activated/deactivated rec
-    make a combo box with anchor to jump to the rec radio from console
-    vars
-    'streamer': json_streamer - write name to the stream watcher drop-down dialog in console
+     | return names and table ids of all streamer to js
+     | and id of current activated/deactivated rec
+     | make a combo box with anchor to jump to the rec radio from console
+     | vars
+     | 'streamer': json_streamer - write name to the stream watcher drop-down dialog in console
     """
     conn = get_db_connection()
     radio_name = status_read_status_set(False, 'posts', 'title', table_id)

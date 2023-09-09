@@ -9,7 +9,7 @@ Feature Overview
    * Closing the browser does not disconnect the server listen (buffer discarded) nor streaming connections
 
 * Plays and repairs aac plus files; play (1.3), repairs since version (1.4);
-* Backup and restore are easy work with the help of an optional ex/imported human-readable *ini file
+* Backup and restore are easy work with the help of an optional ex/imported human-readable *ini* file
 * Blacklist feature for recorded files (titles); delete only once
    * lists can be ex/imported via a json dictionary file to other devices
 

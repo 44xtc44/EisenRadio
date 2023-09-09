@@ -1,21 +1,11 @@
 """Tools menu Tools function except Monitor Records (monitor_records.py)
 
-delete all radios - from db
-   delete_all_radios()
-
-export radios - names and urls
-   export_radios()
-
-export blacklists
-   dump_radio_blacklist()
-
-import radios
-   we are a webserver, upload
-   upload_radios() - master function, upload_ prefix
-   radio_spare_image() - get random image for radio
-
-import blacklists
-   upload_blacklists() - master function, upload_ prefix
+:methods: delete_all_radios(): delete all radios - from db
+:methods: export_radios(): export radios - names and urls
+:methods: dump_radio_blacklist(): export blacklists
+:methods: upload_radios():
+:methods: radio_spare_image(): get random image for radio
+:methods: upload_blacklists(): blacklist from other app or GhettoRecorder
 """
 import configparser
 import json
