@@ -1,35 +1,35 @@
-""" command line call to open the eisenradio gui, prod server waitress serves
-entry point in pyproject.toml
-[project.gui-scripts]
-eisen-gui = "eisenradio.gui:main"
-console command is 'eisen-gui'
+"""FLASK server on port 5050.
+Get a good observation of html connections.
+WAITRESS wsgi server can run on a random port - wsgi.py.
 """
 import sys
+import socket
+import eisenradio
 from os import path
-from waitress import serve
-from eisenradio import wsgi
 
-this_dir = path.abspath(path.join(path.dirname(__file__)))
-api_dir = path.abspath(path.join(path.dirname(__file__),   'api'))
-home_dir = path.abspath(path.join(path.dirname(__file__),  'eisenhome'))
-utils_dir = path.abspath(path.join(path.dirname(__file__), 'eisenutils'))
+# flask wants its config
 instance_dir = path.abspath(path.join(path.dirname(__file__), 'instance'))
-lib_dir = path.abspath(path.join(path.dirname(__file__),   'lib'))
-sys.path.append(path.abspath(this_dir))
-sys.path.append(path.abspath(api_dir))
-sys.path.append(path.abspath(home_dir))
-sys.path.append(path.abspath(utils_dir))
 sys.path.append(path.abspath(instance_dir))
-sys.path.append(path.abspath(lib_dir))
-
 port = 5050
-app = wsgi.wsgi_app(port)
 
-print('\n Python WSGI "Waitress" serves flask\n')
+
+def is_port_occupied(srv_port: int) -> bool:
+    """The error indicator is 0 if the operation succeeded, otherwise return the value of the errno variable.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', srv_port)) == 0
 
 
 def main():
-    serve(app, host='localhost', port=port)
+    global port
+    while 1:
+        if not is_port_occupied(port):
+            app = eisenradio.create_app(port)  # transfer port num info to flask (audio endpoint ...:5050/sound/starFM)
+            app.run('localhost', port)
+            break
+        else:
+            print(f'Port in use: {port} \n\tadd one to port number')
+            port += 1
 
 
 if __name__ == "__main__":

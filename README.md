@@ -22,6 +22,40 @@ clone the latest version from GitHub dev branch, change to the folder ``pip inst
  * GitHub: https://github.com/44xtc44/eisenradio
  * Report an issue: https://github.com/44xtc44/eisenradio/issues
 
+Command line 
+------------
+
+EisenRadio GUI supported by Flask server.
+
+    $ eisenradio  # executable script in Python Path
+    $ python3 -m eisenradio.gui  # runs package if Python path is defektive
+
+WSGI server *Waitress* on a random port.
+
+    $ eisenradio-wsgi
+    $ python3 -m eisenradio.wsgi
+
+GhettoRecorder on command line.
+
+    $ eisenradio-cmd
+    $ python3 -m eisenradio.cmd
+
+GhettoRecorder stores recorded files in the package folder by default. 
+``/home/osboxes/.local/lib/python3.6/site-packages/ghettorecorder/radios``
+You can change the folder via the menu options
+
+
+Export / Import of GhettoRecorder in- and output files 
+-------------------------------------------------------
+
+Eisenradio stores *radio names and URLs* and *blacklists* in its database.
+
+You can export for GhettoRecorder ``settings.ini`` and ``blacklist.json`` from database.
+``Tools/Export/Names and URL's`` menu.
+
+GhettoRecorder created ``blacklist.json`` can be imported into your database.
+
+
 Eisenradio - the boring details 
 -------------------------------
  * REST API app on blueprints and ApplicationFactory of the Flask microframework with a SQLite database
@@ -56,44 +90,13 @@ Eisenradio - the boring details
 
     Cross-Origin Resource Sharing mechanism (CORS) 
     i.a. prevents a Browser from analysing audio from internet
-    
-command line 
-------------
-Start browser from command line   
 
-    $ eisenradio
-
-Call the command line app with one of two commands.
-
-    $ eisenradio-cmd
-
-Or, EisenRadio sits on top of 'GhettoRecorder' package https://pypi.org/project/GhettoRecorder/
-
-    $ ghettorecorder
-
-You can export your ``settings.ini`` and ``blacklist.json`` 
-via "Tools/Export/Names and URL's" menu from your database.
-An updated ``blacklist.json`` can be imported into your database.
-
-* Command line save path is in the package folder. You should change it via the menu options
-
-     ``/home/osboxes/.local/lib/python3.6/site-packages/ghettorecorder/radios``
 
 pip install
 -----------
-    """ xxs Linux xxs """
-    $ pip3 install eisenradio
-    $ python3 -m eisenradio.wsgi  # watch flask
 
-    """ xxm Windows xxm """
-    > pip install eisenradio
-    > python -m eisenradio.wsgi
-
-    """ xxl big company xxl """
-    $$$ pip3 install eisenradio
-    $$$ python3 -m eisenradio.app  # serve flask
-    """ for the sake of completeness, a python
-        production server 'waitress' is started """
+    $ pip3 install eisenradio  # Tux
+    > pip install eisenradio  # M$
 
 Pytest
 ---
