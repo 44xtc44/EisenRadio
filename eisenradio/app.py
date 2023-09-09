@@ -20,11 +20,13 @@ sys.path.append(path.abspath(instance_dir))
 sys.path.append(path.abspath(lib_dir))
 
 # port = random.randint(12488, 12974)    # random between two integers
-port = 5050
+port = 8000
 print('\n Python WSGI "Waitress" serves flask\n')
 
 
-def is_port_in_use(srv_port: int) -> bool:
+def is_port_occupied(srv_port: int) -> bool:
+    """return zero if success
+    """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', srv_port)) == 0
 
@@ -33,8 +35,7 @@ def main():
     global port
 
     while 1:
-        port_vacant = is_port_in_use(port)
-        if port_vacant:
+        if not is_port_occupied(port):
             app = wsgi.wsgi_app(port)  # transfer port num info to flask (for audio endpoint ...:5050/sound/starFM)
             serve(app, host='localhost', port=port)
             break
