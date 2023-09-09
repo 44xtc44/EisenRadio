@@ -292,6 +292,16 @@ summary>* {
     padding-right: 1em;
 }
 
+#blacklistPostIt {
+    position: absolute;
+    z-index: 10;
+    left: 10px;
+    top: 175px;
+    width:400px;
+    height:400px;
+    display: none;
+}
+
 #frontPic {
     /* image container */
     justify-content: center;
