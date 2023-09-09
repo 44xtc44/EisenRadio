@@ -20,12 +20,13 @@ sys.path.append(path.abspath(instance_dir))
 sys.path.append(path.abspath(lib_dir))
 
 # port = random.randint(12488, 12974)    # random between two integers
-port = 8000
+port = 5050
 print('\n Python WSGI "Waitress" serves flask\n')
 
 
 def is_port_occupied(srv_port: int) -> bool:
-    """return zero if success
+    """The error indicator is 0 if the operation succeeded,
+    otherwise return the value of the errno variable. 
     """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', srv_port)) == 0
