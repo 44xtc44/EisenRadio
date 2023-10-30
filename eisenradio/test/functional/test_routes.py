@@ -70,14 +70,7 @@ class TestRouteHome(unittest.TestCase):
         assert rv.status_code == 200
         assert data['darkmode'] == 'darkmode'
 
-        print(""" /cookie_get_dark (flask client.cookie_jar style) """)
-        a_lst = [c.key for c in list(web.cookie_jar)]
-        b_lst = [c.value for c in list(web.cookie_jar)]
-        assert "eisen-cookie" in a_lst
-        assert "darkmode" in b_lst
-
         print(""" /cookie_del_dark """)
-
         rv = web.post(
             '/cookie_del_dark',
             headers={"X-Requested-With": "XMLHttpRequest"},
