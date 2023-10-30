@@ -21,7 +21,7 @@ This repository shows the source code of an SVG animated radio show. Routed flas
 * Advanced features for `GhettoRecorder <https://github.com/44xtc44/GhettoRecorder>`_
 
 Comic style animated internet radio
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------------------
 Inkscape animated SVG images are used everywhere in the app. Also for the background. JavaScript is the mover.
 
 * Art director `AnimationTimer Class <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js>`_ controls timer for all artist and stuff appearance
@@ -106,7 +106,7 @@ file to database to add more radio station URLs.
             :height: 300px
 
 .. |picBlack| image:: ./blacklist_alter.PNG
-            :alt: config show
+            :alt: blacklist show
             :class: with-border
             :height: 300px
 
@@ -241,11 +241,11 @@ Python user:
     Location: ... /python310/site-packages
 
 Sphinx Documentation
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 `eisenradio.readthedocs.io <https://eisenradio.readthedocs.io/en/latest/>`_
 
 Contributions
-~~~~~~~~~~~~~
+-------------
 
 Pull requests are welcome.
 If you want to make a major change, open an issue first to have a short discuss.
