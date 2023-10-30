@@ -1,31 +1,28 @@
 .. role::  raw-html(raw)
     :format: html
 
-
-
 Eisenradio - a Web radio expandable collection
 ==============================================
 
-   ![alt logo of eisenradio](https://github.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo.png)
-   ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
+.. image:: https://github\.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo\.png
+          :target: https://github\.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo\.png
+          :alt: logo of eisenradio
+
+.. image:: https://github\.com/44xtc44/eisenradio/actions/workflows/tests\.yml/badge.svg?branch=dev
+          :target: https://github\.com/44xtc44/eisenradio/actions/workflows/tests\.yml/badge.svg?branch=dev
+          :alt: Tests
 
 Overview
 --------
-This repository shows the source code of a SVG animated radio show. Routed flask endpoints on a SQLite database.
+This repository shows the source code of an SVG animated radio show. Routed flask endpoints on a SQLite database.
 
 * First Inet Radio App that can run a Spectrum Analyser in a Browser (Feb,2022), have a look at the sketch below
 * Images are created with `Inkscape <https://github.com/inkscape/inkscape>`_
 * Advanced features for `GhettoRecorder <https://github.com/44xtc44/GhettoRecorder>`_
 
-The app is available as
-
-* Android Studio source code `GitHub EisenRadio-chaquopy <https://github.com/44xtc44/EisenRadio-chaquopy>`_,
-* Kivy Android source code `GitHub EisenRadio <https://github.com/44xtc44/EisenRadio/tree/dev/android/>`_ and `PYPI - APK debug build <https://pypi.org/project/eisenradio-apk/>`_
-* SNAP `eisenradio <https://snapcraft.io/eisenradio>`_ and `PYPI package <https://pypi.org/project/eisenradio/>`_.
-
 Comic style animated internet radio
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Inkscape animated SVG images are used everywhere, also for the background. JavaScript is the mover.
+Inkscape animated SVG images are used everywhere in the app. Also for the background. JavaScript is the mover.
 
 * Art director `AnimationTimer Class <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js>`_ controls timer for all artist and stuff appearance
 * Airshow executive director `moveRandomAngle() <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js>`_ is using tangens function with no-go areas to minimize the "crash slot"
@@ -46,7 +43,7 @@ Inkscape animated SVG images are used everywhere, also for the background. JavaS
 
 :raw-html:`&#127928;` Audio
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Audio spectrum is used to animate the colors of some SVG images. Master function `getAverageVolume() <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760>`_.
+Audio spectrum is used to animate the colors of some SVG images. Master function `getAverageVolume() <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760>`_
 calculates the audio volume level. This function was created by "franks laboratory", link in the Thank You section at bottom.
 
 `PowerSwitch class <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js>`_
@@ -65,7 +62,7 @@ PowerSwitch class can also translate list pattern into flashing lights.
 
 Have a look at both speakers (color) or the zeppelin (flash).
 
-The "scaling by rythm" of frontman Tux or friends :raw-html:`&#128059;&#8205;&#10052;&#65039;` is also driven by `getAverageVolume() <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760>`_
+The "scaling by rhythm" of frontman Tux or friends :raw-html:`&#128059;&#8205;&#10052;&#65039;` is also driven by `getAverageVolume() <https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760>`_
 
 :raw-html:`&#9889;` Spectrum Analyzer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,17 +93,19 @@ Here you find tools to enable and maintain blacklists.
 Configure animations, enable database dump or import a GhettoRecorder `GitHub settings.ini <https://github.com/44xtc44/GhettoRecorder/tree/dev/ghettorecorder>`_
 file to database to add more radio station URLs.
 
-.. image:: ./tools_menu.PNG
+|picTool| |picConfig| |picBlack|
+
+.. |picTool| image:: ./tools_menu.PNG
             :alt: tools for blacklist database dump and deletion
             :class: with-border
             :height: 300px
 
-.. image:: ./config_show.PNG
+.. |picConfig| image:: ./config_show.PNG
             :alt: config show
             :class: with-border
             :height: 300px
 
-.. image:: ./blacklist_alter.PNG
+.. |picBlack| image:: ./blacklist_alter.PNG
             :alt: config show
             :class: with-border
             :height: 300px
@@ -128,11 +127,11 @@ Organize your web radios. Delete or update, backup and restore your radio statio
 Links
 -----
 
-* Android: rename *WHL to *ZIP, extract with Android file manager
-* Android: https://pypi.org/project/eisenradio-apk/
-* Snap: https://snapcraft.io/eisenradio
-* GitHub: https://github.com/44xtc44/eisenradio
-* Report an issue: https://github.com/44xtc44/eisenradio/issues
+The app is available as
+
+* Android Studio source code `GitHub EisenRadio-chaquopy <https://github.com/44xtc44/EisenRadio-chaquopy>`_,
+* Kivy Android source code `GitHub EisenRadio <https://github.com/44xtc44/EisenRadio/tree/dev/android/>`_ and `PYPI - APK debug build <https://pypi.org/project/eisenradio-apk/>`_
+* SNAP `eisenradio <https://snapcraft.io/eisenradio>`_ and `PYPI package <https://pypi.org/project/eisenradio/>`_.
 
 Command line
 ------------
@@ -140,7 +139,7 @@ Command line
 EisenRadio GUI supported by Flask server.::
 
     $ eisenradio  # executable script in Python Path
-    $ python3 -m eisenradio.gui  # runs package if Python path is defektive
+    $ python3 -m eisenradio.gui  # runs package if Python path is defective
 
 WSGI server *Waitress* on a random port.::
 
@@ -164,7 +163,7 @@ Export / Import of GhettoRecorder in- and output files
 Eisenradio stores *radio names and URLs* and *blacklists* in its database.
 
 You can export for GhettoRecorder ``settings.ini`` and ``blacklist.json`` from database.
-``Tools/Export/Names and URL's`` menu.
+``Tools/Export/Names and URLs`` menu.
 
 GhettoRecorder created ``blacklist.json`` can be imported into your database.
 
@@ -198,7 +197,7 @@ Eisenradio - the boring details
          |o |------->   <-- |r |
          |w |GhettoRecorder |v |-------> planetRadio
          |s |--->    <----- |e |
-         |e |               |r |-------> satteliteRadio
+         |e |               |r |-------> satelliteRadio
          |r |               |  |
          net: localhost     net: internet
          CORS: accept       CORS: deny
