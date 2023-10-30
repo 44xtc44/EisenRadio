@@ -48,7 +48,6 @@ eisenradio-wsgi = "eisenradio.wsgi:main"
 eisenradio = "eisenradio.gui:main"
 
 [tool.pytest.ini_options]
-addopts = "--cov=eisenradio"
 testpaths = "eisenradio"
 
 [tool.mypy]

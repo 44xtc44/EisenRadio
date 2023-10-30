@@ -1,0 +1,21 @@
+.venv/
+bin/
+dist/
+build/
+wheelhouse/
+*.egg-info/
+*.py[co]
+.pyc
+__pycache__/
+.idea/
+.toxcls
+.tox
+
+.coverage
+*.deb
+doc/_build/
+
+# EisenRadio section
+recorder/
+*.db
+*.json
