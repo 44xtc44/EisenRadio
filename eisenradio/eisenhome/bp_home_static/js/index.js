@@ -138,6 +138,10 @@ $(document).ready(function () {
         divCustomText[i].addEventListener('dblclick', maxHeightPicCommentPreToggle);
     }
 
+    // mobile screen size below 1080 toggle console to get more space on screen
+    if (window.innerWidth < 1081) {
+    toggleHideConsole();
+}
 })
 ;
 

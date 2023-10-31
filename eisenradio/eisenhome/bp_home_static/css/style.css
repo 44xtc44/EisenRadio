@@ -1059,17 +1059,23 @@ div::-webkit-scrollbar {
     font-family: roboto, arial, sans-serif;
 }
 
+/* glue the console left and right, so it will not pressed down by android in upright mode, hopefully
+
+ ! fixed with $(document).ready(function call toggleHideConsole below 1081px
+
 @media only screen and (max-width: 1080px) {
 .console {
-/* glue the console left and right, so it will not pressed down by android in upright mode, hopefully */
+
 	position: fixed;
 	left:0em;
 	bottom:0em;
     width: 100%;
     text-align: right;
-	background-color: var(--footer-color);
+	background-color: red;// var(--footer-color);
     }
 }
+*/
+
 
 @media all and (orientation:portrait) {
 /* Styles for Portrait screen */
