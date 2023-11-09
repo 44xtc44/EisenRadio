@@ -23,12 +23,12 @@ Inkscape animated SVG images are used everywhere in the app. Also for the backgr
   <tbody>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/browser_tux_day_0755.PNG" alt="browser tux at daylight" /> 
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_day_0755.PNG" alt="browser tux at daylight" /> 
       </td>
     </tr>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/browser_tux_night_1918.PNG" alt="browser tux at night"/>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_night_1918.PNG" alt="browser tux at night"/>
       </td>
     </tr>
   </tbody>
@@ -55,7 +55,7 @@ Have a look at both speakers (color) or the zeppelin (flash).
 
 <p>The "scaling by rhythm" of frontman Tux or friends &#128059;&#8205;&#10052;&#65039; is also driven by </p> 
 
-[getAverageVolume()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760) 
+[getAverageVolume()](https://github.com/44xtc44/EisenRadio/raw/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760) 
 
 ## &#9889; Spectrum Analyzer
 
@@ -65,10 +65,10 @@ Choose between different spectrum analyzer shows. Analyzer frame is detachable. 
   <tbody>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/spectrum_starfield.PNG" alt="Spectrum Analyzer one" style="width:35%"/> 
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/spectrum_starfield.PNG" alt="Spectrum Analyzer one" style="width:35%"/> 
       </td>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/spectrum_flowfield.PNG" alt="Spectrum Analyzer two" style="width:35%"/>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/spectrum_flowfield.PNG" alt="Spectrum Analyzer two" style="width:35%"/>
       </td>
     </tr>
   </tbody>
@@ -79,7 +79,7 @@ Choose between different spectrum analyzer shows. Analyzer frame is detachable. 
 
 Fun reduction option. Some browser and mobiles may be a bit overwhelmed by the fully animated show.
 
-<img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/energy_saver.PNG" alt="fun reduction energy saver radio button" style="width:100px"/>
+<img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/energy_saver.PNG" alt="fun reduction energy saver radio button" style="width:100px"/>
 
 Switch off the most CPU hungry animations.
 
@@ -93,13 +93,13 @@ file to database to add more radio station URLs.
   <tbody>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="width:300px"/> 
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="width:300px"/> 
       </td>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/config_show.PNG" alt="config show" style="width:300px"/>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG" alt="config show" style="width:300px"/>
       </td>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/blob/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="width:300px"/>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="width:300px"/>
       </td>
     </tr>
   </tbody>
