@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.3.1"
+version = "2.3.2"
 description = "Play radio. Style your App."
 keywords = ['eisenradio', 'aac repair']
 license = {file = "LICENSE.rst"}
@@ -24,15 +24,15 @@ classifiers = [
 
 ]
 dependencies = [
-'aacrepair~=0.4',
+'aacrepair',
 'ghettorecorder==2.4.7',
 'flask>=2.3.2',
 'Werkzeug>=2.2.3',
-'certifi>=2022.12.07',
+'certifi',
 'configparser~=5.0.2',
 'pytest~=6.2.5',
 'python-dotenv~=0.19.2',
-'waitress~=2.0.0',
+'waitress',
 ]
 
 [project.urls]

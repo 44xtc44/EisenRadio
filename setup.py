@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="ghettorecorder", # project name /folder
-    version="2.3.1",
+    name="eisenradio", # project name /folder
+    version="2.3.2",
     author="René Horn",
     author_email="rene_horn@gmx.net",
     description="Play radio. Style your App.",
@@ -16,15 +16,15 @@ setuptools.setup(
     include_package_data=True,
     packages=setuptools.find_packages(),
         install_requires=[
-            'aacrepair~=0.4',
+            'aacrepair',
             'ghettorecorder==2.4.7',
             'flask>=2.3.2',
             'Werkzeug>=2.2.3',
-            'certifi>=2022.12.07',
+            'certifi',
             'configparser~=5.0.2',
             'pytest~=6.2.5',
             'python-dotenv~=0.19.2',
-            'waitress~=2.0.0',
+            'waitress',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
