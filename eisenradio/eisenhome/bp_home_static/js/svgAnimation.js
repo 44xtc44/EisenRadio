@@ -2083,7 +2083,7 @@ let a1AirCraftAniTimer   = new AnimationTimer({
                                                scale: 0.51,            // min val of constructor
                                                scaleMod: 1/150,
                                                scaleMax: 5,
-                                               animationWaitTime: 10800, // 3min 10800
+                                               animationWaitTime: 2000, // 3min  10800
                                                logName:"a1AirCraftParaChuteDropper",
                                                speed:15,
                                                externalFunction:function(){
