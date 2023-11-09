@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.3"
+version = "2.3.1"
 description = "Play radio. Style your App."
 keywords = ['eisenradio', 'aac repair']
 license = {file = "LICENSE.rst"}
