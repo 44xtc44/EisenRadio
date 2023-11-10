@@ -129,7 +129,7 @@ summary>* {
     font-size: 1.2em;
     text-shadow: 0px 1px 1px #333333;
     color: hsl(324, 70%, 45%);
-    animation: wheelHueColor 33.33s infinite;
+    /* animation: wheelHueColor 33.33s infinite; */
 }
 
 @keyframes wheelHueColor {
