@@ -2,6 +2,13 @@
  * target: animate an unlimited number of divs that belong to one theme create random actions and colors inside the theme;
  * each parachute gets an id for an animated div
  */
+  let paraAnimTimerDict = {};  // angle and time of appearance
+  let paraUpDownDict = {};     // angle for partial horizontal rotation of div
+  let paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
+  let paraUnitDept = "AirDrop";  // if more drop instances, have log names
+  let paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
+  let paraMemberCount = getRandomIntInclusive(4,6);
+  let airDropDelDict = {};  // index.js  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
 
 function animateA1AirCraft(){
 
@@ -109,14 +116,6 @@ function animateParachuteDrop(){
 
 function parachuteInit() {
   /* paraAnimTimerDict */
-  let paraAnimTimerDict = {};  // angle and time of appearance
-  let paraUpDownDict = {};     // angle for partial horizontal rotation of div
-  let paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
-  let paraUnitDept = "AirDrop";  // if more drop instances, have log names
-  let paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
-  let airDropDelDict = {};  //  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
-  let paraMemberCount = getRandomIntInclusive(4,6);
-
   for(let index = 1;index<=paraMemberCount;index++){
       paraAnimTimerDict[paraUnitDept + index] =
           new AnimationTimer({animationWaitTime: 999999,   // changed! now airplane sets run status true for paraAnimTimerDict
