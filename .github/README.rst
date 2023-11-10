@@ -90,7 +90,7 @@ Switch off the most CPU hungry animations.
 Tools menu
 ~~~~~~~~~~
 Here you find tools to enable and maintain blacklists.
-Configure animations, enable database dump or import a GhettoRecorder `GitHub settings.ini <https://github.com/44xtc44/GhettoRecorder/tree/dev/ghettorecorder>`_
+Configure animations, enable database dump or import a GhettoRecorder `GitHub settings.ini <https://github.com/44xtc44/GhettoRecorder/blob/dev/ghettorecorder/settings.ini>`_
 file to database to add more radio station URLs.
 
 |picTool| |picConfig| |picBlack|
@@ -114,6 +114,12 @@ file to database to add more radio station URLs.
 :raw-html:`&#9776;`:raw-html:`&#127925;` Shuffled Playlists
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You find this option in the secondary menu under the on top teaser image.
+
+.. image:: ./secondary_menu.png
+            :alt: secondary_menu
+            :class: with-border
+            :width: 500px
+
 Play your local audio files in the browser. Folders are used as playlists.
 
 Bring your earbuds to the limit. EisenRadio has a *Volume Gain* slider (as well as `GhettoRecorder <https://github.com/44xtc44/GhettoRecorder>`_).

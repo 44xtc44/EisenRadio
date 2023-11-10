@@ -86,20 +86,26 @@ Switch off the most CPU hungry animations.
 ## Tools menu
 
 Here you find tools to enable and maintain blacklists.
-Configure animations, enable database dump or import a GhettoRecorder GitHub [settings.ini](https://github.com/44xtc44/GhettoRecorder/tree/dev/ghettorecorder>)
+Configure animations, enable database dump or import a GhettoRecorder GitHub [settings.ini](https://github.com/44xtc44/GhettoRecorder/blob/dev/ghettorecorder/settings.ini)
 file to database to add more radio station URLs.
 
 <table>
   <tbody>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="width:300px"/> 
+        <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG">
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="height:400px"/> 
+        </a>
       </td>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG" alt="config show" style="width:300px"/>
+        <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG">
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG" alt="config show" style="height:400px"/>
+        </a>
       </td>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="width:300px"/>
+        <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG">
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="height:400px"/>
+        </a>
       </td>
     </tr>
   </tbody>
@@ -108,6 +114,9 @@ file to database to add more radio station URLs.
 ## Shuffled Playlists
 
 You find this option in the secondary menu under the on top teaser image.
+
+<img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/secondary_menu.png" alt="secondary_menu" style="width:550px"/>
+
 Play your local audio files in the browser. Folders are used as playlists.
 
 Bring your earbuds to the limit. EisenRadio has a *Volume Gain* slider as well as [GhettoRecorder](https://github.com/44xtc44/GhettoRecorder).
