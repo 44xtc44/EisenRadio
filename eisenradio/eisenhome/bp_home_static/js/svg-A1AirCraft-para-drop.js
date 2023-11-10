@@ -1,56 +1,52 @@
+// svg-A1AirCraft-para-drop.js
+
+
 /*  let's make a parachute drop
  * target: animate an unlimited number of divs that belong to one theme create random actions and colors inside the theme;
  * each parachute gets an id for an animated div
  */
-  let paraAnimTimerDict = {};  // angle and time of appearance
-  let paraUpDownDict = {};     // angle for partial horizontal rotation of div
-  let paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
-  let paraUnitDept = "AirDrop";  // if more drop instances, have log names
-  let paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
-  let paraMemberCount = getRandomIntInclusive(4,6);
-  let airDropDelDict = {};  // index.js  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
 
 function animateA1AirCraft(){
 
-    if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-    /* AirCraft has set scale Mod for a1AirCraftAniTimer instance
-     */
-        let flashTail   = "hsl(" + 90 + ", 100%, 100%)";
-        let flashRight  = "hsl(" + 360 + ", 100%, 50%)";
-        let flashLeft   = "hsl(" + 90 + ", 100%, 50%)";
+  if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
+  /* AirCraft has set scale Mod for a1AirCraftAniTimer instance
+   */
+      let flashTail   = "hsl(" + 90 + ", 100%, 100%)";
+      let flashRight  = "hsl(" + 360 + ", 100%, 50%)";
+      let flashLeft   = "hsl(" + 90 + ", 100%, 50%)";
 
-        let divAnimate  = "divA1AirCraft_" + activeListenId;
-        let animationTimerInstance = a1AirCraftAniTimer;
-        let moveSinCosInstance = a1AirCraftMoveSinCos;
+      let divAnimate  = "divA1AirCraft_" + activeListenId;
+      let animationTimerInstance = a1AirCraftAniTimer;
+      let moveSinCosInstance = a1AirCraftMoveSinCos;
 
-        animationTimerInstance.update();
-        if(animationTimerInstance.run === true){
-            a1AirCraftTLightPSwitch.flashColor = flashTail;
-            a1AirCraftRLightPSwitch.flashColor = flashRight;
-            a1AirCraftLLightPSwitch.flashColor = flashLeft;
-            a1AirCraftTLightPSwitch.updateFlashPattern();
-            a1AirCraftRLightPSwitch.updateFlashPattern();
-            a1AirCraftLLightPSwitch.updateFlashPattern();
-            let extraTransform = "rotateZ(" + a1AirCraftUpDown.update() + "deg)";
-            moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
-            /* termination here since moveRandomAngle() looks only for screen borders and y as terminator
-             * trigger parachutes drop
-             */
-            if(animationTimerInstance.scale === animationTimerInstance.scaleMax){
-                animationTimerInstance.reset();
-                moveSinCosInstance.reset();
-                document.getElementById(divAnimate).style.display = "none";
+      animationTimerInstance.update();
+      if(animationTimerInstance.run === true){
+          a1AirCraftTLightPSwitch.flashColor = flashTail;
+          a1AirCraftRLightPSwitch.flashColor = flashRight;
+          a1AirCraftLLightPSwitch.flashColor = flashLeft;
+          a1AirCraftTLightPSwitch.updateFlashPattern();
+          a1AirCraftRLightPSwitch.updateFlashPattern();
+          a1AirCraftLLightPSwitch.updateFlashPattern();
+          let extraTransform = "rotateZ(" + a1AirCraftUpDown.update() + "deg)";
+          moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
+          /* termination here since moveRandomAngle() looks only for screen borders and y as terminator
+           * trigger parachutes drop
+           */
+          if(animationTimerInstance.scale === animationTimerInstance.scaleMax){
+              animationTimerInstance.reset();
+              moveSinCosInstance.reset();
+              document.getElementById(divAnimate).style.display = "none";
 
-                // ParachuteDrop, force AnimationTimer instances to run
-                let parachuteTimerInstance;
-                for(let index=0;index<=paraMemberCount -1;index++){
-                    let timerKey = Object.keys(paraAnimTimerDict)[index];
-                    parachuteTimerInstance = paraAnimTimerDict[timerKey];
-                    parachuteTimerInstance.animationWaitTime = 0;
-                }
-            }
-        }
-     }
+              // ParachuteDrop, force AnimationTimer instances to run
+              let parachuteTimerInstance;
+              for(let index=0;index<=paraMemberCount -1;index++){
+                  let timerKey = Object.keys(paraAnimTimerDict)[index];
+                  parachuteTimerInstance = paraAnimTimerDict[timerKey];
+                  parachuteTimerInstance.animationWaitTime = 0;
+              }
+          }
+      }
+   }
 
 }
 ;
@@ -113,7 +109,6 @@ function animateParachuteDrop(){
      }
 }
 ;
-
 function parachuteInit() {
   /* paraAnimTimerDict */
   for(let index = 1;index<=paraMemberCount;index++){

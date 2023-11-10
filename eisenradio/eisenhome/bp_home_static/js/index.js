@@ -99,6 +99,15 @@ var streamerDictGlobal = {};            // stores all currently active streaming
 var animationsAllowedDict = {};
 var consoleUpDown = 1;           // up 1 down 0
 
+var paraAnimTimerDict = {};  // angle and time of appearance
+var paraUpDownDict = {};     // angle for partial horizontal rotation of div
+var paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
+var paraUnitDept = "AirDrop";  // if more drop instances, have log names
+var paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
+var paraMemberCount = getRandomIntInclusive(4,6);
+var airDropDelDict = {};  // index.js  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
+
+
 const fadeIn = [{opacity: 0}, {opacity: 1}];    // iterator
 const faderInTiming = {duration: 1500, iterations: 1,};
 const faderPulseTiming = {duration: 1500, iterations: 5,};

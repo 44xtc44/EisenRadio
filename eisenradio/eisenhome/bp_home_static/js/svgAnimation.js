@@ -50,12 +50,6 @@
  *
  * instance initialization
  */
-
-function toggleAnimalDefaultDivSvG() {
-/* html call: toggle between animals */
-    eisenStylesDict["eisenRadio_" + activeListenId].updateAnimals();
-}
-;
 class CountUpDown{
 /* target: endless count up, down
  *   count up and down for alternating direction or color fade in out, step is per frame;
@@ -106,6 +100,33 @@ class SimpleCounter{
     }
 }
 ;
+class Shaker{
+/* target: shake an element, like a vibrating phone
+ * could have rotation; only for short time animation, longer leads to brain damage
+ */
+    constructor(){
+        this.shakeStatus = undefined;
+        this.counter = 0;
+        this.maxCount = 10;
+    }
+    shake(elementId, step){
+        let elem = document.getElementById(elementId);
+        this.counter += step;
+        if(this.counter > this.maxCount){this.counter = 1}
+        if(this.counter === 1 ){elem.style.transform = "translate(1px, 1px)   "}
+        if(this.counter === 2 ){elem.style.transform = "translate(-1px, -2px) "}
+        if(this.counter === 3 ){elem.style.transform = "translate(-2px, 0px)  "}
+        if(this.counter === 4 ){elem.style.transform = "translate(2px, 2px)   "}
+        if(this.counter === 5 ){elem.style.transform = "translate(1px, -1px)  "}
+        if(this.counter === 6 ){elem.style.transform = "translate(-1px, 2px)  "}
+        if(this.counter === 7 ){elem.style.transform = "translate(-2px, 0px)  "}
+        if(this.counter === 7 ){elem.style.transform = "translate(2px, 0px)   "}
+        if(this.counter === 9 ){elem.style.transform = "translate(-1px, -1px) "}
+        if(this.counter === 10){elem.style.transform = "translate(0px, 1px)   "}
+    }
+}
+;
+
 class PowerSwitch{
 /* target: SVG path elements show timeDomainData values in different colors (spectrum analyser);
  *         tec target: create a microcontroller light switch in high level language
@@ -516,134 +537,6 @@ class PowerSwitch{
             svgPathElem.style.fill = this.eMemOrgFillColorsDict[this.elementsList[index].id];
         }
         console.log("* applyOrgColor() to path elements; Dict, logName *", this.eMemOrgFillColorsDict,logName);
-    }
-}
-;
-function toggleWriteToDiskAnimation(){
-/* radio starts rec: animate a rotating golden disk
- * update the global dict for streamer/recorder {name:id}, show disc if id is in server dict, else display none for disc div
- * called also by degradeAnimationsSet(), cpuUtilisation, discs on/off
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/streamer_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        if (data.streamerGet) {
-
-            streamerDictGlobal = {};
-            streamerDictGlobal = data.streamerGet;
-
-            if(htmlSettingsDictGlobal["checkboxConfigAnimation"]){
-                try{
-                    // non empty dict
-                    if(Object.keys(streamerDictGlobal).length > 0){
-                        for (const [key, radioId] of Object.entries(streamerDictGlobal)) {
-                            let div = document.getElementById("divWriteToDisk_" + radioId);
-                                /* cpuUtilisation check */
-                            if(htmlSettingsDictGlobal["cpuUtilisation"]) {
-                                div.style.display = "inline-block";
-                                // set event listener to disappear on click
-                                div.addEventListener("click", function (){div.style.display = "none";});
-                            }  else {
-                                div.style.display = "none";
-                            }
-                        }
-                    }
-                } catch (error) {console.log(".toggleWriteToDiskAnimation() ", error);}
-            }
-        }
-    });
-}
-;
-function skipRecordShowMessageInABottle(){
-/**
- * must be called on a regular basis:
- *       if skipped record file by using the blacklist for current LISTEN Radio,
- *       info by showing a message in a bottle image with 'skip' label for the radio
- *       parseInt(activeListenId) convert id to integer
- *       server keeps track of skipped records and updates compare dict
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/skipped_records_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        if (data.skippedRecordsGet) {
-            let skipList = data.skippedRecordsGet;
-            if(skipList.includes(parseInt(activeListenId))) {
-                let bottle = document.getElementById("divMessageInABottle_" + activeListenId);
-                bottle.style.display = "inline-block";
-                bottle.style.top = "-5em";
-                bottle.style.left = "1em";
-                bottle.style.transform = "scale(0.8,0.8)";
-                setTimeout(function (){
-                    bottle.style.display = "none";
-                }, 10000);
-
-            }
-        }
-    });
-}
-;
-function dimRadioForAnimation(){
-/* show or hide the title displays
- * timeout to work against power clicking and dblClick bug
- */
-    try{
-        setTimeout(function (){dimRadioForAnimationExec();}, 50);
-    } catch (error) {}
-}
-;
-function dimRadioForAnimationExec(){
-/* target: dim opacity of radio elements to better present the animation; now switching on/off opacity 0
- * click on genre displayed, if radio has no genre it will not work, who cares
- */
-    let opaMin = "0.00";
-    let opaMax = "1";
-    try{
-        let metric = document.getElementById("divMeasurementsUpper_" + activeListenId);
-        let header = document.getElementById("divHeaderShadow_" + activeListenId);
-        let pic = document.getElementById("pixies_" + activeListenId);
-
-       if(header.style.opacity == opaMax || ! header.style.opacity){
-           metric.style.opacity = opaMin;
-           header.style.opacity = opaMin;
-           pic.style.opacity = opaMin;
-
-       } else {
-           metric.style.opacity = opaMax;
-           header.style.opacity = opaMax;
-           pic.style.opacity = opaMax;
-       }
-    } catch (error) {console.log(error); }
-}
-;
-class Shaker{
-/* target: shake an element, like a vibrating phone
- * could have rotation; only for short time animation, longer leads to brain damage
- */
-    constructor(){
-        this.shakeStatus = undefined;
-        this.counter = 0;
-        this.maxCount = 10;
-    }
-    shake(elementId, step){
-        let elem = document.getElementById(elementId);
-        this.counter += step;
-        if(this.counter > this.maxCount){this.counter = 1}
-        if(this.counter === 1 ){elem.style.transform = "translate(1px, 1px)   "}
-        if(this.counter === 2 ){elem.style.transform = "translate(-1px, -2px) "}
-        if(this.counter === 3 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 4 ){elem.style.transform = "translate(2px, 2px)   "}
-        if(this.counter === 5 ){elem.style.transform = "translate(1px, -1px)  "}
-        if(this.counter === 6 ){elem.style.transform = "translate(-1px, 2px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(2px, 0px)   "}
-        if(this.counter === 9 ){elem.style.transform = "translate(-1px, -1px) "}
-        if(this.counter === 10){elem.style.transform = "translate(0px, 1px)   "}
     }
 }
 ;
@@ -1082,16 +975,6 @@ function moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement
     }
 }
 ;
-
-function animateGenreClickTeaser(){
-/* show I am clickable to switch some items on/off, headline, display badge */
-    let fpm = 3600;
-    let ringTime = 30 * fpm;
-    genreSimpleCounter.update(); // 60fps 3600fpm * 30 = half hour
-    if(genreSimpleCounter.count >= ringTime){genreShaker.shake("divStationGenre_" + activeListenId, 1);}
-    if(genreSimpleCounter.count >= ringTime + 120){genreSimpleCounter.reset();}
-}
-;
 function animateFrontPigs(darkBody, smoothVolume, powerLevelDict){
 /* inflated (omg), scaled ANIMALS */
     if(htmlSettingsDictGlobal["checkboxConfigFrontPigs"]){
@@ -1119,8 +1002,6 @@ function animateStars(darkBody){
     }
 }
 ;
-
-
 
 let softVolumeGlobal = 0;
 function smoothOutVolume(reqFftSize, softMod) {
@@ -1330,32 +1211,6 @@ class ShadesOfColor{
 }
 ;
 
-/* assign event listener for touch and move to the children of the class */
-let touchMoveItemsList = [
-    '.divSvgBuoy',
-]
-function touchMoveItemsEventListenerSet () {
-/* touch for mobiles, one finger, test to move all stuff around, buoy is working
- * challenge here is that we have also nested container (div)
- * works so far with a single div with position absolute, but not with nested div animalOnIce; divSvgIceTux,divSvgTux
- */
-
-    for(let iNum=0;iNum<=touchMoveItemsList.length-1;iNum++) {
-            // get the class name
-        let divList = document.querySelectorAll(touchMoveItemsList[iNum]);
-        for(let index=0;index<=divList.length-1;index++) {
-            divList[index].addEventListener('touchmove', function (ev) {
-                    //grab the location of the touch, one finger 0
-                let touchLocation = ev.targetTouches[0];
-                    //assign new coordinates based on the touch
-                divList[index].style.left = touchLocation.clientX + 'px';
-                divList[index].style.top = touchLocation.clientY + 'px';
-            })
-        }
-    }
-}
-;
-
 /*                      -- Instances --
  */
 
@@ -1418,41 +1273,3 @@ zeppelinShadesOfColor.update(getRandomIntInclusive(300,360), zeppelinColorOrder)
  *   this.pathToHueDict {index of svg group element: hsl(119,50%,67%), indexN: hsl(119,50%,69%),... }
  */
 changeColorPathToHsl(zeppelinShadesOfColor);
-
-function svgAnimationMain(){
-    /* renamed MAIN for svg/html animation
-     * function is browser frame based, calls itself, requestAnimationFrame at bottom
-     * target: call all animations that have a run status, function decides itself
-     * smoothVolume is used as scale multiplier for animations of animals and color differences for speakers
-     * AnimationTimer class has run attribute, true if an animation may run;
-     * AnimationTimer instance can call functions after reset() to change color, direction ...
-     */
-    let smoothVolume = smoothOutVolume(128, 0.04);
-
-    /* target: powerLevelDict gets name of the coloring method of PowerSwitch class and a multiplier for the animation level
-     *  to artificial raise smoothVolume for low animation levels; is not implemented yet, only no power strikes
-     *  to lever scaling of the animals at very low frequency/amplitude to see a movement, {"lowPower":1}
-     *  leads to the fact, that at no data input the animal is glued max size to the screen, {"noPower":3}
-     * powerLevelAnimation({smoothVolume: smoothVolume, animatedInstance: animatedInstance})
-     */
-    let powerLevelDict = powerLevelAnimation({smoothVolume: smoothVolume}); // can also send instance as option
-    let darkBody = getBodyColor();
-
-    defaultStageHtmlElementsShow();  // hasStageItemsListenId must match activeListenId, later
-    colorizeDefaultSvgStageElements(darkBody);  // dito, load only once!
-
-    animateBuoy(darkBody);  // edit button
-    animateFrontPigs(darkBody, smoothVolume, powerLevelDict); // powerLevelDict
-    animateSpeaker(smoothVolume);
-    animateZeppelin(darkBody, smoothVolume);
-    animateCheckeredBalloon(smoothVolume);
-    animateParachuteDrop();
-    animateA1AirCraft();
-    animateClouds(darkBody);
-    animateGpsSat(darkBody);
-    animateStars(darkBody);
-    animateGenreClickTeaser();
-
-    inflateAnim = window.requestAnimationFrame(svgAnimationMain);
-}
-;
