@@ -4,15 +4,15 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="eisenradio", # project name /folder
-    version="2.3.2",
+    name="eisenradio",
+    version="2.3.3",
     author="René Horn",
     author_email="rene_horn@gmx.net",
     description="Play radio. Style your App.",
     long_description=long_description,
     license='MIT',
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/44xtc44",
     include_package_data=True,
     packages=setuptools.find_packages(),
         install_requires=[
