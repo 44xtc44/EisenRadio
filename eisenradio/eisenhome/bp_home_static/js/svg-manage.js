@@ -526,7 +526,6 @@ class PowerSwitch{
             htmlElem.style.stroke = "hsl(" + eStroke + ", 100%, 50%)";
             htmlElem.style.strokeWidth = this.strokeWidth + "px";
             htmlElem.style.filter = this.dropShadow;
-//console.log(htmlElem);
         }
 
     }
@@ -569,6 +568,11 @@ class MoveSinCos{
         this.updateCounter = new SimpleCounter();
         this.step = options.step;       // step or unit to multiply with result of sin/cos; result is for one unit x only
         this.speed = options.speed;     // slows motion, fills x speed steps between one count of 1deg of 360deg
+        this.styleTop = options.styleTop;   // override default div location
+        this.styleTop = options.styleLeft;
+        this.styleTop = options.styleRight;
+
+        this.elementId = options.elementId    // document id
         this.arcUpDown = options.countInstance; // can instantiate a counter class,
                                         // must have "currentValue()", "update()" and "reset()" method implemented
 
@@ -582,14 +586,6 @@ class MoveSinCos{
     }
     reset(){
         this.mileStoneX = 0;
-    }
-    calcSin(val){
-        this.sin = Math.sin(val) * this.step;
-        return this.sin;
-    }
-    calcCos(val){
-        this.cos = Math.cos(val) * this.step;
-        return this.cos;
     }
     calcYForXMileStone(adjacent, angleAlpha){
         /*
@@ -634,39 +630,6 @@ class MoveSinCos{
         let y = this.mileStoneX * Math.tan(angleAlpha * deg);
         return y;
     }
-    moveXRight(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateX(" + (this.infiniteCounter) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
-    moveXLeft(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateX(" + (-this.infiniteCounter) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
-    moveYUp(){
-
-    }
-    moveYDown(){
-
-    }
-    moveYUpAndDown(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateY(" + (this.sin) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
     updateCount(){
     /* slow down the 1deg update and add more steps in the movement, either straight or circular if sin and cos */
         this.infiniteCounter += 1/this.speed;
@@ -685,13 +648,6 @@ class MoveSinCos{
 
         this.calcSin(arcVal);
         this.calcCos(arcVal);
-    }
-    updateElement(elementId, moveMethod){
-        if(moveMethod == "moveXRight")   {this.moveXRight(elementId);}
-        if(moveMethod == "moveXLeft")    {this.moveXLeft(elementId);}
-        if(moveMethod == "moveYUp")      {this.moveYUp(elementId);}
-        if(moveMethod == "moveYDown")    {this.moveYDown(elementId);}
-        if(moveMethod == "moveUpAndDown"){this.moveYUpAndDown(elementId);}
     }
 }
 ;
@@ -1248,18 +1204,6 @@ let animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // an
 let animalTranslationUpDown = new CountUpDown(0, 40, 1/Math.PI/10);        // animal X translation in px and step
 let buoyZRotationUpDown     = new CountUpDown(-3.5, 4.5, 1/Math.PI/20);    // buoy and buoy as space station (for super cat later),
                                                                            // same as us obama spoke: we fly to moon in 10 years, before 15 years+
-let tuxCloudOneUpDow        = new CountUpDown(85, 100, 1/Math.PI/11);      // cloud changes white and grey a bit
-let tuxCloudTwoUpDow        = new CountUpDown(85, 100, 1/Math.PI/12);      // cloud changes white and grey a bit
-let tuxCloudThreeUpDow      = new CountUpDown(75, 95, 1/Math.PI/13);       // cloud changes white and grey a bit
-let tuxCloudFourUpDow       = new CountUpDown(80, 98, 1/Math.PI/10);       // cloud changes white and grey a bit
-let tuxEllipseColorUpDown   = new CountUpDown(70, 100, 1/Math.PI);         // Tux ellipse blue 240 to white , here lightness values, surface of Floe
-let tuxIceBerg_1_LayerUpDown= new CountUpDown(85, 100, 1/Math.PI/10);      // blue 240 to white , here lightness values
-let tuxIceBerg_2_LayerUpDown= new CountUpDown(60, 80, 1/Math.PI/10);       // hsl 180,50%,60-80% hue sat light
-let tuxIceBerg_3_LayerUpDown= new CountUpDown(45, 65, 1/Math.PI/10);       // 190,35%,45-65%
-let tuxIceBerg_4_LayerUpDown= new CountUpDown(40, 60, 1/Math.PI/10);       // 200,35%,40-60%
-/* fFox fix */
-let tuxStageAllFFUpDown = new CountUpDown(-0.5, 1, 1/Math.PI/10/10);  // all moving parts must rotate or jitter, worst browser this time
-
 
 let zeppelinShadesOfColor = new ShadesOfColor({ //pathCollection:zeppelinColorOrder, // pathCollection:document.querySelectorAll("#gZ1BodyHullAndRear path"),
                                                 hueColor:112,
