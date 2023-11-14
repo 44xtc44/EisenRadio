@@ -1,4 +1,4 @@
-// svg-animation-main.js
+// svg-main.js
 
 function svgAnimationMain(){
   /* browser frame based, fun calls itself, requestAnimationFrame
@@ -11,7 +11,7 @@ function svgAnimationMain(){
      leads to the fact, that at no data input the animal is glued max size to the screen, {"noPower":3}
      powerLevelAnimation({smoothVolume: smoothVolume, animatedInstance: animatedInstance})
   */
-  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio engine
+  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio visual engine
 
   let powerLevelDict = powerLevelAnimation({smoothVolume: smoothVolume}); // can also send instance as option
   let darkBody = getBodyColor();
@@ -21,20 +21,27 @@ function svgAnimationMain(){
   defaultStageHtmlElementsShow();  // hasStageItemsListenId must match activeListenId, later todo: better have one frame for all radios and put base svg in folder not html so can better change the whole stage
   colorizeDefaultSvgStageElements(darkBody);  // like defaultStageHtmlElementsShow(), we should load only once on start up!
   animateFrontPigs(darkBody, smoothVolume, powerLevelDict); // powerLevelDict
-  animateSpeaker(smoothVolume);
   animateA1AirCraft();
 
-  if(inflateAnim % 2 === 0) {  // save cpu for the important animations
+  if(inflateAnim % 2 === 0) {  // save cpu
     animateCheckeredBalloon(smoothVolume);
     animateZeppelin(darkBody, smoothVolume);
     animateBuoy(darkBody);  // edit button
     animateParachuteDrop();
+    animateSpeaker(smoothVolume);
+    animateDoppelDecker();
   }
-  if(inflateAnim % 10 === 0) {  // save cpu
+  if(inflateAnim % 3 === 0) {
+    animateSpeaker(smoothVolume);
+  }
+  if(inflateAnim % 10 === 0) {
     animateCloudsAndIce(darkBody);
-    animateGpsSat(darkBody);
     animateStars(darkBody);
     animateGenreClickTeaser();
+    gScarfGroup.update();  // doppelDecker, scarf of pilot
+  }
+   if(inflateAnim % 540 === 0) {
+     colorizeAirplane();  // doppelDecker
   }
 }
 ;

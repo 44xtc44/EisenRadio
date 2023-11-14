@@ -1,4 +1,4 @@
-// svg-moving-stage-items.js
+// svg-floe-buoy.js
 
 function defaultFrontAnimation(smoothVolume, powerLevelDict){
   /* default animation, can be switched off in tools menu config */

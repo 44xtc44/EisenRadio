@@ -1,4 +1,4 @@
-// svg-util-animations.js
+// svg-mng-utils.js
 
 /* assign event listener for touch and move to the children of the class */
 let touchMoveItemsList = [
@@ -27,7 +27,8 @@ function touchMoveItemsEventListenerSet () {
 ;
 
 function animateGenreClickTeaser(){
-/* show I am clickable to switch some items on/off, headline, display badge */
+/* Shaker class - Advertising
+  show I am clickable to switch some items on/off, headline, display badge */
     let fpm = 3600;
     let ringTime = 30 * fpm;
     genreSimpleCounter.update(); // 60fps 3600fpm * 30 = half hour

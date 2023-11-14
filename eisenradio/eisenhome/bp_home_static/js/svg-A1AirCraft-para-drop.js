@@ -58,7 +58,7 @@ let a1AirCraftAniTimer   = new AnimationTimer({
                                                scale: 0.51,            // min val of constructor
                                                scaleMod: 1/150,
                                                scaleMax: 5,
-                                               animationWaitTime: 2000, // 3min  10800
+                                               animationWaitTime: 2500, // 3min  10800
                                                logName:"a1AirCraftParaChuteDropper",
                                                speed:15,
                                                externalFunction:function(){
@@ -86,7 +86,7 @@ function animateParachuteDrop(){
 
     if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
     /* PARACHUTE DROP
-     * animate a number of svgs as air drop from elsewhere, aircraft triggers activation
+     * animate a number of svg as air drop from elsewhere, aircraft triggers activation
      */
         let animationTimerInstance;
         let moveSinCosInstance;
@@ -110,11 +110,11 @@ function animateParachuteDrop(){
 }
 ;
 function parachuteInit() {
-  /* paraAnimTimerDict */
+  /* paraMemberCount set in index.js */
   for(let index = 1;index<=paraMemberCount;index++){
       paraAnimTimerDict[paraUnitDept + index] =
-          new AnimationTimer({animationWaitTime: 999999,   // changed! now airplane sets run status true for paraAnimTimerDict
-                              scale:0.8,scaleMax:1.3,speed:10,angleDown:false,logName:"parachuteDrop_" + index});
+          new AnimationTimer({animationWaitTime: 999999,   // airplane sets animationWaitTime 0 to trigger action
+                              scale:0.8,scaleMax:1.3,speed:5,angleDown:false,logName:"parachuteDrop_" + index});
   }
 
   /* paraUpDownDict for partial Z rotation */

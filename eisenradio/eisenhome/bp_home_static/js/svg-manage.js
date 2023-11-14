@@ -547,18 +547,6 @@ class MoveSinCos{
  * provide simple figures for svg animation;
  * usage:
  * - div element id is "argument" for xxx.updateElement(elementId) method
- * let moveInfo = new MoveSinCos({sin: "true"});
- * moveInfo.updateCount();
- * moveInfo.updateElement("infoBox");
- * moveInfo.updateElement("infoText");
- * advanced:
- * let moveMeDownTheRabbitHole = new MoveSinCos({sin: "true",
- *                                               cos: "false",
- *                                               step:"200", // pixel, makes no sense if full instance is written like below
- *                                               countInstance: "new CountUpDown(0,360,1)"  //0deg,360deg, update add one
- *                                                                                          //overwrite counter
- *                                                                                          //"new SimpleCounter()"
- *                                               });
  */
     constructor(options){
         if (options === undefined) options = {};
@@ -575,7 +563,6 @@ class MoveSinCos{
         this.elementId = options.elementId    // document id
         this.arcUpDown = options.countInstance; // can instantiate a counter class,
                                         // must have "currentValue()", "update()" and "reset()" method implemented
-
         this.speedCounter = 0;
         this.infiniteCounter = 0;
         this.mileStoneX = 0;          // used to store current x for tan calc with alpha angle
@@ -629,25 +616,6 @@ class MoveSinCos{
                                          */
         let y = this.mileStoneX * Math.tan(angleAlpha * deg);
         return y;
-    }
-    updateCount(){
-    /* slow down the 1deg update and add more steps in the movement, either straight or circular if sin and cos */
-        this.infiniteCounter += 1/this.speed;
-        this.speedCounter += 1/this.speed;
-        if(this.speedCounter >= this.speed){
-            this.speedCounter = 0;
-        }
-        let arcVal = this.arcUpDown.currentValue + this.speedCounter;
-        this.updateCounter.update(1);
-        if(this.updateCounter.count >= this.speed){
-            this.updateCounter.reset();
-            this.arcUpDown.update();
-            this.speedCounter = 0;
-
-        }
-
-        this.calcSin(arcVal);
-        this.calcCos(arcVal);
     }
 }
 ;
@@ -928,19 +896,6 @@ function moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement
            divElem.style.transform += extraTransform;
 
         } catch (error) {console.log("moveRandomAngle() ", divElem, error)}
-    }
-}
-;
-function animateFrontPigs(darkBody, smoothVolume, powerLevelDict){
-/* inflated (omg), scaled ANIMALS */
-    if(htmlSettingsDictGlobal["checkboxConfigFrontPigs"]){
-    /* animal animation, use volume level to inflate */
-        defaultFrontAnimation(smoothVolume, powerLevelDict);
-        if(darkBody){
-                powerLevelAnimation({smoothVolume: smoothVolume,
-                                    animatedInstance: tuxIceFloeFrontPowerSwitch
-                });
-        }
     }
 }
 ;

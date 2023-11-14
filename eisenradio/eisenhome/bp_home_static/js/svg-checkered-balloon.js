@@ -59,7 +59,7 @@ let b1ColorFourPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".
                                               dropShadow: "",
                                               animatePower:false  // only color change, no on/off
                                                });
-let b1BalloonAniTimer    = new AnimationTimer({animationWaitTime: 2000,scale:2,speed:5,logName:"b1Balloon",
+let b1BalloonAniTimer    = new AnimationTimer({animationWaitTime: 2500,scale:2,speed:5,logName:"b1Balloon",
                               /* target: store an argument function (instance call) in another instance class variable
                                *            and call it on demand
                                *    one: wrap function in anonymous function in the caller,
