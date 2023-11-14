@@ -129,7 +129,7 @@ summary>* {
     font-size: 1.2em;
     text-shadow: 0px 1px 1px #333333;
     color: hsl(324, 70%, 45%);
-    animation: wheelHueColor 33.33s infinite;
+    /* animation: wheelHueColor 33.33s infinite; */
 }
 
 @keyframes wheelHueColor {
@@ -917,6 +917,10 @@ summary>* {
     font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
+.divSvgAirOne {
+  display: none;
+}
+
 .divA1AirCraft {
     display: none;
     position: absolute;
@@ -925,6 +929,10 @@ summary>* {
     left: 10em;
     max-width: 1em;
     max-height: 1em;
+}
+
+.divSvgAirOne {
+  display: none;
 }
 
 .divHorizon {
@@ -1082,6 +1090,10 @@ div::-webkit-scrollbar {
 }
 @media all and (orientation:landscape) {
 /* Styles for Landscape screen */
+}
+
+#spanConsole {
+  color: hsl(324, 70%, 45%);
 }
 
 .console {

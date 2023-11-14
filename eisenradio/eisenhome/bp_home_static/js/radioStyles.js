@@ -294,4 +294,3 @@ function recordRemoveGoldenDisk(radioId) {
     div.style.display = "none";
 }
 ;
-

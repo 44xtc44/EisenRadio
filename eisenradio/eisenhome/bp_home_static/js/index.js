@@ -64,6 +64,7 @@
  *        recOrListenAudioSetListenStyleSpectrum(radioName, radioId)    - write radio name to console, call spectrum analyser
  *
  */
+const cl = console.log;
 const divStartPageFadeIn = document.getElementById("divStartPageFadeIn");
 const pageCover = document.getElementById("pageCover");
 const pageCoverCanvas = document.getElementById("pageCoverCanvas");
@@ -98,6 +99,15 @@ var eisenStylesDict = {};         // apply color and shadows to the radio
 var streamerDictGlobal = {};            // stores all currently active streaming connections or rec style
 var animationsAllowedDict = {};
 var consoleUpDown = 1;           // up 1 down 0
+
+var paraAnimTimerDict = {};  // angle and time of appearance
+var paraUpDownDict = {};     // angle for partial horizontal rotation of div
+var paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
+var paraUnitDept = "AirDrop";  // if more drop instances, have log names
+var paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
+var paraMemberCount = getRandomIntInclusive(2,5);
+var airDropDelDict = {};  // index.js  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
+
 
 const fadeIn = [{opacity: 0}, {opacity: 1}];    // iterator
 const faderInTiming = {duration: 1500, iterations: 1,};
@@ -137,11 +147,8 @@ $(document).ready(function () {
     for (var i = 0; i < divCustomText.length; i++) {
         divCustomText[i].addEventListener('dblclick', maxHeightPicCommentPreToggle);
     }
-
-    // mobile screen size below 1080 toggle console to get more space on screen
-    if (window.innerWidth < 1081) {
     toggleHideConsole();
-}
+
 })
 ;
 

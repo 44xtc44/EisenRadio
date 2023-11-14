@@ -32,7 +32,7 @@
  *          animateBuoy(darkBody);                                   - edit button
  *          animateSpeaker(smoothVolume);
  *          animateZeppelin(darkBody, smoothVolume);
- *          animateCheckeredBallon(smoothVolume);
+ *          animateCheckeredBalloon(smoothVolume);
  *          animateParachuteDrop();
  *          animateA1AirCraft();
  *          animateClouds(darkBody);
@@ -50,167 +50,6 @@
  *
  * instance initialization
  */
-
-const htmlColNames = [
-                        "#CD5C5C",
-                        "#F08080",
-                        "#FA8072",
-                        "#E9967A",
-                        "#FFA07A",
-                        "#DC143C",
-                        "#FF0000",
-                        "#B22222",
-                        "#8B0000",
-                        "#FFC0CB",
-                        "#FFB6C1",
-                        "#FF69B4",
-                        "#FF1493",
-                        "#C71585",
-                        "#DB7093",
-                        "#FFA07A",
-                        "#FF7F50",
-                        "#FF6347",
-                        "#FF4500",
-                        "#FF8C00",
-                        "#FFA500",
-                        "#FFD700",
-                        "#FFFF00",
-                        "#FFFFE0",
-                        "#FFFACD",
-                        "#FAFAD2",
-                        "#FFEFD5",
-                        "#FFE4B5",
-                        "#FFDAB9",
-                        "#EEE8AA",
-                        "#F0E68C",
-                        "#BDB76B",
-                        "#E6E6FA",
-                        "#D8BFD8",
-                        "#DDA0DD",
-                        "#EE82EE",
-                        "#DA70D6",
-                        "#FF00FF",
-                        "#FF00FF",
-                        "#BA55D3",
-                        "#9370DB",
-                        "#663399",
-                        "#8A2BE2",
-                        "#9400D3",
-                        "#9932CC",
-                        "#8B008B",
-                        "#800080",
-                        "#4B0082",
-                        "#6A5ACD",
-                        "#483D8B",
-                        "#7B68EE",
-                        "#ADFF2F",
-                        "#7FFF00",
-                        "#7CFC00",
-                        "#00FF00",
-                        "#32CD32",
-                        "#98FB98",
-                        "#90EE90",
-                        "#00FA9A",
-                        "#00FF7F",
-                        "#3CB371",
-                        "#2E8B57",
-                        "#228B22",
-                        "#008000",
-                        "#006400",
-                        "#9ACD32",
-                        "#6B8E23",
-                        "#808000",
-                        "#556B2F",
-                        "#66CDAA",
-                        "#8FBC8B",
-                        "#20B2AA",
-                        "#008B8B",
-                        "#008080",
-                        "#00FFFF",
-                        "#00FFFF",
-                        "#E0FFFF",
-                        "#AFEEEE",
-                        "#7FFFD4",
-                        "#40E0D0",
-                        "#48D1CC",
-                        "#00CED1",
-                        "#5F9EA0",
-                        "#4682B4",
-                        "#B0C4DE",
-                        "#B0E0E6",
-                        "#ADD8E6",
-                        "#87CEEB",
-                        "#87CEFA",
-                        "#00BFFF",
-                        "#1E90FF",
-                        "#6495ED",
-                        "#7B68EE",
-                        "#4169E1",
-                        "#0000FF",
-                        "#0000CD",
-                        "#00008B",
-                        "#000080",
-                        "#191970",
-                        "#FFF8DC",
-                        "#FFEBCD",
-                        "#FFE4C4",
-                        "#FFDEAD",
-                        "#F5DEB3",
-                        "#DEB887",
-                        "#D2B48C",
-                        "#BC8F8F",
-                        "#F4A460",
-                        "#DAA520",
-                        "#B8860B",
-                        "#CD853F",
-                        "#D2691E",
-                        "#8B4513",
-                        "#A0522D",
-                        "#A52A2A",
-                        "#800000",
-                        "#FFFFFF",
-                        "#FFFAFA",
-                        "#F0FFF0",
-                        "#F5FFFA",
-                        "#F0FFFF",
-                        "#F0F8FF",
-                        "#F8F8FF",
-                        "#F5F5F5",
-                        "#FFF5EE",
-                        "#F5F5DC",
-                        "#FDF5E6",
-                        "#FFFAF0",
-                        "#FFFFF0",
-                        "#FAEBD7",
-                        "#FAF0E6",
-                        "#FFF0F5",
-                        "#FFE4E1",
-];
-/* inkscape path id s
- * overcome the order problem of inkscape path elements
- * inkscape order is svg layer order, but sometimes you want colorize, size in a different order
- */
-const zeppelinColorOrder = ["z1Body_RearFinUpperRear",
-                            "z1Body_01_part",
-                            "z1Body_02_part",
-                            "z1Body_RearFinUpperFront",
-                            "z1Body_03_part",
-                            "z1Body_04_part",
-                            "z1Body_05_part",
-                            "z1Body_06_part",
-                            "z1Body_RearFinUnderFront",
-                            "z1Body_07_part",
-                            "z1Body_RearFinUnderRear",
-                            "z1Body_08_part",
-                            "z1BodyFinSide",
-                            "z1BodyCabin",
-
-]
-function toggleAnimalDefaultDivSvG() {
-/* html call: toggle between animals */
-    eisenStylesDict["eisenRadio_" + activeListenId].updateAnimals();
-}
-;
 class CountUpDown{
 /* target: endless count up, down
  *   count up and down for alternating direction or color fade in out, step is per frame;
@@ -261,6 +100,33 @@ class SimpleCounter{
     }
 }
 ;
+class Shaker{
+/* target: shake an element, like a vibrating phone
+ * could have rotation; only for short time animation, longer leads to brain damage
+ */
+    constructor(){
+        this.shakeStatus = undefined;
+        this.counter = 0;
+        this.maxCount = 10;
+    }
+    shake(elementId, step){
+        let elem = document.getElementById(elementId);
+        this.counter += step;
+        if(this.counter > this.maxCount){this.counter = 1}
+        if(this.counter === 1 ){elem.style.transform = "translate(1px, 1px)   "}
+        if(this.counter === 2 ){elem.style.transform = "translate(-1px, -2px) "}
+        if(this.counter === 3 ){elem.style.transform = "translate(-2px, 0px)  "}
+        if(this.counter === 4 ){elem.style.transform = "translate(2px, 2px)   "}
+        if(this.counter === 5 ){elem.style.transform = "translate(1px, -1px)  "}
+        if(this.counter === 6 ){elem.style.transform = "translate(-1px, 2px)  "}
+        if(this.counter === 7 ){elem.style.transform = "translate(-2px, 0px)  "}
+        if(this.counter === 7 ){elem.style.transform = "translate(2px, 0px)   "}
+        if(this.counter === 9 ){elem.style.transform = "translate(-1px, -1px) "}
+        if(this.counter === 10){elem.style.transform = "translate(0px, 1px)   "}
+    }
+}
+;
+
 class PowerSwitch{
 /* target: SVG path elements show timeDomainData values in different colors (spectrum analyser);
  *         tec target: create a microcontroller light switch in high level language
@@ -660,7 +526,6 @@ class PowerSwitch{
             htmlElem.style.stroke = "hsl(" + eStroke + ", 100%, 50%)";
             htmlElem.style.strokeWidth = this.strokeWidth + "px";
             htmlElem.style.filter = this.dropShadow;
-//console.log(htmlElem);
         }
 
     }
@@ -674,134 +539,6 @@ class PowerSwitch{
     }
 }
 ;
-function toggleWriteToDiskAnimation(){
-/* radio starts rec: animate a rotating golden disk
- * update the global dict for streamer/recorder {name:id}, show disc if id is in server dict, else display none for disc div
- * called also by degradeAnimationsSet(), cpuUtilisation, discs on/off
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/streamer_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        if (data.streamerGet) {
-
-            streamerDictGlobal = {};
-            streamerDictGlobal = data.streamerGet;
-
-            if(htmlSettingsDictGlobal["checkboxConfigAnimation"]){
-                try{
-                    // non empty dict
-                    if(Object.keys(streamerDictGlobal).length > 0){
-                        for (const [key, radioId] of Object.entries(streamerDictGlobal)) {
-                            let div = document.getElementById("divWriteToDisk_" + radioId);
-                                /* cpuUtilisation check */
-                            if(htmlSettingsDictGlobal["cpuUtilisation"]) {
-                                div.style.display = "inline-block";
-                                // set event listener to disappear on click
-                                div.addEventListener("click", function (){div.style.display = "none";});
-                            }  else {
-                                div.style.display = "none";
-                            }
-                        }
-                    }
-                } catch (error) {console.log(".toggleWriteToDiskAnimation() ", error);}
-            }
-        }
-    });
-}
-;
-function skipRecordShowMessageInABottle(){
-/**
- * must be called on a regular basis:
- *       if skipped record file by using the blacklist for current LISTEN Radio,
- *       info by showing a message in a bottle image with 'skip' label for the radio
- *       parseInt(activeListenId) convert id to integer
- *       server keeps track of skipped records and updates compare dict
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/skipped_records_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        if (data.skippedRecordsGet) {
-            let skipList = data.skippedRecordsGet;
-            if(skipList.includes(parseInt(activeListenId))) {
-                let bottle = document.getElementById("divMessageInABottle_" + activeListenId);
-                bottle.style.display = "inline-block";
-                bottle.style.top = "-5em";
-                bottle.style.left = "1em";
-                bottle.style.transform = "scale(0.8,0.8)";
-                setTimeout(function (){
-                    bottle.style.display = "none";
-                }, 10000);
-
-            }
-        }
-    });
-}
-;
-function dimRadioForAnimation(){
-/* show or hide the title displays
- * timeout to work against power clicking and dblClick bug
- */
-    try{
-        setTimeout(function (){dimRadioForAnimationExec();}, 50);
-    } catch (error) {}
-}
-;
-function dimRadioForAnimationExec(){
-/* target: dim opacity of radio elements to better present the animation; now switching on/off opacity 0
- * click on genre displayed, if radio has no genre it will not work, who cares
- */
-    let opaMin = "0.00";
-    let opaMax = "1";
-    try{
-        let metric = document.getElementById("divMeasurementsUpper_" + activeListenId);
-        let header = document.getElementById("divHeaderShadow_" + activeListenId);
-        let pic = document.getElementById("pixies_" + activeListenId);
-
-       if(header.style.opacity == opaMax || ! header.style.opacity){
-           metric.style.opacity = opaMin;
-           header.style.opacity = opaMin;
-           pic.style.opacity = opaMin;
-
-       } else {
-           metric.style.opacity = opaMax;
-           header.style.opacity = opaMax;
-           pic.style.opacity = opaMax;
-       }
-    } catch (error) {console.log(error); }
-}
-;
-class Shaker{
-/* target: shake an element, like a vibrating phone
- * could have rotation; only for short time animation, longer leads to brain damage
- */
-    constructor(){
-        this.shakeStatus = undefined;
-        this.counter = 0;
-        this.maxCount = 10;
-    }
-    shake(elementId, step){
-        let elem = document.getElementById(elementId);
-        this.counter += step;
-        if(this.counter > this.maxCount){this.counter = 1}
-        if(this.counter === 1 ){elem.style.transform = "translate(1px, 1px)   "}
-        if(this.counter === 2 ){elem.style.transform = "translate(-1px, -2px) "}
-        if(this.counter === 3 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 4 ){elem.style.transform = "translate(2px, 2px)   "}
-        if(this.counter === 5 ){elem.style.transform = "translate(1px, -1px)  "}
-        if(this.counter === 6 ){elem.style.transform = "translate(-1px, 2px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(2px, 0px)   "}
-        if(this.counter === 9 ){elem.style.transform = "translate(-1px, -1px) "}
-        if(this.counter === 10){elem.style.transform = "translate(0px, 1px)   "}
-    }
-}
-;
 class MoveSinCos{
 /* depends on class CountUpDown;
  * MOVE no other transforms here;
@@ -810,18 +547,6 @@ class MoveSinCos{
  * provide simple figures for svg animation;
  * usage:
  * - div element id is "argument" for xxx.updateElement(elementId) method
- * let moveInfo = new MoveSinCos({sin: "true"});
- * moveInfo.updateCount();
- * moveInfo.updateElement("infoBox");
- * moveInfo.updateElement("infoText");
- * advanced:
- * let moveMeDownTheRabbitHole = new MoveSinCos({sin: "true",
- *                                               cos: "false",
- *                                               step:"200", // pixel, makes no sense if full instance is written like below
- *                                               countInstance: "new CountUpDown(0,360,1)"  //0deg,360deg, update add one
- *                                                                                          //overwrite counter
- *                                                                                          //"new SimpleCounter()"
- *                                               });
  */
     constructor(options){
         if (options === undefined) options = {};
@@ -831,9 +556,13 @@ class MoveSinCos{
         this.updateCounter = new SimpleCounter();
         this.step = options.step;       // step or unit to multiply with result of sin/cos; result is for one unit x only
         this.speed = options.speed;     // slows motion, fills x speed steps between one count of 1deg of 360deg
+        this.styleTop = options.styleTop;   // override default div location
+        this.styleTop = options.styleLeft;
+        this.styleTop = options.styleRight;
+
+        this.elementId = options.elementId    // document id
         this.arcUpDown = options.countInstance; // can instantiate a counter class,
                                         // must have "currentValue()", "update()" and "reset()" method implemented
-
         this.speedCounter = 0;
         this.infiniteCounter = 0;
         this.mileStoneX = 0;          // used to store current x for tan calc with alpha angle
@@ -844,14 +573,6 @@ class MoveSinCos{
     }
     reset(){
         this.mileStoneX = 0;
-    }
-    calcSin(val){
-        this.sin = Math.sin(val) * this.step;
-        return this.sin;
-    }
-    calcCos(val){
-        this.cos = Math.cos(val) * this.step;
-        return this.cos;
     }
     calcYForXMileStone(adjacent, angleAlpha){
         /*
@@ -895,65 +616,6 @@ class MoveSinCos{
                                          */
         let y = this.mileStoneX * Math.tan(angleAlpha * deg);
         return y;
-    }
-    moveXRight(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateX(" + (this.infiniteCounter) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
-    moveXLeft(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateX(" + (-this.infiniteCounter) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
-    moveYUp(){
-
-    }
-    moveYDown(){
-
-    }
-    moveYUpAndDown(elementId){
-        let element = document.getElementById(elementId);
-        try{
-            element.style.transform = "translateY(" + (this.sin) + "px)";
-        }
-        catch (error) {
-        /*   console.error(error); */
-        }
-    }
-    updateCount(){
-    /* slow down the 1deg update and add more steps in the movement, either straight or circular if sin and cos */
-        this.infiniteCounter += 1/this.speed;
-        this.speedCounter += 1/this.speed;
-        if(this.speedCounter >= this.speed){
-            this.speedCounter = 0;
-        }
-        let arcVal = this.arcUpDown.currentValue + this.speedCounter;
-        this.updateCounter.update(1);
-        if(this.updateCounter.count >= this.speed){
-            this.updateCounter.reset();
-            this.arcUpDown.update();
-            this.speedCounter = 0;
-
-        }
-
-        this.calcSin(arcVal);
-        this.calcCos(arcVal);
-    }
-    updateElement(elementId, moveMethod){
-        if(moveMethod == "moveXRight")   {this.moveXRight(elementId);}
-        if(moveMethod == "moveXLeft")    {this.moveXLeft(elementId);}
-        if(moveMethod == "moveYUp")      {this.moveYUp(elementId);}
-        if(moveMethod == "moveYDown")    {this.moveYDown(elementId);}
-        if(moveMethod == "moveUpAndDown"){this.moveYUpAndDown(elementId);}
     }
 }
 ;
@@ -1237,206 +899,6 @@ function moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement
     }
 }
 ;
-function colorizeDefaultSvgStageElements(darkBody){
-/* target: colorize the SVG stage at day and night conditions, means dark mode pressed or not
- *  clouds and iceBerg move animated within the svg
- *
- * injected extra gradient in svg (means no use of it by default, copied gradient statement back into the svg file),
- *  because stuff not working, id="lgTuxStageOceanColorStopOne" and offset value via javascript,
- * !!!!!!!!!! have to add this to the svg or <g>, since inkscape throws it away, maybe because it is not used actually? create a ticket and burn it
- *	<linearGradient id="lgTuxStageOceanColorNight" x1="459.32" x2="466.57" y1="501.07" y2="231.73" gradientTransform="matrix(1,0,0,2.7448,0,-375.27)" gradientUnits="userSpaceOnUse" xlink:href="#lgTuxStageOceanNightLight">
- *		<stop id="lgTuxStageOceanColorStopOne" style="stop-color:black" offset="0"/>
- *		<stop id="lgTuxStageOceanColorStopTwo" style="stop-color:DarkSlateGray	" offset="1"/>
- *	</linearGradient>
- */
-    let tuxStageSky   = document.getElementById('tuxStageSky');
-    let tuxStageOcean = document.getElementById('tuxStageOcean');
-    let tuxCloudOne   = document.getElementById('tuxCloudOne');
-    let tuxCloudTwo   = document.getElementById('tuxCloudTwo');
-    let tuxCloudThree = document.getElementById('tuxCloudThree');
-    let tuxCloudFour  = document.getElementById('tuxCloudFour');
-    let tuxCloudFive  = document.getElementById('tuxCloudFive');
-    let tuxCloudOneBigWhite   = document.getElementById('tuxCloudOneBigWhite');
-    let tuxCloudTwoBigWhite   = document.getElementById('tuxCloudTwoBigWhite');
-    let tuxCloudThreeBigWhite = document.getElementById('tuxCloudThreeBigWhite');
-    let tuxCloudFourBigWhite  = document.getElementById('tuxCloudFourBigWhite');
-    let tuxIceBerg_1_Layer  = document.getElementById('tuxIceBerg_1_Layer');
-    let tuxIceBerg_2_Layer  = document.getElementById('tuxIceBerg_2_Layer');
-    let tuxIceBerg_3_Layer  = document.getElementById('tuxIceBerg_3_Layer');
-    let tuxIceBerg_4_Layer  = document.getElementById('tuxIceBerg_4_Layer');
-    let tuxStageStarsLeft    = document.getElementById('tuxStageStarsLeft');
-    let tuxStageStarsRight   = document.getElementById('tuxStageStarsRight');
-    let gTuxStageStars   = document.getElementById('gTuxStageStars');
-    let starBackGroundPath  = document.getElementById('starBackGroundPath');
-
-    if(darkBody){
-
-        let bodyStyle = window.getComputedStyle(document.body, null);
-        tuxStageSky.style.fill   = bodyStyle.backgroundColor;
-        tuxStageOcean.style.fill = "url(#lgTuxStageOceanColorNight)"
-        tuxCloudOne.style.fill    = bodyStyle.backgroundColor;
-        tuxCloudTwo.style.fill    = bodyStyle.backgroundColor;
-        tuxCloudThree.style.fill  = bodyStyle.backgroundColor;
-        tuxCloudFour.style.fill   = bodyStyle.backgroundColor;
-        tuxCloudFive.style.fill   = bodyStyle.backgroundColor;
-        tuxCloudOneBigWhite.style.fill    = bodyStyle.backgroundColor;
-        tuxCloudTwoBigWhite.style.fill    = bodyStyle.backgroundColor;
-        tuxCloudThreeBigWhite.style.fill  = bodyStyle.backgroundColor;
-        tuxCloudFourBigWhite.style.fill   = bodyStyle.backgroundColor;
-        tuxCloudFiveBigWhite.style.fill   = bodyStyle.backgroundColor;
-        tuxIceBerg_1_Layer.style.fill = "hsl(240, 5%," + tuxIceBerg_1_LayerUpDown.update() + "%)";
-        tuxIceBerg_2_Layer.style.fill = "hsl(180, 5%," + tuxIceBerg_2_LayerUpDown.update() + "%)";
-        tuxIceBerg_3_Layer.style.fill = "hsl(190, 5%," + tuxIceBerg_3_LayerUpDown.update() + "%)";
-        tuxIceBerg_4_Layer.style.fill = "hsl(200, 5%," + tuxIceBerg_4_LayerUpDown.update() + "%)";
-        gTuxStageStars.style.display = "inline-block";
-        starBackGroundPath.style.display = "inline-block";
-
-    } else {
-
-        tuxStageSky.style.fill   = "url(#lgTuxStageSkyColor)";
-        tuxStageOcean.style.fill = "url(#lgTuxStageOceanColor)";
-        let bodyStyle = window.getComputedStyle(document.body, null);
-        tuxEllipse.style.fill = "hsl(240,50%," + tuxEllipseColorUpDown.update() + "%)";
-        tuxIceBerg_1_Layer.style.fill = "hsl(240, 50%," + tuxIceBerg_1_LayerUpDown.update() + "%)";
-        tuxIceBerg_2_Layer.style.fill = "hsl(180, 50%," + tuxIceBerg_2_LayerUpDown.update() + "%)";
-        tuxIceBerg_3_Layer.style.fill = "hsl(190, 35%," + tuxIceBerg_3_LayerUpDown.update() + "%)";
-        tuxIceBerg_4_Layer.style.fill = "hsl(200, 35%," + tuxIceBerg_4_LayerUpDown.update() + "%)";
-        tuxCloudOne.style.fill = "hsl(240,50%," + tuxCloudOneUpDow.update() + "%)";
-        tuxCloudTwo.style.fill = "hsl(240,50%," + tuxCloudTwoUpDow.update() + "%)";
-        tuxCloudThree.style.fill = "hsl(240,50%," + tuxCloudThreeUpDow.update() + "%)";
-        tuxCloudFour.style.fill = "hsl(240,50%," + tuxCloudFourUpDow.update() + "%)";
-        tuxCloudFive.style.fill = "hsl(240,50%," + tuxCloudFourUpDow.update() + "%)";
-        tuxCloudOneBigWhite.style.fill   = "#fff";
-        tuxCloudTwoBigWhite.style.fill   = "#fff";
-        tuxCloudThreeBigWhite.style.fill = "#fff";
-        tuxCloudFourBigWhite.style.fill  = "#fff";
-        tuxCloudFiveBigWhite.style.fill  = "#fff";
-        gTuxStageStars.style.display = "none";
-        starBackGroundPath.style.display = "none";
-    }
-}
-;
-function defaultFrontAnimation(smoothVolume, powerLevelDict){
-/* default animation, can be switched off in tools menu config */
-
-    let fullPower = false;  // used to show different colors at very high volume; later used for space cat with pink hands and eyes
-    let scaleUnifier = powerLevelDict[Object.keys(powerLevelDict)[0]];  // multiply with all volume val to get lower audio ranges up
-    if(Object.keys(powerLevelDict)[0] == "fullPower"){fullPower = true;}
-    let darkBody = getBodyColor();   // html body
-    let animSvg;                     // svg
-
-    try {
-        let ypsilonTranslation;  // fine tune position of animal up or down
-        // enable animal
-        let animalContainer = eisenStylesDict["eisenRadio_" + activeListenId].animal + activeListenId;
-        let animSvg = document.getElementById(animalContainer);
-        animSvg.style.display = "inline-block";
-        // enable ice floe
-        let divSvgIceTux = document.getElementById("divSvgIceTux_" + activeListenId); // ice floe  
-        divSvgIceTux.style.display = "inline-block";
-
-        if(smoothVolume < 1){smoothVolume = 1;}
-        animSvg.style.transformOrigin = "40% center"; // top,center
-        animSvg.style.transform      = "translateX(" + animalTranslationUpDown.update() + "px)";
-        divSvgIceTux.style.transform = "translateX(" + animalTranslationUpDown.update() + "px)";
-        divSvgIceTux.style.transform += "rotateZ(" + animalZRotationUpDown.update() + "deg)";
-        ypsilonTranslation = -50;
-
-        animSvg.style.transform += "scaleX(" + (smoothVolume * scaleUnifier) + ")";
-        animSvg.style.transform += "scaleY(" + (smoothVolume * scaleUnifier) + ")";
-        animSvg.style.transform += "rotateZ(" + animalZRotationUpDown.update() + "deg)";
-        animSvg.style.transform += "translateY(" + ypsilonTranslation + "px)";
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-;
-function defaultStageHtmlElementsShow(){
-/* SVG STAGE, HTML decoration */
-    try{
-        document.getElementById("divMainAnimationContainer_" + activeListenId).style.display = "inline-block";
-        document.getElementById("animatedBackGround_" + activeListenId).style.display = "inline-block";   // svg sky, ocean
-        document.getElementById("divSvgBuoy_" + activeListenId).style.display = "inline-block";
-        document.getElementById("divSvgIceTux_" + activeListenId).style.display = "inline-block"; // the floe, scholle
-        document.getElementById("divSvgScrewHeadTopRight_" + activeListenId).style.display = "inline-block";
-        document.getElementById("divSvgScrewHeadTopLeft_" + activeListenId).style.display = "inline-block";
-        document.getElementById("divSvgScrewHeadBottomRight_" + activeListenId).style.display = "inline-block";
-        document.getElementById("divSvgScrewHeadBottomLeft_" + activeListenId).style.display = "inline-block";
-        document.getElementById("divSvgGlasBreakTopRight_" + activeListenId).style.display = "inline-block";
-    }
-    catch (error) {}
-}
-;
-function defaultFlatSpeakerAnimation(){
-/* speaker are not in the default animation container, in upper left top, should be consolidated, sometimes it feels desperate, human */
-    try{
-        let speakerDiv = document.getElementById("divSvgFlatSpeaker_" + activeListenId);
-        speakerDiv.style.display = "inline-block";
-        let speakerRightDiv = document.getElementById("divSvgFlatSpeakerTopRight_" + activeListenId);
-        speakerRightDiv.style.display = "inline-block";
-    }
-    catch (error) {}
-}
-;
-function svgAnimationMain(){
-    /* renamed MAIN for svg/html animation
-     * function is browser frame based, calls itself, requestAnimationFrame at bottom
-     * target: call all animations that have a run status, function decides itself
-     * smoothVolume is used as scale multiplier for animations of animals and color differences for speakers
-     * AnimationTimer class has run attribute, true if an animation may run;
-     * AnimationTimer instance can call functions after reset() to change color, direction ...
-     */
-    let smoothVolume = smoothOutVolume(128, 0.04);
-
-    /* target: powerLevelDict gets name of the coloring method of PowerSwitch class and a multiplier for the animation level
-     *  to artificial raise smoothVolume for low animation levels; is not implemented yet, only no power strikes
-     *  to lever scaling of the animals at very low frequency/amplitude to see a movement, {"lowPower":1}
-     *  leads to the fact, that at no data input the animal is glued max size to the screen, {"noPower":3}
-     * powerLevelAnimation({smoothVolume: smoothVolume, animatedInstance: animatedInstance})
-     */
-    let powerLevelDict = powerLevelAnimation({smoothVolume: smoothVolume}); // can also send instance as option
-
-    let darkBody = getBodyColor();
-    defaultStageHtmlElementsShow();
-    colorizeDefaultSvgStageElements(darkBody);
-    animateFrontPigs(darkBody, smoothVolume, powerLevelDict); // powerLevelDict
-    animateBuoy(darkBody);  // edit button
-    animateSpeaker(smoothVolume);
-    animateZeppelin(darkBody, smoothVolume);
-    animateCheckeredBallon(smoothVolume);
-    animateParachuteDrop();
-    animateA1AirCraft();
-    animateClouds(darkBody);
-    animateGpsSat(darkBody);
-    animateStars(darkBody);
-    animateGenreClickTeaser();
-
-    inflateAnim = window.requestAnimationFrame(svgAnimationMain);
-}
-;
-function animateGenreClickTeaser(){
-/* show I am clickable to switch some items on/off, headline, display badge */
-    let fpm = 3600;
-    let ringTime = 30 * fpm;
-    genreSimpleCounter.update(); // 60fps 3600fpm * 30 = half hour
-    if(genreSimpleCounter.count >= ringTime){genreShaker.shake("divStationGenre_" + activeListenId, 1);}
-    if(genreSimpleCounter.count >= ringTime + 120){genreSimpleCounter.reset();}
-}
-;
-function animateFrontPigs(darkBody, smoothVolume, powerLevelDict){
-/* inflated (omg), scaled ANIMALS */
-    if(htmlSettingsDictGlobal["checkboxConfigFrontPigs"]){
-    /* animal animation, use volume level to inflate */
-        defaultFrontAnimation(smoothVolume, powerLevelDict);
-        if(darkBody){
-                powerLevelAnimation({smoothVolume: smoothVolume,
-                                    animatedInstance: tuxIceFloeFrontPowerSwitch
-                });
-        }
-    }
-}
-;
 function animateStars(darkBody){
 /* STARS
  * target: random blink of 1-n stars in dark mode, if full html style selected
@@ -1451,296 +913,6 @@ function animateStars(darkBody){
     }
 }
 ;
-function animateBuoy(darkBody){
-/* BUOY Must not disabled, second EDIT BUTTON */
-        let buoySegmentVeryTopLight = document.getElementById("buoySegmentVeryTopLight");
-        let divSvgBuoy = document.getElementById("divSvgBuoy_" + activeListenId);
-        let flashDayColor   = "hsl(" + 300 + ", 100%, 50%)";
-        let flashNightColor = "hsl(" + 10 + ", 100%, 50%)";
-        if(darkBody){
-            buoyPosLightPSwitch.flashColor = flashNightColor
-        } else {
-            buoyPosLightPSwitch.flashColor = flashDayColor
-        }
-        buoyPosLightPSwitch.updateFlashPattern();
-        // zRotation and x to swim
-        divSvgBuoy.style.transform = "translateX(" + -animalTranslationUpDown.update()/4 + "px)";
-        divSvgBuoy.style.transform += "rotateZ(" + buoyZRotationUpDown.update() + "deg)";
-}
-;
-function animateSpeaker(smoothVolume){
-    if(htmlSettingsDictGlobal["checkboxConfigFlatSpeaker"]){
-    /* SPEAKER */
-        defaultFlatSpeakerAnimation();
-        powerLevelAnimation({smoothVolume: smoothVolume,
-                            animatedInstance: infSpeaker
-        });
-    }
-}
-;
-function animateClouds(darkBody){
-    /* clouds and iceBerg fix for firefox, this is an example to not even think about using smil, svg inbound animation
-     * ff is so buggy in relation to animation on canvas html and svg, canvas blur -> crash of ff
-     * it is known to them for years, but nobody is interested in, looks like it is a government company
-     * <animateTransform attributeName="transform" attributeType="XML" dur="3600s" from="0" repeatCount="indefinite" to="1000" type="translate"/>
-     * workaround which does the same as the svg <animation >
-     * write a class to remember the start and endpoints of the movement and know where we are in the moment
-     */
-    if(htmlSettingsDictGlobal["checkboxConfigAnimation"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-        tuxIceBergMoveX.update();
-        tuxCloudOneMoveX.update();
-        tuxCloudTwoMoveX.update();
-        tuxCloudThreeMoveX.update();
-        tuxCloudFourMoveX.update();
-        tuxCloudFiveMoveX.update();
-    }
-}
-;
-function animateGpsSat(darkBody){
-    /* Satellite */
-    if(htmlSettingsDictGlobal["checkboxConfigAnimation"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-        if(darkBody){
-            tuxGpsSatMoveX.update();
-            tuxSatelliteMoveX.update();
-            document.getElementById("gGpsSat").style.display = "inline-block";
-            document.getElementById("gSatellite").style.display = "inline-block";
-        } else {
-            document.getElementById("gGpsSat").style.display = "none";
-            document.getElementById("gSatellite").style.display = "none";
-        }
-    } else {
-            document.getElementById("gGpsSat").style.display = "none";
-            document.getElementById("gSatellite").style.display = "none";
-    }
-
-}
-;
-function animateZeppelin(darkBody, smoothVolume){
-    if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-    /* Zeppelin */
-        let flashDayColor   = "hsl(" + 90 + ", 100%, 50%)";
-        let flashNightColor = "hsl(" + 300 + ", 100%, 50%)";
-        let divAnimate = "divSvgZ1_" + activeListenId;
-        let animationTimerInstance = z1ZeppelinAniTimer;
-        let moveSinCosInstance     = z1ZeppelinMoveSinCos;
-        // Position lights
-        if(darkBody){
-            z1ZeppelinPosLightPSwitch.flashColor = flashNightColor;
-        } else {
-            z1ZeppelinPosLightPSwitch.flashColor = flashDayColor;
-        }
-        animationTimerInstance.update();
-        let checkeredBalloon = b1BalloonAniTimer;
-        if(checkeredBalloon.run === true) {
-            /* help fireFox to not hang if b1 and paras appear at the same time */
-            document.getElementById(divAnimate).style.display = "none";
-            return;
-        }
-        if(animationTimerInstance.run === true){
-            z1ZeppelinPosLightPSwitch.updateFlashPattern();
-            let extraTransform = "rotateZ(" + z1ZeppelinUpDown.update() + "deg)";
-            moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
-            powerLevelAnimation({smoothVolume: smoothVolume,
-                                animatedInstance: z1ZeppelinPowerSwitch
-            });
-        }
-    }
-}
-;
-function animateCheckeredBallon(smoothVolume){
-    if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-    /* checkered balloon */
-        let divAnimate = "divSvgB1_" + activeListenId;
-        let animationTimerInstance = b1BalloonAniTimer;
-        let moveSinCosInstance     = b1BalloonMoveSinCos;
-        let extraTransform;
-
-        animationTimerInstance.update();
-        if(animationTimerInstance.run === true){
-            extraTransform = "rotateZ(" + b1BalloonUpDown.update() + "deg)";
-            b1BalloonBurnerRedPSwitch.flashColor = "hsl(" + 300 + ", 100%, 50%)";
-            b1BalloonBurnerRedPSwitch.updateFlashPattern();
-            b1BalloonBurnerYPSwitch.flashColor = "hsl(" + 60 + ", 100%, 50%)";
-            b1BalloonBurnerYPSwitch.updateFlashPattern();
-            moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
-            /*
-             * random event can start, from AnimationTimer class
-             *  can not animate all four <g> color groups, this looks not good
-             */
-            if(b1BalloonAniTimer.randomEvent == true){
-                powerLevelAnimation({smoothVolume: smoothVolume,
-                                     animatedInstance: b1ColorOnePowerSwitch
-                });
-                powerLevelAnimation({smoothVolume: smoothVolume,
-                                     animatedInstance: b1ColorFourPowerSwitch
-                });
-            }
-        }
-    }
-}
-;
-function animateParachuteDrop(){
-    if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-    /* PARACHUTE DROP
-     * animate a number of svgs as air drop from elsewhere, aircraft triggers activation
-     */
-        let animationTimerInstance;
-        let moveSinCosInstance;
-        let divAnimate;
-        let extraTransform;
-            for(let index=0;index<=paraMemberCount -1;index++){
-                divAnimate = paraUnitDept + (index + 1) + "_" + paraParentDiv + "_" + activeListenId;  // AirDrop2_divDragRopeA1AirCraft_11
-                let timerKey  = Object.keys(paraAnimTimerDict)[index];
-                let moveKey   = Object.keys(paraMoveSinCosDict)[index];
-                let rotateKey = Object.keys(paraUpDownDict)[index];
-
-                animationTimerInstance = paraAnimTimerDict[timerKey];
-                animationTimerInstance.update();
-                if(animationTimerInstance.run === true){
-                    moveSinCosInstance     = paraMoveSinCosDict[moveKey];
-                    extraTransform = "rotateZ(" + paraUpDownDict[rotateKey].update() + "deg)";
-                    moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
-                }
-        }
-     }
-}
-;
-function animateA1AirCraft(){
-
-    if(htmlSettingsDictGlobal["checkboxConfigBalloon"] && htmlSettingsDictGlobal["cpuUtilisation"]){
-    /* AirCraft has set scale Mod for a1AirCraftAniTimer instance
-     */
-        let flashTail   = "hsl(" + 90 + ", 100%, 100%)";
-        let flashRight  = "hsl(" + 360 + ", 100%, 50%)";
-        let flashLeft   = "hsl(" + 90 + ", 100%, 50%)";
-
-        let divAnimate  = "divA1AirCraft_" + activeListenId;
-        let animationTimerInstance = a1AirCraftAniTimer;
-        let moveSinCosInstance = a1AirCraftMoveSinCos;
-
-        animationTimerInstance.update();
-        if(animationTimerInstance.run === true){
-            a1AirCraftTLightPSwitch.flashColor = flashTail;
-            a1AirCraftRLightPSwitch.flashColor = flashRight;
-            a1AirCraftLLightPSwitch.flashColor = flashLeft;
-            a1AirCraftTLightPSwitch.updateFlashPattern();
-            a1AirCraftRLightPSwitch.updateFlashPattern();
-            a1AirCraftLLightPSwitch.updateFlashPattern();
-            let extraTransform = "rotateZ(" + a1AirCraftUpDown.update() + "deg)";
-            moveRandomAngle(animationTimerInstance, moveSinCosInstance, divAnimate, extraTransform);
-            /* termination here since moveRandomAngle() looks only for screen borders and y as terminator
-             * trigger parachutes drop
-             */
-            if(animationTimerInstance.scale === animationTimerInstance.scaleMax){
-                animationTimerInstance.reset();
-                moveSinCosInstance.reset();
-                document.getElementById(divAnimate).style.display = "none";
-
-                // ParachuteDrop, force AnimationTimer instances to run
-                let parachuteTimerInstance;
-                for(let index=0;index<=paraMemberCount -1;index++){
-                    let timerKey = Object.keys(paraAnimTimerDict)[index];
-                    parachuteTimerInstance = paraAnimTimerDict[timerKey];
-                    parachuteTimerInstance.animationWaitTime = 0;
-                }
-            }
-        }
-     }
-
-}
-;
-
-class MoveX {
-/* target: move an element with fireFox jitter correction in x direction by using js (smil svg animation jitters in FireFox <animate>)
- * description:
- *  fFox fix, move x jitter correction with minimal z rotation depends on speed, else rotation is visible
- *  rotation must be up down over time to hide it, use CountUpDown class instance, MUST test values in ff
- * usage:
- *  let tuxIceBergMoveX = new MoveX({
-                                    element:"tuxStageIceBerg",
-                                    start:0,end:1000,duration:3600,
-                                    rotation:0.02,moveBack:false
-                                    })
- * tuxIceBergMoveX.update();
-
- * update:
- * functionality ok, but now we see no jitter in FireFox using js; if we disable z rotation on pure x axis translation, lol
- *
- * to let the satellite fly around we make a translateY with min, max (can move all y)
- */
-    constructor(options){
-        if(options === undefined) options={};
-        if(options.moveBack === undefined) options.moveBack=false;
-        if(options.waitTime === undefined) options.waitTime=false;
-        if(options.scale === undefined) options.scale=1;
-        if(options.direction === undefined) options.direction=1;   // 1 to right, 0 to the left
-        if(options.modY === undefined) options.modY=0;             // y modifier to get a curve if needed, satellites
-        this.element = options.element;   // html or svg element id
-        this.start = options.start;       // start x
-        this.end = options.end;           // end x
-        this.duration = options.duration; // time frame in seconds must be converted in browser frames, 60/s
-        this.durationMax = 125;
-        this.durationMin = 85;
-        this.frames = this.duration * 60;
-        this.speed = (this.end-this.start)/this.frames;  // speed is negative if move from 20 to -10, (-10)-20=-30
-        this.moveBack = options.moveBack; // true or false
-        this.rotation = options.rotation; // z rotation deg from -deg to +deg
-        this.zUpDown = new CountUpDown(-(this.rotation), (this.rotation), this.speed); // CountUpDown(start,end,step)
-        this.currentX = this.start;
-        this.maxY = 50; // can go down a bit to vary
-        this.minY = 0;
-        this.currentY = getRandomIntInclusive(this.minY,this.maxY);
-        this.modY = options.modY;
-        this.waitTime = options.waitTime;
-        this.waitCount = 0;
-        this.logName = this.element;
-        this.scale = options.scale;
-        this.direction = options.direction;
-    }
-    reset(){
-    /* next interval */
-        if(this.moveBack === true) {
-        // move -x or +x
-            if(this.speed >= 0) {
-                this.speed = -this.speed;
-            } else {
-                this.speed = +this.speed;}
-        } else {
-        // jump to origin
-            this.currentX = this.start;
-            this.currentY = getRandomIntInclusive(this.minY,this.maxY);  // move element up down a bit
-            // this.duration = getRandomIntInclusive(this.durationMin,this.durationMax);
-            if(! this.waitTime === false) this.waitCount = 0;
-            return;
-        }
-    }
-    move(){
-        this.currentX += this.speed;
-        if(this.direction == 1) {
-            if(this.currentX >= this.end) this.reset();
-        } else {
-            if(this.currentX <= this.end) this.reset();
-        }
-        let box = document.getElementById(this.element);
-        box.style.transform  = "translateX(" + this.currentX + "px)";
-        this.currentY += this.modY;
-        box.style.transform += "translateY(" + this.currentY + "px)";
-        box.style.transform += "rotateZ(" + this.zUpDown + "deg)";
-        box.style.transform += "scale(" + this.scale + "," + this.scale + ")";
-    }
-    update(){
-        if(this.waitTime === false) {
-             this.move();
-             return;
-        }
-        if(this.waitCount <= this.waitTime) {
-            this.waitCount += 1;
-            return;
-        } else {
-            this.move();
-        }
-    }
-}
 
 let softVolumeGlobal = 0;
 function smoothOutVolume(reqFftSize, softMod) {
@@ -1950,32 +1122,6 @@ class ShadesOfColor{
 }
 ;
 
-/* assign event listener for touch and move to the children of the class */
-let touchMoveItemsList = [
-    '.divSvgBuoy',
-]
-function touchMoveItemsEventListenerSet () {
-/* touch for mobiles, one finger, test to move all stuff around, buoy is working
- * challenge here is that we have also nested container (div)
- * works so far with a single div with position absolute, but not with nested div animalOnIce; divSvgIceTux,divSvgTux
- */
-
-    for(let iNum=0;iNum<=touchMoveItemsList.length-1;iNum++) {
-            // get the class name
-        let divList = document.querySelectorAll(touchMoveItemsList[iNum]);
-        for(let index=0;index<=divList.length-1;index++) {
-            divList[index].addEventListener('touchmove', function (ev) {
-                    //grab the location of the touch, one finger 0
-                let touchLocation = ev.targetTouches[0];
-                    //assign new coordinates based on the touch
-                divList[index].style.left = touchLocation.clientX + 'px';
-                divList[index].style.top = touchLocation.clientY + 'px';
-            })
-        }
-    }
-}
-;
-
 /*                      -- Instances --
  */
 
@@ -2005,107 +1151,6 @@ let buoyPosLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#buo
                                            flashPatternList:  [0,0,0,1,1,1,0,0,0,1,0,1,0,1],// [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
                                            flashPatternMultiplier: 6
                                           });
-let b1BalloonBurnerRedPSwitch = new PowerSwitch({path: document.querySelectorAll(".b1BurnerFlameRed"),
-                                           flashPatternList:  [1,1,1,1,1,0,0,0,0,0,0],
-                                           flashPatternMultiplier: 17,
-                                          });
-let b1BalloonBurnerYPSwitch = new PowerSwitch({path: document.querySelectorAll(".b1BurnerFlameYellow"),
-                                           flashPatternList:  [0,0,0,1,1,1,1,1,1,0,0],
-                                           flashPatternMultiplier: 10,
-                                          });
-
-let b1ColorOnePowerSwitch = new PowerSwitch({path: document.querySelectorAll(".color_One"),  // if class no need to mention element
-                                              hue: getRandomIntInclusive(600,800),
-                                              step:1/getRandomIntInclusive(4,8),   // to get more or less reaction, divider
-                                              max:12,
-                                              maxCount:6,
-                                              slider:2,
-                                              dropShadow: "",
-                                              animatePower:false  // only color change, no on/off
-                                               });
-let b1ColorFourPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".color_Four"),  // if class no need to mention element
-                                              hue: getRandomIntInclusive(600,800),
-                                              step:1/getRandomIntInclusive(4,8),   // to get more or less reaction, divider
-                                              max:12,
-                                              maxCount:6,
-                                              slider:2,
-                                              dropShadow: "",
-                                              animatePower:false  // only color change, no on/off
-                                               });
-let b1BalloonAniTimer    = new AnimationTimer({animationWaitTime: 5000,scale:2,speed:5,logName:"b1Balloon",
-                              /* target: store an argument function (instance call) in another instance class variable
-                               *            and call it on demand
-                               *    one: wrap function in anonymous function in the caller,
-                               *    two: wrap argument in an anonymous function again, in the called
-                               *    store it in a variable (parameter, the implementation inside the subroutine, write to clarify)
-                               */
-                                            randomEventFunction:function(){
-                                                                    b1ColorOnePowerSwitch.applyOrgColor("b1Balloon");   // arg logName
-                                                                    b1ColorFourPowerSwitch.applyOrgColor("b1Balloon");
-                                                                            },
-                            });
-let b1BalloonMoveSinCos  = new MoveSinCos();  // calc y for given x and angle
-let b1BalloonUpDown      = new CountUpDown(-.2, 1, 1/Math.PI/10/10);  // rotation in the "wind" for firefox stutter browser
-
-let z1ZeppelinAniTimer   = new AnimationTimer({
-                                               animationWaitTime: 1800,
-                                               logName:"Zeppelin",
-                                               speed:12,
-                                               externalFunction:function(){
-                                                                     let baseColorHue = getRandomIntInclusive(1,360);
-                                                                     console.log("z1ZeppelinAniTimer color ",baseColorHue)
-                                                                     zeppelinShadesOfColor.update(baseColorHue);
-                                                                     /* write to dict timeout */
-                                                                     setTimeout(function () {changeColorPathToHsl(zeppelinShadesOfColor)}, 500);
-                                                                            },
-                                              });
-let z1ZeppelinMoveSinCos = new MoveSinCos();
-let z1ZeppelinUpDown     = new CountUpDown(-0.5, 1, 1/Math.PI/10/10);  // fix for firefox, stutter if no rotation
-let z1ZeppelinPosLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#z1PositionLights path"),  // if id mention path element,
-                                           flashPatternList:  [0,0,0,1,1,1,0,0,0,1,0,1],// [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
-                                           flashPatternMultiplier: 6
-                                          });
-let z1ZeppelinPowerSwitch = new PowerSwitch({path: document.querySelectorAll("#z1AnimatedFills path"),
-                                  hue: getRandomIntInclusive(600,800),
-                                  step:1/getRandomIntInclusive(4,8),   // to get more or less reaction, divider
-                                  max:12,
-                                  maxCount:6,
-                                  slider:2,                            // all elements power on/off interval against the follower
-                                  dropShadow: "",
-                                  animatePower:false
-                                  });
-
-let a1AirCraftAniTimer   = new AnimationTimer({
-                                               overrideDefault: true,  // not use all reset options to keep settings
-                                               angle: getRandomIntInclusive(240,360),
-                                               angleUp: true,
-                                               angleMod: 0.05,         // 0.01 default
-                                               scale: 0.51,            // min val of constructor
-                                               scaleMod: 1/150,
-                                               scaleMax: 5,
-                                               animationWaitTime: 2000, // 3min  10800
-                                               logName:"a1AirCraftParaChuteDropper",
-                                               speed:15,
-                                               externalFunction:function(){
-                                                                    let rnd = getRandomIntInclusive(240,360);
-                                                                    //console.log("a1AirCraft, update approach direction ",a1AirCraftAniTimer.lastAngle);
-                                                                    a1AirCraftAniTimer.lastAngle = rnd;
-                                                                            },
-                                              });
-let a1AirCraftTLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#a1AirCraftTailLightWhite"),  // if id mention path element, but only if multiple
-                                           flashPatternList:  [1,0,0,1,0,0,1,0,0,1,0,0,0,0],
-                                           flashPatternMultiplier: 10
-                                          });
-let a1AirCraftRLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#a1AirCraftRightWingLightRed"),  // if id mention path element,
-                                           flashPatternList:  [1,0,0,1,0,0,1,0,0,1,0,0,0,0],
-                                           flashPatternMultiplier: 10
-                                          });
-let a1AirCraftLLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#a1AirCraftLeftSideWingLightGreen"),  // if id mention path element,
-                                           flashPatternList:  [1,0,0,1,0,0,1,0,0,1,0,0,0,0],
-                                           flashPatternMultiplier: 10
-                                          });
-let a1AirCraftMoveSinCos  = new MoveSinCos();  // calc y for given x and angle
-let a1AirCraftUpDown      = new CountUpDown(-30, 0, 1/Math.PI/5);  // over wing rotation
 
 let genreShaker           = new Shaker(); // show that genre is clickable
 let genreSimpleCounter    = new SimpleCounter();  // teaser to show that genre text is clickable
@@ -2114,78 +1159,6 @@ let animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // an
 let animalTranslationUpDown = new CountUpDown(0, 40, 1/Math.PI/10);        // animal X translation in px and step
 let buoyZRotationUpDown     = new CountUpDown(-3.5, 4.5, 1/Math.PI/20);    // buoy and buoy as space station (for super cat later),
                                                                            // same as us obama spoke: we fly to moon in 10 years, before 15 years+
-let tuxCloudOneUpDow        = new CountUpDown(85, 100, 1/Math.PI/11);      // cloud changes white and grey a bit
-let tuxCloudTwoUpDow        = new CountUpDown(85, 100, 1/Math.PI/12);      // cloud changes white and grey a bit
-let tuxCloudThreeUpDow      = new CountUpDown(75, 95, 1/Math.PI/13);       // cloud changes white and grey a bit
-let tuxCloudFourUpDow       = new CountUpDown(80, 98, 1/Math.PI/10);       // cloud changes white and grey a bit
-let tuxEllipseColorUpDown   = new CountUpDown(70, 100, 1/Math.PI);         // Tux ellipse blue 240 to white , here lightness values, surface of Floe
-let tuxIceBerg_1_LayerUpDown= new CountUpDown(85, 100, 1/Math.PI/10);      // blue 240 to white , here lightness values
-let tuxIceBerg_2_LayerUpDown= new CountUpDown(60, 80, 1/Math.PI/10);       // hsl 180,50%,60-80% hue sat light
-let tuxIceBerg_3_LayerUpDown= new CountUpDown(45, 65, 1/Math.PI/10);       // 190,35%,45-65%
-let tuxIceBerg_4_LayerUpDown= new CountUpDown(40, 60, 1/Math.PI/10);       // 200,35%,40-60%
-/* fFox fix */
-let tuxStageAllFFUpDown = new CountUpDown(-0.5, 1, 1/Math.PI/10/10);  // all moving parts must rotate or jitter, worst browser this time
-
-let tuxIceBergMoveX = new MoveX({
-                                  element:"tuxStageIceBerg",
-                                  start:0,
-                                  end:1000,
-                                  duration:3600,
-                                  rotation:1,
-                                 })
-let tuxCloudOneMoveX = new MoveX({
-                                  element:"gTuxCloudOne",
-                                  start:0,
-                                  end:1000,
-                                  duration:100,
-                                  rotation:1,
-                                 })
-let tuxCloudTwoMoveX = new MoveX({
-                                  element:"gTuxCloudTwo",
-                                  start:0,
-                                  end:1000,
-                                  duration:105,
-                                  rotation:1,
-                                 })
-
-let tuxCloudThreeMoveX = new MoveX({
-                                  element:"gTuxCloudThree",
-                                  start:0,
-                                  end:1000,
-                                  duration:115,
-                                  rotation:1,
-                                 })
-let tuxCloudFourMoveX = new MoveX({
-                                  element:"gTuxCloudFour",
-                                  start:0,end:1000,
-                                  duration:125,
-                                  rotation:1,
-                                 })
-let tuxCloudFiveMoveX = new MoveX({
-                                  element:"gTuxCloudFive",
-                                  start:0,
-                                  end:1000,
-                                  duration:120,
-                                  rotation:1,
-                                 })
-let tuxGpsSatMoveX = new MoveX({
-                                  element:"gGpsSat",
-                                  start:700,end:-500,
-                                  duration:80,
-                                  rotation:0.02,
-                                  modY:-0.05,  // modY -
-                                  waitTime:7200,
-                                  scale:0.3,direction:0,
-                                 })
-let tuxSatelliteMoveX = new MoveX({
-                                  element:"gSatellite",
-                                  start:0,end:500,
-                                  duration:50,
-                                  rotation:0.02,
-                                  modY:+0.1,   // modY +
-                                  waitTime:7000,
-                                  scale:0.6,
-                                 })
 
 let zeppelinShadesOfColor = new ShadesOfColor({ //pathCollection:zeppelinColorOrder, // pathCollection:document.querySelectorAll("#gZ1BodyHullAndRear path"),
                                                 hueColor:112,
@@ -2199,86 +1172,3 @@ zeppelinShadesOfColor.update(getRandomIntInclusive(300,360), zeppelinColorOrder)
  *   this.pathToHueDict {index of svg group element: hsl(119,50%,67%), indexN: hsl(119,50%,69%),... }
  */
 changeColorPathToHsl(zeppelinShadesOfColor);
-
-/*  let's make a parachute drop
- * target: animate an unlimited number of divs that belong to one theme create random actions and colors inside the theme;
- * each parachute gets an id for an animated div
- */
-let paraAnimTimerDict = {};  // angle and time of appearance
-let paraUpDownDict = {};     // angle for partial rotation of div
-let paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
-let paraUnitDept = "AirDrop";  // if more drop instances, have log names
-let paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
-let airDropDelDict = {};  //  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
-let paraMemberCount = getRandomIntInclusive(4,6);
-    /* paraAnimTimerDict */
-    for(let index = 1;index<=paraMemberCount;index++){
-        paraAnimTimerDict[paraUnitDept + index] =
-            new AnimationTimer({animationWaitTime: 999999,   // changed! now airplane sets run status true for paraAnimTimerDict
-                                scale:0.8,scaleMax:1.3,speed:10,angleDown:false,logName:"parachuteDrop_" + index});
-    }
-
-    /* paraUpDownDict for partial Z rotation */
-    for(let index = 1;index<=paraMemberCount;index++){
-        paraUpDownDict[paraUnitDept + index] =
-            new CountUpDown(-(getRandomIntInclusive(5,10)), (getRandomIntInclusive(2,10)), 1/Math.PI/10);
-    }
-    /* paraMoveSinCosDict random direction */
-    for(let index = 1;index<=paraMemberCount;index++){
-        paraMoveSinCosDict[paraUnitDept + index] = new MoveSinCos();
-    }
-
-    /* create a div for each parachute, divRadioFrontPlate parent div with position relative attribute to assign absolute for children
-     */
-     let htmlCollection = document.getElementsByClassName(paraParentDiv);  // collection of objects not array, can not work with original
-     let paraParentDivIds = [...htmlCollection];                           // clone, all div ids of class collection in an array
-
-     for(let index=0;index<=paraParentDivIds.length -1;index++){       // for every radio
-        let radioId;
-        let divList = new Array();
-        for(let memberNum=1;memberNum<=paraMemberCount;memberNum++){   // create num of divs
-            let div = document.createElement('div');
-            /* pcDrop10_divSvgZ1_10; z1DivNames[index].id is also underscore name_10, so id can id.split[2]*/
-            div.id = paraUnitDept + memberNum + "_" + paraParentDivIds[index].id;   // paraParentDivIds[index].id is text name of object
-            paraParentDivIds[index].appendChild(div);                           // paraParentDivIds[index]    is (real) object html, element
-            divList.push(div.id);
-            radioId = div.id.split("_")[2];
-            /* An example how to dynamically assemble an svg with external <use> elements to color a particular <g> group,
-             *  divided the svg in <g> groups, each group is a <use> in the new <svg> <use>, <use> ... </svg>
-             *      this allows to assign a fill attribute to individual groups (<use>)
-             *                      NO HARDCODED FILL IN THE PATH tag OR no color ...
-             * paras keep their color and add-on (ribbon, star), also if switching back to a radio, one shot action on startup
-             *  can be changed in para function for drop animation frame call
-             */
-
-            let rndColor = getRandomIntInclusive(0,htmlColNames.length -1);
-            let rndEvtNum = getRandomIntInclusive(1,5);  // can show some extra animations seldom
-            let starDrop   = "<use href=#gParaDropStar visibility='collapse'></use>";
-            let ribbonDrop = "<use href=#gRibbon visibility='collapse'></use>";
-            if(rndEvtNum === 1 || rndEvtNum === 2) ribbonDrop = "<use href=#gParaDropStar visibility='visible'></use>";
-            if(rndEvtNum === 3) ribbonDrop = "<use href=#gRibbon visibility='visible'></use>";
-            div.innerHTML = "<svg id=" + "svg_" + paraUnitDept + memberNum + "_" + paraParentDivIds[index].id + ">"
-                                + "<use href=#gParaDropPrimerGroup></use>"
-                                + "<use href=#gParachuteInnerHelmet></use>"
-                                + "<use href=#gParachuteHelmet fill=" + htmlColNames[rndColor] + "></use>"
-                                + "<use href=#gParachuteDots></use>"
-                                + "<use href=#gParachuteStrings></use>"
-                                + starDrop
-                                + ribbonDrop
-                            + "</svg>"
-            div.style.border = "none";//"5px solid red";
-            div.style.position = "absolute";
-            div.style.zIndex = "3";
-            div.style.display = "none";
-            div.style.width = "100%";
-            div.style.top = "0em";
-            div.style.left = "0em";
-            div.style.maxWidth = "1em";
-            div.style.maxHeight = "1em";
-            div.style.transform = "";    // break transform inheritance scale from aircraft
-        }
-        airDropDelDict[radioId] = divList;  // help to delete (set display none), function in index.js, deleteInfoExec()
-     }
-console.log("parachute dicts ",paraAnimTimerDict, paraUpDownDict, paraMoveSinCosDict);
-console.log("parachute html collection ",htmlCollection, airDropDelDict);
-
