@@ -163,13 +163,13 @@ $(document).ready(function () {
         cl(myAudioClone[i])
         });
       }
-      let myGainClone = document.getElementsByClassName("gainClone");
+    let myGainClone = document.getElementsByClassName("gainClone");
       for (let i = 0; i < myGainClone.length; i++) {
         myGainClone[i].addEventListener("input", (e) => {
         gainNode.gain.value = myGainClone[i].value;
         });
       }
-
+    dragElement(divCanvasMaster);
     toggleHideConsole();
 
     glob = new Glob()
@@ -651,7 +651,7 @@ function cookie_del_show_visuals() {
 }
 ;
 
-function cookie_toggle_show_visuals() {
+function cookie_toggle_show_visuals(cloneCanvas, cloneDiv) {
 /* Switch the visibility of element 'canvasMaster' (single) itself and
    in the secondary menu
 
@@ -670,7 +670,10 @@ function cookie_toggle_show_visuals() {
    todo
    search "document.getElementById('canvasMaster');" and replace
         let canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); //
-        let divCanvasMaster = document.getElementById(divCanvasMasterRedirect['master']); //
+        let divCanvasMaster = document.getElementById(divCanvasMasterRedirect['master']); // cookie_start_set_text_show_visuals
+    in fun:
+    cookie_start_set_text_show_visuals()  (cloneCanvas, cloneDiv)
+    cookie_toggle_show_visuals()
 */
     let req;
     req = $.ajax({
@@ -679,10 +682,22 @@ function cookie_toggle_show_visuals() {
         cache: false
     });
 
+    let analyserBadge = document.getElementById('analyserBadge');
+    // global vars
+    canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); // todo check runs
+    divCanvasMaster = document.getElementById('divCanvasMaster'); // document.getElementById(divCanvasMasterRedirect['master']); //
+
+    if ( !(cloneCanvas === undefined) ) {
+      canvasMaster = cloneCanvas;
+      divCanvasMaster = cloneDiv;
+      canvasMasterCtx = canvasMaster.getContext("2d");
+      canvasMasterCtx.font = "24px Arial";
+      canvasMasterCtx.fillText("under construction", 10, 50);
+    }
+
+
     req.done(function (data) {
-        let analyserBadge = document.getElementById('analyserBadge');
-        let canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); //
-        let divCanvasMaster = document.getElementById('divCanvasMaster'); // document.getElementById(divCanvasMasterRedirect['master']); //
+
         let show_visuals = data.str_visuals;
         if (show_visuals !== 'show_visuals') {
             analyserBadge.textContent = "hide";
@@ -701,11 +716,16 @@ function cookie_toggle_show_visuals() {
             divHiddenButtons.style.display = "none";
             cookie_del_show_visuals();
         }
+
+        setTimeout(function () {
+
+        }, 500);
+
     });
 }
 ;
 
-function cookie_start_set_text_show_visuals() {
+function cookie_start_set_text_show_visuals(cloneCanvas, cloneDiv) {
     let req;
     req = $.ajax({
         type: 'GET',
@@ -714,11 +734,13 @@ function cookie_start_set_text_show_visuals() {
 
     });
 
+    let analyserBadge = document.getElementById('analyserBadge');
+    let divCanvasMaster = document.getElementById('divCanvasMaster');
+    let canvasMaster = document.getElementById('canvasMaster');
+
     req.done(function (data) {
-        let analyserBadge = document.getElementById('analyserBadge');
-        let divCanvasMaster = document.getElementById('divCanvasMaster');
-        let canvasMaster = document.getElementById('canvasMaster');
         let show_visuals = data.str_visuals;
+
         if (show_visuals === 'show_visuals') {
             analyserBadge.textContent = "hide";
             canvasMaster.style.display = "inline-block";

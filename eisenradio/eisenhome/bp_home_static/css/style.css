@@ -1170,6 +1170,7 @@ div::-webkit-scrollbar {
     height: 14em;
     background-color:red;
     display:none;
+    z-index:3000;
 }
 
 #divCanvasMasterWrapper {

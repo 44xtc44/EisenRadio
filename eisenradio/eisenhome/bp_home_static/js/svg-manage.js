@@ -1135,10 +1135,10 @@ function initManager() {
 
   window.starOneInAMillion = new PowerSwitch({path: document.querySelectorAll("#gTuxStageStars path"),
                                           flashColor:"#fff",             // can also be set before updateOneInAMillion() to create randomness
-                                          maxSimultaneousFlash: 3,       // max elements simultaneous animated
-                                          flashPatternList: [0,1,0,1],   // each element multiplied by flashPatternMultiplier
+                                          maxSimultaneousFlash: 16,       // max elements simultaneous animated
+                                          flashPatternList: [0,1,0,1,0,0,1,1],   // each element multiplied by flashPatternMultiplier
                                                                          // is overall animation time 4 x 5 = 20 frames, can be [1] on whole time
-                                          flashPatternMultiplier: 20,
+                                          flashPatternMultiplier: 3,
                                           oneInAMillionRun:true,         // this.oneInAMillionList must be created
                                       });
   window.tuxIceFloeFrontPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".tuxIceFloeFront"),  // if class no need to mention "path" or other element

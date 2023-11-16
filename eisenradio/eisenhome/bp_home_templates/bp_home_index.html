@@ -206,6 +206,11 @@
 <!-----                                       --- Radio ---                                         --->
     <div class="divRadioContainer" id="divRadioContainer_{{post['id']}}">
         <div>
+            <div class="divCloneCanvasMaster draggable-div" id="divCloneCanvasMaster_{{post['id']}}">
+                <canvas class="cloneCanvasMaster" id="cloneCanvasMaster_{{post['id']}}"></canvas>
+            </div>
+        </div>
+        <div>
             <div class="divRadioFrontPlate" id="divRadioFrontPlate_{{post['id']}}">
                 <div class="divMainAnimationContainer" id="divMainAnimationContainer_{{post['id']}}">
 
@@ -293,7 +298,7 @@
                         </span>
                         <span id="spanSpectrumIconConsole_{{post['id']}}"
                               class="spanAudioClone"
-                              onclick="cookie_toggle_show_visuals()"
+                              onclick="cookie_toggle_show_visuals(cloneCanvasMaster_{{post['id']}}, divCloneCanvasMaster_{{post['id']}})"
                               data-toggle="tooltip" data-html="false"
                               title="Canvas of bottom console is up - will be fixed. Attached canvas?">&#9889;
                         </span>
@@ -476,9 +481,6 @@
             </div>
         </div>
 
-        <div class="divCloneCanvasMaster" id="divCloneCanvasMaster_{{post['id']}}">
-            <canvas class="cloneCanvasMaster" id="cloneCanvasMaster_{{post['id']}}"></canvas>
-        </div>
 
         <div class="divCustomText" id="divCustomText_{{post['id']}}">
             <div class="radioStationComment"
