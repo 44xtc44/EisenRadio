@@ -69,8 +69,12 @@ const divStartPageFadeIn = document.getElementById("divStartPageFadeIn");
 const pageCover = document.getElementById("pageCover");
 const pageCoverCanvas = document.getElementById("pageCoverCanvas");
 const pageCoverCanvasCtx = pageCoverCanvas.getContext('2d');
-const canvasMaster = document.getElementById("canvasMaster");
-const canvasMasterCtx = canvasMaster.getContext('2d');
+
+window.canvasMaster = document.getElementById("canvasMaster");  // fun cookie_toggle_show_visuals()
+window.canvasMasterCtx = canvasMaster.getContext('2d');
+window.canvasMasterRedirect = {"master":window.canvasMaster, "cloneOne": "fooCanvas"};  // can use 0, 1, 2 ... to redirect master to 'clones'
+window.divCanvasMasterRedirect = {"master": "divCanvasMaster"};  // not overwrite here anything
+
 const currentRadioName = document.getElementById('currentRadioName');
 currentRadioName.innerText = "Eisenradio"
 const fileUpload = document.getElementById("fileUpload");
@@ -78,6 +82,7 @@ const playBtn = document.getElementById("playBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const audio = document.getElementById("audioWithControls");
 audio.volume = 0.25;
+const audioClone = document.getElementById('audioClone');
 const audioVolumeController = document.getElementById("audioVolumeController");
 const audioGainController = document.getElementById("audioGainController");
 
@@ -98,7 +103,9 @@ var htmlSettingsDictGlobal = {};  // {"animationOfEisenRadio": True,"styleOfEise
 var eisenStylesDict = {};         // apply color and shadows to the radio
 var streamerDictGlobal = {};            // stores all currently active streaming connections or rec style
 var animationsAllowedDict = {};
-var consoleUpDown = 1;           // up 1 down 0
+window.consoleUpDown = 1;           // up 1 down 0 glob var over all modules, seems the next todo refactoring
+window.consoleCloneOnOff = 0;       // bottom console is not usable in mobiles, click a screw head to show up inline div
+window.activeListenId  = "noId";    // animation, only call functions if listen is selected
 
 var paraAnimTimerDict = {};  // angle and time of appearance
 var paraUpDownDict = {};     // angle for partial horizontal rotation of div
@@ -125,6 +132,7 @@ $(document).ready(function () {
     blacklistInfoOff();                 // disable sticky note info if blacklist feature is enabled by user
     eisenRadioCreateStyleInstances();   // each radio get an instance to make styles more easy if record is running; before, after, sim. to listen stuff
     degradeAnimationsWriteDict();       // dict of currently allowed animations
+    // degradeMobile();                   // todo Workon Android degrade
     touchMoveItemsEventListenerSet();   // make div touchable for mobile or touchscreen, svgAnimation.js
 
     setInterval(skipRecordShowMessageInABottle, 15006);
@@ -147,11 +155,43 @@ $(document).ready(function () {
     for (var i = 0; i < divCustomText.length; i++) {
         divCustomText[i].addEventListener('dblclick', maxHeightPicCommentPreToggle);
     }
+
+    let myAudioClone = document.getElementsByClassName("audioClone");
+      for (let i = 0; i < myAudioClone.length; i++) {
+        myAudioClone[i].addEventListener("input", (e) => {
+        audio.volume = myAudioClone[i].value / 100;
+        cl(myAudioClone[i])
+        });
+      }
+      let myGainClone = document.getElementsByClassName("gainClone");
+      for (let i = 0; i < myGainClone.length; i++) {
+        myGainClone[i].addEventListener("input", (e) => {
+        gainNode.gain.value = myGainClone[i].value;
+        });
+      }
+
     toggleHideConsole();
+
+    glob = new Glob()
+    glob.updateScreen();
+    // SVG - show window. global. <- is init also without the following call at start in the fun
+    initManager();
 
 })
 ;
 
+function toggleHideClonedConsole(divId) {
+  let console = document.getElementById("targetClonedConsole_" + divId);
+
+  if(consoleCloneOnOff === 1){
+      console.style.display = "inline-block";
+      consoleCloneOnOff = 0;
+  } else {
+    console.style.display = "none";
+    consoleCloneOnOff = 1;
+  }
+}
+;
 function eisenRadioCreateStyleInstances(){
 /* get all radio table ids and create an instance for each radio
  * class EisenRadioStyles in radio_styles.js
@@ -177,100 +217,55 @@ function eisenRadioCreateStyleInstances(){
 
 }
 
-function degradeAnimationsSet(level) {
-/* HTML call: radio buttons for CPU utilisation high or low, write on/off to database
- * server set level value (high, low) in db as 1,0
- * call toggleDegradeAnimation() in radio_styles.js to switch divs and <g> on/off
- */
-    loaderAnimation(enabled = true);
-    if(level === "high") degradeAnimationsDict("high");
-    if(level === "low")  degradeAnimationsDict("low");
-    let req = $.ajax({
-        type: 'POST',
-        url: "/degrade_animation_level_set",
-        cache: false,
-        data: level
-    });
+class Glob{
+  /* *
+   * global variables container and base functions resort
+   */
+  constructor() {
+    this.playingRadio = false; // (browser audio element) <- (http server method loop) <- (py instance.audio_out queue)
+    this.waitShutdownIntervalId = 0;  // store id of setInterval to disable setInterval(ajax_wait_shutdown, 2500);
+    this.animationRuns = 0;
+    this.windowWidth = window.innerWidth;
+  }
+  numberRange (start, end) {  // simulate range() of Python
+    return new Array(end - start).fill().map((d, i) => i + start);
+  }
+  // return a random integer
+  getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  updateScreen() {
+    // called by checkWindowWidth(); rearrange for mobiles small screens
+    let pixies = document.getElementsByClassName("pixies");
+    let divSvgBuoy = document.getElementsByClassName("divSvgBuoy");
 
-    req.done(function (data) {
-        loaderAnimation(enabled = false);
-        /* timeOutFunction to call degradeAnimationsWriteDict function so the animationsAllowedDict is written new
-         * can not call simple function from req.done
-         */
-        setTimeout(function () {
-            configEisenradioHtmlSetting(); // get the value for cpu high/low 1/0, write new "htmlSettingsDictGlobal"
-        }, 50);
-        setTimeout(function () {
-            degradeAnimationsWriteDict();  // write new "animationsAllowedDict", which div and <g> should be shown or hidden
-            }, 60);
-        setTimeout(function () {
-            toggleDegradeAnimation();      // read "animationsAllowedDict", do the switch of div and <g>
-            }, 1000);
-        setTimeout(function () {
-            toggleWriteToDiskAnimation();  // show or hide the golden disks image for rec
-            }, 1001);
-    });
-}
-;
-function degradeAnimationsWriteDict() {
-   /* must be called on page load to ask server which option to set for CPU animation mode
-    * ---> writes animationLevelDict new <----
-    */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/degrade_animation_level_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        let animationLevel = data.degradeAnimationsWriteDict;
-        animationsAllowedDict = {};// del all key/val pairs
-        if(animationLevel === "high"){
-            /* write animationsAllowedDict true for all  */
-            animationsAllowedDict = degradeAnimationsDict("high");
-        } else if(animationLevel === "low"){
-            animationsAllowedDict = degradeAnimationsDict("low");
-        }
-        console.log("animationsAllowedDict. ",animationsAllowedDict)
-    });
-}
-;
-function degradeAnimationsDict(level){
-/* return a dict with animation and status true or false dependent on CPU level
- * can not use multiple level, server db function has only on/off
- */
-    let aniDict = {};
-    let b1Balloon     = "gB1";
-    let blurBuoy      = "gBlurBuoy";
-    let blurScrews    = "gScrewHeadPhillipsBlur";
-    let clouds        = "gTuxClouds";
-    let speaker       = "gSvgSpeakerFlat" ;
-    let z1Zeppelin    = "gZ1";
-
-    allAnimationsList = [
-    b1Balloon ,
-    blurBuoy  ,
-    blurScrews,
-    clouds    ,
-    speaker   ,
-    z1Zeppelin,
-    ]
-    for(let index=0;index<=allAnimationsList.length -1;index++){
-        if(level === "high") {
-            aniDict[allAnimationsList[index]] = true;
-        } else {
-            aniDict[allAnimationsList[index]] = false;
-        }
+    if(this.windowWidth <= 600) {
+      // change the innerHTML of each selected element
+      for (let i = 0; i < pixies.length; i++) {
+        pixies[i].style.display = "none";
+        divSvgBuoy[i].style.zIndex = "50";
+      }
+    }else {
+      // change the innerHTML of each selected element
+      for (let i = 0; i < pixies.length; i++) {
+        pixies[i].style.maxWidth = "120px";
+        pixies[i].style.maxHeight = "120px";
+        pixies[i].style.display = "inline-block";
+        divSvgBuoy[i].style.zIndex = "10";
+      }
     }
-    return aniDict;
+  }
 }
 ;
-function rootVariableCompute(propertyValue){
-        let root = document.querySelector(':root');
-        let rootStyle = getComputedStyle(root);
-        let varPropVal = rootStyle.getPropertyValue(propertyValue);
-        return varPropVal;
+function checkWindowWidth() {
+  glob.windowWidth = window.innerWidth;
+  glob.updateScreen();
 }
 ;
+window.addEventListener('resize', checkWindowWidth);
+
 function setEventListenerPlay () {
 /* play button on console */
     audio.addEventListener("play", function () {
@@ -319,18 +314,19 @@ function toggleHideConsole() {
 /* show and hide console, bug, console must be set to inline-block on startup in on load,
  * fixed with var
  */
-    let consoleShow = document.getElementById("console");
-    let consoleHidden = document.getElementById("consoleHidden");
 
-    if(consoleUpDown === 0){
-        consoleShow.style.display = "inline-block";
-        consoleHidden.style.display = "none";
-        consoleUpDown = 1;
-    } else {
-      consoleShow.style.display = "none";
-      consoleHidden.style.display = "inline-block";
-      consoleUpDown = 0;
-    }
+  let consoleShow = document.getElementById("console");
+  let consoleHidden = document.getElementById("consoleHidden");
+
+  if(consoleUpDown === 0){
+      consoleShow.style.display = "inline-block";
+      consoleHidden.style.display = "none";
+      consoleUpDown = 1;
+  } else {
+    consoleShow.style.display = "none";
+    consoleHidden.style.display = "inline-block";
+    consoleUpDown = 0;
+  }
 }
 ;
 
@@ -656,6 +652,26 @@ function cookie_del_show_visuals() {
 ;
 
 function cookie_toggle_show_visuals() {
+/* Switch the visibility of element 'canvasMaster' (single) itself and
+   in the secondary menu
+
+   Each radio got an individual canvas for mobiles.
+   We want to switch 'canvasMaster' to individual "cloneCanvasMaster_{{post['id']}}"
+   Vars set to 'window' type.
+   We change the content of the var if we call from
+   "page bottom console" or "individual radio screw head triggered console"
+
+   default canvasMasterRedirect is a dict. canvasMasterRedirect[master] is 'canvasMaster'
+   let canvasMaster = document.getElementById(canvasMasterRedirect[0]);
+   We set an individual canvas somewhere to
+   canvasMasterRedirect['master'] = "cloneCanvasMaster_8" and
+   let canvasMaster = canvasMasterRedirect['master'];
+
+   todo
+   search "document.getElementById('canvasMaster');" and replace
+        let canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); //
+        let divCanvasMaster = document.getElementById(divCanvasMasterRedirect['master']); //
+*/
     let req;
     req = $.ajax({
         type: 'GET',
@@ -665,8 +681,8 @@ function cookie_toggle_show_visuals() {
 
     req.done(function (data) {
         let analyserBadge = document.getElementById('analyserBadge');
-        let canvasMaster = document.getElementById('canvasMaster');
-        let divCanvasMaster = document.getElementById('divCanvasMaster');
+        let canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); //
+        let divCanvasMaster = document.getElementById('divCanvasMaster'); // document.getElementById(divCanvasMasterRedirect['master']); //
         let show_visuals = data.str_visuals;
         if (show_visuals !== 'show_visuals') {
             analyserBadge.textContent = "hide";
@@ -832,6 +848,8 @@ function setColor(val) {
         setTimeout(function () {
             if(!(activeListenId == "noId")){
                 eisenStylesDict["eisenRadio_" + activeListenId].listenDarkModeStyle();
+                let darkBody = getBodyColor();
+                colorizeDefaultSvgStageElements(darkBody);
             }
         }, 500);
     });
@@ -869,8 +887,8 @@ function headerInfo() {
                 document.getElementById('request_suffix_' + station_id).innerText = "" + suffix;
                 document.getElementById('request_icy_br_' + station_id).innerText = "" + bit_rate + " kB/s";
                 document.getElementById('icy_name_' + station_id).innerText = "" + station_name;
-                let modGenre = unifyGenre(genre);
-                document.getElementById('request_icy_genre_' + station_id).innerHTML = modGenre;
+                let modGenre = unifyGenre(genre);  // white space replace \n
+                document.getElementById('request_icy_genre_' + station_id).innerHTML = modGenre.replace(/ /g, "\n");
                 document.getElementById('request_icy_url_' + station_id).innerText = "" + icy_url;
                 // need value for url click
                 document.getElementById('request_icy_url_' + station_id).value = "" + icy_url;
@@ -881,8 +899,14 @@ function headerInfo() {
 ;
 
 function unifyGenre(searchString){
-    let str = searchString.replace(/,/g, ' ').replace(/-/g, ' ')
-    return str;
+    let str = searchString.replace(/,/g, ' ').replace(/-/g, ' ');
+    let splitList3 = str.split(' ');
+    let outString = '';
+    for (let index = 0; index <= splitList3.length - 1; index++) {
+      outString += splitList3[index] + ' ';
+      if(index > 2) break;
+    }
+    return outString;
 }
 ;
 
@@ -949,7 +973,7 @@ function deleteInfoExec(station_id, darkBody, logName){
             radioHeadLine.style.color = " #4195fc";
         }
 
-       pix.style.maxHeight = "5em";
+       pix.style.maxHeight = "2em";
        pixies.style.float = "";
        divHeaderShadow.style.display = "none";
        picComment.style.display = "none";

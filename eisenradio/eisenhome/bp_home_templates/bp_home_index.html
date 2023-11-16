@@ -36,7 +36,7 @@
 <!-----                                       --- Secondary Action Buttons ---                               --->
     <div id="blacklistPostIt">
     <svg id="svgBlacklistPostIt" version="1.1" viewBox="0 0 305 305" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <use href="#blacklist_postit" transform="scale(2.5,2.5)"> </use>
+        <use href="#blacklist_postit" transform="scale(1.7,1.7)"> </use>
     </svg>
 
     </div>
@@ -60,7 +60,7 @@
         >
         </div>
     </div>
-
+    <h2> Secondary Menu </h2>
     <div id="bar_wrap_secondary_action">
         <div class="wrap_secondary_action">
             <div class="box_secondary_action" onclick="changeColorScheme();">
@@ -207,132 +207,171 @@
     <div class="divRadioContainer" id="divRadioContainer_{{post['id']}}">
         <div>
             <div class="divRadioFrontPlate" id="divRadioFrontPlate_{{post['id']}}">
-            <div class="divMainAnimationContainer" id="divMainAnimationContainer_{{post['id']}}">
+                <div class="divMainAnimationContainer" id="divMainAnimationContainer_{{post['id']}}">
 
-                <div class="animatedBackGround" id="animatedBackGround_{{post['id']}}">
-                        <svg xmlns='http://www.w3.org/2000/svg' width='1000px' height='1000px' >
-                            <use href="#gTuxStage" ></use>
-                            <use href="#gStarPack" ></use>
-                            <use href="#gGpsSat" ></use>
-                            <use href="#gSatellite" ></use>
-                            <use href="#tuxStageOcean" ></use>
-                            <use href="#tuxStageIceBerg" ></use>
-                            <use href="#gTuxClouds" ></use>
-                        </svg>
-                </div>
-                <div class="divSvgBuoy" id="divSvgBuoy_{{post['id']}}"
-                     onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">
-                    <svg>
-                        <use href="#gBuoy" transform="scale(1.1,1.1)"></use>
-                        <use href="#gBlurBuoy" transform="scale(1.1,1.1)" ></use>
-                        <use href="#buoyEDIT" transform="scale(1.1,1.1)" fill="#ffffff"></use>
-                    </svg>
-                </div>
-                <div class="divSvgScrewHeadTopRight" id="divSvgScrewHeadTopRight_{{post['id']}}">
-                    <svg>
-                        <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(120,50,50)"></use>
-                        <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
-                        <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(120,50,50)"></use>
-
-                    </svg>
-                </div>
-                <div class="divSvgGlasBreakTopRight" id="divSvgGlasBreakTopRight_{{post['id']}}">
+                    <div class="animatedBackGround" id="animatedBackGround_{{post['id']}}">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='1000px' height='1000px' >
+                                <use href="#gTuxStage" ></use>
+                                <use href="#gStarPack" ></use>
+                                <use href="#gGpsSat" ></use>
+                                <use href="#gSatellite" ></use>
+                                <use href="#tuxStageOcean" ></use>
+                                <use href="#tuxStageIceBerg" ></use>
+                                <use href="#gTuxClouds" ></use>
+                            </svg>
+                    </div>
+                    <div class="divSvgBuoy" id="divSvgBuoy_{{post['id']}}"
+                         onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">
                         <svg>
-                            <use href="#gGlasBreak" transform="scale(1.2,1.2)"></use>
+                            <use href="#gBuoy" transform="scale(1.1,1.1)"></use>
+                            <use href="#gBlurBuoy" transform="scale(1.1,1.1)" ></use>
+                            <use href="#buoyEDIT" transform="scale(1.1,1.1)" fill="#ffffff"></use>
                         </svg>
                     </div>
-                <div class="divSvgScrewHeadTopLeft" id="divSvgScrewHeadTopLeft_{{post['id']}}">
-                    <svg>
-                        <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(140,50,50)"></use>
-                        <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
-                        <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(140,50,50)"></use>
-                    </svg>
-                </div>
-                <div class="divSvgScrewHeadBottomLeft" id="divSvgScrewHeadBottomLeft_{{post['id']}}">
-                    <svg>
-                        <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(172,50,50)"></use>
-                        <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
-                        <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(172,50,50)"></use>
-                    </svg>
-                </div>
-                <div class="divSvgScrewHeadBottomRight" id="divSvgScrewHeadBottomRight_{{post['id']}}">
-                    <svg>
-                        <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(44,50,50)"></use>
-                        <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                 "></use>
-                        <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(44,50,50)"></use>
-                    </svg>
-                </div>
-                <div class="divSvgFlatSpeaker" id="divSvgFlatSpeaker_{{post['id']}}">
-                    <svg class="svgFlatSpeaker" id="svgFlatSpeaker_{{post['id']}}">
-                        <use href="#gSvgSpeakerFlat" transform="rotate(30,50,50)"></use>
-                    </svg>
-                </div>
-                <div class="divSvgFlatSpeakerTopRight" id="divSvgFlatSpeakerTopRight_{{post['id']}}">
-                <svg>
-                    <use href="#gSvgSpeakerFlat" transform="scale(0.6,0.6) rotate(170,50,50)"></use>
-                </svg>
-            </div>
-                <div class="divCenterMovingSvgs" id="divCenterMovingSvgs_{{post['id']}}">
-                    <div class="divAnimationContainer" id="divAnimationContainer_{{post['id']}}">
+                    <div class="divSvgScrewHeadTopRight screwHead" id="divSvgScrewHeadTopRight_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});">
+                        <svg>
+                            <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(120,50,50)"></use>
+                            <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
+                            <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(120,50,50)"></use>
 
-                        <div class="divSvgZ1" id="divSvgZ1_{{post['id']}}">
-                            <svg id="svgZ1_{{post['id']}}">
-                                    <use href="#gZ1"></use>
-                            </svg>
-
-                        </div>
-
-                        <div class="divSvgTux" id="divSvgTux_{{post['id']}}">
-                            <svg id="svgTux_{{post['id']}}">
-                                <use href="#gTux"></use>
-                            </svg>
-                        </div>
-
-                        <div class="divSvgIceTux" id="divSvgIceTux_{{post['id']}}">
+                        </svg>
+                    </div>
+                    <div class="divSvgGlasBreakTopRight screwHead" id="divSvgGlasBreakTopRight_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});"
+                         data-toggle="tooltip" data-html="false"
+                         title="Show a console for audio and canvas.">
                             <svg>
-                                <use href="#gTuxIce" transform="scale(1.4,1)"></use>
+                                <use href="#gGlasBreak" transform="scale(1.2,1.2)"></use>
                             </svg>
                         </div>
+                    <div class="divSvgScrewHeadTopLeft screwHead" id="divSvgScrewHeadTopLeft_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});"
+                         data-toggle="tooltip" data-html="false"
+                         title="Show a console for audio and canvas.">
+                        <svg>
+                            <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(140,50,50)"></use>
+                            <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
+                            <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(140,50,50)"></use>
+                        </svg>
+                    </div>
+                    <div class="divSvgScrewHeadBottomLeft screwHead" id="divSvgScrewHeadBottomLeft_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});">
+                        <svg>
+                            <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(172,50,50)"></use>
+                            <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                  "></use>
+                            <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(172,50,50)"></use>
+                        </svg>
+                    </div>
+                    <div class="divSvgScrewHeadBottomRight screwHead" id="divSvgScrewHeadBottomRight_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});">
+                        <svg>
+                            <use href="#gScrewHeadPhillipsBase" transform="scale(0.5,0.5) rotate(44,50,50)"></use>
+                            <use href="#gScrewHeadPhillipsBlur" transform="scale(0.5,0.5)                 "></use>
+                            <use href="#gScrewHeadPhillipsSlit" transform="scale(0.5,0.5) rotate(44,50,50)"></use>
+                        </svg>
+                    </div>
+                    <div class="divSvgFlatSpeaker" id="divSvgFlatSpeaker_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});">
+                        <svg class="svgFlatSpeaker" id="svgFlatSpeaker_{{post['id']}}">
+                            <use href="#gSvgSpeakerFlat" transform="rotate(30,50,50)"></use>
+                        </svg>
+                    </div>
+                    <div class="divSvgFlatSpeakerTopRight" id="divSvgFlatSpeakerTopRight_{{post['id']}}"
+                         onclick="toggleHideClonedConsole({{post['id']}});">
+                        <svg>
+                            <use href="#gSvgSpeakerFlat" transform="scale(0.6,0.6) rotate(170,50,50)"></use>
+                        </svg>
+                    </div>
 
-                        <div class="divSvgPolarBear" id="divSvgPolarBear_{{post['id']}}">
-                            <svg id="svgPolarBear_{{post['id']}}">
-                                <use href="#gPolarBear"></use>
-                            </svg>
-                        </div>
+                    <div id="targetClonedConsole_{{post['id']}}" class="targetClonedConsole">
 
-                        <div class="divSvglaGata" id="divSvglaGata_{{post['id']}}">
-                            <svg id="svglaGata_{{post['id']}}">
-                                <use href="#gLaGataDelDiablo"></use>
-                            </svg>
-                        </div>
+                        <span id="spanClonedAudioSymbol"
+                              class="spanAudioClone"
+                              data-toggle="tooltip" data-html="false"
+                              title="Hint. Have a volume and gain slider here.">&#128266;
+                        </span>
+                        <span id="spanSpectrumIconConsole_{{post['id']}}"
+                              class="spanAudioClone"
+                              onclick="cookie_toggle_show_visuals()"
+                              data-toggle="tooltip" data-html="false"
+                              title="Canvas of bottom console is up - will be fixed. Attached canvas?">&#9889;
+                        </span>
+                        <span id="spanDarkModeIconConsole2_{{post['id']}}"
+                              class="spanAudioClone" onclick="changeColorScheme();">&#9728;
+                        </span>
+                        <span id="spanHideClonedConsole_{{post['id']}}"
+                              class="spanAudioClone"
+                              onclick="toggleHideClonedConsole({{post['id']}});">&#10006;
+                        </span><br>
 
-                        <div class="divSvgB1" id="divSvgB1_{{post['id']}}">
-                            <svg id="svgB1_{{post['id']}}">
-                                <use href="#gB1"></use>
-                            </svg>
-                        </div>
+                        <input id="audioClone_{{post['id']}}" class="audioClone" type="range" value="25">
+                        <input id="gainClone_{{post['id']}}" class="gainClone" type="range" value="1" min="1" max="3" step="0.1"
+                               data-toggle="tooltip" data-html="false"
+                               title="Gain: increase input (preamp); may distort (cheapo transistor); max. 300%">
+                    </div>
 
-                        <div>
-                            <div class="divA1AirCraft" id="divA1AirCraft_{{post['id']}}">
-                                <svg id="svgA1AirCraft_{{post['id']}}">
-                                    <use href="#gA1AirCraft"></use>
+                    <div class="divCenterMovingSvgs" id="divCenterMovingSvgs_{{post['id']}}">
+                        <div class="divAnimationContainer" id="divAnimationContainer_{{post['id']}}">
+
+                            <div class="divSvgZ1" id="divSvgZ1_{{post['id']}}">
+                                <svg id="svgZ1_{{post['id']}}">
+                                        <use href="#gZ1"></use>
                                 </svg>
 
                             </div>
-                            <div class="divDragRopeA1AirCraft" id="divDragRopeA1AirCraft_{{post['id']}}"></div>
+
+                            <div class="divSvgTux" id="divSvgTux_{{post['id']}}">
+                                <svg id="svgTux_{{post['id']}}">
+                                    <use href="#gTux"></use>
+                                </svg>
+                            </div>
+
+                            <div class="divSvgIceTux" id="divSvgIceTux_{{post['id']}}">
+                                <svg>
+                                    <use href="#gTuxIce" transform="scale(1.4,1)"></use>
+                                </svg>
+                            </div>
+
+                            <div class="divSvgPolarBear" id="divSvgPolarBear_{{post['id']}}">
+                                <svg id="svgPolarBear_{{post['id']}}">
+                                    <use href="#gPolarBear"></use>
+                                </svg>
+                            </div>
+
+                            <div class="divSvglaGata" id="divSvglaGata_{{post['id']}}">
+                                <svg id="svglaGata_{{post['id']}}">
+                                    <use href="#gLaGataDelDiablo"></use>
+                                </svg>
+                            </div>
+
+                            <div class="divSvgB1" id="divSvgB1_{{post['id']}}">
+                                <svg id="svgB1_{{post['id']}}">
+                                    <use href="#gB1"></use>
+                                </svg>
+                            </div>
+
+                            <div>
+                                <div class="divA1AirCraft" id="divA1AirCraft_{{post['id']}}">
+                                    <svg id="svgA1AirCraft_{{post['id']}}">
+                                        <use href="#gA1AirCraft"></use>
+                                    </svg>
+
+                                </div>
+                                <div class="divDragRopeA1AirCraft" id="divDragRopeA1AirCraft_{{post['id']}}"></div>
+                            </div>
+
+                            <div class="divHorizon" id="divHorizon_{{post['id']}}"></div>
+
+                            <div class="divSvgAirOne" id="divSvgAirOne_{{post['id']}}">
+                                <svg id="svgAirOne_{{post['id']}}">
+                                    <use id="svgAirOne" href="#44xtc44AirOne"></use>
+                                </svg>
+                            </div>
                         </div>
 
-                        <div class="divHorizon" id="divHorizon_{{post['id']}}"></div>
-
-                        <div class="divSvgAirOne" id="divSvgAirOne_{{post['id']}}">
-                            <svg id="svgAirOne_{{post['id']}}">
-                                <use id="svgAirOne" href="#44xtc44AirOne"></use>
-                            </svg>
-                        </div>
                     </div>
-
                 </div>
-        </div>
             <div class="divHeaderShadow" id="divHeaderShadow_{{post['id']}}">
                 <div class="divStationHeadLine">
                         <p class="radio-station-headline" id="radioHeadLine_{{post['id']}}">
@@ -360,7 +399,6 @@
                     <span class="toggleAnimals"
                           id=toggleAnimals_{{post['id']}} onclick="toggleAnimalDefaultDivSvG();"></span>
                 </p>
-
             </div>
             <div class="divGracefulDegradation" id="divGracefulDegradation_{{post['id']}}">
 
@@ -389,27 +427,25 @@
             </div>
             <div class="divBtnContainer" id="divBtnContainer_{{post['id']}}">
                 <div class="divBtnAbsWrapper" id="divBtnAbsWrapper_{{post['id']}}">
-                    <div class="divPictureRow" id="divPictureRow_{{post['id']}}">
-                        <div class="pixies" id="pixies_{{post['id']}}">
-                            <a href="{{ url_for('eisenutil_bp.post', post_id=post['id']) }}">
-                                <img class="pix" id="pix_{{post['id']}}" src="data:{{post['pic_content_type']}};base64, {{post['pic_data']}}">
-                            </a>
-                        </div>
+                    <div class="pixies" id="pixies_{{post['id']}}">
+                        <a href="{{ url_for('eisenutil_bp.post', post_id=post['id']) }}">
+                            <img class="pix" id="pix_{{post['id']}}" src="data:{{post['pic_content_type']}};base64, {{post['pic_data']}}">
+                        </a>
                     </div>
                     <div class="divBarButtonsGrid">
-                        <div class="divButtons">
+                        <div class="divButtons" id="divButtons_{{post['id']}}">
 
                             <span id="spanButtonRecord">
                                 <button class="{{record_class}}" data-id="record"
                                       name="Record_{{post['id']}}"
-                                      id=Record_{{post['id']}}>Record
+                                      id=Record_{{post['id']}}><span class="span150p">&#128192;</span>
                                 </button>
                             </span>
 
                             <span id="spanButtonListen">
                                 <button class="{{listen_class}}" data-id="listen"
                                       name="Listen_{{post['id']}}"
-                                      id=Listen_{{post['id']}}>Listen
+                                        id=Listen_{{post['id']}}><span class="span150p">📢</span>
                                 </button>
                             </span>
 
@@ -440,15 +476,19 @@
             </div>
         </div>
 
-            <div class="divCustomText" id="divCustomText_{{post['id']}}">
-                <div class="radioStationComment"
-                     id="divRadioStationComment_{{post['id']}}"
-                     onclick=enlightPicCommentPre("divRadioStationComment_{{post['id']}}")
-                     style="display:{{ pre_display }}">
-                    <p></p>
-                    <pre class="prePicComment" id="radioStationComment_{{post['id']}}"><code>{{ pic_comment }}</code></pre>
-                </div>
+        <div class="divCloneCanvasMaster" id="divCloneCanvasMaster_{{post['id']}}">
+            <canvas class="cloneCanvasMaster" id="cloneCanvasMaster_{{post['id']}}"></canvas>
+        </div>
+
+        <div class="divCustomText" id="divCustomText_{{post['id']}}">
+            <div class="radioStationComment"
+                 id="divRadioStationComment_{{post['id']}}"
+                 onclick=enlightPicCommentPre("divRadioStationComment_{{post['id']}}")
+                 style="display:{{ pre_display }}">
+                <p></p>
+                <pre class="prePicComment" id="radioStationComment_{{post['id']}}"><code>{{ pic_comment }}</code></pre>
             </div>
+        </div>
         </div>
     </div>
 <!-----                                       --- Radio FIN ---                                         --->
@@ -462,9 +502,9 @@
     <div class="console">
         <div id="divCanvasMasterWrapper" onclick="divCanMasterWrapShowHiddenBtn()">
                 <div id="divCanvasMasterTop"></div>
-                <div id="divCanvasMaster">
-                    <canvas id="canvasMaster"></canvas>
-                </div>
+                    <div id="divCanvasMaster">
+                        <canvas id="canvasMaster"></canvas>
+                    </div>
                 <div id="divHiddenButtons">
                     <div id="divCanvasCallBackBtn"
                          onclick="divCanvasCallBackBtnFct()">
@@ -1794,6 +1834,7 @@
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/animate-canvas.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/canvas.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/radioStyles.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/degradeAnimation.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-manage.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/playlist.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-A1AirCraft-para-drop.js') }}"></script>

@@ -99,7 +99,7 @@ var requestId5starFieldAnalyserAnimationFrame;
 var inflateAnim;
 var floatingMultiplyNum;
 var analyserRandomGlobal;
-var activeListenId  = "noId";      // animation, only call functions if listen is selected
+
 var activeRecordId = "noRecId";    // compare with activeListenId id, no match no call; animation kills itself on second call and continues
 
 let ctx;

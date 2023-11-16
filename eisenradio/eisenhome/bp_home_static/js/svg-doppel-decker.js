@@ -46,32 +46,33 @@ class FourShadesSVG {
     }
   }
 
-  colorPaletteGet(force_hueNum) {
+  colorPaletteGet() {
     /* Create random color. Work only with light part of hsl, like a photograph.
        Assign start and end for interpolation of four color shades.
        https://hypejunction.github.io/color-wizard/ to get an impression what is running here.
-     */
-     let hueNum = force_hueNum;
-     if(!force_hueNum) {
-       hueNum = getRandomIntInclusive(0,360);
-       while (true) {
-         if(this.forbiddenColors.includes(hueNum)) {
-           hueNum = getRandomIntInclusive(0,360);
-         } else {
-            break;
-          }
+    */
+    let i = 0;
+    let hueNum = getRandomIntInclusive(0,360);
+    while (true) {
+      if(i > 2) return;
+      if(this.forbiddenColors.includes(hueNum)) {
+        hueNum = getRandomIntInclusive(0,360);
+        i++;
+      } else {
+         break;
        }
-     }
-     let col = hueNum;
-     let sat = 80;
-     let light = 35;
-     let step = 4;
+    }
 
-     this.hslOne = "hsl(" + hueNum + "," + sat + "%," + light + "%)";  // hsl(339, 80%, 94%)
-     this.hslTwo = "hsl(" + hueNum + "," + sat + "%," + (light += step * 1) + "%)";
-     this.hslThree = "hsl(" + hueNum + "," + sat + "%," + (light += step * 2) + "%)";
-     this.hslFour = "hsl(" + hueNum + "," + sat + "%," + (light += step * 3) + "%)";
-     this.hslInterpolationList = [this.hslOne, this.hslTwo, this.hslThree, this.hslFour];
+    let col = hueNum;
+    let sat = 80;
+    let light = 35;
+    let step = 4;
+
+    this.hslOne = "hsl(" + hueNum + "," + sat + "%," + light + "%)";  // hsl(339, 80%, 94%)
+    this.hslTwo = "hsl(" + hueNum + "," + sat + "%," + (light += step * 1) + "%)";
+    this.hslThree = "hsl(" + hueNum + "," + sat + "%," + (light += step * 2) + "%)";
+    this.hslFour = "hsl(" + hueNum + "," + sat + "%," + (light += step * 3) + "%)";
+    this.hslInterpolationList = [this.hslOne, this.hslTwo, this.hslThree, this.hslFour];
   }
 
   colorPalettePush() {
@@ -197,8 +198,8 @@ class DoppelDeckerMove {
     }
 
     this.waitCount = 0;
-    this.waitTime = getRandomIntInclusive(1500,2500);
-    this.duration = getRandomIntInclusive(10,30);
+    this.waitTime = getRandomIntInclusive(1500,2200);
+    this.duration = getRandomIntInclusive(3,30);
     this.divIsVisible = false;
   }
   move(){

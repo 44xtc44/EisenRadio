@@ -19,16 +19,15 @@ function svgAnimationMain(){
   inflateAnim = window.requestAnimationFrame(svgAnimationMain);  // inflateAnim was used for the first anim, now it runs the show
 
   defaultStageHtmlElementsShow();  // hasStageItemsListenId must match activeListenId, later todo: better have one frame for all radios and put base svg in folder not html so can better change the whole stage
-  colorizeDefaultSvgStageElements(darkBody);  // like defaultStageHtmlElementsShow(), we should load only once on start up!
   animateFrontPigs(darkBody, smoothVolume, powerLevelDict); // powerLevelDict
   animateA1AirCraft();
+  animateSpeaker(smoothVolume);
 
   if(inflateAnim % 2 === 0) {  // save cpu
     animateCheckeredBalloon(smoothVolume);
     animateZeppelin(darkBody, smoothVolume);
     animateBuoy(darkBody);  // edit button
     animateParachuteDrop();
-    animateSpeaker(smoothVolume);
     animateDoppelDecker();
   }
   if(inflateAnim % 3 === 0) {

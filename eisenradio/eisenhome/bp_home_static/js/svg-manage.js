@@ -1125,50 +1125,58 @@ class ShadesOfColor{
 /*                      -- Instances --
  */
 
-// class was designed for the speaker with three animated bars and rewritten to be reusable universal in its boundaries
-let infSpeaker = new PowerSwitch({path: document.querySelectorAll("#gSvgSpeakerFlatWaves path")});// animate speaker dynamic fake waves
+function initManager() {
+  /* I wonder how, I wonder why ...
 
-let starOneInAMillion = new PowerSwitch({path: document.querySelectorAll("#gTuxStageStars path"),
-                                            flashColor:"#fff",             // can also be set before updateOneInAMillion() to create randomness
-                                            maxSimultaneousFlash: 3,       // max elements simultaneous animated
-                                            flashPatternList: [0,1,0,1],   // each element multiplied by flashPatternMultiplier
-                                                                           // is overall animation time 4 x 5 = 20 frames, can be [1] on whole time
-                                            flashPatternMultiplier: 20,
-                                            oneInAMillionRun:true,         // this.oneInAMillionList must be created
+     window.var makes variables global across multi scripts.
+     functions can be mocked, not global vars. Perhaps Android mock test works?
+   */
+  window.infSpeaker = new PowerSwitch({path: document.querySelectorAll("#gSvgSpeakerFlatWaves path")});// animate speaker dynamic fake waves
+
+  window.starOneInAMillion = new PowerSwitch({path: document.querySelectorAll("#gTuxStageStars path"),
+                                          flashColor:"#fff",             // can also be set before updateOneInAMillion() to create randomness
+                                          maxSimultaneousFlash: 3,       // max elements simultaneous animated
+                                          flashPatternList: [0,1,0,1],   // each element multiplied by flashPatternMultiplier
+                                                                         // is overall animation time 4 x 5 = 20 frames, can be [1] on whole time
+                                          flashPatternMultiplier: 20,
+                                          oneInAMillionRun:true,         // this.oneInAMillionList must be created
+                                      });
+  window.tuxIceFloeFrontPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".tuxIceFloeFront"),  // if class no need to mention "path" or other element
+                                            hue: getRandomIntInclusive(600,800),
+                                            step:1/getRandomIntInclusive(4,8),   // to get more or less color reaction, divider
+                                            max:12,
+                                            maxCount:6,
+                                            slider:2,
+                                            dropShadow: "",
+                                            animatePower:false  // only color change, no on/off
+                                             });
+
+  /* an animate only fill on a use but here ok, all elements are clones of a rectangle PATH */
+  window.buoyPosLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#buoySegmentVeryTopLight"),
+                                         flashPatternList:  [0,0,0,1,1,1,0,0,0,1,0,1,0,1],// [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
+                                         flashPatternMultiplier: 6
                                         });
-let tuxIceFloeFrontPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".tuxIceFloeFront"),  // if class no need to mention "path" or other element
-                                              hue: getRandomIntInclusive(600,800),
-                                              step:1/getRandomIntInclusive(4,8),   // to get more or less color reaction, divider
-                                              max:12,
-                                              maxCount:6,
-                                              slider:2,
-                                              dropShadow: "",
-                                              animatePower:false  // only color change, no on/off
-                                               });
 
-/* can animate only fill on a use but here ok, all elements are clones of a rectangle PATH */
-let buoyPosLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#buoySegmentVeryTopLight"),
-                                           flashPatternList:  [0,0,0,1,1,1,0,0,0,1,0,1,0,1],// [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
-                                           flashPatternMultiplier: 6
-                                          });
+  window.genreShaker           = new Shaker(); // show that genre is clickable
+  window.genreSimpleCounter    = new SimpleCounter();  // teaser to show that genre text is clickable
 
-let genreShaker           = new Shaker(); // show that genre is clickable
-let genreSimpleCounter    = new SimpleCounter();  // teaser to show that genre text is clickable
+  window.animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // animal Z rotation in deg and step
+  window.animalTranslationUpDown = new CountUpDown(0, 40, 1/Math.PI/10);        // animal X translation in px and step
+  window.buoyZRotationUpDown     = new CountUpDown(-3.5, 4.5, 1/Math.PI/20);    // buoy and buoy as space station (for super cat later),
+                                                                         // same as us obama spoke: we fly to moon in 10 years, before 15 years+
 
-let animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // animal Z rotation in deg and step
-let animalTranslationUpDown = new CountUpDown(0, 40, 1/Math.PI/10);        // animal X translation in px and step
-let buoyZRotationUpDown     = new CountUpDown(-3.5, 4.5, 1/Math.PI/20);    // buoy and buoy as space station (for super cat later),
-                                                                           // same as us obama spoke: we fly to moon in 10 years, before 15 years+
-
-let zeppelinShadesOfColor = new ShadesOfColor({ //pathCollection:zeppelinColorOrder, // pathCollection:document.querySelectorAll("#gZ1BodyHullAndRear path"),
-                                                hueColor:112,
-                                                saturation:100,
-                                                lightness:50,
-                                                brightestTop:false,  // start from bottom with brightest color
-                                                reverseList:false,
-                                               })
-zeppelinShadesOfColor.update(getRandomIntInclusive(300,360), zeppelinColorOrder); // a list with order of path id s
-/* send the whole instance to function to read dictionary and apply changes
- *   this.pathToHueDict {index of svg group element: hsl(119,50%,67%), indexN: hsl(119,50%,69%),... }
- */
-changeColorPathToHsl(zeppelinShadesOfColor);
+  window.zeppelinShadesOfColor = new ShadesOfColor({ //pathCollection:zeppelinColorOrder, // pathCollection:document.querySelectorAll("#gZ1BodyHullAndRear path"),
+                                                  hueColor:112,
+                                                  saturation:100,
+                                                  lightness:50,
+                                                  brightestTop:false,  // start from bottom with brightest color
+                                                  reverseList:false,
+                                                 })
+  zeppelinShadesOfColor.update(getRandomIntInclusive(300,360), zeppelinColorOrder); // a list with order of path id s
+  /* send the whole instance to function to read dictionary and apply changes
+   *   this.pathToHueDict {index of svg group element: hsl(119,50%,67%), indexN: hsl(119,50%,69%),... }
+   */
+  changeColorPathToHsl(zeppelinShadesOfColor);
+}
+;
+initManager();

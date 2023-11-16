@@ -226,6 +226,8 @@ class EisenRadioStyles{
             /* darkMode */
             this.listenDarkModeStyle();
         }
+        let darkBody = getBodyColor();
+        colorizeDefaultSvgStageElements(darkBody);
     }
     listenDarkModeStyle(){
     /* called directly from dark mode function, location: index.js -> setColor() */

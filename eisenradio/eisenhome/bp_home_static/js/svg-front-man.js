@@ -6,9 +6,9 @@ function animateFrontPigs(darkBody, smoothVolume, powerLevelDict){
     /* animal animation, use volume level to inflate */
         defaultFrontAnimation(smoothVolume, powerLevelDict);
         if(darkBody){
-                powerLevelAnimation({smoothVolume: smoothVolume,
-                                    animatedInstance: tuxIceFloeFrontPowerSwitch
-                });
+            powerLevelAnimation({smoothVolume: smoothVolume,
+                                animatedInstance: tuxIceFloeFrontPowerSwitch
+            });
         }
     }
 }

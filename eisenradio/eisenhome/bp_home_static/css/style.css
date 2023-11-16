@@ -27,7 +27,27 @@
     --radio-station-url: black;
     --colorPlayListAndDropDown: black;
     --tux-top:2em;
-    --tux-left:-5em;
+    --tux-left: -10em;
+    --tux-zindex: 31;
+}
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.portrait {
+    height: 80px;
+    width: 30px;
+}
+
+.landscape {
+    height: 30px;
+    width: 80px;
+}
+
+.square {
+    height: 75px;
+    width: 75px;
 }
 
 svg {
@@ -198,6 +218,8 @@ summary>* {
     font-family: Finger Paint, Gloria Hallelujah, Architects Daughter, Roboto, sans-serif;
     text-align: center;
     text-shadow: 0px 3px 4px #333333;
+    overflow-wrap: break-word;
+    /* white-space: break-spaces; */
 }
 
 #cacheList {
@@ -312,20 +334,6 @@ summary>* {
 
 #frontPic img {
     border-radius: 2em;
-}
-
-.pixies {
-    /* image container js makes float left or not */
-    position: relative;
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    border-radius: 1em;
-}
-
-.pixies img {
-    border-radius: 1em;
-    max-height: 5em;
 }
 
 /* navbar */
@@ -567,7 +575,7 @@ summary>* {
 }
 
 #scroll_top {
-    scroll-margin-top: 6em;
+    scroll-margin-top: 2em;
     visibility: hidden;
 }
 
@@ -681,16 +689,6 @@ summary>* {
     max-width: 1000px;
 }
 
-.divPictureRow {
-    position: relative;
-    display: inline-block;
-    background-color: rgba(255, 255, 255, 0.0);
-    border-radius: 1.5em;
-    margin-bottom: .5em;
-    width: 100%;
-    text-align: center;
-}
-
 .divHeaderShadow {
     /* box for radio name, was before a shadow div for linear-gradient overlay, radio_styles.js */
     display: none;
@@ -710,7 +708,7 @@ summary>* {
 .divBtnContainer {
     /*min-height:20em; to keep button on start screen away from each other, pic has max 15em */
     position: relative;
-    width: 30%;
+    width: 20%;
     height: auto;
     min-height: 5em;
 }
@@ -723,13 +721,27 @@ summary>* {
 }
 
 .divBarButtonsGrid {
+    position: absolute;
     /* no more grids */
     display: grid;
-    grid-gap: 5%;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    left: -10em;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    left:1em;
+    top:2em;
 }
-
+.span150p {
+  font-size: 150%;
+  cursor: pointer;
+}
+.pixies {
+    position:absolute;
+    /* image container js makes float left or not */
+    justify-content: center;
+    border-radius: 1em;
+    top:7em;
+    left:-1em;
+    z-index:0;
+}
 .divUrlShowInHeader {
     display: inline-block;
     padding-left: 1em;
@@ -778,8 +790,9 @@ summary>* {
 }
 
 .divAnimationContainer {
-    /* speaker and svg */
-    position: absolute;
+    /* tux svg beside record button */
+    position: relative;
+
 }
 
 .divSvgB1 {
@@ -810,8 +823,7 @@ summary>* {
     z-index: 2;
     top: 2em;
     left: -2em;
-    max-width: 1em;
-    max-height: 1em;
+
 }
 
 .divSvgFlatSpeakerTopRight {
@@ -824,6 +836,29 @@ summary>* {
     max-height: 1em;
 }
 
+.targetClonedConsole {
+    position: absolute;
+    min-width: 15em;
+    min-height: 4em;
+    background-color:red;
+    left:-1em;
+    top:4em;
+    z-index: 2000;
+}
+.screwHead {
+  cursor:pointer;
+  z-index: 2023;
+}
+.targetClonedConsole {
+  display:none;
+}
+
+.spanAudioClone {
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: 150%;
+    cursor: pointer;
+}
 .divSvgScrewHeadBottomLeft {
     display: none;
     position: absolute;
@@ -889,8 +924,8 @@ summary>* {
 .divMeasurementsUpper {
     display: none;
     position: absolute;
-    z-index: 2;
-    width: auto;
+
+    z-index: 2000;
 }
 
 .toggleAnimals {
@@ -909,7 +944,7 @@ summary>* {
     /* animation feature choice, first class, economy */
     display: none;
     position: absolute;
-    z-index: 10;
+    z-index: 100;
     bottom: 5em;
     right: -2em;
 
@@ -984,43 +1019,45 @@ summary>* {
 /* ice floe */
     display: none;
     position: absolute;
-    z-index: 30;
     width: 100%;
     top: 2em;
     left: var(--tux-left);
+    bottom:1em;
     max-width: 1em;
     max-height: 1em;
+    z-index: 30;
+
 }
 
 .divSvgTux {
 /* tux svg */
     display: none;
     position: absolute;
-    z-index: 31;
     width: 100%;
     top: 3em;
     left: var(--tux-left);
     max-width: 1em;
     max-height: 1em;
+    z-index: var(--tux-zindex);
 }
 
 .divSvgPolarBear {
 /* polar bear svg */
     display: none;
     position: absolute;
-    z-index: 31;
     width: 100%;
     top: 3em;
     left: var(--tux-left);
     max-width: 1em;
     max-height: 1em;
+    z-index: var(--tux-zindex);
 }
 
 .divSvglaGata {
 /* la Gata del Diablo svg */
     display: none;
     position: absolute;
-    z-index: 31;
+    z-index: var(--tux-zindex);
     width: 100%;
     top: 3em;
     left: var(--tux-left);
@@ -1053,7 +1090,7 @@ div::-webkit-scrollbar {
 
 .divButtons {
     position: relative;
-    z-index: 10;
+    z-index: 100;
     margin-bottom: 0.5em;
     text-align: center;
 }
@@ -1125,9 +1162,21 @@ div::-webkit-scrollbar {
     cursor: pointer;
 }
 
+.cloneCanvasMaster {
+/*
+ * individual radio canvas, container
+ */
+    width: 30em;
+    height: 14em;
+    background-color:red;
+    display:none;
+}
+
 #divCanvasMasterWrapper {
 /* make a relative div to give absolute div a point to nail on
  * div is empty and collapses, so must use minus for positioning
+ *
+ * console canvas
  */
     position: absolute;
     width: 30em;
