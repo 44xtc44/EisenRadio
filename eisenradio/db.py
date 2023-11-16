@@ -57,7 +57,7 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('PARTY VIBE RADIO',
+        ('PARTY-VIBE-RADIO',
          'http://94.130.242.5:8010/stream',
          save_parent_folder,
          'multiple streams at http://94.130.242.5:8010',
