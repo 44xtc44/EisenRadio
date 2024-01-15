@@ -1,12 +1,15 @@
 {% extends 'bp_util_base.html' %}
 
 {% block content %}
-<hr>
-<h1>{% block title %} Blacklists {% endblock %}</h1>
+<h3>{% block title %} Blacklists {% endblock %}</h3>
+<p>Enable blacklists in "Tools".</p>
+<p>A blacklist is a list of title "names". The recorder refuses to write if the title name is found in the list.</p>
+<p>Delete a title name from the list to record a file again.</p>
+<p>Skip count is the number of title writes skipped by the recorder during an app session.</p>
 <hr>
 <div class="blacklist_div">
     <div>
-        Session skip count: {{skip_count}}
+        Skip count: {{skip_count}}
         <hr>
         {% for radio in radios_dict.values()%}
         {% if radio in streamer_name_list %}

@@ -5,61 +5,97 @@
 
 ## Overview
 
-This repository shows the source code of an SVG animated radio show. Routed flask endpoints on a SQLite database.
+This repository shows the full stack source code of an SVG animated GUI for [GhettoRecorder](https://github.com/44xtc44/GhettoRecorder).
 
-* First Inet Radio App that can run a Spectrum Analyser in a Browser (Feb,2022), have a look at the sketch below
-* Images are created with [Inkscape](https://github.com/inkscape/inkscape)
-* Advanced features for [GhettoRecorder](https://github.com/44xtc44/GhettoRecorder)
+* first internet Radio App that can run a Spectrum Analyser in a Browser (Feb,2022), sketch at page bottom
+* SVG animations in vanilla JavaScript super fast animated and colorized with regex
+* Playlist feature; load and walk through a list of your local sound files
+* REST API Flask endpoints; serve a SQLite database in plain SQL
+* deployment source code for [Android Studio](https://github.com/44xtc44/EisenRadio-chaquopy) , [Docker](https://github.com/44xtc44/EisenRadio/blob/dev/Dockerfile), [Snapcraft](https://github.com/44xtc44/EisenRadio/tree/dev/snap) and [Kivy](https://github.com/44xtc44/EisenRadio/tree/dev/kivy) available
+
+# Name
+
+The initial design was intended to mimic a hardware store site with multiple items listed.
+"Eisen" Hardware [iron radios].
 
 # Comic style animated internet radio
 
-Inkscape animated SVG images are used everywhere in the app. Also for the background. JavaScript is the mover.
+Inkscape created SVG images are used everywhere in the app. No raster graphics in this project. Except converted from SVG.
 
-* Art director [AnimationTimer Class](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js) controls timer for all artist and stuff appearance
-* Airshow executive director [moveRandomAngle()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js) is using tangens function with no-go areas to minimize the "crash slot"
-* Zeppelin grey scale SVG is colorized by random colors, plus color gradations [ShadesOfColor Class](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js)
+* 90% of the SVG animations run on canvas for reduced CPU load and smooth, up-scaled display
+* a dedicated multi SVG image and SVG group loader class to preload all SVG stuff as super correct tagged SVG images
+* inline SVG groups are loaded into a dictionary of image instances and connected to their canvas
+
 
 <table>
   <tbody>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_day_0755.PNG" alt="browser tux at daylight" /> 
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_android.png" alt="browser android" height="555"/> 
+      </td>
+    </tr>
+     <tr>
+      <td>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_day_0755.PNG" alt="browser tux at daylight" width="600"/> 
       </td>
     </tr>
     <tr>
       <td>
-        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_night_1918.PNG" alt="browser tux at night"/>
+        <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/browser_tux_night_1918.PNG" alt="browser tux at night" width="600"/>
       </td>
     </tr>
   </tbody>
 </table>
 
-## Audio
+* each instance stores the image, a list of its SVG tags as well as the current transformation status and position, ...
+* SVG path manipulation method with regex; next version goes for CSS style attributes
 
-Audio spectrum is used to animate the colors of some SVG images. Master function [getAverageVolume()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760)
-calculates the audio volume level. This function was created by "franks laboratory", link in the Thank-you section at bottom.
+The functional principle can be transferred to Java on Android to create dynamic 2D game backgrounds.
 
-[PowerSwitch class](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js)
-can color an unlimited number of path elements. It has also methods to animate different colors for different
-audio dynamic levels. Input for PowerSwitch class is delivered by [powerLevelAnimation()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js).
+# Audio
+
+Audio spectrum is used to animate the colors of the speaker symbol waves.
+Speaker symbol shows customized colors for different levels of audio output strength and dynamic.
+Unfortunately the display is very CPU hungry. So only one speaker is shown.
 
 <p>Classic and Ambient &#128998;&#129001; music will often show other colors than Thrash Metal or Hip Hop &#128999;&#128997;.</p>
 
-PowerSwitch class can also translate list pattern into flashing lights.
+Master function [getAverageVolume()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svg-manage.js#L1760)
+calculates the audio volume level. This function was created by "franks laboratory", link in the Thank-you section at bottom.
 
-    let flashAni = new PowerSwitch({path: document.querySelectorAll("#z1PositionLights path"),
-                        flashPatternList: [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
-                  flashPatternMultiplier: 20});
+<p>The "scaling by rhythm" of frontman Tux and friends &#128039; &#128049; &#128059; is also driven by </p> 
 
-Have a look at both speakers (color) or the zeppelin (flash).
+[getAverageVolume()](https://github.com/44xtc44/EisenRadio/blob/dev/eisenradio/eisenhome/bp_home_static/js/svg-manage.js#L1760)
 
-<p>The "scaling by rhythm" of frontman Tux or friends &#128059;&#8205;&#10052;&#65039; is also driven by </p> 
+# Local audio and shuffled playlists
 
-[getAverageVolume()](https://github.com/44xtc44/EisenRadio/raw/dev/eisenradio/eisenhome/bp_home_static/js/svgAnimation.js#L1760) 
+A local folder with files of different sound file types is called a playlist.
+AAC and MP3 files are known to run. You can go back and forth in the list.
 
-## &#9889; Spectrum Analyzer
+If AAC is hanging, you can repair the whole folder with "Tools/aacp file repair" menu.
+Integrated from my [aacRepair](https://github.com/44xtc44/aacRepair) repo.
 
-Choose between different spectrum analyzer shows. Analyzer frame is detachable. Put it where you want.
+Remember, the app runs in a browser.
+We *misuse* the upload multi select feature of the browser.
+Nothing is uploaded, but file *objects* are caught in a list and played.
+
+
+# Gain - preamp
+
+Bring your earbuds to the limit.
+EisenRadio owns a *Volume Gain* slider as well as [GhettoRecorder](https://github.com/44xtc44/GhettoRecorder)
+Push the preamp to 300%. This feels like 20% louder.
+
+Works with bluetooth headphones!
+
+
+# Spectrum Analyzer
+
+Spectrum analyzer canvas is now fully integrated and can be switched by the "TV" button.
+Choose between different spectrum analyzer shows.
+
+This concept can show its strengths if used to present the latest management reports.
+A background video on canvas one and several statistics shown on separated, animated, or distorted monitors, canvas of course.
 
 <table>
   <tbody>
@@ -75,57 +111,78 @@ Choose between different spectrum analyzer shows. Analyzer frame is detachable. 
 </table>
 
 
+# Customized radio
+
+"Edit" the radio settings. Upload your favorite pictures to the database. Add a comment.
+
+The app page is separated by two areas.
+A monitor to the left and a display area beside for pictures and comments or the playlist titles.
+
+<img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/secondary_menu.png" alt="secondary_menu" height="500"/>
+
 ## Energy Saver
 
-Fun reduction option. Some browser and mobiles may be a bit overwhelmed by the fully animated show.
+Sustainable fun reduction.
+Some exotic browser and mobiles could be overwhelmed by the fully animated show.
+
+You are compensated by a CPU icon that can change its color.
 
 <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/energy_saver.PNG" alt="fun reduction energy saver radio button" style="width:100px"/>
 
-Switch off the most CPU hungry animations.
 
-## Tools menu
+# Recorder
 
-Here you find tools to enable and maintain blacklists.
-Configure animations, enable database dump or import a GhettoRecorder GitHub [settings.ini](https://github.com/44xtc44/GhettoRecorder/blob/dev/ghettorecorder/settings.ini)
-file to database to add more radio station URLs.
+Called and terminated GhettoRecorder threads for listen and record.
+
+This version suffers from the initial button press concept.
+Next version of EisenRadio will use the latest GhettoRecorder for easy-peasy switching and less threads per radio.
+
+# Recorder blacklist feature
+
+Each recorder refuses to write a file, if the title was written to its radio specific blacklist before.
+
+One dedicated thread is responsible to update all radio blacklists.
+All lists can be dumped into a JSON file and merged with GhettoRecorder blacklists. Uploaded to DB then.
+
+EisenRadio writes temporary lists of known recorded file names in JSON format.
+The SQLite database is updated with a fresh file name only if a recorder writes a new file.
+An internet cloud connection count in mind.
+
+# Multiple tools menu
+
+* config with feature selection for animation level
+* enable and maintain blacklists
+* dump the radios or blacklist database to JSON files
+* import a GhettoRecorder [settings.ini](https://github.com/44xtc44/GhettoRecorder/blob/dev/ghettorecorder/settings.ini) file to database to add more radio station URLs
 
 <table>
   <tbody>
     <tr>
       <td>
         <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG">
-          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="height:400px"/> 
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/tools_menu.PNG" alt="tools for blacklist database dump and deletion" style="height:300px"/> 
         </a>
       </td>
       <td>
         <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG">
-          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG" alt="config show" style="height:400px"/>
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/config_show.PNG" alt="config show" style="height:300px"/>
         </a>
       </td>
       <td>
         <a href="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG">
-          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="height:400px"/>
+          <img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/blacklist_alter.PNG" alt="blacklist show" style="height:300px"/>
         </a>
       </td>
     </tr>
   </tbody>
 </table>
 
-## Shuffled Playlists
 
-You find this option in the secondary menu under the on top teaser image.
-
-<img src="https://github.com/44xtc44/EisenRadio/raw/dev/.github/secondary_menu.png" alt="secondary_menu" style="width:550px"/>
-
-Play your local audio files in the browser. Folders are used as playlists.
-
-Bring your earbuds to the limit. EisenRadio has a *Volume Gain* slider as well as [GhettoRecorder](https://github.com/44xtc44/GhettoRecorder).
-Pushes the preamp up to 300%.
-
-## Organize
+# Help
 
 Use the menu bar. *About* offers a help menu.
-Organize your web radios. Delete or update, backup and restore your radio stations.
+
+There is a "post-it", how to reveal the URL of your beloved radio station, hidden in an advertisement polluted website.
 
 # Links
 
@@ -141,7 +198,7 @@ The app is available as
 EisenRadio GUI supported by Flask server.::
 
     $ eisenradio  # executable script in Python Path
-    $ python3 -m eisenradio.gui  # runs package if Python path is defective
+    $ python3 -m eisenradio.gui  # runs package if Python path is defective or the SNAP pkg installer knows eisenradio
 
 WSGI server *Waitress* on a random port.::
 
@@ -235,13 +292,18 @@ Python user:
 
 https://eisenradio.readthedocs.io/en/latest/
 
+# Known issues
+
+Detected problems got a "todo" marker.
+You can search through the project to see what is going wrong.
+
 # Contributions
 
 Pull requests are welcome.
 If you want to make a major change, open an issue first to have a short discuss.
 
 Next level could be [Blender 3D](https://www.blender.org/) objects rendered as 2D SVG in JavaScript motion.
-Sprite technique with images from 3D. Perhaps a moving ship or a flying saucer?
+Replace pure DOM element animation with canvas. Each animation gets its own canvas for more speed and to lower CPU.
 
 # Thank you
 

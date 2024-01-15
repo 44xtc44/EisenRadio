@@ -41,16 +41,9 @@ def make_db_from_schema(db_path):
         ('classic',
          'http://37.251.146.169:8000/streamHD',
          save_parent_folder,
-         'recontextualize next-generation vortals, engineer plug-and-play experiences, deploy dynamic action-items, '
-         'synthesize transparent relationships, transition next-generation mindshare, morph dynamic paradigms, '
-         'orchestrate end-to-end initiatives, incubate frictionless content, revolutionize efficient e-services, '
-         'redefine impactful users, engage leading-edge eyeballs, envisioneer 24/365 deliverables, incentivize viral '
-         'infomediaries, whiteboard clicks-and-mortar experiences, generate B2C e-commerce, envisioneer extensible '
-         'convergence, morph 24/7 experiences, utilize customized e-services, strategize customized systems, '
-         'scale proactive markets, exploit bleeding-edge partnerships, repurpose integrated infrastructures, '
-         'seize cutting-edge relationships, brand enterprise e-services, morph value-added partnerships, '
-         'recontextualize customized communities, enable magnetic web services, maximize cutting-edge relationships,'
-         'integrate front-end synergies, embrace one-to-one supply-chains, leverage proactive functionalities',
+         'Stream HE-AAC @ 192 kbps, 44.1 kHz\n'
+         '\n'
+         'Listener Peak (limit):	200\n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-brown_120x200.png"))
         )
@@ -60,7 +53,16 @@ def make_db_from_schema(db_path):
         ('PARTY-VIBE-RADIO',
          'http://94.130.242.5:8010/stream',
          save_parent_folder,
-         'multiple streams at http://94.130.242.5:8010',
+         'https://www.partyvibe.com/ \n'
+         '\n'
+         'multiple streams at \n'
+         'http://94.130.242.5:8010 \n'
+         '\n'
+         'Radio station currently plays host to 10 channels of\n'
+         'streaming audio covering the following musical styles:\n'
+         '\n'
+         'ambient, breakbeat, drum & bass, dubstep, \n'
+         'pop, psychedelic trance, rap, reggae, rock and techno music.\n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-black_120x200.png"))
         )
@@ -70,17 +72,23 @@ def make_db_from_schema(db_path):
         ('audio_noir',
          'http://104.192.169.54:8000/noir',
          save_parent_folder,
-         'usa - Classic Old Time Radio, Sci Fi, Comedy, Drama',
+         'usa - Classic Old Time Radio, Sci Fi, Comedy, Drama \n'
+         ' \n'
+         'Use the URL from header to go to their page. \n'
+         'They offer a download site and preview for the next 10 upcoming tracks. \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-blue_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('anime_jp',
+        ('lounge',
          'http://streamingv2.shoutcast.com/japanimradio-tokyo',
          save_parent_folder,
-         'sound tracks of japanese anime videos and games',
+         'They send no header info for their Web page. \n'
+         ' \n'
+         'Search engine "Jamendo lounge" helps. \n'
+         'Free tracks and playlists. \n',
          "image/jpeg",
          convert_ascii(static_images + "mixer-tempelhof-airport.jpg"))
         )
@@ -90,7 +98,13 @@ def make_db_from_schema(db_path):
         ('radio_pan_america',
          'http://51.222.8.101:8000/stream',
          save_parent_folder,
-         '',
+         'Radio Panamericana, Lima - Peru \n'
+         'Salsa \n'
+         ' \n'
+         'Big Web site. \n'
+         'You can use "Edit" database to go to their Web site. \n'
+         ' \n'
+         'They have a user limit. \n',
          "image/jpeg",
          convert_ascii(static_images + "mixer-reload.jpg"))
         )
@@ -100,7 +114,14 @@ def make_db_from_schema(db_path):
         ('YeahMon',
          'http://c3.radioboss.fm:8095/autodj',
          save_parent_folder,
-         '',
+         'Yeah Mon Radio \n'
+         'Reggae, Soca, Afrobeats, RnB, Hip Hop, Pop \n'
+         ' \n'
+         'yeahmonradio@gmail.com \n'
+         'Tel 678-778-3401 \n'
+         ' \n'
+         'Republic of Vanuatu, island country in Melanesia,\n'
+         'located in the South Pacific Ocean.\n',
          "image/jpeg",
          convert_ascii(static_images + "mixer-construction-site.jpg"))
         )
@@ -110,7 +131,10 @@ def make_db_from_schema(db_path):
         ('playUrban',
          'http://live.playradio.org:9090/UrbanHD',
          save_parent_folder,
-         '',
+         'Play urban, Romania \n'
+         ' \n'
+         'You can use "Edit" database to go to their Web site. \n'
+         'They have multiple streams and a you can request a song. \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-red_120x200.png"))
         )
@@ -120,7 +144,11 @@ def make_db_from_schema(db_path):
         ('Nachtflug',
          'http://85.195.88.149:11810/sid=1',
          save_parent_folder,
-         '',
+         'Nachtflug, Germany \n'
+         'Goth, Industrial, Electronic \n'
+         ' \n'
+         'They have a broadcast schedule and you can request a song. \n'
+         'You can use "Edit" database to go to their Web site. \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-violet_120x200.png"))
         )
@@ -130,7 +158,12 @@ def make_db_from_schema(db_path):
         ('hm',
          'https://hirschmilch.de:7001/prog-house.mp3',
          save_parent_folder,
-         '',
+         'Hirschmilch Radio - hirschmilch.de \n'
+         ' \n'
+         'Radio Shows.'
+         ' \n'
+         'Hirschmilch Radio Channels \n'
+         'Chillout, Electronic, Prog-House, Progressive, Psytrance, Techno \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-whiteneongelb_120x200.png"))
         )
@@ -140,16 +173,10 @@ def make_db_from_schema(db_path):
         ('zenStyle',
          'https://radio4.cdm-radio.com:18004/stream-mp3-Zen',
          save_parent_folder,
-         'recontextualize next-generation vortals, engineer plug-and-play experiences, deploy dynamic action-items, '
-         'synthesize transparent relationships, transition next-generation mindshare, morph dynamic paradigms, '
-         'orchestrate end-to-end initiatives, incubate frictionless content, revolutionize efficient e-services, '
-         'redefine impactful users, engage leading-edge eyeballs, envisioneer 24/365 deliverables, incentivize viral '
-         'infomediaries, whiteboard clicks-and-mortar experiences, generate B2C e-commerce, envisioneer extensible '
-         'convergence, morph 24/7 experiences, utilize customized e-services, strategize customized systems, '
-         'scale proactive markets, exploit bleeding-edge partnerships, repurpose integrated infrastructures, '
-         'seize cutting-edge relationships, brand enterprise e-services, morph value-added partnerships, '
-         'recontextualize customized communities, enable magnetic web services, maximize cutting-edge relationships,'
-         'integrate front-end synergies, embrace one-to-one supply-chains, leverage proactive functionalities',
+         'Radio Costa Del Mar \n'
+         ' \n'
+         'Channels: \n'
+         'CHILLOUT, DEEP-HOUSE, SMOOTH, JAZZ, DANCE, FUNKY, ZEN \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-white_120x200.png"))
         )
@@ -159,7 +186,11 @@ def make_db_from_schema(db_path):
         ('Paloma',
          'https://pool.radiopaloma.de/RADIOPALOMA.mp3',
          save_parent_folder,
-         'Berlin /Germany',
+         'Berlin /Germany \n'
+         'Schlager \n'
+         ' \n'
+         'You can use "Edit" database to go to their Web site. \n'
+         'Some advertising. \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-brown_120x200.png"))
         )
@@ -169,8 +200,12 @@ def make_db_from_schema(db_path):
         ('Bayern1',
          'https://streams.br.de/bayern1obb_2.m3u',
          save_parent_folder,
-         '*m3u playlist server, redirect to first server in the list \n'
-         'Bavaria / Germany \n',
+         'Bayern Germany \n'
+         'Pop \n'
+         ' \n'
+         'An example for a m3u playlist server. It sends a list of streams. \n'
+         'EisenRadio will connect to the first listed radio station. \n'
+         'https://streams.br.de/bayern1obb_2.m3u \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-black_120x200.png"))
         )
@@ -180,24 +215,21 @@ def make_db_from_schema(db_path):
         ('Reggae',
          'http://hd.lagrosseradio.info:8000/lagrosseradio-reggae-192.mp3',
          save_parent_folder,
-         'Paris / France \n\n'
-         'recontextualize next-generation vortals  \n'
-         'engineer plug-and-play experiences \n'
-         'deploy dynamic action-items \n'
-         'synthesize transparent relationships \n'
-         'transition next-generation mindshare \n'
-         'morph dynamic paradigms \n'
-         'orchestrate end-to-end initiatives \n'
-         'incubate frictionless content \n'
-         'revolutionize efficient e-services \n'
-         'redefine impactful users \n'
-         'engage leading-edge eyeballs \n'
-         'envisioneer 24/365 deliverables \n'
-         'incentivize viral infomediaries \n'
-         'generate B2C e-commerce \n'
-         'envisioneer extensible convergence \n'
-         'morph 24/7 experiences \n'
-         'utilize customized e-services \n',
+         'Paris / France \n'
+         'REGGAE \n'
+         ' \n'
+         '3 webradios et 3 webzines gratuits, militants et 100% indépendants \n',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('aacChill',
+         'http://radio4.vip-radios.fm:8020/stream128k-AAC-Chill_autodj',
+         save_parent_folder,
+         'Radio Costa Del Mar \n'
+         'chillout \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
         )

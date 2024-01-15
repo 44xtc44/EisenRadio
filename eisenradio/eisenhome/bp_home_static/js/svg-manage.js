@@ -1,55 +1,20 @@
-/* SVG Animation
- * animate the inline svg groups in index.html to make a big show with different attractions
+/**
+ * Essential fun and classes.
  *
- * htmlColNames             - palette of colors that can be called by name in a browser, means those are hand picked nice colors
- * zeppelinColorOrder       - list of element names (svg path id, like html div id), the order to color them;
- *                             sometimes order of elements drawn in inkscape differs from needed order
- *                             used for class ShadesOfColor
- * toggleAnimalDefaultDivSvG() - toggle between animals with AnimalDefaultDivSvG instance
- * class AnimalDefaultDivSvG   - announce new animation for "defaultFrontAnimation()" to show
- * class CountUpDown        - up down count for rotation or color switching, can count fractions of a digit
  * class SimpleCounter      - looks simple, provides masses of counters and can be used to smooth in/out a movement
  * class PowerSwitch        - switch html/svg elements on/off, colorize, flash them and restore original color (Am I a data center backup restore specialist; consultant)
- * toggleWriteToDiskAnimation() - a rotating svg image of a disc shows active record (inkscape image of a unicode symbol, that not liked to rotate)
- * skipRecordShowMessageInABottle() - sipped record!, info by showing a message in a bottle image with 'skip' label for the radio
- * dimRadioForAnimation()   - press genre text as button to hide headline and information badge
- * dimRadioForAnimationExec - called by dimRadioForAnimation() with a timer to prevent bug "need dblClick"
- * class Shaker             - can make micro movements; annoying advertisements; used for animateGenreClickTeaser() after 30min
  * class MoveSinCos         - methods to calculate triangles to move a div, used to create movements if angle is given
  * powerLevelAnimation()    - slice the audio data range into intervals (at will) to apply different colors, one arg is PowerSwitch instance
  * class AnimationTimer     - the director of the show; when to start, stop, how big, random angle, angle correction, variable modification
  * moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement, extraTransform)
  *                          - the mover; moves and scales elements, aborts animation, can apply one extra transformation
- * colorizeDefaultSvgStageElements(darkBody)               - SVG: colors sky, ocean, clouds, iceberg, stars day and night style
- * defaultFrontAnimation(smoothVolume, powerLevelDict)     - the inflated animal show, scaling, rotation
- * defaultStageHtmlElementsShow()                          - HTML: decorates the stage with screw heads, shows the container with animated div
- *                                                           encapsulated <use> svg images, (shows no images, only enables the container)
- * defaultFlatSpeakerAnimation()                           - nails the speaker on the stage
- * svgAnimationMain() - animation frame function, calls all animation functions, which decide itself to run or not
- *          defaultStageHtmlElementsShow()                           - floe, screws, enable div with encapsulated <use>
- *          colorizeDefaultSvgStageElements(darkBody)                - clouds, iceberg
- *          animateFrontPigs(darkBody, smoothVolume, powerLevelDict) - animals at the front line (ger: Frontschweine)
- *          animateBuoy(darkBody);                                   - edit button
- *          animateSpeaker(smoothVolume);
- *          animateZeppelin(darkBody, smoothVolume);
- *          animateCheckeredBalloon(smoothVolume);
- *          animateParachuteDrop();
- *          animateA1AirCraft();
- *          animateClouds(darkBody);
- *          animateGpsSat(darkBody);
- *          animateStars(darkBody);
- *          animateGenreClickTeaser();                                 - uses Shaker instance
- * class MoveX - instances can move +-x, how many pixel in which time, wait timer; clouds,satellite,iceberg
  * smoothOutVolume(reqFftSize, softMod) - return the softened average dB volume over the whole frequency
  *                                        spectrum of current audio piece
  * getAverageVolume (reqFftSize) - get average vol for a set of frequency ranges (currently played milli sec of audio),
  *                                 called samples
- * changeColorPathToHsl(instanceOfShadesOfColor) - colorizes the elements
- * class ShadesOfColor - auto shade a list of elements which share a random base color (zeppelin)
- * touchMoveItemsEventListenerSet () - make some divs touchable for mobile or touchscreen
- *
- * instance initialization
  */
+  "use strict";
+
 class CountUpDown{
 /* target: endless count up, down
  *   count up and down for alternating direction or color fade in out, step is per frame;
@@ -100,33 +65,6 @@ class SimpleCounter{
     }
 }
 ;
-class Shaker{
-/* target: shake an element, like a vibrating phone
- * could have rotation; only for short time animation, longer leads to brain damage
- */
-    constructor(){
-        this.shakeStatus = undefined;
-        this.counter = 0;
-        this.maxCount = 10;
-    }
-    shake(elementId, step){
-        let elem = document.getElementById(elementId);
-        this.counter += step;
-        if(this.counter > this.maxCount){this.counter = 1}
-        if(this.counter === 1 ){elem.style.transform = "translate(1px, 1px)   "}
-        if(this.counter === 2 ){elem.style.transform = "translate(-1px, -2px) "}
-        if(this.counter === 3 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 4 ){elem.style.transform = "translate(2px, 2px)   "}
-        if(this.counter === 5 ){elem.style.transform = "translate(1px, -1px)  "}
-        if(this.counter === 6 ){elem.style.transform = "translate(-1px, 2px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(-2px, 0px)  "}
-        if(this.counter === 7 ){elem.style.transform = "translate(2px, 0px)   "}
-        if(this.counter === 9 ){elem.style.transform = "translate(-1px, -1px) "}
-        if(this.counter === 10){elem.style.transform = "translate(0px, 1px)   "}
-    }
-}
-;
-
 class PowerSwitch{
 /* target: SVG path elements show timeDomainData values in different colors (spectrum analyser);
  *         tec target: create a microcontroller light switch in high level language
@@ -148,9 +86,6 @@ class PowerSwitch{
  *                                            flashPatternList: [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
  *                                            flashPatternMultiplier: 20});
  *
- * updateOneInAMillion method description:
- *   target: choose a random object out of a list and change the color of it or lightness (stars, water reflections,...)
- *           for a sequence (browser frames)
  */
     constructor(options){
         if (options === undefined) options = {};
@@ -168,7 +103,6 @@ class PowerSwitch{
         if (options.flashPatternList === undefined) options.flashPatternList = false;
         if (options.flashPatternMultiplier === undefined) options.flashPatternMultiplier = 10;
         if (options.flashColor === undefined) options.flashColor = "#fff";
-        if (options.oneInAMillionRun === undefined) options.oneInAMillionRun = false;
         if (options.scale === undefined) options.scale = 1;
 
         this.dropShadow = options.dropShadow
@@ -191,9 +125,6 @@ class PowerSwitch{
         this.hue = options.hue;
         this.flashPatternList = options.flashPatternList;// list with flash pattern, flashPatternList:[0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
         this.flashPatternMultiplier = options.flashPatternMultiplier; // stretch the flash pattern; each row multiplied with frames to show
-        this.maxSimultaneousFlash = options.maxSimultaneousFlash;     // updateOneInAMillion() max random elements same time
-        this.oneInAMillionList = []                                   // can be actually more than one to show a better performance in 1000's
-        this.oneInAMillionRun = options.oneInAMillionRun;             // indicates if a list should be build
         this.flashPowerList = [];           // list with multiplied pattern for switching on/off per frame
         this.currentFlashIndex = 0;         // return the current row of flashPowerList
         this.flashColor = options.flashColor;        // avoid stroke color and shadows where possible, it brings ff to the edge of usability
@@ -222,29 +153,10 @@ class PowerSwitch{
         this.initElementFillColorsDict();
         this.initElementStrokeColorsDict();
         this.initElementPowerDict();
-        if(this.flashPatternList){
-            this.initElementFlashList();
-            this.initOneInAMillionList();  // small price to pay on construction if no oneInAMillion is used
-        }
         this.initElementMemOrgFillColorsDict();  // store the original fill color for each element
-    }
-    initOneInAMillionList(){
-        /* fill list with a max random number of elements,
-         * but must be less than elements list,
-         * take a dict to store original index number to reapply original color and size
-         */
 
-        if(this.oneInAMillionRun === false) return;  // no oneInAMillion instance call set it true
-        let maxNumPossible = this.elementsList.length;
-        let maxNumDesired = this.maxSimultaneousFlash;
-        if(maxNumDesired > maxNumPossible) maxNumDesired = maxNumPossible;
-        /* call n times random function to get new element, we can be super duper and ask if we have this element already, but who cares, no impact at all*/
-        for(let index = 1; index <= maxNumDesired; index++){
-            let flashCandidateIndex = getRandomIntInclusive(0,this.elementsList.length -1);
-            let indexPathDict = {};                     // reset dict and write new {355: path488}
-            indexPathDict[flashCandidateIndex] = this.elementsList[flashCandidateIndex];
-            this.oneInAMillionList.push(indexPathDict); // store dict at next array index
-        }
+        this.isDOMEnabled = options.isDOMEnabled;  // DOM element instances can switch on, and get their css styles switched.
+        this.logTag = options.logTag;
     }
     initElementFlashList(){
     /* FLASH: stretch original flash pattern list by flashPatternMultiplier (frames) */
@@ -336,47 +248,6 @@ class PowerSwitch{
             this.methodStrokeColorsDict[this.methodList[index]] = mArray;
         }
     }
-
-    updateOneInAMillion(){
-    /* change color of a random <g> member for a given browser frame multiplier sequence (frame x n, time)
-     *  can have flash pattern for the flashPatternMultiplier time frame
-     *  after flash apply original color to hide it in the crowd again
-     *  rewrites the list with animation candidates after a flash sequence
-     * reuse flashPowerList (flashPatternList x flashPatternMultiplier) of updateFlashPattern() method
-     *
-     * let starOneInAMillion = new PowerSwitch({path: document.querySelectorAll("#gTuxStageStars path"),
-     *                                      flashColor:"#fff",             // can also be set before updateOneInAMillion() to create randomness
-     *                                      maxSimultaneousFlash: 3,       // max elements simultaneous animated
-     *                                      flashPatternList: [0,1,0,1],   // each element multiplied by flashPatternMultiplier
-     *                                                                     // is overall animation time 4 x 5 = 20 frames, can be [1] on whole time
-     *                                      flashPatternMultiplier: 5
-     *                                      oneInAMillionRun:true,         // since we reuse all possible methods, this.oneInAMillionList must be created
-     *                                       });
-     * ! caller can change color before update
-     * starOneInAMillion.flashColor = "#yourHex";  starOneInAMillion.updateOneInAMillion();
-     *
-     */
-        this.eAnimateOneInAMillion(this.flashPowerList[this.currentFlashIndex]); // arg is list row with display none or inline-block
-        this.currentFlashIndex ++;
-        if(this.currentFlashIndex > this.flashPowerList.length -1) {
-        /* reset to original size and color, update list with new elements */
-            this.currentFlashIndex = 0;
-            for(let index=0;index<=this.oneInAMillionList.length -1;index++){
-                let rowDict = this.oneInAMillionList[index];  // means that now a dict with one key/val pair is in rowValue {355:pathObject#path485}
-                let rowDictKey = Object.keys(rowDict)[0];     // only one key/val pair here so we know start and end of dict is zero
-                let rowDictVal = rowDict[rowDictKey].id;      // pathObject#path485, pathObject.id = "path485"
-                let svgPathElem = document.getElementById(rowDictVal);
-                // svgPathElem.style.transform = "scale(1,1)";
-                /* need original index number of this.elementsList, pulled into rowDict to restore color
-                 */
-                svgPathElem.style.fill = this.eMemOrgFillColorsDict[this.elementsList[rowDictKey].id];
-            }
-            this.oneInAMillionList = [];      // reset candidate list
-            this.initOneInAMillionList();     // get new candidates
-        }
-
-    }
-
     updateFlashPattern(){
     /* flash with one element or a row as one element a pattern, must be a list of svg <g> elements
     let flasheAni = new PowerSwitch({path: document.querySelectorAll("#z1PositionLights path"),
@@ -390,66 +261,88 @@ class PowerSwitch{
     }
 
     noPower(){
-        if(this.animatePower) this.ePowerOnOf("noPower");
-        if(this.animatePower) this.eAnimatePower();
+        if(this.animatePower) {
+          this.ePowerOnOf("noPower");  // write dict all none
+          if(this.isDOMEnabled) {
+            this.eAnimatePower();      // change elements display style
+          }
+        }
     }
     lowPower(){
     /* recap: this.methodFillColorsDict[foo] = [0,60,20,40,60] [min,max,hueNum1,hueNum2,hueNum3,...]
        this.eFillColorsDict = {waveOne:20,waveTwo:40,waveThree:60}
      */
-        if(this.animatePower) this.ePowerOnOf();
-        if(this.animateColor) this.eColor("lowPower");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.animatePower) this.ePowerOnOf();  // rewrite dict with elem name and current display style
+        if(this.animateColor) this.eColor("lowPower");  // two dicts with fill and stroke color
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     midLowPower(){
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("midLowPower");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     midPower(){
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("midPower");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     midHighPower(){
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("midHighPower");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     fullPower(){
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("fullPower");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     lowClassic(){
     // define an interval to raise the animation start level for classic and blues, since there is not much dynamic
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("lowClassic");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     midClassic(){
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("midClassic");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
     fullClassic(){
     // the normal lowPower() (one wave shown) level begins after this level,
     // contemporary computerized music with high dynamic (high frequency amplitude, high electric pressure)
         if(this.animatePower) this.ePowerOnOf();
         if(this.animateColor) this.eColor("fullClassic");
-        if(this.animatePower) this.eAnimatePower();
-        if(this.animateColor) this.eAnimateColor();
+        if(this.isDOMEnabled) {
+          if(this.animatePower) this.eAnimatePower();
+          if(this.animateColor) this.eAnimateColor();
+        }
     }
-
     ePowerOnOf(overRide){
-    /* decide to switch on/off an element */
+    /* decide to switch on/off an element
+       Write key elements in a dict. Value is DOM elements display style.
+       {speakerFlatWavOne: "inline-block", speakerFlatWavThree: "none", speakerFlatWavTwo: "none"}
+    */
         if(overRide == "noPower"){
             for(let index=0;index<=Object.keys(this.ePowerDict).length -1;index++){
                 let keyName = Object.keys(this.ePowerDict)[index];
@@ -473,7 +366,9 @@ class PowerSwitch{
         }
     }
     eColor(methodPower){
-    /* remember: first two values are min and max of selected piece on hue circle in deg, reason for methods */
+    /* remember: first two values are min and max of selected piece on hue circle in deg, reason for methods
+      {speakerFlatWavOne: 316.6666666666667, speakerFlatWavThree: 350, speakerFlatWavTwo: 333.3333333333333}
+    */
         let start = 2;
         for(let index=start;index<=this.methodFillColorsDict[methodPower].length-1;index++){
             // transfer the method hue values to the element id's, actually names, to switch fill color
@@ -490,22 +385,6 @@ class PowerSwitch{
             svgPathElem.style.fill = this.flashColor;
         }
     }
-
-    eAnimateOneInAMillion(powerState){
-    /* not like eAnimateFlashPower()
-     * we use a dict per array index row with key:this.elementsList and value element id, {355:path485}
-     */
-        for(let index=0;index<=this.oneInAMillionList.length -1;index++){
-            let rowDict = this.oneInAMillionList[index];  // means that now a dict with one key/val pair is in rowValue {355:pathObject#path485}
-            let rowDictKey = Object.keys(rowDict)[0];     // only one key/val pair here so we know start and end of dict is zero
-            let rowDictVal = rowDict[rowDictKey].id;      // pathObject#path485, pathObject.id = "path485"
-            let svgPathElem = document.getElementById(rowDictVal);
-            svgPathElem.style.display = powerState;
-            svgPathElem.style.fill = this.flashColor;
-            //svgPathElem.style.transform = "scale(" + this.scale + "," + this.scale + ")";
-        }
-    }
-
     eAnimatePower(){
     /* svg element on/off */
         for(let index=0;index<=Object.keys(this.ePowerDict).length -1;index++){
@@ -535,7 +414,7 @@ class PowerSwitch{
             let svgPathElem = document.getElementById(this.elementsList[index].id);
             svgPathElem.style.fill = this.eMemOrgFillColorsDict[this.elementsList[index].id];
         }
-        console.log("* applyOrgColor() to path elements; Dict, logName *", this.eMemOrgFillColorsDict,logName);
+        // console.log("* applyOrgColor() to path elements; Dict, logName *", this.eMemOrgFillColorsDict,logName);
     }
 }
 ;
@@ -556,11 +435,6 @@ class MoveSinCos{
         this.updateCounter = new SimpleCounter();
         this.step = options.step;       // step or unit to multiply with result of sin/cos; result is for one unit x only
         this.speed = options.speed;     // slows motion, fills x speed steps between one count of 1deg of 360deg
-        this.styleTop = options.styleTop;   // override default div location
-        this.styleTop = options.styleLeft;
-        this.styleTop = options.styleRight;
-
-        this.elementId = options.elementId    // document id
         this.arcUpDown = options.countInstance; // can instantiate a counter class,
                                         // must have "currentValue()", "update()" and "reset()" method implemented
         this.speedCounter = 0;
@@ -619,7 +493,7 @@ class MoveSinCos{
     }
 }
 ;
-function powerLevelAnimation({smoothVolume: smoothVolume, animatedInstance: animatedInstance}){
+function powerLevelAnimation( {smoothVolume: smoothVolume,animatedInstance: animatedInstance} ) {
 /* target: slice the (estimated) data range into intervals to apply different colors; my Computer shows 0 to 4,5 at HipHop
  *         return the power level of incoming current audio package,
  *         feed the colored audio visuals like speaker and balloon elements by calling a class method by instance
@@ -799,19 +673,18 @@ class AnimationTimer{
         // this.randomEventFunction(); // execute the external method or function, empty function if not set
         if(this.randomEvent == false) this.randomEventFunction();    // if event not happens call a function (cleanup)
         this.externalFunction();
-        console.log("AnimationTimer reset(), name, deg, direction, wait, evt ",
-                                                                    this.logName,
-                                                                    this.angle,
-                                                                    this.direction,
-                                                                    this.animationMemoryWaitTime,
-                                                                    this.randomEvent,
-        )
+        // console.log("AnimationTimer reset(), name, deg, direction, wait, evt ",
+        //                                                             this.logName,
+        //                                                             this.angle,
+        //                                                             this.direction,
+        //                                                             this.animationMemoryWaitTime,
+        //                                                             this.randomEvent,
+        // )
     }
     update(){
         /* can wait to start and tell animation to end after n frames (not implemented)
          * return if no listen button is pressed, since rec is not animated
          */
-        if(activeListenId === "noId") return;
         this.animationWaitTime--;
         if(this.animationWaitTime <= 0){
             this.run = true;
@@ -821,6 +694,7 @@ class AnimationTimer{
         }
         this.angleCorrect();           // check if go 90 (hell) or 270deg (heaven) too fast
         this.angle -= this.angleMod;   // make some circle-ish move, change direction angleMod per frame
+        // inflate the img per cycle and change direction if get too small
         if(this.direction){
             this.scale += this.scaleMod;
             if(this.scale >= this.scaleMax) this.scale = this.scaleMax;
@@ -842,16 +716,46 @@ function moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement
  */
     let animTimer = animationTimerInstance;
     let acrCalc = moveSinCosInstance;
-/* to get no brain damage calculating +-x, all further sprites facing towards right !!! */
+/* to get no brain damage calculating +-x, all further sprites facing towards right !!!
 
+   4715271/tan-in-javascript   - tan for move y; atan2 for nose rotation val to face direction in angle
+
+    var deg2rad = Math.PI/180;
+    var rad2deg = 180/Math.PI;
+    And then use them like so:
+
+    var ratio   = Math.tan( myDegrees * deg2rad );
+    var degrees = Math.atan( ratio ) * rad2deg;
+    JavaScript deals only in radians, both as arguments and return values. It's up to you to convert them as you see fit.
+
+    Also, note that if you're trying to find the degrees of rotation for xy coordinates, you should use Math.atan2 so that JavaScript can tell which quadrant the point is in and give you the correct angle:
+
+    [ Math.atan( 1/ 1), Math.atan2( 1, 1) ]; // [  45,  45 ]  atan2(y, x)
+    [ Math.atan( 1/-1), Math.atan2( 1,-1) ]; // [ -45, 135 ]
+    [ Math.atan(-1/ 1), Math.atan2(-1, 1) ]; // [ -45, -45 ]
+    [ Math.atan(-1/-1), Math.atan2(-1,-1) ]; // [  45,-135 ]
+
+    Looks like the crashes deal with the four quadrants and divide by zero.
+*/
+    let lastRun = false;
     let divElem;
     if(animTimer.run){
         try{
             let divElem = document.getElementById(htmlElement);
             divElem.style.display = "inline-block";
 
+            let oldX = acrCalc.mileStoneX;
+
             let y = acrCalc.calcYForXMileStone(animTimer.speed, animTimer.angle);
+            let degrees = Math.atan2(y,oldX) * 180/Math.PI;  // degToMilestone
+            if (degrees > 90) {
+              degrees = 450 - degrees;
+            } else {
+              degrees = 90 - degrees;
+            }
+            // cl("atan2-> ", degrees)
             let x = acrCalc.mileStoneX;
+
 
             // MOVE: go by angle and speed in x direction, calc y by ( adjacent * tan(x) = opposite = y);
             if(animTimer.angle <= 90 && animTimer.angle >= 270){
@@ -885,32 +789,21 @@ function moveRandomAngle(animationTimerInstance, moveSinCosInstance, htmlElement
                 animTimer.reset();
                 acrCalc.reset();
                 divElem.style.display = "none";
+                lastRun = true;
            }
 
            if(divElemRect.x > window.innerWidth || divElemRect.x < 0){
                 animTimer.reset();
                 acrCalc.reset();
                 divElem.style.display = "none";
+                lastRun = true;
            }
            /* if empty no pb */
            divElem.style.transform += extraTransform;
 
         } catch (error) {console.log("moveRandomAngle() ", divElem, error)}
     }
-}
-;
-function animateStars(darkBody){
-/* STARS
- * target: random blink of 1-n stars in dark mode, if full html style selected
- * base: svg <g> element with multiple paths (stars) that have an id="foo1" and no fill attribute at all
- *       create a refreshed list with index 1-n, filled with random id from all avail. id (this.oneInAMillionList) in PowerSwitch class
- *       blink pattern, set at instance creation
- *
- */
-    if(htmlSettingsDictGlobal["checkboxConfigAnimation"] && darkBody && htmlSettingsDictGlobal["cpuUtilisation"]){
-        starOneInAMillion.flashColor = "orange";
-        starOneInAMillion.updateOneInAMillion();
-    }
+    return lastRun;
 }
 ;
 
@@ -932,14 +825,14 @@ try soften the difference between this and the following (unknown) audio piece
 function getAverageVolume (reqFftSize) {
     /* get average vol for a set of frequency ranges (currently played milli sec of audio), called samples */
 
-    analyserNode.fftSize = reqFftSize;
+    analyserNodeOne.fftSize = reqFftSize;
     /* whole frequency spectrum is divided in frequency ranges and put in sets (bins) */
-    const bufferLength = analyserNode.frequencyBinCount;
+    const bufferLength = analyserNodeOne.frequencyBinCount;
         // could also write (new Uint8Array(reqFftSize/2)) the half of fftSize 128/2
     const dataArray = new Uint8Array(bufferLength);
         // pump actual data sliced into 64 pieces into analyserNode
         //  analyserNode.getByteFrequencyData(dataArray)     analyserNode.getByteTimeDomainData(dataArray)
-    analyserNode.getByteTimeDomainData(dataArray);
+    analyserNodeOne.getByteTimeDomainData(dataArray);
         // now analyserNode object holds dataArray[64] [56,209,78,..] [134, 78, 98, ...]
     /* convert array data from val(0-255)int to val(1 to -1)float
      standard sin, cos wave amplitude is between 1 and -1, see unit circle
@@ -976,207 +869,3 @@ function getAverageVolume (reqFftSize) {
     return volume;
 }
 ;
-function changeColorPathToHsl(instanceOfShadesOfColor){
-/*
- * this guy colorizes the elements,
- * target: let multiple instances of ShadesOfColor class change color -> change it to be part of the class, remove function
- *   ideally used on AnimationTimer class reset event, can be used as instance creation option
-   externalFunction:function(){console.log("Zeppelin aniTimer ",zeppelinShadesOfColor.pathToHueDict);
-                           zeppelinShadesOfColor.update({hueColor:getRandomIntInclusive(1,360)});
-                           changeColorPathToHsl(zeppelinShadesOfColor);
-                            },
- *  this function is called after each AnimationTimer.reset() to paint the zeppelin with fresh color
- * path names for svg elements must be unique in a document, else we colorize a wrong path
- */
-    try{
-        for(index=0;index <= Object.keys(instanceOfShadesOfColor.pathToHueDict).length -1;index++){
-            let path  = Object.keys(instanceOfShadesOfColor.pathToHueDict)[index];
-            let color = instanceOfShadesOfColor.pathToHueDict[path];
-            //console.log("-> changeColorPathToHsl() ",path,color)
-            document.getElementById(path).style.fill = color;
-        }
-    } catch (error) {console.log("-> error changeColorPathToHsl() ",instanceOfShadesOfColor,error)}
-}
-;
-class ShadesOfColor{
-/* target: animation, shade a list of elements which share a random base color (color the zeppelin at first)
- * reason: single colored elements don't suffer from high cpu load like gradients,
- *          avoid the need to recalc gradient at each frame for each html, svg element, same as blur,
- *          stroke color and box shadow can kill your animation, FF crashed
- * needs a start color and the number of svg/html elements to calc an interpolated (values in between high low) list of saturation values
- * need to randomize and convert hex #r g b #ff ff ff (more easy to see the system) to hue, to get comma, float values
- * grey: all base colors share the same number #121212, #3a3a3a, but difference in hex is very hard, #3b3b3b
- * seems need to go to saturation in percent with hsl(baseColor,saturation%,lightness%)
- * lightness: grey is hsl(baseColor,0%,20%) only lightness counts so it is the same hsl(0,0%,20%), see how inkscape reset
- *      from 10% you see grey, else black to 100% is white
- *      color: from 10-80% noticeable, best from 60 light to 20% full range
- * saturation: no impact on grey, lightness must be over 10% else black
- *      noticeable only from 10%, good values start from 50% to crisp 100%
- *
- * usage: let zeppelinShadesOfColor =
- *          new ShadesOfColor({pathCollection:document.querySelectorAll("#z1Body path"),
- *                             saturation:100,
- *                             lightness:50,
- *                             brightestTop:false,  // start from bottom with brightest color
- *                            })
- *          zeppelinShadesOfColor.update(86);  // hue color degree
- *          pseudo; for each in index=0  Object.keys(zeppelinShadesOfColor.pathToHueDict).length -1 ;
- *              let path  = Object.keys(zeppelinShadesOfColor.pathToHueDict)[index]
- *              let color = zeppelinShadesOfColor.pathToHueDict[path]
- * see also, https://mika-s.github.io/javascript/colors/hsl/2017/12/05/generating-random-colors-in-javascript.html
- */
-
-    constructor(options){
-        if(options === undefined) options = {};
-        if(options.pathCollection === undefined) options.pathCollection = [];
-        if(options.reverseList === undefined) options.reverseList = false;
-        this.pathCollection = options.pathCollection;
-        this.brightestTop = true;
-        this.saturation = options.saturation;
-        this.lightness = options.lightness;
-        this.elementList = [...this.pathCollection];
-        this.pathToHueDict = undefined;
-        this.hueColor = 300;
-        this.pathToHueDict = {};
-        this.reverseList = options.reverseList;
-         /* make a list with color numbers that give no good contrast with default settings here, like 240 +-5 dict num
-          * just to show how it works, blacklisted start, blacklisted stop
-          */
-        this.forbiddenColors = {1:[215,250],
-                                2:[251,275],
-                                };
-        this.noColorList = [];
-        this.noColorListCreate();  // make a list with forbidden colors, if(this.noColorList.includes(255)) {exec = false}
-    }
-    noColorListCreate(){
-    /* js can check if value is in list "includes", pseudo: if list.includes(value)=true, element gets new color
-     */
-        for(let index=0;index<=Object.keys(this.forbiddenColors).length -1;index++){
-            let key = Object.keys(this.forbiddenColors)[index];
-            let val = this.forbiddenColors[key];
-            let min = val[0];
-            let max = val[1];
-            for(let k=min;k<=max;k++){
-                this.noColorList.push(k);
-            }
-        }
-    }
-    update(hueNum, pathListOption){
-        /* create list of colors from 100% to min 50%,
-         * pathListOption: can write a list with path id to change order of coloring ["gz1Body_5_part","gz1Body_1_part"]
-         * must have a range to fit the list in
-         *  {"gz1Body_1": "hue(122,50,50)",
-         *   "gz1Body_2": "hue(122,51,50)",
-         *  }
-         */
-        this.pathToHueDict = {};    // delete old stuff from dict
-        let saturationBright = 50;  // min
-        let saturationCrisp = this.saturation;  // option for max
-        let lightnessDark = 20;     // min
-        let lightnessBright = this.lightness;   // option for max
-        /* make a lists of values to assign, best values last to see darker color at the bottom unless
-         * this.brightestTop = false
-         * keep it simple at first, make another method advanced stuff later
-         *     start at 50 lightness and go down hue(112,50,50), hue(112,50,49) smaller is darker
-         *     start at 100 saturation and go down hue(112,100,50), hue(112,99,50) smaller is darker
-         */
-        let updateFromList = true;
-        if(pathListOption === undefined)  {
-            pathListOption = this.elementList;
-            let updateFromList = false;
-        } else {
-            this.elementList = pathListOption;
-        }
-        if(this.reverseList == true) pathListOption.reverse();
-
-        let shadesNum = pathListOption.length;
-        let _saturation = this.saturation;
-        let _lightness = this.lightness;
-        let saturationRange = saturationCrisp - saturationBright;
-        let lightnessRange = lightnessBright - lightnessDark;
-        let saturationStep = saturationRange /shadesNum;
-        let lightnessStep = lightnessRange / shadesNum;
-        // turn if we get more path elements than range count, [need test]
-        if(shadesNum > saturationRange) saturationStep = shadesNum / saturationRange;
-        if(shadesNum > lightnessRange) lightnessStep = shadesNum / lightnessRange;
-        for(let index = 0;index <= pathListOption.length -1 ; index++){
-
-           if(updateFromList == false){
-           // constructor hits, gets path objects: need to ask for id from object, we choose an other color var to better show a different way to the same goal
-               if(this.noColorList.includes(this.hueColor)){this.hueColor = getRandomIntInclusive(0,100);}
-               this.pathToHueDict[pathListOption[index].id] = "hsl(" + hueNum + "," + _saturation + "%," + _lightness + "%)" ;
-           }
-
-            if(updateFromList == true){
-            // direct method call provides hard coded list of html element id: simple values, no objects
-                if(this.noColorList.includes(hueNum)){hueNum = getRandomIntInclusive(0,100);}
-                this.pathToHueDict[pathListOption[index]] = "hsl(" + hueNum + "," + _saturation + "%," + _lightness + "%)" ;
-            }
-            /* this can be made better, we have exclusion list of colors already (this.forbiddenColors) to avoid color mush
-             * color ranges have different lightness and saturation best fit ranges, needs investigation for next project
-             */
-            _saturation -= saturationStep;
-            _lightness  -= lightnessStep;
-        }
-    }
-}
-;
-
-/*                      -- Instances --
- */
-
-function initManager() {
-  /* I wonder how, I wonder why ...
-
-     window.var makes variables global across multi scripts.
-     functions can be mocked, not global vars. Perhaps Android mock test works?
-   */
-  window.infSpeaker = new PowerSwitch({path: document.querySelectorAll("#gSvgSpeakerFlatWaves path")});// animate speaker dynamic fake waves
-
-  window.starOneInAMillion = new PowerSwitch({path: document.querySelectorAll("#gTuxStageStars path"),
-                                          flashColor:"#fff",             // can also be set before updateOneInAMillion() to create randomness
-                                          maxSimultaneousFlash: 16,       // max elements simultaneous animated
-                                          flashPatternList: [0,1,0,1,0,0,1,1],   // each element multiplied by flashPatternMultiplier
-                                                                         // is overall animation time 4 x 5 = 20 frames, can be [1] on whole time
-                                          flashPatternMultiplier: 3,
-                                          oneInAMillionRun:true,         // this.oneInAMillionList must be created
-                                      });
-  window.tuxIceFloeFrontPowerSwitch = new PowerSwitch({path: document.querySelectorAll(".tuxIceFloeFront"),  // if class no need to mention "path" or other element
-                                            hue: getRandomIntInclusive(600,800),
-                                            step:1/getRandomIntInclusive(4,8),   // to get more or less color reaction, divider
-                                            max:12,
-                                            maxCount:6,
-                                            slider:2,
-                                            dropShadow: "",
-                                            animatePower:false  // only color change, no on/off
-                                             });
-
-  /* an animate only fill on a use but here ok, all elements are clones of a rectangle PATH */
-  window.buoyPosLightPSwitch = new PowerSwitch({path: document.querySelectorAll("#buoySegmentVeryTopLight"),
-                                         flashPatternList:  [0,0,0,1,1,1,0,0,0,1,0,1,0,1],// [0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1],
-                                         flashPatternMultiplier: 6
-                                        });
-
-  window.genreShaker           = new Shaker(); // show that genre is clickable
-  window.genreSimpleCounter    = new SimpleCounter();  // teaser to show that genre text is clickable
-
-  window.animalZRotationUpDown   = new CountUpDown(-7.5, 7.5, 1/Math.PI/10);    // animal Z rotation in deg and step
-  window.animalTranslationUpDown = new CountUpDown(0, 40, 1/Math.PI/10);        // animal X translation in px and step
-  window.buoyZRotationUpDown     = new CountUpDown(-3.5, 4.5, 1/Math.PI/20);    // buoy and buoy as space station (for super cat later),
-                                                                         // same as us obama spoke: we fly to moon in 10 years, before 15 years+
-
-  window.zeppelinShadesOfColor = new ShadesOfColor({ //pathCollection:zeppelinColorOrder, // pathCollection:document.querySelectorAll("#gZ1BodyHullAndRear path"),
-                                                  hueColor:112,
-                                                  saturation:100,
-                                                  lightness:50,
-                                                  brightestTop:false,  // start from bottom with brightest color
-                                                  reverseList:false,
-                                                 })
-  zeppelinShadesOfColor.update(getRandomIntInclusive(300,360), zeppelinColorOrder); // a list with order of path id s
-  /* send the whole instance to function to read dictionary and apply changes
-   *   this.pathToHueDict {index of svg group element: hsl(119,50%,67%), indexN: hsl(119,50%,69%),... }
-   */
-  changeColorPathToHsl(zeppelinShadesOfColor);
-}
-;
-initManager();

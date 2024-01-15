@@ -3,12 +3,13 @@
 {% block content %}
 <hr>
 
-<h1>{% block title %} {{ radio_name }} - Records {% endblock %}</h1>
+<h3>{% block title %} {{ radio_name }} - Records {% endblock %}</h3>
 
 <hr>
 <div class="blacklist_div">
+    <p>Enable recorder blacklist in "Tools" menu. Stop to delete unwanted titles over and over again.</p>
 
-    <a href={{radio_start_page_url}}><p>return to {{ radio_name }}</p></a>
+    <a href={{url_for('eisenutil_bp.tools_blacklist_overview')}}><p>return</p></a>
 
     <p>{{ skip_count }} skipped during session</p>
     <form action="{{ url_for('eisenutil_bp.tools_blacklist_skipped', radio_name=radio_name) }}">

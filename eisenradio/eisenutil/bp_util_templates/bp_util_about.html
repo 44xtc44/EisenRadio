@@ -4,7 +4,6 @@
     {% endblock %}
     {% block content %}
 
-    <h1>{% block title %} About {% endblock %}</h1>
 <div class="divFadeIn">
 
     <div class="divBarToolsBg">
@@ -59,16 +58,9 @@
                                 Selected files are hold in RAM and copied to the radios parent folder after repair.<br>
                                 Incomplete data sequences are cut from start and end of file. Mini files are not written ().
                             </dd>
-                            <dt>Spectrum Analyser detachable, console submersible</dt>
-                            <dd>Turn your favorite sound maximum loud, with extra Gain (slider bottom) to see more action.<br>
-                            </dd>
-                            <dt>Picture</dt>
-                            <dd>Shows "Edit" Button. Guides you to the base URL of the radio server.<br>
-                                Some good radios have multiple streams available. Multiple genres and bit rates.
-                            </dd>
                             <dt>Internet radio won't play?</dt>
                             <dd>Internet radios change bit rates, stream file types, user limits, or split into multiple streams.<br>
-                                Look for URL change. Click the radio picture to do so.
+                                Look for URL change. "Edit" can guide you to a ShoutCast or IceCast side where updated information may be available.
                                 Append /sid=1 to the URL. As an example: http://85.195.88.149:11810/<b>sid=1</b>.<br>
                             </dd>
                             <dt>Hunt for your preferred Radio URL.</dt>
@@ -125,6 +117,10 @@
                     <p style="color:brown;font-size:14px;">{{ db_path }}</p>
                     <p>Delete the database if you uninstall, or reinstall. An existing database will not be overwritten.</p>
                     <p>Android user delete the /Music/Eisenradio/eisenradio_android.db, or the folder.</p>
+                    <p>Android is subject to change, since they implement more security levels.
+                        The current setup must write the database in the users app folder, where the user has no access!</p>
+                    <p>This will lead to a (future) new database entry and feature button, where we can choose to delete the database for
+                        re-installation.</p>
 
                 </details>
             </div>

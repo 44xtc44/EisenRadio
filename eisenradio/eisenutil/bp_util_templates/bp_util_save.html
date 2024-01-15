@@ -4,7 +4,6 @@
     {% endblock %}
     {% block content %}
 
-    <h1>{% block title %} Save {% endblock %}</h1>
 
 <div class="divFadeIn">
 
@@ -15,13 +14,14 @@
                 <hr>
                 <div class="form-group">
                     <form method="post">
-                        <label for="Path_Save_To">'Folder Name </label>
+                        <label for="Path_Save_To">Folder Name </label>
 
                         <input type="text" name="Path_Save_To"
                                    class="form-control"
                                    placeholder="{{save_to}}"
                                    value={{save_to}}
-                                   id="Path_Save_To">
+                                   id="Path_Save_To"
+                                   required size="100">
 
                         <div class="form-group">
                             <input type="file"

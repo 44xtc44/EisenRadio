@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eisenradio",
-    version="2.3.3",
+    version="2.4.0",
     author="René Horn",
     author_email="rene_horn@gmx.net",
     description="Play radio. Style your App.",
@@ -21,9 +21,9 @@ setuptools.setup(
             'flask>=2.3.2',
             'Werkzeug>=2.2.3',
             'certifi',
-            'configparser~=5.0.2',
-            'pytest~=6.2.5',
-            'python-dotenv~=0.19.2',
+            'configparser>=5.0.2',
+            'pytest>=6.2.5',
+            'python-dotenv>=0.19.2',
             'waitress',
     ],
     classifiers=[

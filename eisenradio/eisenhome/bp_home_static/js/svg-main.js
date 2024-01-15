@@ -1,46 +1,100 @@
 // svg-main.js
+ "use strict";
 
-function svgAnimationMain(){
-  /* browser frame based, fun calls itself, requestAnimationFrame
-    'inflateAnim' is the Oracle (JS) black box var to count frames already shown and kill our fun if needed
-     see in action
+window.frameCount = 0;
 
-   target: powerLevelDict gets name of the coloring method of PowerSwitch class and a multiplier for the animation level
-     to artificial raise smoothVolume for low animation levels; is not implemented yet, only no power strikes
-     to lever scaling of the animals at very low frequency/amplitude to see a movement, {"lowPower":1}
-     leads to the fact, that at no data input the animal is glued max size to the screen, {"noPower":3}
-     powerLevelAnimation({smoothVolume: smoothVolume, animatedInstance: animatedInstance})
-  */
-  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio visual engine
-
-  let powerLevelDict = powerLevelAnimation({smoothVolume: smoothVolume}); // can also send instance as option
+function svgAnimationMain() {
+/* All animations called from here.
+*/
+  let confAni = htmlSettingsDictGlobal["checkboxConfigAnimation"];   // disable all
+  let confBall = htmlSettingsDictGlobal["checkboxConfigBalloon"];  // balloons and paras
+  let confSpeak = htmlSettingsDictGlobal["checkboxConfigFlatSpeaker"];
+  let confFront = htmlSettingsDictGlobal["checkboxConfigFrontPigs"];  // tux, cat, bear
+  let confStyle = htmlSettingsDictGlobal["checkboxConfigStyle"];  // switched to a naked page, now same as "cpuUtilisation"
+  let cpuMax = htmlSettingsDictGlobal["cpuUtilisation"];  // only some low CPU animations
   let darkBody = getBodyColor();
+  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio visual engine
+  let powerLevelDict = powerLevelAnimation({ smoothVolume: smoothVolume });
 
-  inflateAnim = window.requestAnimationFrame(svgAnimationMain);  // inflateAnim was used for the first anim, now it runs the show
+  dataDictsSpeaker(smoothVolume);  // ---> data collector for animateSpeaker(), todo put together?
+  dataDictsFrontPigs(darkBody, smoothVolume, powerLevelDict); //  ---> data collector powerLevelDict TUX, floe
+  if(confFront) {
+    animateIceFloe({ smoothVolume: smoothVolume, powerLevelDict: powerLevelDict });
+    animateFront({
+      smoothVolume: smoothVolume,
+      powerLevelDict: powerLevelDict,
+      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"] ]
+    });
+  }
 
-  defaultStageHtmlElementsShow();  // hasStageItemsListenId must match activeListenId, later todo: better have one frame for all radios and put base svg in folder not html so can better change the whole stage
-  animateFrontPigs(darkBody, smoothVolume, powerLevelDict); // powerLevelDict
-  animateA1AirCraft();
-  animateSpeaker(smoothVolume);
+  teslaCoils.animateTeslaTowerLights(svgTC.imgDict["teslaCoils"]);
+  teslaAnalyzerOne.clearScreen();
+  teslaAnalyzerOne.draw();
+  teslaAnalyzerTwo.draw();
+  // Analyzer are now integrated in the canvas scene, switchable but no more detachable.
+  animateAnalyzer();  // can be switched off at GUI
+  buoyMenu.update(darkBody);
 
-  if(inflateAnim % 2 === 0) {  // save cpu
-    animateCheckeredBalloon(smoothVolume);
-    animateZeppelin(darkBody, smoothVolume);
-    animateBuoy(darkBody);  // edit button
-    animateParachuteDrop();
-    animateDoppelDecker();
+  if(cpuMax) {
+
+    if(confSpeak) {
+      // animateSpeaker( svgTC.imgDict["speakerOne"] );
+      animateSpeaker( svgTC.imgDict["speakerTwo"] );
+    }
+    animateAirPlane([
+      svgTC.imgDict["doppelDecker"], // doppelDecker 1st, must colorize
+      svgTC.imgDict["ultraLight"],
+      ]);
+
+    if(confBall) {
+      paraDropper.update();
+      if(frameCount % 2 === 0) {
+        nightSky.update(darkBody);
+        animateSat(darkBody);
+      }
+
+      animateBalloon({
+        planeList:[
+          svgTC.imgDict["zeppelin"],   // same color, but different light values (doppelDecker)
+          svgTC.imgDict["checkered"],  // burner animation
+          svgTC.imgDict["lollipop"],   // change a logo if go left and right direction
+          ],
+        darkBody: darkBody
+        });
+
+      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyOne"] );
+      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyTwo"] );
+      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyThree"] );
+      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyFour"] );
+      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyFive"] );
+      canvasCloudsIceHorizontal( svgTC.imgDict["iceBerg"] );
+
+    }
+    animateUfo( svgTC.imgDict["Ufo"] );
+
+  } else {  // clear
+    let lst = [
+      svgTC.imgDict["fluffyOne"],
+      svgTC.imgDict["fluffyTwo"],
+      svgTC.imgDict["fluffyThree"],
+      svgTC.imgDict["fluffyFour"],
+      svgTC.imgDict["fluffyFive"],
+      svgTC.imgDict["iceBerg"],
+      svgTC.imgDict["doppelDecker"],
+      svgTC.imgDict["ultraLight"],
+      svgTC.imgDict["checkered"],
+      svgTC.imgDict["lollipop"],
+      svgTC.imgDict["zeppelin"],
+      svgTC.imgDict["speakerOne"],
+      svgTC.imgDict["speakerTwo"],
+      svgTC.imgDict["Ufo"],
+      // svgTC.imgDict["xtraAnalyzer"]
+    ]
+    for(let i = 0; i <= lst.length - 1; i++) {
+      lst[i].ctx.clearRect(0, 0, lst[i].canvas.width, lst[i].canvas.height);
+    }
   }
-  if(inflateAnim % 3 === 0) {
-    animateSpeaker(smoothVolume);
-  }
-  if(inflateAnim % 10 === 0) {
-    animateCloudsAndIce(darkBody);
-    animateStars(darkBody);
-    animateGenreClickTeaser();
-    gScarfGroup.update();  // doppelDecker, scarf of pilot
-  }
-   if(inflateAnim % 540 === 0) {
-     colorizeAirplane();  // doppelDecker
-  }
+  /* requestAnimationFrame; only one in an app. */
+  frameCount = requestAnimationFrame(svgAnimationMain);
 }
 ;

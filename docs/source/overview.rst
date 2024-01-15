@@ -11,9 +11,6 @@ Home
    indexStructure.txt:
       Project overview for raw div structure of start page to jump fast in and around.
 
-   animate.js:
-      spectrum analyser on a canvas animations
-
    canvas.js:
       animation of the canvas itself to detach the canvas window and make a small
       show on reconnect

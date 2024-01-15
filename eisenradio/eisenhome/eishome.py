@@ -58,6 +58,14 @@ def feed_status_btn_dicts(posts):
         status_record_btn_dict[row['id']] = 0
 
 
+def clear_listen_btn_dict():
+    """"""
+
+
+def clear_record_btn_dict():
+    """"""
+
+
 def feed_radio_id_name_dict(posts):
     """dict for resolving {id: radio_name} without open db connection everytime
 
@@ -69,16 +77,16 @@ def feed_radio_id_name_dict(posts):
 
 
 def curr_radio_listen():
-    """active radio
+    """active radio todo remove
 
     :returns: tuple of two, active listening radio id and name for page refresh
     """
     current_station, current_id = "", ""
-    for table_id, btn_down in status_listen_btn_dict.items():
-        if btn_down:
-            current_station = radio_id_name_dict[table_id]
-            current_id = table_id
-            break
+    # for table_id, btn_down in status_listen_btn_dict.items():
+    #     if btn_down:
+    #         current_station = radio_id_name_dict[table_id]
+    #         current_id = table_id
+    #         break
     return current_station, current_id
 
 
@@ -253,8 +261,8 @@ def dispatch_listen_btn(radio_name, table_id, lis_btn_pressed):
     """
     if lis_btn_pressed:
         ghetto.GRecorder.listen_active_dict[radio_name] = True
-        if not status_record_btn_dict[table_id]:  # rec btn not pressed
-            ghetto.GRecorder.record_active_dict[radio_name] = False  # rec not active
+        # if status_record_btn_dict[table_id] == 0:  # rec btn not pressed
+        #     ghetto.GRecorder.record_active_dict[radio_name] = False  # rec not active
         dispatch_record_start(table_id, 'listen')
 
     if not lis_btn_pressed:
@@ -270,8 +278,8 @@ def dispatch_record_btn(radio_name, table_id, rec_btn_pressed):
     """
     if rec_btn_pressed:
         ghetto.GRecorder.record_active_dict[radio_name] = True
-        if not status_listen_btn_dict[table_id]:  # listen btn not pressed
-            ghetto.GRecorder.listen_active_dict[radio_name] = False
+        # if not status_listen_btn_dict[table_id]:  # listen btn not pressed
+        #     ghetto.GRecorder.listen_active_dict[radio_name] = False
 
         dispatch_record_start(table_id, 'record')
 
