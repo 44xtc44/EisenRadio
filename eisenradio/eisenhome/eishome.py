@@ -406,26 +406,32 @@ def check_write_protected():
     """write test b"\x03".hex() = 03, flash message if ok or not, redirect to start page
 
     to inform user if download directory is not writeable
+
+    download_dir can be None, no DB entry after all radios deleted
+    Recorder package is not able to push a message to the user.
     """
+    download_dir = None
     try:
         download_dir = os.path.abspath(get_download_dir())
     except TypeError:
-        return
-    if download_dir is None:
-        flash('Can not write to folder! No folder specified.', 'danger')
-        flash('Use SAVE option from menu.', 'warning')
-        return redirect(url_for('eisenhome_bp.index'))
+        write_protected_fail()
+    if download_dir is None or not download_dir:
+        write_protected_fail()
+
     if download_dir:
-        write_file = download_dir + '/eisen_write_test'
+        test_file = os.path.join(download_dir, "eisen_write_test")
+        rec_stream = b"\x03"
         try:
-            with open(write_file, 'wb') as record_file:
-                record_file.write(b'\x03')
-            os.remove(write_file)
+            with open(test_file, 'wb') as record_file:
+                record_file.write(rec_stream)
+            os.remove(test_file)
         except OSError:  # master of desaster
-            flash('Can not write to folder!.' + download_dir, 'danger')
-            flash('Use SAVE option from menu.', 'warning')
+            flash('Start some recorder to check write access ' + download_dir, 'danger')
+            flash('Use SAVE menu option to change recorder parent folder.', 'warning')
             return redirect(url_for('eisenhome_bp.index'))
-    if not download_dir:
-        flash('Can not write to folder! no folder specified' + download_dir, 'danger')
-        flash('Use SAVE option from menu.', 'warning')
-        return redirect(url_for('eisenhome_bp.index'))
+
+
+def write_protected_fail():
+    flash('Can not write to folder! No folder specified.', 'danger')
+    flash('Use SAVE menu option to change recorder parent folder.', 'warning')
+    return redirect(url_for('eisenhome_bp.index'))

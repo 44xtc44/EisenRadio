@@ -11,7 +11,7 @@ def make_folder(this_folder):
     except FileExistsError:
         pass
     except Exception as e:
-        flash(f'Failed!\t {e}' + this_folder, 'danger')
+        flash(f'Failed!\t {e}', 'danger')
         rv = False
     finally:
         return rv

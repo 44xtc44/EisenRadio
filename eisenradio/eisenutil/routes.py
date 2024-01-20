@@ -592,7 +592,7 @@ def save():
             conn = lib_eisdb.get_db_connection()
             records = conn.execute('select id from posts').fetchall()
             if not records:
-                flash('Noting in Database!', 'warning')
+                flash('Nothing in Database!', 'warning')
                 try:
                     return render_template('bp_util_save.html', save_to=os.path.abspath(lib_eisdb.get_download_dir()))
                 except TypeError:
