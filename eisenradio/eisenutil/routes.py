@@ -560,7 +560,11 @@ def create():
 
 @eisenutil_bp.route('/save', methods=('GET', 'POST'))
 def save():
-    """render SAVE page, send fail flash message if db empty"""
+    """ Render SAVE page, send fail flash message if db empty
+
+    GET push folder name to HTML page
+    POST pull new path information from HTML page
+    """
     if request.method == 'GET':
         try:
             os.path.abspath(lib_eisdb.get_download_dir())
