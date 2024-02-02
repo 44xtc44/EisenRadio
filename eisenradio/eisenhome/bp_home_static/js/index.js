@@ -658,7 +658,7 @@ function setDarkMode() {
 function delDarkMode() {
   let req;
   req = $.ajax({
-    type: 'POST',
+    type: 'GET',
     url: "/cookie_del_dark",
     cache: false
   });

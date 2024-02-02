@@ -70,7 +70,7 @@ class TestRouteHome(unittest.TestCase):
         assert data['darkmode'] == 'darkmode'
 
         print(""" /cookie_del_dark """)
-        rv = web.post(
+        rv = web.get(
             '/cookie_del_dark',
             headers={"X-Requested-With": "XMLHttpRequest"},
             follow_redirects=True, )

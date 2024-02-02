@@ -252,33 +252,24 @@ def cookie_set_dark():
         'eisen-cookie',
         'darkmode',
         max_age=60 * 60 * 24 * 365 * 2,
-        secure=False,
         httponly=True,
-        samesite="Lax"
+        secure=False,
+        samesite='Strict'
     )
     return resp
 
 
 @eisenhome_bp.route('/cookie_get_dark', methods=['GET'])
 def cookie_get_dark():
-    """return color style of startpage AND id of listener button if any"""
-    # listener_id = None
-    # for radio, listening in ghettoApi.listen_active_dict.items():
-    #     if listening:
-    #         for r_id, name in eisenApi.radio_id_name_dict.items():
-    #             if name == radio:
-    #                 listener_id = r_id
-    #                 break
+    """Return dark mode set or not."""
     mode = request.cookies.get('eisen-cookie', None)
-    return jsonify({"darkmode": mode,
-                    # "listenerId": listener_id
-                    })
+    return jsonify({"darkmode": mode})
 
 
-@eisenhome_bp.route('/cookie_del_dark', methods=['POST'])
+@eisenhome_bp.route('/cookie_del_dark', methods=['GET'])
 def cookie_del_dark():
     resp = make_response("necesito nuevas cookies")
-    resp.set_cookie('eisen-cookie', max_age=0)
+    resp.set_cookie('eisen-cookie', max_age=0, samesite='Strict')
     return resp
 
 
