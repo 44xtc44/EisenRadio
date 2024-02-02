@@ -20,9 +20,10 @@ class SwitchStarGuest {
   constructor() {
     this.guestListIdx = 0;  // for starGuestList
     this.starGuestList = [  // image instances dicts; svgTC.imgDict["Tux"].image.src
-      svgTC.imgDict["Tux"] ,
+      svgTC.imgDict["Tux"],
       svgTC.imgDict["Bear"],
-      svgTC.imgDict["Cat"] ,
+      svgTC.imgDict["Cat"],
+      svgTC.imgDict["portableHole"],
     ];
   }
   update() {

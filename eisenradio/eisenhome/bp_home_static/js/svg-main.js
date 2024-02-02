@@ -23,7 +23,7 @@ function svgAnimationMain() {
     animateFront({
       smoothVolume: smoothVolume,
       powerLevelDict: powerLevelDict,
-      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"] ]
+      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"], svgTC.imgDict["portableHole"] ]
     });
   }
 

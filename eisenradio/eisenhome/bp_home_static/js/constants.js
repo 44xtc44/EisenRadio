@@ -29,7 +29,7 @@ const spriteList = [
   { "testCircle2": { "grp": "testCircle", "cvs": "c_01", "w": "100", "h": "100" } },
   { "testCircle3": { "grp": "testCircle", "cvs": "c_02", "w": "100", "h": "100" } }, // Code ok, img SVG bad?
   { "Stage": { "grp": "gTuxStage", "cvs": "c_03", "w": "100", "h": "100" } },
-  { "p2": { "grp": "gPortableHole", "cvs": "c_03", "w": "100", "h": "100" } },
+  { "p2": { "grp": "gPortableHole", "cvs": "c_03", "w": "100", "h": "100" } },  // swap hide SVG
   { "Ufo": { "grp": "gUfo", "cvs": "c_06", "w": "100", "h": "100" } },
   { "fluffyOne": { "grp": "gTuxClOne", "cvs": "c_07", "w": "100", "h": "100" } },
   { "fluffyTwo": { "grp": "gTuxClTwo", "cvs": "c_08", "w": "100", "h": "100" } },
@@ -44,6 +44,7 @@ const spriteList = [
   { "ultraLight": { "grp": "gUltraLight", "cvs": "c_13", "w": "100", "h": "100" } },
   { "iceFloe": { "grp": "gTuxIceFloeSTC", "cvs": "c_15", "w": "100", "h": "100" } },
   { "xtraAnalyzer": { "grp": "gSceneTransCake", "cvs": "cTV", "w": "100", "h": "100" } }, // choose analyzer
+  { "portableHole": { "grp": "gPortableHole", "cvs": "c_16", "w": "100", "h": "120" } },  // swap hide SVG
   { "Tux": { "grp": "gTux", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gTux
   { "Bear": { "grp": "gBear", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gBear
   { "Cat": { "grp": "gLaGataDelDiablo", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gLaGataDelDiablo
