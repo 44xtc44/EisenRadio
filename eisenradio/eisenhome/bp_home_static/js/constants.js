@@ -9,6 +9,7 @@ const svgList = [  // svg available inline
   "theBuoy",
   "theOcean",
   "theBgWaves",
+  "recorderOn",
   "theTeslaCoils",
   "eisenradioSVG",
 ]
@@ -63,6 +64,7 @@ const spriteList = [
   { "toolsRadio": { "grp": "gToolsConfig", "cvs": "c_20", "w": "100", "h": "100" } },
   { "aboutRadio": { "grp": "gAbout", "cvs": "c_20", "w": "100", "h": "100" } },
   { "playRadio": { "grp": "gPlayLocal", "cvs": "c_20", "w": "100", "h": "100" } },  // pure image src instances have no impact on canvas, just to declare somewhere todo fix on special canvas or create an extra option
+  { "recordOn": { "grp": "gRecordOn", "cvs": "c_20", "w": "100", "h": "50" } },
   { "transition": { "grp": "gSceneTransCake", "cvs": "c_21", "w": "100", "h": "100" } }, // last canvas should be reserved for scene change animation
 ]
 "CPU"

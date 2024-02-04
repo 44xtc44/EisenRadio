@@ -244,6 +244,16 @@ body {
   max-width: 1em;
   max-height: 1em;
 }
+#recorderIsOn {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  bottom: 30px;
+  left: 350px;
+}
+#recordImage {
+  width:75px;
+}
 .divHeader {
 /* box for radio station header info, url, name
 */

@@ -220,6 +220,17 @@ function recorderGet() {
       streamerDictGlobal = {};
       streamerDictGlobal = data.streamerGet;
       let oKeysList = Object.keys(streamerDictGlobal);
+      // enable recorder image
+      if(oKeysList.length > 0) {
+        document.getElementById('recorderIsOn').style.display = "inline-block";
+        if(activeRadioName === "Playlist") {
+          document.getElementById('recorderIsOn').style.opacity = "0.1";
+        }else {
+          document.getElementById('recorderIsOn').style.opacity = "1";
+        }
+      } else {
+        document.getElementById('recorderIsOn').style.display = "none";
+      }
 
       // create a div for every recorder name and set a listener to later click/disable recorder
       for (let i = 0; i < oKeysList.length; ++i) {
@@ -387,6 +398,7 @@ function initSvgEnv() {
   document.getElementById('playRadioImage').src = svgTC.imgDict["playRadio"].image.src;
   document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
   document.getElementById('hamburgerImage').src = svgTC.imgDict["hamburgerImg"].image.src;
+  document.getElementById('recordImage').src = svgTC.imgDict["recordOn"].image.src;
 
   window.redBurnerFlash = new Flash({
     flashDayColor: "hsl(300, 100%, 50%)",
