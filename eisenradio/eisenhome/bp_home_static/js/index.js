@@ -356,7 +356,6 @@ function initSvgEnv() {
   window.switchStarGuest = new SwitchStarGuest();  // declare after images are loaded; svg-frontMan.js
   window.switchAnalyzer = new SwitchAnalyzer();  // toggle analyzer
 
-  window.teslaCoils = new TeslaCoils();
   window.satelliteOne = new ParticleStars({  // use x, y to drive the sat img
     canvasId: "cSkyDecorTwo",
     number: 1,
@@ -571,7 +570,7 @@ function setAudioGain() {
 function reloadAudioElement(newAudioSource) {
   audio.src = "";
   audio.currentTime = 0;
-  audio.srcObject = null; // MDN documentation is not good (srcObject vs src), perhaps this helps
+  // audio.srcObject = null; // test 2 days
   audio.src = newAudioSource;  // Flask endpoint url
   audio.load();
 

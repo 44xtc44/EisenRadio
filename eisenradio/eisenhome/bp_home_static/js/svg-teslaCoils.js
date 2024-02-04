@@ -1,13 +1,11 @@
 // svg-teslaCoils.js
 "use strict";
 
-/* Animate the two coils with lights and
-   try to scale parts of the towers to simulate a pumping flow.
-
-   Update
-   Scaling parts failed. Use sprite.
+/**
+* Animate the two tesla coils with running lights.
+* ``animateTeslaTowerLights`` is using SVG img instances
+* directly to get the correct canvas id. ``svgTC.svgToCanvas``
 */
-
 class TeslaCoils {
   constructor() {
     this.tLights = [  // tower lights
@@ -42,3 +40,4 @@ class TeslaCoils {
     }
   }
 }
+const teslaCoils = new TeslaCoils();

@@ -8,8 +8,9 @@ const svgList = [  // svg available inline
   "thePolarBear",
   "theBuoy",
   "theOcean",
+  "theBgWaves",
   "theTeslaCoils",
-  "eisenradioSVG"
+  "eisenradioSVG",
 ]
 // all groups of all registered inline svg; better register path names with image name and num to avoid doubles
 // regex; all path must have "fill" and "fill-opacity" explicitly set , remove "style" from path; We do NOT use the DOM, we are fast.
@@ -19,17 +20,18 @@ const spriteList = [
   // instance;       SVG group; canvas;  image dimensions |-> needs fun to reload if one img is missing; Our camp is clean!
   { "foo1": { "grp": "testCircle", "cvs": "cSky", "w": "720", "h": "576" } },
   { "foo2": { "grp": "testCircle", "cvs": "cAnalyzer", "w": "100", "h": "100" } },  // bg analyzer
-  { "foo3": { "grp": "testCircle", "cvs": "cSkyDecor", "w": "100", "h": "100" } },
+  { "TestCircle": { "grp": "testCircle", "cvs": "cSkyDecor", "w": "100", "h": "100" } },  // test write: svgTC.svgToCanvas({ dict: svgTC.imgDict["TestCircle"] });
   { "Sat1": { "grp": "gSat1", "cvs": "cSkyDecorTwo", "w": "100", "h": "100" } },
   { "Sat2": { "grp": "gSat2", "cvs": "cSkyDecorThree", "w": "100", "h": "100" } },
   { "SeaNight": { "grp": "gSeaNight", "cvs": "cSea", "w": "720", "h": "576" } },
   { "SeaDay": { "grp": "gSeaDay", "cvs": "cSea", "w": "720", "h": "576" } },
   { "landScape": { "grp": "gBigFloe", "cvs": "cSeaDecor", "w": "720", "h": "576" } }, // bg image
   { "teslaCoils": { "grp": "gTCoils", "cvs": "c_00", "w": "720", "h": "576" } },
-  { "testCircle2": { "grp": "testCircle", "cvs": "c_01", "w": "100", "h": "100" } },
-  { "testCircle3": { "grp": "testCircle", "cvs": "c_02", "w": "100", "h": "100" } }, // Code ok, img SVG bad?
+  { "WaveRowOne": { "grp": "gWaveRowOne", "cvs": "c_01", "w": "100", "h": "50" } },  // for left AND right create group for w720,h576
+  { "WaveRowTwo": { "grp": "gWaveRowTwo", "cvs": "c_02", "w": "100", "h": "50" } },
+  { "WaveRowThree": { "grp": "gWaveRowThree", "cvs": "c_03", "w": "100", "h": "50" } },
   { "Stage": { "grp": "gTuxStage", "cvs": "c_03", "w": "100", "h": "100" } },
-  { "p2": { "grp": "gPortableHole", "cvs": "c_03", "w": "100", "h": "100" } },
+  { "p2": { "grp": "gPortableHole", "cvs": "c_03", "w": "100", "h": "100" } },  // swap hide SVG
   { "Ufo": { "grp": "gUfo", "cvs": "c_06", "w": "100", "h": "100" } },
   { "fluffyOne": { "grp": "gTuxClOne", "cvs": "c_07", "w": "100", "h": "100" } },
   { "fluffyTwo": { "grp": "gTuxClTwo", "cvs": "c_08", "w": "100", "h": "100" } },
@@ -44,6 +46,7 @@ const spriteList = [
   { "ultraLight": { "grp": "gUltraLight", "cvs": "c_13", "w": "100", "h": "100" } },
   { "iceFloe": { "grp": "gTuxIceFloeSTC", "cvs": "c_15", "w": "100", "h": "100" } },
   { "xtraAnalyzer": { "grp": "gSceneTransCake", "cvs": "cTV", "w": "100", "h": "100" } }, // choose analyzer
+  { "portableHole": { "grp": "gPortableHole", "cvs": "c_16", "w": "100", "h": "120" } },  // swap hide SVG
   { "Tux": { "grp": "gTux", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gTux
   { "Bear": { "grp": "gBear", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gBear
   { "Cat": { "grp": "gLaGataDelDiablo", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gLaGataDelDiablo

@@ -21,26 +21,26 @@ class CountUpDown{
  *   starts a rotation clockwise to keep it simple, for ("counter" clockwise) prefix the return value negative;
  *   let animalZRotationUpDown = new CountUpDown(-7.5, 7.5, 0.0075);
  * only if's used
- */
-    constructor(minValue,maxValue,step){
-        if(minValue <= maxValue) {
-            this.minValue = minValue;
-            this.maxValue = maxValue;
-        } else {
-            this.minValue = maxValue;
-            this.maxValue = minValue;
-        }
-        this.step = Math.abs(step);
-        this.currentValue = this.minValue;
-        this.direction = 0;
+*/
+  constructor(minValue,maxValue,step){
+    this.minValue = minValue;
+    this.maxValue = maxValue;
+    if(minValue > maxValue) {
+      this.minValue = maxValue;
+      this.maxValue = minValue;
     }
-    update(){
-        if (this.currentValue >= this.maxValue) {this.direction = 0;}
-        if (this.currentValue <= this.minValue) {this.direction = 1;}
-        if (this.direction == 1) {this.currentValue += this.step;}
-        if (this.direction == 0) {this.currentValue -= this.step;}
-        return this.currentValue
-    }
+    this.step = step;
+    this.curValue = this.minValue;
+    this.direction = 0;
+  }
+  update(){
+    if (this.direction === 1) this.curValue += this.step;
+    if (this.direction === 0) this.curValue -= this.step;
+
+    if (this.curValue > this.maxValue) this.direction = 0;
+    if (this.curValue < this.minValue) this.direction = 1;
+    return this.curValue;
+  }
 }
 ;
 class SimpleCounter{

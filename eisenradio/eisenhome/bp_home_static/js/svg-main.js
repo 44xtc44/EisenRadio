@@ -3,9 +3,12 @@
 
 window.frameCount = 0;
 
-function svgAnimationMain() {
-/* All animations called from here.
+/**
+* All animations called from here.
+* An SVG group needs an own canvas in this setup.
 */
+
+function svgAnimationMain() {
   let confAni = htmlSettingsDictGlobal["checkboxConfigAnimation"];   // disable all
   let confBall = htmlSettingsDictGlobal["checkboxConfigBalloon"];  // balloons and paras
   let confSpeak = htmlSettingsDictGlobal["checkboxConfigFlatSpeaker"];
@@ -23,7 +26,7 @@ function svgAnimationMain() {
     animateFront({
       smoothVolume: smoothVolume,
       powerLevelDict: powerLevelDict,
-      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"] ]
+      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"], svgTC.imgDict["portableHole"] ]
     });
   }
 
@@ -34,6 +37,14 @@ function svgAnimationMain() {
   // Analyzer are now integrated in the canvas scene, switchable but no more detachable.
   animateAnalyzer();  // can be switched off at GUI
   buoyMenu.update(darkBody);
+
+  seaWave.horizontal( {
+    waveList: [
+      svgTC.imgDict["WaveRowOne"],
+      svgTC.imgDict["WaveRowTwo"],
+      svgTC.imgDict["WaveRowThree"]
+    ]
+  } );
 
   if(cpuMax) {
 
