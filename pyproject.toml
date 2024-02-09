@@ -63,4 +63,5 @@ warn_unused_configs = true
 no_implicit_reexport = true
 test = ["pytest>=6.0", "tox", "mypy", "sphinx", "sphinx_rtd_theme"]
 lint = ["flake8"]
-# cov = ["pytest < 5.0.0", "pytest-cov[all]"]
+
+
