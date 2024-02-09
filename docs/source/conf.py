@@ -23,6 +23,12 @@ sys.path.insert(0, os.path.abspath('../..'))
 #     return True
 
 # -- Project information -----------------------------------------------------
+# JS docstring if JS is used
+# npm install -g jsdoc
+# or… typescript npm install -g typedoc
+# pip install sphinx-js
+# conf.py extensions = ['sphinx_js']  or js_language = 'typescript'
+#
 # !!! indentation of sphinx is mostly 3 leading spaces, code 4, block need one free line above and colon for head
 # pip install -U sphinx
 # pip install sphinx-rtd-theme

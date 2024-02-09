@@ -2,8 +2,6 @@ import json
 import unittest
 from os import environ, remove
 from eisenradio import create_app_test  # __init__
-from ghettorecorder import ghettoApi
-from eisenradio.api import eisenApi
 from eisenradio.instance.config_apfac import write_config, remove_config
 
 
@@ -50,7 +48,8 @@ class TestRouteHome(unittest.TestCase):
         rv = web.get('/')
 
         assert rv.status_code == 200
-        assert '<title> Your Eisen Radio! </title>' in rv.data.decode('utf-8')
+
+        assert '<title>Your EisenRadio!</title>' in rv.data.decode('utf-8')
 
         print(""" test Blueprint 'eisenHOME'  """)
 
@@ -71,7 +70,7 @@ class TestRouteHome(unittest.TestCase):
         assert data['darkmode'] == 'darkmode'
 
         print(""" /cookie_del_dark """)
-        rv = web.post(
+        rv = web.get(
             '/cookie_del_dark',
             headers={"X-Requested-With": "XMLHttpRequest"},
             follow_redirects=True, )
@@ -103,30 +102,6 @@ class TestRouteHome(unittest.TestCase):
         data = json.loads(rv.get_data(as_text=True))
         assert rv.status_code == 200
         assert data['result'] == 0
-
-        print(""" /display_info """)
-
-        # mocking
-        ghettoApi.current_song_dict = {
-            'Korean_Pop': 'OVAN 오반 - I Need You 어떻게 지내',
-            'BLUES_UK': 'Henrik Freischlader Band - Take The Blame',
-            'japanese_pop': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
-        }
-        eisenApi.radio_id_name_dict = {2: 'Korean_Pop', 3: 'BLUES_UK', 6: 'japanese_pop'}
-        print(eisenApi.radio_id_name_dict)
-        # testing
-        rv = web.get(
-            '/display_info',
-            follow_redirects=True,
-            content_type='application/x-www-form-urlencoded',
-        )
-        data = json.loads(rv.get_data(as_text=True))
-        assert rv.status_code == 200
-        assert data['updateDisplay'] == {
-            '2': 'OVAN 오반 - I Need You 어떻게 지내',
-            '3': 'Henrik Freischlader Band - Take The Blame',
-            '6': 'Yoko Kanno and The Seatbelts - Waltz for Zizi'
-        }
 
         print(""" /page_flash """)
 

@@ -15,14 +15,6 @@ Subpackages
 Submodules
 ----------
 
-eisenradio.app module
----------------------
-
-.. automodule:: eisenradio.app
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 eisenradio.cmd module
 ---------------------
 

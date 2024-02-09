@@ -1,233 +1,413 @@
-/* index
- *
- * Target:
- * 0) Record multiple streams at the same time with the help of a database frontend
- * 1) Animation can be disabled completely. Functions look in a dictionary if they may run.
- *     htmlSettingsDictGlobal - css style off, only black or grey page
- *                            - animations off, no animations at all, not even loader animation on start page
- *                            - spectrum analyser can be called, nearly look and feel of previous versions,
- *                              but with detachable analyzer and console hidden, monitor recordings and file repair
- * 2) Animation can be disabled partially.
- *     degradeAnimationsDict  - quick degradation if CPU is high or FireFox refuses to run properly
- *                              allowed: iceBerg, floe (animated in dark mode), buoy and animal on the floe
- * Functions
- * ---------
- *      eisenRadioCreateStyleInstances() - get all radio table ids and create an instance for each radio to set rec, listen on/off
- *      degradeAnimationsSet(level)      - radio button for cpu utilisation, write on/off to database
- *      degradeAnimationsWriteDict()     - write "animationsAllowedDict", call degradeAnimationsDict(level)
- *           degradeAnimationsDict(level)- returns the dict made from a list of allowed/disallowed animations
- *      rootVariableCompute()            - can get property values of various elements, color
- *      setEventListenerPlay ()
- *      setEventListenerPause ()
- *      configEisenradioHtmlSetting()    - update global html settings dict, html style and animation settings on/off
- *      toggleHideConsole()
- *      enlightPicCommentPre(divId)      - switch textColor on or of
- *      maxHeightPicCommentPreToggle()   - can touch scroll plus expand on dblClick
- *      setAudioContextVisual()          - create instances of audio, gain nodes
- *      removePageCover()
- *      setAudioVolume()
- *      setAudioGain()
- *      reloadAudioElement(newAudioSource, isPlayList) - called if radio changes
- *      randomOne()                                    - can return 1 or -1, used for star velocity
- *      updateDisplay()                                - writes title info to all active radios
- *      setTimer(val)                                  - send hour value from html drop down, or -1 for stop now
- *      updateMasterProgress()                         - get and show calculated percent value for progress bar
- *      setDarkMode()                                  - cookie for dark mode
- *      delDarkMode()                                  - del cookie
- *      stationGet()                                   - request the active listen radio name
- *      streamerGet()                                  - request list of active recorders
- *      cookie_set_show_visuals()                      - spectrum analyser cookie
- *      cookie_del_show_visuals()                      - del spectrum analyser cookie
- *      cookie_toggle_show_visuals()                   - on/off spectrum analyser canvas
- *      cookie_start_set_text_show_visuals()           - change the displayed html text for on/off spectrum analyser
- *      changeColorScheme()                            - dark mode or not
- *      setColor(val)                                  - apply color schema
- *      headerInfo()                                   - writes extracted header information to html bit rate, web site, genre ...
- *      unifyGenre(searchString)                       - replace strings in genre sent from radio to filter out comma
- *      deleteInfo()                                   - clean the whole html page from unused radios, get list
- *      deleteInfoExec(station_id, darkBody, logName)  - take list and clean
- *      cacheListFeed(table_id, title)                 - creates a drop-down dialog from where we can auto scroll directly to the radio id
- *      toggleCacheListShowSelectBox()                 - shows or hides the drop-down dialog
- *      getBodyColor()                                 - returns true if dark mode, else false
- *      getRandomIntInclusive(min, max)                - /
- *      deactivateAudioElement()                       - deactivate audio element to faster load new src
- *      loaderAnimation(enabled)                       - start stop the loader animation for basic mode without animation
- *      recOrListenAction()                            - catch button press and send it to the server, switch styles, record and listen
- *        recOrListenAutoClickListenButton(buttonNum)                   - autoClicker, Button press
- *        recOrListenAutoClickerRecorderStyle(buttonId)                 - autoClicker has endet listen, now set minimal style for record, if on
- *                                                                        switch EisenRadioStyles instance status for listen from true to false
- *        recOrListenRunRecordsDisplay(activeRecorderList)              - show running recorder in drop-down dialog with jump to radio option
- *        recOrListenRecorderStyleSet(activeRecordId = data.streamerId) - get id of pressed record button, call record animation golden disc
- *        recOrListenDeactivateAudio(dataRadioId, dataLastListenId)     - switch EisenRadioStyles instance status for listen from true to false
- *        recOrListenAudioActivateLoad(radioName, localHostSoundRoute)  - radio name and url with port number for audio endpoint (flask sends its port num)
- *        recOrListenAudioSetId(radioName, radioId)                     - set global "activeListenId" for functions to show divs with id
- *        recOrListenAudioSetListenStyleSpectrum(radioName, radioId)    - write radio name to console, call spectrum analyser
- *
- */
+// index.js
+"use strict";
+
+/**
+* EisenRadio, a GUI for GhettoRecorder. Fullstack app.
+* <p>``sphinx-js`` is using an incompatible MarkupSave package version, against Flask ``Werkzeug``.</p>
+* <p>Java docStrings will not be included in the ``ReadTheDocs`` documentation.</p>
+* <p>This project is using heavily args options dictionaries to call functions.
+* <code>function foo(option) { let id = option.id; }</code></p>
+* <ul>
+* <li>Ported animations from DOM to canvas
+* <li>Radios are chosen from a drop down dialog
+* <li>Removed <code>Bootstrap</code> buttons
+* <li>Removed all 3rd party, except jQuery and Google fonts
+* <li>A set of animations is using an own script
+* <li>Spectrum analyzers are fully integrated and no more draggable
+* <li>Local sound files playlist is fully integrated and JS only
+* <li>All animations are called, or not, by a single function <code>svgAnimationMain</code>
+* </ul>
+* @author René Horn
+* @author www.github.com/44xtc44
+* @version 2.4
+* @since 1.0
+* @see license MIT
+*/
+
 const cl = console.log;
-const divStartPageFadeIn = document.getElementById("divStartPageFadeIn");
-const pageCover = document.getElementById("pageCover");
-const pageCoverCanvas = document.getElementById("pageCoverCanvas");
-const pageCoverCanvasCtx = pageCoverCanvas.getContext('2d');
+const requestAnimationFrame =
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame;
 
-window.canvasMaster = document.getElementById("canvasMaster");  // fun cookie_toggle_show_visuals()
-window.canvasMasterCtx = canvasMaster.getContext('2d');
-window.canvasMasterRedirect = {"master":window.canvasMaster, "cloneOne": "fooCanvas"};  // can use 0, 1, 2 ... to redirect master to 'clones'
-window.divCanvasMasterRedirect = {"master": "divCanvasMaster"};  // not overwrite here anything
+const cancelAnimationFrame =
+  window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
-const currentRadioName = document.getElementById('currentRadioName');
-currentRadioName.innerText = "Eisenradio"
-const fileUpload = document.getElementById("fileUpload");
-const playBtn = document.getElementById("playBtn");
-const pauseBtn = document.getElementById("pauseBtn");
 const audio = document.getElementById("audioWithControls");
-audio.volume = 0.25;
-const audioClone = document.getElementById('audioClone');
+audio.volume = 0.75;
 const audioVolumeController = document.getElementById("audioVolumeController");
 const audioGainController = document.getElementById("audioGainController");
+window.audioContext = undefined;
+window.audioSource = undefined;
+window.analyserNodeOne = undefined;
+window.analyserNodeTwo = undefined;
+window.gainNode = undefined;
 
-var cleanUpDict = {};                                                    // function or class method can write elements to clean, deleteInfoExec()
-var divCustomText = document.getElementsByClassName("divCustomText");    // custom ideas or copied stuff for reading while listening
-var AnimationContainer = document.getElementsByClassName("divAnimationContainer");
-var audioContext, audioSource, analyserNode, analyserNodeTwo, gainNode;
-var spectrumAnalyserActive = false;
-var spectrumAnalyserShow = false;
-var localPlayList = [];
-var trackGlobalNumber;
-var lastAudioSrcGlobal = undefined;
-var lastAudioRadioGlobal = undefined;
-var divCanvasMasterPositionTop = undefined;
-var divCanvasMasterPositionLeft = undefined;
-var canvasMasterRectangle;        // top, left, x, y ...  info obj
-var htmlSettingsDictGlobal = {};  // {"animationOfEisenRadio": True,"styleOfEisenRadio": False}
-var eisenStylesDict = {};         // apply color and shadows to the radio
-var streamerDictGlobal = {};            // stores all currently active streaming connections or rec style
-var animationsAllowedDict = {};
-window.consoleUpDown = 1;           // up 1 down 0 glob var over all modules, seems the next todo refactoring
-window.consoleCloneOnOff = 0;       // bottom console is not usable in mobiles, click a screw head to show up inline div
-window.activeListenId  = "noId";    // animation, only call functions if listen is selected
+window.htmlSettingsDictGlobal = {};  // themes decide to run on degradation, Tools/config menu
+window.streamerDictGlobal = {};      // stores all currently active recorder connections, Android shows in notification
 
-var paraAnimTimerDict = {};  // angle and time of appearance
-var paraUpDownDict = {};     // angle for partial horizontal rotation of div
-var paraMoveSinCosDict = {}; // calc the y for given x and angle (tan)
-var paraUnitDept = "AirDrop";  // if more drop instances, have log names
-var paraParentDiv = "divDragRopeA1AirCraft";  // query class members divRadioFrontPlate_1 to divRadioFrontPlate_10
-var paraMemberCount = getRandomIntInclusive(2,5);
-var airDropDelDict = {};  // index.js  {radioId: [div1,div2,div3]} for cleanup routine to set paraParentDiv child to display none
+window.activeListenId = "noId";    // animation, only call functions if listen is selected
+window.activeRadioName = "Eisen";
+window.downloadDir = "";           // download dir to show
+window.activeTheme = "";
+window.themeDict = {};  // {"Sunset": function() { mainSunsetAnimation(); },} svg-main calls key, activeTheme each frame
 
+/**
+* Event page loaded sets event listener and loads all SVG images/groups into memory.
+*/
+window.addEventListener('load', function () {
 
-const fadeIn = [{opacity: 0}, {opacity: 1}];    // iterator
-const faderInTiming = {duration: 1500, iterations: 1,};
-const faderPulseTiming = {duration: 1500, iterations: 5,};
-const playListHeadText = "playListHeadText";
+  paintPngToCanvas( {
+    canvasId: "pageCoverTeaser",
+    svgImage: "teaserImg"
+  } );  // paint "existing" PNG to canvas, now THE audio enabler we MUST have, else browser error, no user interaction
 
-$(document).ready(function () {
+  /* SVG symbol grew too big for index.html, to edit in IDE. Outsource from HTML to server.
+  * Import. Steps how it works.
+  * (a) Load SVG symbol container from server.
+  * (b) Write symbol to div, make it public to the document. (as if it was inline before)
+  * (c) Load SVG groups and images from DOM into mem, create instances as image sources.
+  * (d) Use the img instances in the document as buttons and animations.
+  */
+  loadSvgSymbol().then(function(response) {
+    document.getElementById('divSvgImagesSymbol').innerHTML = response;
+  }).then(function(response) {
+    initSvgEnv();
+  }).then(function(response){
 
-    pageCoverAnimation();
-    configEisenradioHtmlSetting();      // request if animation and or style functions should be called, pb: python True,js true so use 0 1
-                                        //document.body.style.overflowX = "hidden";
-    setColor("requestTheCookie");       // document.body color
-    stationGet();                       // active listen db id and name if any to animate the correct div id and console name
-    streamerGet();                      // active rec button list to rebuild watch drop down dialog
-    blacklistInfoOff();                 // disable sticky note info if blacklist feature is enabled by user
-    eisenRadioCreateStyleInstances();   // each radio get an instance to make styles more easy if record is running; before, after, sim. to listen stuff
-    degradeAnimationsWriteDict();       // dict of currently allowed animations
-    // degradeMobile();                   // todo Workon Android degrade
-    touchMoveItemsEventListenerSet();   // make div touchable for mobile or touchscreen, svgAnimation.js
+    themeInitSunset();  // Need a default theme. fun registers itself as activeTheme.
+    document.body.style.overflowX = "hidden";  // get rid of x scroll bar at bottom
+    downloadDirGet();          // download dir to show if record pressed
+    window.addEventListener('resize', function (event) {
+      glob.updateScreen();
+    }, true);
+    glob.updateScreen();  // check if we are on mobile on first load, todo resize evt not working on Android browser
 
-    setInterval(skipRecordShowMessageInABottle, 15006);
-    setInterval(deleteInfo, 10005);
-    setInterval(headerInfo, 10004);
-    setInterval(toggleCacheListShowSelectBox, 5003);
-    setInterval(updateMasterProgress, 5002);
-    setInterval(updateDisplay, 5001);
+    setInterval(recorderGet, 5003);  // collect active recorder and draw div elem with listener to click, disable
+    setInterval(headerInfo, 5004);  // show header of radio, Web URL, full name, content-type
+    setInterval(updateMasterProgress, 5002);  // timer to end the app
 
-    $('[data-toggle="tooltip"]').tooltip()
-    $("button").click(recOrListenAction);   // button press (big mess so far, menu etc.)
-    pageCover.addEventListener('click', removePageCover);
-    audioVolumeController.addEventListener("input", setAudioVolume);
-    audioGainController.addEventListener("input", setAudioGain);
-    fileUpload.addEventListener("change", playLocalAudio);
-    setEventListenerPlay();
-    setEventListenerPause();
+    setEventListenerAudioBtn();
+    // initSvgEnv();  // SVG image loader
+    blacklistEnableGet();  // after SVG image loader, animate blacklist button
+    configEisenradioHtmlSetting();  // create dict which animation is allowed; Tools/Config menu and CPU icon
+    window.paraDropper = new DomAirCraft();  // No canvas, last pure DOM animation, use the whole HTML page to fly around.
+    setColor("requestTheCookie");   // change document.body color, cookie exercise
 
-    // double click event for expansion of 'pre' element with custom text (if it is larger than predefined high)
-    for (var i = 0; i < divCustomText.length; i++) {
-        divCustomText[i].addEventListener('dblclick', maxHeightPicCommentPreToggle);
-    }
-
-    let myAudioClone = document.getElementsByClassName("audioClone");
-      for (let i = 0; i < myAudioClone.length; i++) {
-        myAudioClone[i].addEventListener("input", (e) => {
-        audio.volume = myAudioClone[i].value / 100;
-        cl(myAudioClone[i])
-        });
-      }
-    let myGainClone = document.getElementsByClassName("gainClone");
-      for (let i = 0; i < myGainClone.length; i++) {
-        myGainClone[i].addEventListener("input", (e) => {
-        gainNode.gain.value = myGainClone[i].value;
-        });
-      }
-    dragElement(divCanvasMaster);
-    toggleHideConsole();
-
-    glob = new Glob()
-    glob.updateScreen();
-    // SVG - show window. global. <- is init also without the following call at start in the fun
-    initManager();
-
+  }).catch(function (err) {
+    console.error("error caller loadSvgSymbol->", err.statusText);
+  });
 })
 ;
+/**
+* User interaction for browser to enable audio element.
+*/
+function removePageCover() {
+  document.getElementById("pageCover").style.display = "none";
+  setAudioContextVisual();
 
-function toggleHideClonedConsole(divId) {
-  let console = document.getElementById("targetClonedConsole_" + divId);
+  document.getElementById("radioContainer").style.display = "block";
+  svgAnimationMain();
+}
+;
+/**
+* Playlist of local sound files, played in the browser.
+* Creates a <code>fresh</code> instance for each new HTML call.
+* Display is right beside monitor if there is space. Else below.
+*/
+function runLocalSound() {
+  document.getElementById('divFrameRight').style.display = "block";
+  document.getElementById('divPlayListShow').style.display = "block";
+  document.getElementById('playList').style.display = "block";
+  window.playListOne = new PlayList();
+  playListOne.create();
+}
+;
+/**
+* Trigger GhettoRecorder. Stream radio in listen mode. <code>No recording</code>.
+* User choice of radio station leads to a Flask generated endpoint
+* that serves, yield, the JS audio element.
+* @param {String} value - radio table id and name in SQLite Database
+*/
+function enableSoundEndpoint(opt) {
+  let radioValues = opt.value.split(";");
+  let radioNum = radioValues[0];
+  if (radioNum === "choiceHeader") return;  // header text dropdown dialog
+  let radioName = radioValues[1];
 
-  if(consoleCloneOnOff === 1){
-      console.style.display = "inline-block";
-      consoleCloneOnOff = 0;
-  } else {
-    console.style.display = "none";
-    consoleCloneOnOff = 1;
+  let divFrameRightWait = document.getElementById('divFrameRightWait');
+  let divFrameRight = document.getElementById('divFrameRight');
+  let customImg = document.getElementById("childCustomImg_" + radioNum);
+  let customTxt = document.getElementById("childCustomTxt_" + radioNum);
+  let playlist = document.getElementById('playList');
+
+  // cleanup playlist remnants
+  if ((activeRadioName === "Playlist")) {  // global active listen, user of DOM audio element
+    divFrameRightWait.appendChild(playlist);  // put the playlist container div in wait position
+    divFrameRightWait.style.display = "none";
+    playlist.style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";  // playlist next button
+    document.getElementById("prevBtn").style.display = "none";
+    playListOne.reset();  // empty the list with file objects
+  }
+
+  activeRadioName = radioName;  // set global var from opt arg
+  // web radio from dropdown dialog; attach custom img and txt stuff from DB
+  while (divFrameRight.firstChild) {  // remove all child div from our container
+    divFrameRight.lastChild.style.display = "none";
+    divFrameRightWait.appendChild(divFrameRight.lastChild);
+  }
+  divFrameRight.appendChild(customImg);
+  customImg.style.display = "block";
+  divFrameRight.appendChild(customTxt);
+  customTxt.style.display = "block";
+
+  let req = $.ajax({
+    type: 'POST',
+    url: "/enable_sound_endpoint",
+    cache: false,
+    data: { 'radioNum': radioNum, "radioName": radioName }
+  });
+
+  req.done(function (data) {
+    reloadAudioElement(data.newAudioSource);
+  });
+}
+;
+/**
+* Trigger GhettoRecorder. Record stream of desired radio station.
+* @param {String} value - radio table id and name in SQLite Database
+*/
+function enableRecorder(opt) {
+  let radioValues = opt.value.split(";");
+  let radioNum = radioValues[0];
+  if (radioNum === "choiceHeader") return;  // header text dropdown dialog
+  let radioName = radioValues[1];
+
+  let req = $.ajax({
+    type: 'POST',
+    url: "/enable_recorder",
+    cache: false,
+    data: { 'radioNum': radioNum, "radioName": radioName }
+  });
+
+  req.done(function (data) {
+    // cl("enableRecorder->", data.activeRecorderNameId);
+    document.getElementById("titleDisplay").innerText = "files: " + downloadDir + "/" + radioName;  // downloadDir global window var
+  });
+}
+;
+/**
+* Trigger GhettoRecorder. Stop recording.
+* @param {String} name: name - table name in SQLite Database
+* @param {String} id - table id in SQLite Database
+*/
+function disableRecorder(opt) {
+  let name = opt.name;
+  let id = opt.id;
+
+  let req = $.ajax({
+    type: 'POST',
+    url: "/disable_recorder",
+    cache: false,
+    data: { 'name': name, "id": id }
+  });
+
+  req.done(function (data) {
+    // cl("disableRecorder->", data.disabledRecorder);
+  });
+}
+;
+/**
+* Collect active recorder threads from Flask endpoint.
+* Build div elem stack of active recorder names with listener to click and disable.
+*/
+function recorderGet() {
+  let parent = document.getElementById("divRecordView");
+  let innerHTML = "\nRecorder list update, click to stop. &#128192;";  // use as headline first div child
+  let id = "activeRecorderHeader";
+  let elemClass;
+  removeDiv({ id: parent });  // clean up existing HTML display, all child div
+  appendDiv({ parent: parent, id: id, innerHTML: innerHTML });
+  // appendDiv({ parent: parent, id: "recordDot", innerHTML: "&#128192;" });  // set header txt, dvd icon
+
+  let req = $.ajax({
+    type: 'GET',
+    url: "/streamer_get",
+    cache: false,
+  });
+  req.done(function (data) {
+    if (data.streamerGet) {
+      streamerDictGlobal = {};
+      streamerDictGlobal = data.streamerGet;
+      let oKeysList = Object.keys(streamerDictGlobal);
+      // enable recorder image
+      if(oKeysList.length > 0) {
+        document.getElementById('recorderIsOn').style.display = "inline-block";
+        if(activeRadioName === "Playlist") {
+          document.getElementById('recorderIsOn').style.opacity = "0.1";
+        }else {
+          document.getElementById('recorderIsOn').style.opacity = "1";
+        }
+      } else {
+        document.getElementById('recorderIsOn').style.display = "none";
+      }
+
+      // create a div for every recorder name and set a listener to later click/disable recorder
+      for (let i = 0; i < oKeysList.length; ++i) {
+        let name = oKeysList[i];  // DOM needs unique id
+        let dbId = streamerDictGlobal[name];
+        id = "div::" + name + "::" + dbId;  // play save
+        elemClass = "divRecorderList";
+        innerHTML = "&#8226; " + name;
+        appendDiv({ parent: parent, id: id, elemClass: elemClass, innerHTML: innerHTML });
+        setEventListenerRecord({ id: id });
+      }
+    }
+  });
+}
+;
+/**
+* Div elements with recorder name, each gets a listener to kill the radio station recorder.
+* @param {String} name: name - table name in SQLite Database
+* @param {String} id: id - table id in SQLite Database
+*/
+function setEventListenerRecord(opt) {
+  let id = opt.id;
+  let div = document.getElementById(id);
+  let name = id.split("::")[1];
+  let dbId = id.split("::")[2];
+  div.style.cursor = "pointer";
+  div.addEventListener("click", (e) => {
+    setTimeout(function () {
+      div.style.backgroundColor = "red";
+      disableRecorder({ name: name, id: dbId });  // else not always working
+    }, 100);
+  });
+}
+;
+/**
+* Stack div elements.
+* @param {String} id: id - id of new child
+* @param {String} elemClass - class name of new child div
+*/
+function appendDiv(opt) {
+  /* Reusable fun to stack div and use the stack as a list.  */
+  let div = document.createElement('div');
+  div.id = opt.id;
+  if (opt.elemClass === undefined) opt.elemClass = "foo";
+  div.classList.add(opt.elemClass);
+  div.innerHTML = opt.innerHTML;
+  opt.parent.appendChild(div);  // parent is full path document.getElem...
+}
+;
+/**
+* Remove all div elements from a parent.
+* @param {String} id - id of parent div
+*/
+function removeDiv(opt) {
+  while (opt.id.firstChild) {
+    opt.id.removeChild(opt.id.lastChild);
   }
 }
 ;
-function eisenRadioCreateStyleInstances(){
-/* get all radio table ids and create an instance for each radio
- * class EisenRadioStyles in radio_styles.js
- *   radio name and id for record, listen variables to apply or remove a style for rec or listen
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/all_radio_table_ids_and_names_get",
-        cache: false,
+/**
+* JS Audio element can be switched by custom buttons.
+*/
+function setEventListenerAudioBtn() {
+
+  audioVolumeController.addEventListener("input", setAudioVolume);
+  audioGainController.addEventListener("input", setAudioGain);
+
+  let myAudioClone = document.getElementsByClassName("audioClone");  // todo name is bad, former second console
+  for (let i = 0; i < myAudioClone.length; i++) {
+    myAudioClone[i].addEventListener("input", (e) => {
+      audio.volume = myAudioClone[i].value / 100;
     });
-    req.done(function (data) {
-
-        if (data.eisenRadioCreateStyleInstances) {
-            let radioIdNameDict = data.eisenRadioCreateStyleInstances;
-            for(let index = 0;index <= Object.keys(radioIdNameDict).length -1;index++){
-                let radioId   = Object.keys(radioIdNameDict)[index];
-                let radioName = radioIdNameDict[radioId];
-                eisenStylesDict["eisenRadio_" + radioId] = new EisenRadioStyles({radioId:radioId,radioName:radioName});
-            }
-            console.log("EisenRadioStyles ",eisenStylesDict);
-        }
-    });
-
-}
-
-class Glob{
-  /* *
-   * global variables container and base functions resort
-   */
-  constructor() {
-    this.playingRadio = false; // (browser audio element) <- (http server method loop) <- (py instance.audio_out queue)
-    this.waitShutdownIntervalId = 0;  // store id of setInterval to disable setInterval(ajax_wait_shutdown, 2500);
-    this.animationRuns = 0;
-    this.windowWidth = window.innerWidth;
   }
-  numberRange (start, end) {  // simulate range() of Python
+  let myGainClone = document.getElementsByClassName("gainClone");
+  for (let i = 0; i < myGainClone.length; i++) {
+    myGainClone[i].addEventListener("input", (e) => {
+      gainNode.gain.value = myGainClone[i].value;
+    });
+  }
+  let playButtons = document.getElementsByClassName("playBtnClass");
+  let pauseButtons = document.getElementsByClassName("pauseBtnClass");
+  for (let i = 0; i <= playButtons.length - 1; i++) {
+    playButtons[i].style.cursor = "pointer";
+    playButtons[i].style.cursor = "hand";
+    playButtons[i].style.fontSize = "200%";
+    audio.addEventListener("play", (e) => {
+      playButtons[i].style.color = "grey";
+      pauseButtons[i].style.color = "red";
+    });
+    playButtons[i].addEventListener("click", (e) => {
+      audio.play();
+      playButtons[i].style.color = "grey";
+    });
+  }
+  for (let i = 0; i <= pauseButtons.length - 1; i++) {
+    pauseButtons[i].style.cursor = "pointer";
+    pauseButtons[i].style.cursor = "hand";
+    pauseButtons[i].style.fontSize = "200%";
+    audio.addEventListener("pause", (e) => {
+      playButtons[i].style.color = "red";
+      pauseButtons[i].style.color = "grey";
+    });
+    pauseButtons[i].addEventListener("click", (e) => {
+      audio.pause();
+    });
+  }
+}
+;
+/**
+* Show or hide volume and gain slider.
+*/
+function toggleAudioControls() {
+  let console = document.getElementById("audioControls");
+  let isShown = "";
+
+  if (glob.audioControlShow === 1) {
+    isShown = "inline-block";
+    glob.audioControlShow = 0;  // global
+  } else {
+    isShown = "none";
+    glob.audioControlShow = 1;
+  }
+  setTimeout(function () {
+    console.style.display = isShown;
+  }, 50);
+}
+;
+/**
+* Show or hide the pop up console window.
+*/
+function toggleConsole(divId) {
+  let console = document.getElementById("console");
+  let isShown = "";
+
+  if (glob.consoleShow === 1) {
+    isShown = "inline-block";
+    glob.consoleShow = 0;  // global
+  } else {
+    isShown = "none";
+    glob.consoleShow = 1;
+  }
+  setTimeout(function () {
+    console.style.display = isShown;
+  }, 50);
+}
+;
+/**
+* Basic methods to adapt on different screen sizes and OS.
+*/
+class Glob {
+  constructor() {
+    this.audioControlShow = 1;
+    this.consoleShow = 1;
+  }
+  numberRange(start, end) {  // simulate range() of Python
     return new Array(end - start).fill().map((d, i) => i + start);
   }
   // return a random integer
@@ -237,1068 +417,498 @@ class Glob{
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   updateScreen() {
-    // called by checkWindowWidth(); rearrange for mobiles small screens
-    let pixies = document.getElementsByClassName("pixies");
-    let divSvgBuoy = document.getElementsByClassName("divSvgBuoy");
+    /* Rearrange menu and decoration for mobiles, small screens.*/
+    // monitor panel right
+    let displayRight = document.getElementById("divMeasurementsUpper");
+    // monitor screws
+    let screwBottomRight = document.getElementById("divSvgScrewHeadBottomRight");
+    let screwTopRight = document.getElementById("divSvgScrewHeadTopRight");
+    let glasBreakTopRight = document.getElementById("divSvgGlasBreakTopRight");
+    // right, playlist, img, txt
+    let divFrameRight = document.getElementById("divFrameRight");
 
-    if(this.windowWidth <= 600) {
-      // change the innerHTML of each selected element
-      for (let i = 0; i < pixies.length; i++) {
-        pixies[i].style.display = "none";
-        divSvgBuoy[i].style.zIndex = "50";
-      }
-    }else {
-      // change the innerHTML of each selected element
-      for (let i = 0; i < pixies.length; i++) {
-        pixies[i].style.maxWidth = "120px";
-        pixies[i].style.maxHeight = "120px";
-        pixies[i].style.display = "inline-block";
-        divSvgBuoy[i].style.zIndex = "10";
-      }
+    displayRight.style.left = (window.innerWidth - 110) + "px";
+    screwBottomRight.style.left = (window.innerWidth - 80) + "px";
+    screwTopRight.style.left = (window.innerWidth - 80) + "px";
+    glasBreakTopRight.style.left = (window.innerWidth - 118) + "px";
+    divFrameRight.style.position = "absolute";
+    divFrameRight.style.display = "block";
+    divFrameRight.style.left = "730px";
+
+    if (window.innerWidth >= 670) {  // override
+      displayRight.style.left = "600px";
+      screwBottomRight.style.left = "670px";
+      screwTopRight.style.left = "670px";
+      glasBreakTopRight.style.left = "630px";
+    }
+    if (window.innerWidth <= 900) {
+      divFrameRight.style.position = "relative";
+      divFrameRight.style.left = "5px";
     }
   }
 }
 ;
-function checkWindowWidth() {
-  glob.windowWidth = window.innerWidth;
-  glob.updateScreen();
-}
-;
-window.addEventListener('resize', checkWindowWidth);
+window.glob = new Glob();
 
-function setEventListenerPlay () {
-/* play button on console */
-    audio.addEventListener("play", function () {
-        playBtn.style.display = "none";
-        pauseBtn.style.display = "block";
-        pauseBtn.style.cursor = "pointer";
-        pauseBtn.style.cursor = "hand";
-        $("#pauseBtn").on('click', function () {
-            audio.pause();
-        });
-    });
-}
-;
-function setEventListenerPause () {
-/* pause button on console */
-    audio.addEventListener("pause", function () {
-        playBtn.style.display = "block";
-        pauseBtn.style.display = "none";
-        playBtn.style.cursor = "pointer";
-        playBtn.style.cursor = "hand";
-        $("#playBtn").on('click', function () {
-            audio.play();
-        });
-    });
-}
-;
-
-function configEisenradioHtmlSetting() {
-/* update global html settings dict
- * request the html and animation settings on/off
- */
-    req = $.ajax({
-        type: 'GET',
-        url: "/tools_radio_config_get",
-        cache: false
-    });
-
-    req.done(function (data) {
-        htmlSettingsDictGlobal = data.configEisenradioHtmlSetting
-        console.log("htmlSettingsDictGlobal ",htmlSettingsDictGlobal)
-    });
-}
-;
-
-function toggleHideConsole() {
-/* show and hide console, bug, console must be set to inline-block on startup in on load,
- * fixed with var
- */
-
-  let consoleShow = document.getElementById("console");
-  let consoleHidden = document.getElementById("consoleHidden");
-
-  if(consoleUpDown === 0){
-      consoleShow.style.display = "inline-block";
-      consoleHidden.style.display = "none";
-      consoleUpDown = 1;
-  } else {
-    consoleShow.style.display = "none";
-    consoleHidden.style.display = "inline-block";
-    consoleUpDown = 0;
-  }
-}
-;
-
-function enlightPicCommentPre(divId) {
-/* switch textColor on or of by clicking on it
- * have id of enclosing div, idea was to make a backlight around/behind (glow?) the text, but not working so far
- */
-    let commentCol = rootVariableCompute('--pic-comment-head');  // works only reliable with named colors
-    let backColor = rootVariableCompute('--background-color');
-    let darkBody = getBodyColor();
-    let radioIdList = divId.split("_");
-    let radioId = radioIdList[1]
-
-    if(darkBody){
-
-            if(document.getElementById("radioStationComment_" + radioId).style.color == 'orange'){
-                document.getElementById("radioStationComment_" + radioId).style.color = commentCol;
-            } else {
-                document.getElementById("radioStationComment_" + radioId).style.color = 'orange';
-                // document.getElementById(divId).style.backgroundColor = 'white';
-            }
-
-    } else {
-            if(document.getElementById("radioStationComment_" + radioId).style.color == 'black'){
-                document.getElementById("radioStationComment_" + radioId).style.color = commentCol;
-                // document.getElementById(divId).style.backgroundColor = backColor;
-            } else {
-                document.getElementById("radioStationComment_" + radioId).style.color = 'black';
-            }
-    }
-}
-;
-
-function maxHeightPicCommentPreToggle() {
-/* Comment/Text under the Stage image; can touch scroll plus expand now */
-        let varMaxHeight = rootVariableCompute('--max-comment-text-height')
-        let id = this.id;
-        let div = document.getElementById(id);
-        let divMaxHeight = div.style.maxHeight;
-
-        if(divMaxHeight == "none" || divMaxHeight == "" ){
-             div.style.maxHeight = varMaxHeight;
-        }
-        else {
-             div.style.maxHeight = "none";
-        }
-}
-;
-
-function setAudioContextVisual() {
-/* create instances of audio, */
-    audioContext = new AudioContext();
-    gainNode = audioContext.createGain();
-    analyserNode = audioContext.createAnalyser();
-    /* if parallel animation must calculate different fftSize */
-    analyserNodeTwo = audioContext.createAnalyser();
-    audioSource = audioContext.createMediaElementSource(audio);
-    audioSource.connect(analyserNode).connect(gainNode).connect(audioContext.destination)
-    audioSource.connect(analyserNodeTwo);
-}
-;
-
-function removePageCover() {
-/* like every function it started simple, now a mess [Baustelle] */
-    stopVisualise();
-    pageCover.style.display = "none";
-    pageCoverCanvas.style.display = "none";
-    setAudioContextVisual();
-    cookie_start_set_text_show_visuals();
-     divStartPageFadeIn.animate(fadeIn, faderInTiming);
-
-    // set canvas top left position for animation in canvas.js, await unhidden
-    setTimeout(function () {
-        canvasMasterRectangle = canvasMaster.getBoundingClientRect();
-        divCanvasMasterPositionTop = canvasMasterRectangle.y;
-        divCanvasMasterPositionLeft = canvasMasterRectangle.x;
-    }, 400);
-    /*
-     * html settings check, also if we come from page refresh or blacklist
-     */
-    if(htmlSettingsDictGlobal["checkboxConfigAnimation"]){
-        if(!(activeListenId == "noId")){
-            svgAnimationMain();
-        }
-    }
-    if(!(activeListenId == "noId")){
-        setTimeout(function () {
-            if(!(activeListenId == "noId")){
-                eisenStylesDict["eisenRadio_" + activeListenId].listenStyle();
-            }
-        }, 500);
-    }
-}
-;
-
-function setAudioVolume() {
-    audio.volume = audioVolumeController.value / 100;
-}
-;
-
-function setAudioGain() {
-    gainNode.gain.value = audioGainController.value;
-}
-;
-
-function reloadAudioElement(newAudioSource, isPlayList) {
-/* called if radio changes - listen
- * keep playlist settings for volume and gain on title change
- */
-    if (!isPlayList) {
-        audio.volume = 0.25;
-        audioVolumeController.value = 25;
-        gainNode.gain.value = 1
-        audioGainController.value = 1;
-    } else {
-        if(!spectrumAnalyserActive) {
-        // set false in fct stopVisualise(e) spectrumAnalyserActive
-            selectSpectrumAnalyser();
-        }
-
-    }
-    audio.src = "";
-    audio.currentTime = 0;
-    audio.srcObject = null; // MDN documentation is not good (srcObject vs src), perhaps this helps
-    audio.src = newAudioSource;
-    audio.load();
-    audio.play();
-}
-;
-
-function randomOne() {
-    return Math.random() >= 0.5 ? 1: -1;
-}
-;
-
-function updateDisplay() {
-/* updates the console (at bottom) radio name
- * try catch not really needed, we work local
- */
-    var req;
-
-    req = $.ajax({
-        type: 'GET',
-        url: "/display_info",
-        cache: false
-    });
-
-    req.done(function (data) {
-        let displays_dict = data.updateDisplay
-        $.each(displays_dict, function (idx, val) {
-            let radioId = idx;
-            let textInfo = val;
-            try {
-                document.getElementById("Display_" + radioId).innerText = textInfo;
-            } catch (error) { console.error(error); }
-        });
-    });
-}
-;
-
-function setTimer(val) {
-/*
- * send hour value from html drop down timer selector, -1 for stopping instantaneously
- */
-    $.ajax({
-        type: 'POST',
-        url: "/index_posts_combo",
-        cache: false,
-        data: { 'timeRecordSelectAll': val }
-    });
-}
-;
-
-function updateMasterProgress() {
-/*
- * get calculated percent value for progress bar to show
- */
-    var req;
-
-    req = $.ajax({
-        type: 'GET',
-        url: "/index_posts_percent",
-        cache: false,
-    });
-
-    req.done(function (data) {
-        let percent = '';
-        percent = data.result;
-        if (percent === 0) {
-            $('.progress-bar').css('width', 25 + '%').attr('aria-valuenow', 25).html('Timer Off');
-        }
-        if (percent !== 0) {
-            $('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent).html('Run, Forrest! RUN!');
-            if (percent >= 100) {
-                window.location.href = "/page_flash";
-            }
-        }
-
-    });
-}
-;
-
-function setDarkMode() {
-    let req;
-    req = $.ajax({
-        type: 'POST',
-        url: "/cookie_set_dark",
-        cache: false
-    });
-}
-;
-
-function delDarkMode() {
-    let req;
-    req = $.ajax({
-        type: 'POST',
-        url: "/cookie_del_dark",
-        cache: false
-    });
-}
-;
-
-function stationGet() {
-/* the active radio name listened; ---> updateDisplay() does the same? [Baustelle]
- * rebuild console after page refresh
- */
-    let req;
-    req = $.ajax({
-        type: 'GET',
-        url: "/station_get",
-        cache: false,
-    });
-    req.done(function (data) {
-        if (data.stationGet) {
-
-            let stationDict = data.stationGet
-            let keyList = Object.keys(stationDict);
-
-            if(keyList.length > 0){
-                let stationName = keyList[0];
-                let stationId = stationDict[stationName]
-                currentRadioName.innerText = stationName; /*stationName.substring(0, 20)*/
-                currentRadioName.setAttribute("id", "currentRadioName");
-                currentRadioName.style.cursor = "pointer";
-                currentRadioName.style.cursor = "hand";
-                $("#currentRadioName").on('click', function () {
-                    document.getElementById('dot_' + stationId).scrollIntoView({ behavior: "smooth" });
-                });
-                currentRadio = stationName;
-                activeListenId = stationId;
-            }
-        }
-    });
-}
-;
-
-function streamerGet() {
-/*
- * redraw dropdown dialog for recorder in console after page refresh
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/streamer_get",
-        cache: false,
-    });
-    req.done(function (data) {
-
-        if (data.streamerGet) {
-            $('#cacheList').find('option:not(:first)').remove();
-            streamerDictGlobal = {};
-            streamerDictGlobal = data.streamerGet;
-            for(name in streamerDictGlobal){
-                let table_id = streamerDictGlobal[name];
-                cacheListFeed(table_id, name);
-            }
-        }
-    });
-}
-;
-
-function blacklistInfoOff() {
 /**
- * disable sticky note info if blacklist feature is enabled by user
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/blacklist_status_get",
-        cache: false,
-    });
-    req.done(function (data) {
-
-        let blacklistPostIt = document.getElementById('blacklistPostIt');
-        if (data.blacklistStatus === "enabled") {
-            blacklistPostIt.style.display = "none";
-        } else {
-            blacklistPostIt.style.display = "inline-block";
-        }
-    });
-}
-;
-
-function cookie_set_show_visuals() {
-/**
- * spectrum analyser cookie
- */
-    let req;
-    req = $.ajax({
-        type: 'POST',
-        url: "/cookie_set_show_visuals",
-        cache: false
-    });
-}
-;
-
-function cookie_del_show_visuals() {
-    let req;
-    req = $.ajax({
-        type: 'POST',
-        url: "/cookie_del_show_visuals",
-        cache: false
-    });
-}
-;
-
-function cookie_toggle_show_visuals(cloneCanvas, cloneDiv) {
-/* Switch the visibility of element 'canvasMaster' (single) itself and
-   in the secondary menu
-
-   Each radio got an individual canvas for mobiles.
-   We want to switch 'canvasMaster' to individual "cloneCanvasMaster_{{post['id']}}"
-   Vars set to 'window' type.
-   We change the content of the var if we call from
-   "page bottom console" or "individual radio screw head triggered console"
-
-   default canvasMasterRedirect is a dict. canvasMasterRedirect[master] is 'canvasMaster'
-   let canvasMaster = document.getElementById(canvasMasterRedirect[0]);
-   We set an individual canvas somewhere to
-   canvasMasterRedirect['master'] = "cloneCanvasMaster_8" and
-   let canvasMaster = canvasMasterRedirect['master'];
-
-   todo
-   search "document.getElementById('canvasMaster');" and replace
-        let canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); //
-        let divCanvasMaster = document.getElementById(divCanvasMasterRedirect['master']); // cookie_start_set_text_show_visuals
-    in fun:
-    cookie_start_set_text_show_visuals()  (cloneCanvas, cloneDiv)
-    cookie_toggle_show_visuals()
+* Create a global accessible status <code>allowed</code> dictionary.
+* Request Flask endpoint for the html and animation settings on/off.
+* Change icon color for special setting <code>cpuUtilisation</code>.
+* Switched with Tools/Config menu and CPU icon.
 */
-    let req;
-    req = $.ajax({
-        type: 'GET',
-        url: "/cookie_get_show_visuals",
-        cache: false
-    });
+function configEisenradioHtmlSetting() {
+  let req = $.ajax({
+    type: 'GET',
+    url: "/tools_radio_config_get",
+    cache: false
+  });
 
-    let analyserBadge = document.getElementById('analyserBadge');
-    // global vars
-    canvasMaster = canvasMasterRedirect['master'];  // document.getElementById('canvasMaster'); // todo check runs
-    divCanvasMaster = document.getElementById('divCanvasMaster'); // document.getElementById(divCanvasMasterRedirect['master']); //
+  req.done(function (data) {
+    htmlSettingsDictGlobal = data.configEisenradioHtmlSetting
 
-    if ( !(cloneCanvas === undefined) ) {
-      canvasMaster = cloneCanvas;
-      divCanvasMaster = cloneDiv;
-      canvasMasterCtx = canvasMaster.getContext("2d");
-      canvasMasterCtx.font = "24px Arial";
-      canvasMasterCtx.fillText("under construction", 10, 50);
+    let cpuDict = {};  //
+    if (htmlSettingsDictGlobal["cpuUtilisation"]) {
+      cpuDict["cpuHotMarker"] = { "fill": "#FF8080" };  // red
+    } else {
+      cpuDict["cpuHotMarker"] = { "fill": "#00FF00" };  // green
     }
-
-
-    req.done(function (data) {
-
-        let show_visuals = data.str_visuals;
-        if (show_visuals !== 'show_visuals') {
-            analyserBadge.textContent = "hide";
-            canvasMaster.style.display = "inline-block";
-            divCanvasMaster.style.display = "inline-block";
-            cookie_set_show_visuals();
-            spectrumAnalyserShow = true;
-
-            selectSpectrumAnalyser();
-        }
-        if (show_visuals === 'show_visuals') {
-            analyserBadge.textContent = "show";
-            canvasMaster.style.display = "none";
-            divCanvasMaster.style.display = "none";
-            let divHiddenButtons = document.getElementById("divHiddenButtons");
-            divHiddenButtons.style.display = "none";
-            cookie_del_show_visuals();
-        }
-
-        setTimeout(function () {
-
-        }, 500);
-
-    });
+    svgTC.svgEditPath(cpuDict, svgTC.imgDict["degrade"]);
+    document.getElementById('cpuImage').src = svgTC.imgDict["degrade"].image.src;
+  });
 }
 ;
-
-function cookie_start_set_text_show_visuals(cloneCanvas, cloneDiv) {
-    let req;
-    req = $.ajax({
-        type: 'GET',
-        url: "/cookie_get_show_visuals",
-        cache: false,
-
-    });
-
-    let analyserBadge = document.getElementById('analyserBadge');
-    let divCanvasMaster = document.getElementById('divCanvasMaster');
-    let canvasMaster = document.getElementById('canvasMaster');
-
-    req.done(function (data) {
-        let show_visuals = data.str_visuals;
-
-        if (show_visuals === 'show_visuals') {
-            analyserBadge.textContent = "hide";
-            canvasMaster.style.display = "inline-block";
-            divCanvasMaster.style.display = "inline-block";
-            spectrumAnalyserShow = true;
-            selectSpectrumAnalyser();
-
-        }
-        if (show_visuals !== 'show_visuals') {
-            analyserBadge.textContent = "show";
-            canvasMaster.style.display = "none";
-            divCanvasMaster.style.display = "none";
-            spectrumAnalyserShow = false;
-        }
-    });
+/**
+* Enable audio for the page.
+* Gain node for louder output.
+* Need two analyzer nodes. Background tesla coils, foreground TV.
+*/
+function setAudioContextVisual() {
+  audioContext = new AudioContext();
+  gainNode = audioContext.createGain();
+  analyserNodeOne = audioContext.createAnalyser();
+  /* if parallel animation must calculate different fftSize */
+  analyserNodeTwo = audioContext.createAnalyser();
+  audioSource = audioContext.createMediaElementSource(audio);
+  audioSource.connect(analyserNodeOne).connect(gainNode).connect(audioContext.destination)
+  audioSource.connect(analyserNodeTwo); // get the data copy for analyzer in foreground
+  window.infSpeaker = new PowerSwitch({ path: document.querySelectorAll("#gSvgSpeakerFlatWaves path") });// animate speaker dynamic fake waves
 }
 ;
+/**
+* Audio volume slider.
+*/
+function setAudioVolume() {
+  audio.volume = audioVolumeController.value / 100;
+}
+;
+/**
+* Audio gain slider.
+*/
+function setAudioGain() {
+  gainNode.gain.value = audioGainController.value;
+}
+;
+/**
+* JS blackbox audio element reload.
+* Test various settings to load faster and without disruptions here.
+* Flask endpoint sends different streams with different content-type.
+*/
+function reloadAudioElement(newAudioSource) {
+  audio.src = "";
+  audio.currentTime = 0;
+  // audio.srcObject = null; // test 2 days
+  audio.src = newAudioSource;  // Flask endpoint url
+  audio.load();
 
+  let playPromise = audio.play();    // must check status, else DOM promise error in log
+  if (playPromise !== undefined) {
+    playPromise.then(function () {
+      // "Automatic playback started!"
+    }).catch(function (error) {
+      // "Automatic playback failed."
+    });
+  }
+}
+;
+/**
+* Create a random positive or negative.
+* @return a random number of value one positive or negative
+*/
+function randomOne() {
+  return Math.random() >= 0.5 ? 1 : -1;
+}
+;
+/**
+* Feed endpoint with timer value of user choice to end the app.
+*/
+function setTimer(val) {
+  /*
+   * send hour value from html drop down timer selector, -1 for stopping instantaneously
+   */
+  $.ajax({
+    type: 'POST',
+    url: "/index_posts_combo",
+    cache: false,
+    data: { 'timeRecordSelectAll': val }
+  });
+}
+;
+/**
+* Endpoint called to get status of timer.
+*/
+function updateMasterProgress() {
+  /*
+   * get calculated percent value for progress bar to show
+   */
+  let req = $.ajax({
+    type: 'GET',
+    url: "/index_posts_percent",
+    cache: false,
+  });
+
+  req.done(function (data) {
+    let percent = '';
+    let runner = document.getElementById("progressbarTimerRuner")
+    percent = data.result;
+    if (percent === 0) {
+      runner.style.width = "25%";
+      runner.innerHTML = "Timer Off";
+    }
+    if (percent !== 0) {
+      runner.style.width = percent + "%";
+      runner.innerHTML = "active";
+      if (percent >= 100) {
+        window.location.href = "/page_flash";
+      }
+    }
+  });
+}
+;
+/**
+* Endpoint sets a dark mode cookie exercise.
+* Could use the SQLite database for that.
+*/
+function setDarkMode() {
+  let req;
+  req = $.ajax({
+    type: 'GET',
+    url: "/cookie_set_dark",
+    cache: false
+  });
+}
+;
+/**
+* Endpoint deletes a dark mode cookie exercise.
+*/
+function delDarkMode() {
+  let req;
+  req = $.ajax({
+    type: 'GET',
+    url: "/cookie_del_dark",
+    cache: false
+  });
+}
+;
+/**
+* Enable show radio name dl folder in title display after recorder selection.
+*/
+function downloadDirGet() {
+  let req = $.ajax({
+    type: 'GET',
+    url: "/download_dir_get",
+    cache: false,
+  });
+  req.done(function (data) {
+    downloadDir = data.downloadDirGet;
+  });
+}
+;
+/**
+* Dispatcher style function call to change dark mode scheme.
+*/
 function changeColorScheme() {
-/* change color scheme for the front page from html button */
+  /* change color scheme for the front page from html button */
 
-    let darkBody = getBodyColor();
-    if (darkBody) {
-        setColor("white");
-    } else {
-        setColor("black");
-    }
+  let darkBody = getBodyColor();
+  if (darkBody) {
+    setColor("white");
+  } else {
+    setColor("black");
+  }
 }
 ;
-
-
+/**
+* Change dark mode scheme.
+* Set CSS global variables.
+* Trigger scheme change functions of animations.
+* @param {String} vas - black or white scheme
+*/
 function setColor(val) {
-/* complete toolbox of ajax request response (success, error, complete, request.done) */
-    let req;
-    var desiredColor = undefined;
-    // from html switch button
-    if (val === 'white') {desiredColor = 'white';}
-    if (val === 'black') {desiredColor = 'black';}
-    // from page load ready
-    if (val === 'requestTheCookie') {desiredColor = "cookieRequest";}
+  /* Exercise complete toolbox of ajax request response (success, error, complete, request.done)
+  */
+  let req;
+  var desiredColor = undefined;
+  // from html switch button
+  if (val === 'white') { desiredColor = 'white'; }
+  if (val === 'black') { desiredColor = 'black'; }
+  // from page load ready
+  if (val === 'requestTheCookie') { desiredColor = "cookieRequest"; }
 
-    req = $.ajax({
-        type: 'GET',
-        url: "/cookie_get_dark",
-        cache: false,
-        success: function(response){
-            // console.log(response);
-        },
-        error: function(){
-                //console.log("error in setColor()");
-        },
-        complete: function(){
-           //  console.log('callFunctionAfterAjaxCallComplete()');
-        }
-    });
-    req.done(function (data) {
-        let listenerId = data.listenerId;
-        // server response with darkMode cookie setting
-        let moon = "&#127769";
-        let sun = "&#127774";
-        let darkMode = data.darkmode;
-        let color;
-        if ((desiredColor === "cookieRequest")) {
-            if ((darkMode === 'darkmode')) {color = 'black';} else {color = 'white';}
-        }
-        if ((desiredColor === "black")) {color = 'black';}
-        if ((desiredColor === "white")) {color = 'white';}
+  req = $.ajax({
+    type: 'GET',
+    url: "/cookie_get_dark",
+    cache: false,
+    success: function (response) {
+      /// console.log(response);
+    },
+    error: function () {
+      // console.log("error in setColor()");
+    },
+    complete: function () {
+      // console.log('callFunctionAfterAjaxCallComplete()');
+    }
+  });
+  req.done(function (data) {
+    // let listenerId = data.listenerId;
+    // server response with darkMode cookie setting
+    let moon = "&#127769";
+    let sun = "&#127774";
+    let darkMode = data.darkmode;
+    let color;
 
-        var bodyStyles = document.body.style;
-        if (color === 'black') {
-            bodyStyles.setProperty('--background-color', 'rgba(26,26,26,1)');
-            bodyStyles.setProperty('--form-background', '#333333');
-            bodyStyles.setProperty('--form-text', '#bbbbbb');
-            bodyStyles.setProperty('--hr-color', '#777777');
-            bodyStyles.setProperty('--border-color', '#202020');
-            bodyStyles.setProperty('--text-color', '#bbbbbb');
-            bodyStyles.setProperty('--form-edit', '#333333');
-            bodyStyles.setProperty('--opacity', '0.5');
-            bodyStyles.setProperty('--btn-opacity', '0.75');
-            bodyStyles.setProperty('--footer-color', 'rgba(26,26,26,0.90)');
-            bodyStyles.setProperty('--main-display-arrow', '#34A0DB');
-            bodyStyles.setProperty('--dot-for-radio-headline', '#E74C3C');
-            bodyStyles.setProperty('--lbl-div-audio', '#db6f34');
-            bodyStyles.setProperty('--ghetto-measurements-bottom-color', '#FCA841');
-            bodyStyles.setProperty('--ghetto-measurements-upper-color', '#d441fc');
-            bodyStyles.setProperty('--radio-station-headline', '#4195fc');
-            bodyStyles.setProperty('--controls-background', 'rgba(26,26,26,1)');
-            bodyStyles.setProperty('--canvasMaster', 'rgba(26,26,26,0.85)');
-            bodyStyles.setProperty('--divButton-color', '--background-color');
-            bodyStyles.setProperty('--radio-station-url', 'grey');
-            bodyStyles.setProperty('--colorPlayListAndDropDown', 'darkOrange');
+    if ((desiredColor === "cookieRequest")) {
+      if ((darkMode === 'darkmode')) { color = 'black'; } else { color = 'white'; }
+    }
+    if ((desiredColor === "black")) { color = 'black'; }
+    if ((desiredColor === "white")) { color = 'white'; }
 
-            setDarkMode();    // cookie
-            document.getElementById('darkModeIcon').innerHTML = sun;
-            document.getElementById('darkModeIconConsole').innerHTML = sun;
+    var bodyStyles = document.body.style;
+    if (color === 'black') {
+      bodyStyles.setProperty('--background-color', 'rgba(26,26,26,1)');
+      bodyStyles.setProperty('--hr-color', '#777777');
+      bodyStyles.setProperty('--border-color', '#202020');
+      bodyStyles.setProperty('--timerProgressOpacity', '0.5');
+      bodyStyles.setProperty('--ghettoDataColor', 'ivory');
+      bodyStyles.setProperty('--customTxtColor', 'coral');
+      bodyStyles.setProperty('--canvasMaster', 'rgba(26,26,26,0.85)');
 
-        }
-        if (color === 'white') {
-            bodyStyles.setProperty('--background-color', '#ccc');
-            bodyStyles.setProperty('--form-background', 'BlanchedAlmond');
-            bodyStyles.setProperty('--form-text', 'black');
-            bodyStyles.setProperty('--hr-color', '#eee');
-            bodyStyles.setProperty('--border-color', '#fff');
-            bodyStyles.setProperty('--text-color', '#f0f0f0');
-            bodyStyles.setProperty('--form-edit', '#777777');
-            bodyStyles.setProperty('--opacity', '1');
-            bodyStyles.setProperty('--btn-opacity', '1');
-            bodyStyles.setProperty('--footer-color', 'rgba(0,63,92,0.90)');
-            bodyStyles.setProperty('--main-display-arrow', '#bc5090');
-            bodyStyles.setProperty('--dot-for-radio-headline', '#565454');
-            bodyStyles.setProperty('--lbl-div-audio', '#FCA841');
-            bodyStyles.setProperty('--ghetto-measurements-bottom-color', 'ivory');
-            bodyStyles.setProperty('--ghetto-measurements-upper-color', 'ivory');
-            bodyStyles.setProperty('--radio-station-headline', 'black');
-            bodyStyles.setProperty('--controls-background', '#565454');
-            bodyStyles.setProperty('--canvasMaster', '#ccc');    // rgba(240, 240, 240, 0.85)
-            bodyStyles.setProperty('--divButton-color', '#565454');
-            bodyStyles.setProperty('--radio-station-url', 'black');
-            bodyStyles.setProperty('--colorPlayListAndDropDown', 'black');
-            // del cookie
-            delDarkMode();
-            document.getElementById('darkModeIcon').innerHTML = moon;
-            document.getElementById('darkModeIconConsole').innerHTML = moon;
-            tuxIceFloeFrontPowerSwitch.applyOrgColor("tuxIceFoeFront");  // logName arg
-        }
+      setDarkMode();    // cookie
+      let sunIcon = document.getElementById('darkModeIcon').innerHTML = sun;
+    }
+    if (color === 'white') {
+      bodyStyles.setProperty('--background-color', '#ccc');
 
-        setTimeout(function () {
-            if(!(activeListenId == "noId")){
-                eisenStylesDict["eisenRadio_" + activeListenId].listenDarkModeStyle();
-                let darkBody = getBodyColor();
-                colorizeDefaultSvgStageElements(darkBody);
-            }
-        }, 500);
-    });
+      bodyStyles.setProperty('--hr-color', '#eee');
+      bodyStyles.setProperty('--border-color', '#fff');
+      bodyStyles.setProperty('--timerProgressOpacity', '1');
+      bodyStyles.setProperty('--ghettoDataColor', 'ivory');
+      bodyStyles.setProperty('--customTxtColor', 'black');
+      bodyStyles.setProperty('--canvasMaster', '#ccc');    // rgba(240, 240, 240, 0.85)
+
+      delDarkMode(); // del cookie
+      document.getElementById('darkModeIcon').innerHTML = moon;
+
+    }
+
+    switchModeThemes();
+    switchModeSpeaker();
+    switchModeScrewHeads();  // DOM elem monitor screw heads
+  });
 }
 ;
-
+/**
+* Themes with dark mode switching.
+*/
+function switchModeThemes() {
+  if(activeTheme === "Arctic") {
+    foreBackGround.clearAll();
+    switchModeCloudsIce();
+    switchModeIceFloe();
+    switchModeSeaSky();   // called also in themeInitArctic
+  }
+}
+;
+/**
+* Request endpoint for current listener stream header and show available information on page.
+*/
 function headerInfo() {
-/*
- * writes extracted header information to html bit rate, web site, genre ...
- */
-    let req = $.ajax({
-        type: 'GET',
-        url: "/header_info",
-        cache: false
-    });
+  /*
+  * writes extracted header information to html bit rate, web site, genre ..., except if idle or playlist is on
+  */
+  if (activeRadioName === "Eisen" || activeRadioName === "Playlist") return;
 
-    req.done(function (data) {
-        if (data.header_result !== "-empty-") {
-            let darkBody = getBodyColor();
-            $.each(data.header_result, function (idx, val) {
+  let name = activeRadioName;
+  let req = $.ajax({
+    type: 'POST',
+    url: "/header_info",
+    cache: false,
+    data: { "name": name }
+  });
 
-                let response_time = val[0];
-                let suffix = val[1];
-                let genre = val[2];
-                currentRadioGenre = genre;
-                let station_name = val[3];
-                let station_id = val[4];
-                let bit_rate = val[5];
-                let icy_url = val[6];
+  req.done(function (data) {
+    if (data.header_result !== "-empty-") {
+      let darkBody = getBodyColor();
+      let headerDict = data.header_result;
+      let response_time = headerDict["request_time"];
+      let suffix = headerDict["request_suffix"];
+      let genre = headerDict["request_icy_genre"];
+      let station_name = headerDict["request_icy_name"];
+      let station_id = headerDict["request_icy_view"];
+      let bit_rate = headerDict["request_icy_br"];
+      let icy_url = headerDict["request_icy_url"];
+      let current_song = headerDict["current_song"];
 
-                document.getElementById('toggleAnimals_' + station_id).innerHTML = "🐻‍❄"; // element can switch animals, former fake temperature
-                document.getElementById('toggleAnimals_' + station_id).style.cursor = "hand";
-                document.getElementById('toggleAnimals_' + station_id).style.cursor = "pointer"; // html onclick="toggleAnimalDefaultDivSvG();
-                document.getElementById('request_time_' + station_id).innerText = "" + response_time + " ms";
-                document.getElementById('request_suffix_' + station_id).innerText = "" + suffix;
-                document.getElementById('request_icy_br_' + station_id).innerText = "" + bit_rate + " kB/s";
-                document.getElementById('icy_name_' + station_id).innerText = "" + station_name;
-                let modGenre = unifyGenre(genre);  // white space replace \n
-                document.getElementById('request_icy_genre_' + station_id).innerHTML = modGenre.replace(/ /g, "\n");
-                document.getElementById('request_icy_url_' + station_id).innerText = "" + icy_url;
-                // need value for url click
-                document.getElementById('request_icy_url_' + station_id).value = "" + icy_url;
-            });
-        }   /*data.cache_result !== ""*/
-    });
-}
-;
-
-function unifyGenre(searchString){
-    let str = searchString.replace(/,/g, ' ').replace(/-/g, ' ');
-    let splitList3 = str.split(' ');
-    let outString = '';
-    for (let index = 0; index <= splitList3.length - 1; index++) {
-      outString += splitList3[index] + ' ';
-      if(index > 2) break;
+      document.getElementById('request_time').innerText = "" + response_time + " ms";
+      document.getElementById('request_suffix').innerText = "" + suffix;
+      document.getElementById('request_icy_br').innerText = "" + bit_rate + " kB/s";
+      document.getElementById('icy_name').innerText = "" + station_name;
+      document.getElementById('request_icy_url').innerText = "" + icy_url;
+      // need a value for url to click
+      document.getElementById('request_icy_url').value = "" + icy_url;
+      document.getElementById('titleDisplay').innerText = "" + current_song;
+      // let modGenre = unifyGenre(genre);  // white space replace \n   // where to put genre now?
+      // document.getElementById('request_icy_genre').innerHTML = modGenre.replace(/ /g, "\n");
     }
-    return outString;
+  });
 }
 ;
-
-function deleteInfo() {
-/*
- * clean the whole html page from unused radios every few seconds
- * tell if there is an active connection
- *
- * return if playlist is active, nothing to do
- */
-
-    if(!(lastAudioRadioGlobal === undefined)){return;}  // playlist is active
-
-    let req = $.ajax({
-        type: 'GET',
-        url: "/delete_info",
-        cache: false
-    });
-
-    req.done(function (data) {
-        if (data.is_data_transfer == true) {
-             document.getElementById('isOnlineDot').innerHTML = "&#128994";
-            // red dot &#128308; 	green dot &#128994;
-        } else {
-            document.getElementById('isOnlineDot').innerHTML = "&#128308";
-        }
-
-        if (data.stopped_result !== "-empty-") {
-            let stopped_list = data.stopped_result;
-            let darkBody = getBodyColor();
-            $.each(stopped_list, function (idx, station_id) {
-                setTimeout(function (){deleteInfoExec(station_id, darkBody);}, 1000);
-            });/**/
-        }
-    });
+/**
+* Radio stations decide free style genre description string formats.
+* We allow, extract, only three strings to keep the display clean.
+* @return string of maximum three strings
+*/
+function unifyGenre(searchString) {
+  let str = searchString.replace(/,/g, ' ').replace(/-/g, ' ');
+  let splitList3 = str.split(' ');
+  let outString = '';
+  for (let index = 0; index <= splitList3.length - 1; index++) {
+    outString += splitList3[index] + ' ';
+    if (index > 2) break;
+  }
+  return outString;
 }
 ;
-
-function deleteInfoExec(station_id, darkBody, logName){
-/* delete/cleanup function can called one time for single radio or by loop
- * station_id: radioId,  darkBody:true/false dark mode
-
- * ------------------------ STATION.ID ----------------------
- */
-
-    try{
-        // del radio style
-        let pixies = document.getElementById('pixies_' + station_id);
-        let pix = document.getElementById('pix_' + station_id);
-        let divRadioFrontPlate = document.getElementById('divRadioFrontPlate_' + station_id);
-        let radioHeadLine = document.getElementById('radioHeadLine_' + station_id);
-        let divMeasurementsUpper = document.getElementById('divMeasurementsUpper_' + station_id);
-        let divStationDisplayGrid = document.getElementById('divStationDisplayGrid_' + station_id);
-        let divHeaderShadow = document.getElementById('divHeaderShadow_' + station_id);
-        let divRadioBackLight = document.getElementById('divRadioBackLight_' + station_id);
-        let divStationGenre = document.getElementById('divStationGenre_' + station_id);
-        let radioStationComment = document.getElementById('radioStationComment_' + station_id);
-        let picComment = document.getElementById('divCustomText_' + station_id);
-
-        if (!darkBody) {
-            radioHeadLine.style.color = "#565454";
-        }
-        else {
-            radioHeadLine.style.color = " #4195fc";
-        }
-
-       pix.style.maxHeight = "2em";
-       pixies.style.float = "";
-       divHeaderShadow.style.display = "none";
-       picComment.style.display = "none";
-       divMeasurementsUpper.style.display = "none";
-       divStationDisplayGrid.style.display = "none";
-       divRadioFrontPlate.style.backgroundImage = "";
-       divRadioFrontPlate.style.boxShadow = "";
-       divRadioFrontPlate.style.minHeight = "1em"; // basicApplyStyle() set 40em for animation
-       document.getElementById('divStationDisplayGrid_' + station_id).style.left = "5em";
-       /* animation incl. stage */
-       document.getElementById("divGracefulDegradation_" + station_id).style.display = "none";
-       document.getElementById("animatedBackGround_" + station_id).style.display = "none";
-       document.getElementById("divMainAnimationContainer_" + station_id).style.display = "none";
-       document.getElementById('divRadioContainer_' + station_id).style.height = "100%";
-       document.getElementById('divBtnAbsWrapper_' + station_id).style.top = "0em";
-       // document.getElementById("divMainAnimationContainer_" + activeListenId).style.display = "none";   // svg sky, ocean
-
-        // del ajax stuff
-        document.getElementById('Display_' + station_id).innerText = "";
-        document.getElementById('request_time_' + station_id).innerText = "";
-        document.getElementById('request_suffix_' + station_id).innerText = "";
-        document.getElementById('request_icy_br_' + station_id).innerText = "";
-        document.getElementById('request_icy_url_' + station_id).innerText = "";
-        document.getElementById('icy_name_' + station_id).innerText = "";
-        document.getElementById('request_icy_genre_' + station_id).innerHTML = "";
-
-        for(let index=0;index<=airDropDelDict[station_id].length -1;index++){
-            document.getElementById(airDropDelDict[station_id][index]).style.display = "none";
-        }
-
-    } catch (error) {console.log("-> error deleteInfoExec() radioId ",station_id, error);}
-}
-;
-
-function cacheListFeed(table_id, title) {
-/*
- * creates a drop-down dialog from where we can auto scroll directly to the radio id on start page
- * is called for each radio listed in json response
- * caller  1 (recOrListenAction() req.done(function (data) {)
- *         2 streamerGet()
- *
- * HTML
- * <form action="" name="CACHE">
- *        onChange="location = this.value;cacheList.options[0].selected = true;"
- *
- *         jumps to
- * <div class="divCacheListFeedAnchorJump" id=dot_{{post['id']}}></div>
- *     <span class="radio-station-headline">
- *
- * JavaScript
- * opt.value = '#dot_' + table_id;
- */
-
-    if (title !== 'Null') {
-
-        let cacheList = document.getElementById('cacheList');
-        cacheList.style.color = "#db6f34";
-        cacheList.style.textColor = "#db6f34";
-
-        let opt = document.createElement('option');
-        opt.id = 'opt_' + table_id;
-        opt.value = '#dot_' + table_id;
-        opt.innerHTML = title;
-        cacheList.appendChild(opt);
-    }
-}
-;
-
-function toggleCacheListShowSelectBox() {
-/*
- * element 1 is hard coded " (ಠ_ಠ) ", to show that the option select box is active
- */
-    if (document.getElementById('cacheList').childElementCount > 1) {
-        document.getElementById("cacheList").style.display = "block";
-    } else {
-        document.getElementById("cacheList").style.display = "none";
-    }
-}
-;
+/**
+* Base function to request the current color scheme, dark mode preferred.
+* @return true if dark ``rgb(26, 26, 26)``, hsl(0,0%,10%) ``10% light``
+*/
 function getBodyColor() {
-/* returns true if dark mode, else false */
-    let bodyStyle = window.getComputedStyle(document.body, null);
-    let backgroundColor = bodyStyle.backgroundColor;
-    let darkBody;
-    if (backgroundColor === 'rgb(26, 26, 26)') {
-        darkBody = true;
-    } else { darkBody = false; }
-    return darkBody;
+  let bodyStyle = window.getComputedStyle(document.body, null);
+  let backgroundColor = bodyStyle.backgroundColor;
+  let darkBody;
+  if (backgroundColor === 'rgb(26, 26, 26)') {
+    darkBody = true;
+  } else { darkBody = false; }
+  return darkBody;
 }
 ;
-
+/**
+* Random integer.
+* @param {int} min - minimum
+* @param {int} max - maximum
+* @return random int between and inclusive min and max integer
+*/
 function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 ;
-
-function deactivateAudioElement(){
-/*
- * deactivate audio element to faster load new src
- */
-    audio.src = "";
-    audio.currentTime = 0;
-    audio.srcObject = null;
-    stopVisualise();
-}
-;
-
+/**
+* Show or hide a loader icon.
+* @param {Boolean} enabled - true or false
+*/
 function loaderAnimation(enabled) {
-/* arg: enabled is true or false to start stop the loader animation */
-    let darkBody = getBodyColor();
-    if (darkBody) {
-        if (enabled) {document.getElementById('divLoaderAnimationThreeNiceGuys').style.display = "block";}
-        if (!enabled) {document.getElementById('divLoaderAnimationThreeNiceGuys').style.display = "none";}
-    }
-    else {
-        if (enabled) {document.getElementById('divLoaderAnimationBright').style.display = "block";}
-        if (!enabled) {document.getElementById('divLoaderAnimationBright').style.display = "none";}
-    }
+  /* arg: enabled is true or false to start stop the loader animation */
+  let darkBody = getBodyColor();
+  if (darkBody) {
+    if (enabled) { document.getElementById('divLoaderAnimationThreeNiceGuys').style.display = "block"; }
+    if (!enabled) { document.getElementById('divLoaderAnimationThreeNiceGuys').style.display = "none"; }
+  }
+  else {
+    if (enabled) { document.getElementById('divLoaderAnimationBright').style.display = "block"; }
+    if (!enabled) { document.getElementById('divLoaderAnimationBright').style.display = "none"; }
+  }
 }
 ;
+/**
+* Trigger endpoint to store status variable if degradation is used.
+* Callback <code>configEisenradioHtmlSetting</code> function to inform
+* <code>svgAnimationMain</code> about the new status.
+*/
+function degradeAnimationsSet() {
+  let req = $.ajax({
+    type: 'GET',
+    url: "/degrade_animation_level_set",
+    cache: false,
+  });
 
-function recOrListenAction() {
-/* target: catch button press and send it to the server
- * information, lesson learned:
- *  never (more) use jscript except for ajax, never use external libs (popper, bootstrap) and buttons. use custom divs and svg
- *  use querySelectorAll to set eventListener, use options to set function args: function aFunction({evt: function (){myFunction()}})
- *  in eventListener Body foo.addEventListener(<listen option>, function (){evt(),false});
- */
-        // jquery button press event hits on navbar, one more reason to never use preconfigured buttons
-    if ($(this).attr("class") === "navbar-toggle collapsed") {
-        return;
-    }
-    ;
-        // show loader Animation
-    if(htmlSettingsDictGlobal["checkboxConfigStyle"] === 1) loaderAnimation(enabled = true);
+  req.done(function (data) {
+    setTimeout(function () {
+      configEisenradioHtmlSetting(); // get the value for cpu high/low 1/0, write new "htmlSettingsDictGlobal"
+    }, 5);
+  });
+}
+;
+/**
+* Trigger endpoint to get status if app is using blacklist feature.
+* Callback sets color of blacklist icon.
+*/
+function blacklistEnableGet() {
 
-    let buttonClass = $(this).attr("class");
-    let buttonId = $(this).attr("id");
-    let action0_id1 = buttonId.split("_");   // Listen_17
+  let req = $.ajax({
+    type: 'GET',
+    url: "/blacklist_enabled_get",
+    cache: false,
+  });
 
-    if (buttonClass === "btn btn-primary") {
-        $('#' + buttonId).removeClass("btn btn-primary");
-        $('#' + buttonId).addClass("btn btn-danger");
-        if(action0_id1[0] === "Listen"){
-            deactivateAudioElement();   // instant button change and kill audio
-            activeListenId = action0_id1[1]    // set global listener id for applying styles, calling divs with num id
-        }
-    }
-    if (buttonClass === "btn btn-danger") {
-        $('#' + buttonId).removeClass("btn btn-danger");
-        $('#' + buttonId).addClass("btn btn-primary");
-    }
-    let dict = {
-        'action': action0_id1[0],
-        'table_id': action0_id1[1]
+  req.done(function (data) {
+
+    setTimeout(function () {
+      let blacklistOn = data.blacklistEnableGet;
+      let blDct = {};
+      if (blacklistOn) {
+        blDct["blacklistOff"] = { "fill-opacity": "0" };
+        blDct["blacklistBlueParking"] = { "fill-opacity": "1" };
+        blDct["blacklistNoParking"] = { "fill-opacity": "1" };
+      } else {
+        blDct["blacklistOff"] = { "fill-opacity": "1" };
+        blDct["blacklistBlueParking"] = { "fill-opacity": "0" };
+        blDct["blacklistNoParking"] = { "fill-opacity": "0" };
+      }
+      svgTC.svgEditPath(blDct, svgTC.imgDict["blackList"]);
+      document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
+    }, 5);
+  });
+}
+;
+function loadSvgSymbol() {
+  return new Promise(function(resolve, reject) {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/svg_symbol_get');
+    xhr.onload = function () {
+      var data = xhr.responseText;  // or xhr.responseXML SVG is a subset XML
+      if (xhr.status === 200) {
+      // If successful, resolve the promise by passing back the request response
+        resolve(xhr.response);
+
+      } else {
+      // If it fails, reject the promise with a error message
+        cl("loadSvgSymbol failed onload")
+        reject(Error('Image didn\'t load successfully; error code:' + xhr.statusText));
+
+      }
     };
 
-    req = $.ajax({
-        type: 'POST',
-        dataType: "json",
-        url: "/",
-        data: dict
-    });
+    xhr.onerror = function() {
+    // Also deal with the case when the entire request fails to begin with
+    // This is probably a network error, so reject the promise with an appropriate message
+        cl("loadSvgSymbol failed onerror")
+        reject(Error('There was a network error.'));
+    };
 
-    req.done(function (data) {
-
-        if (data.button_to_switch) {
-            /* autoClicker, Button press */
-            recOrListenAutoClickListenButton(buttonSwitch = data.button_to_switch);
-        }
-        if (data.autoClicker) {
-            /* autoClicker has endet listen, now set minimal style for record, if on
-             *  switch EisenRadioStyles instance status for listen from true to false
-             */
-            recOrListenAutoClickerRecorderStyle(buttonId = data.autoClicker);
-        }
-        if (data.streamer) {
-            /* show running recorder in drop-down dialog with jump to radio option */
-            recOrListenRunRecordsDisplay(activeRecorderList = data.streamer);
-        }
-        if (data.streamerId) {
-            /* get id of pressed record button, call record animation golden disc */
-            recOrListenRecorderStyleSet(data.streamerId);
-        }
-        if (data.result === 'deactivate_audio') {
-            /* must have two id: listen id active in this moment;
-             *                   last id; to switch EisenRadioStyles instance status for listen from true to false
-             * manual button press off, so no autoClicker can do it
-             */
-            recOrListenDeactivateAudio(dataRadioId = data.radio_id, dataLastListenId = data.last_listen_id);
-        }
-        if (data.result === 'activate_audio') {
-            recOrListenAudioActivateLoad(radioName = data.radio_name, localHostSoundRoute = data.sound_endpoint);
-            if (data.radio_name) {
-                /* current radio, listen */
-                recOrListenAudioSetId(radioName = data.radio_name, radioId = data.radio_id);
-                /* set style, call spectrum analyser, set console radio name */
-                recOrListenAudioSetListenStyleSpectrum(radioName = data.radio_name, radioId = data.radio_id);
-            }
-        }
-        // hide loader Animation
-        loaderAnimation(enabled = false);
-    });
-}
-;
-function recOrListenAutoClickListenButton(buttonNum) {
-    console.log('autoClick button_to_switch: ' + buttonNum);
-    $("#" + buttonNum).click();
-}
-;
-function recOrListenAutoClickerRecorderStyle(buttonId) {
-    setTimeout(function () {
-        if(!(activeListenId == "noId")){
-        /* if active listener, (EisenRadioStyles {radioId: '1', radioName: 'classic', listen: false, record: false})
-         * set this.listen attribute to false and decides if recorder must get a style
-         */
-            eisenStylesDict["eisenRadio_" + buttonId].listenStyle();
-        }
-    }, 500);
-}
-;
-function recOrListenRunRecordsDisplay(activeRecorderList) {
-/* the list is actually a json string */
-    $('#cacheList').find('option:not(:first)').remove();
-    let streamer = activeRecorderList.split(",");
-
-    $.each(streamer, function (idx, val) {
-
-        let stream = val;
-        if (stream.length !== 0) {
-            stream = val.split("=");
-            let table_id = stream[1];
-            let title = stream[0];
-            cacheListFeed(table_id, title);
-
-            if (activeRecorderList === 'empty_json') {
-                $('#cacheList').find('option:not(:first)').remove();
-                document.getElementById('cacheList').style.color = "#696969";
-                document.getElementById('cacheList').style.textColor = "#696969";
-            }
-            console.log('data.streamer ' + activeRecorderList);
-        }
-    });
-}
-;
-function recOrListenRecorderStyleSet(activeRecordId) {
-    console.log("recOrListenRecorderStyleSet.. ",activeRecordId, eisenStylesDict);
-    setTimeout(function () {
-    /* use style instance created in eisenRadioCreateStyleInstances(), class in radio_styles.js */
-        eisenStylesDict["eisenRadio_" + activeRecordId].recordStyle();
-    }, 50);
-    setTimeout(function () {
-    /* use style instance created in eisenRadioCreateStyleInstances(), class in radio_styles.js */
-        toggleWriteToDiskAnimation();
-    }, 1500);
-}
-;
-function recOrListenDeactivateAudio(dataRadioId, dataLastListenId) {
-    if(lastAudioRadioGlobal == undefined){
-        deactivateAudioElement();
-            // currentRadioName is global
-        currentRadioName.innerText = "Eisenradio"
-        activeListenId = dataRadioId;  // write "noId" default
-
-        /* flask sends extra var for last_listen_id,
-         * first call set listen to true, next with same id to false so recorder can apply style too
-         */
-        eisenStylesDict["eisenRadio_" + dataLastListenId].listenStyle();
-        console.log('deactivateAudio', activeListenId, dataLastListenId);
-    } else {
-            console.log('playlist active not kill audio');
-    }
-}
-;
-function recOrListenAudioActivateLoad(radioName, localHostSoundRoute) {
-    displayLocalPlayListDisable();
-    let newSource = localHostSoundRoute + radioName;
-    let isPlayList = false;
-    reloadAudioElement(newSource, isPlayList);
-}
-;
-function recOrListenAudioSetId(radioName, radioId) {
-    console.log('listen radioName ' + radioName);
-    console.log('listen radioId ' + radioId);
-    activeListenId = radioId;
-}
-;
-function recOrListenAudioSetListenStyleSpectrum(radioName, radioId) {
-    setTimeout(function () {
-        if(!(activeListenId == "noId")){
-            eisenStylesDict["eisenRadio_" + activeListenId].listenStyle();
-        }
-    }, 500);
-    selectSpectrumAnalyser(radioId);
-        // set console name for radio
-    currentRadioName.innerText = radioName; /*currentRadioName.substring(0, 20)*/
-    currentRadioName.style.cursor = "pointer";
-    currentRadioName.style.cursor = "hand";
-    // divCacheListFeedAnchorJump has top margin for auto scroll
-    $("#currentRadioName").on('click', function () {
-        document.getElementById('dot_' + radioId).scrollIntoView({ behavior: "smooth" });
-    });
+    xhr.send();
+  });
 }
 ;

@@ -1,59 +1,30 @@
-import concurrent.futures
 from ghettorecorder import ghettoApi
 from eisenradio.api import eisenApi
 
 
-def header_data_read():
-    """return a list of radio lists with header info of all connected internet radios
-
-    call header_from_api_read() to read all response header info from ghettoApi dicts that GhettoRecorder module wrote
+def header_data_read(name):
+    """ Return header info data for the arg id.
     """
-    active_btn_list = active_buttons()
-    header_data_list_of_lists = header_from_api_read(active_btn_list)
-    return header_data_list_of_lists
-
-
-def active_buttons():
-    """return the list of all currently pressed buttons ids of rec and listen type
-
-    use set to remove duplicate ids if rec and listen is active
-    """
-    active_btn_list = [radio_id for radio_id, btn_down in eisenApi.rec_btn_dict.items() if btn_down]
-    listen_list = [radio_id for radio_id, btn_down in eisenApi.lis_btn_dict.items() if btn_down]
-    active_btn_list.extend(listen_list)
-    return list(set(active_btn_list))
-
-
-def header_from_api_read(active_btn_list):
-    """return the ready to send list for jsonify
-
-    use map() built-in and ThreadPoolExecutor, but speed is not a requirement here
-    """
-    name_list = [eisenApi.radio_id_name_dict[radio_id] for radio_id in active_btn_list]
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        list_of_lists = list(executor.map(request_header_info, name_list))
-    return list_of_lists
+    return request_header_info(name)
 
 
 def request_header_info(name):
-    """return a list with collected response header strings if available else string '---' to let look empty info pro"""
-    info_list = [
-        request_time_api(name),
-        request_suffix_api(name),
-        request_icy_genre_api(name),
-        request_icy_name_api(name),
-        request_icy_view_id_api(name),
-        request_icy_br_api(name),
-        request_icy_url_api(name)
-    ]
-    # list order:
-    # request_time, request_suffix, request_icy_genre, request_icy_name,
-    # request_icy_view_id, request_icy_br, request_icy_url
-    return info_list
+    """ Return a list with collected response header strings if available. """
+    info_dct = {
+        "request_time": request_time_api(name),
+        "request_suffix": request_suffix_api(name),
+        "request_icy_genre": request_icy_genre_api(name),
+        "request_icy_name": request_icy_name_api(name),
+        "request_icy_view": request_icy_view_id_api(name),
+        "request_icy_br": request_icy_br_api(name),
+        "request_icy_url": request_icy_url_api(name),
+        "current_song": request_current_song_api(name),
+    }
+    return info_dct
 
 
 def request_suffix_api(name):
-    """return the content type resolved to file suffix string"""
+    """ Return the content type resolved to file suffix string. """
     rv = '---'
     try:
         content_type = ghettoApi.ghetto_measure_dict[name + ',suffix']
@@ -123,6 +94,15 @@ def request_icy_url_api(name):
     rv = '---'
     try:
         rv = ghettoApi.ghetto_measure_dict[name + ',icy_url']
+    except KeyError:
+        pass
+    return str(rv)
+
+
+def request_current_song_api(name):
+    rv = '---'
+    try:
+        rv = ghettoApi.current_song_dict[name]
     except KeyError:
         pass
     return str(rv)

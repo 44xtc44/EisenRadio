@@ -124,7 +124,7 @@ class EisenradioApp(App):
 
         if platform == 'android':
             # noinspection PyUnresolvedReferences
-            from android.permissions import request_permissions, Permission
+            from kivy.permissions import request_permissions, Permission
             request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE])
             db_path_music = '/storage/emulated/0/Music/Eisenradio'
             self.make_folder(db_path_music)

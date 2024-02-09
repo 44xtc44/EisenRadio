@@ -1,9 +1,13 @@
+import os
+import threading
+import time
 from flask import Blueprint, render_template, request, flash, redirect, url_for, make_response, jsonify
 from eisenradio.eisenutil import config_html
 import eisenradio.eisenhome.eishome as eis_home
 from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
 from ghettorecorder import ghettoApi
 from eisenradio.api import eisenApi
+import ghettorecorder.ghetto_recorder as ghetto
 
 # Blueprint Configuration
 eisenhome_bp = Blueprint(
@@ -43,7 +47,7 @@ def index():
     if request.method == 'POST':
         # print_request_values(request.form.values())
         post_request = request.form.to_dict()  # flat dict werkzeug doc
-        # $("button").click(function () {}, ajax /
+        # $("button").click(function () {}, ajax /  TODO ret must be split into multiple fun calls
         json_post = eis_home.index_posts_clicked(post_request)
         # returns False on error to deactivate buttons for newly created radios, app restart required
         if json_post:
@@ -53,15 +57,86 @@ def index():
     if current_station:
         listen_last_url = local_host_sound_route + current_station
 
+    [print(row[0], row[2]) for row in posts if row["id"]]
+
     return render_template('bp_home_index.html',
                            posts=posts,
-
                            combo_master_timer=eis_home.combo_master_timer,
                            status_listen_btn_dict=eis_home.status_listen_btn_dict,
                            status_record_btn_dict=eis_home.status_record_btn_dict,
                            current_station=current_station,
                            current_table_id=current_table_id,
                            listen_last_url=listen_last_url)
+
+
+@eisenhome_bp.route('/enable_sound_endpoint', methods=['POST'])
+def enable_sound_endpoint():
+    """Get radio id.
+    Disable/Enable endpoint and return URL with port num for JS audio element.
+    """
+    table_id = request.form['radioNum']
+    radio_name = request.form['radioName']
+    end_points = [radio for radio in ghettoApi.listen_active_dict.keys()]
+    for radio in end_points:
+        ghettoApi.listen_active_dict[radio] = False  # all sound endpoints stop yielding audio data, pretty or not
+    time.sleep(1)
+    [print(thread.name) for thread in threading.enumerate()]
+
+    eis_home.status_listen_btn_dict[table_id] = 1  # register listen
+    eis_home.dispatch_master(int(table_id), 'Listen', 1)  # enable via "normal" key press ON
+    endpoint = "http://localhost:" + str(eisenApi.work_port) + "/sound/" + radio_name
+    return jsonify({"newAudioSource": endpoint})
+
+
+@eisenhome_bp.route('/enable_recorder', methods=['POST'])
+def enable_recorder():
+    """Big mess so far. Must go GhettoRecorder 3 to get rid of the buttons.
+    V3 simply start, stop feeding a queue itself and is easy to kill.
+
+    Problem (have solution)
+    App had a record and a listen button. Dictionaries keep track of the up/down status of the buttons.
+    dispatch_record_btn() writes multiple dicts and starts recorder threads.
+    ghettoApi.listen_active_dict is there, but I forgot a ghettoApi.record_active_dict! :)
+
+    eis_home.status_listen_btn_dict = {}  # {15: 1 } {"table_id 15": "pressed down"}
+    eis_home.status_record_btn_dict = {} PLUS eis_home.active_streamer_dict[radio_name] = str(table_id)
+
+    Solution for this version
+    eis_home.status_listen_btn_dict; must be cleaned and written in enable_sound_endpoint()
+    eis_home.status_record_btn_dict; enable_recorder()
+    eis_home.active_streamer_dic; enable_recorder()
+
+    Get radio id.
+    Run recorder if it is not already running.
+    """
+    table_id = request.form['radioNum']
+    radio_name = request.form['radioName']
+    json_str = "No Data Yet, use pull interval eis_home.active_streamer_dict"
+    if radio_name in eis_home.active_streamer_dict.keys():
+        json_str = "recorder runs already " + radio_name
+        return jsonify({"activeRecorderNameId": json_str})
+
+    eis_home.active_streamer_dict[radio_name] = str(table_id)  # register name id
+    eis_home.status_record_btn_dict[table_id] = 1  # record button pressed
+    eis_home.dispatch_master(int(table_id), 'Record', 1)
+    time.sleep(1)
+    [print(thread.name) for thread in threading.enumerate()]
+    return jsonify({"activeRecorderNameId": json_str})
+
+
+@eisenhome_bp.route('/disable_recorder', methods=['POST'])
+def disable_recorder():
+    """ Revert settings of enable_recorder().
+
+    Make sure the recorder thread is offline. radio_pan_america PB all others ok
+    """
+    table_id = request.form['id']
+    radio_name = request.form['name']
+    ghetto.GRecorder.record_active_dict[radio_name] = False
+    if radio_name in eis_home.active_streamer_dict.keys():
+        del eis_home.active_streamer_dict[radio_name]
+    eis_home.status_record_btn_dict[table_id] = 0
+    return jsonify({"disabledRecorder": radio_name + " " + table_id})  # need a return action
 
 
 @eisenhome_bp.route('/degrade_animation_level_get', methods=['GET'])
@@ -79,7 +154,7 @@ def degrade_animation_level_get():
     return jsonify({"degradeAnimationsWriteDict": cpu_utilization})
 
 
-@eisenhome_bp.route('/degrade_animation_level_set', methods=['POST'])
+@eisenhome_bp.route('/degrade_animation_level_set', methods=['GET'])
 def degrade_animation_level_set():
     """ degrade_animation_level_set() and degrade_animation_level_get() called on radio button change to
     write the js animationsAllowedDict new, so animation can see if run is allowed
@@ -100,7 +175,7 @@ def degrade_animation_level_set():
     conn.close()
     toggle = off if status[0] else on
     config_html.tools_feature_toggle_show_html_config(toggle, row_html_cpu)
-    return jsonify({"degradeAnimationsSet": "Elvis lebt!"})
+    return jsonify({"degradeAnimationsSet": "required response"})
 
 
 @eisenhome_bp.route('/tools_radio_config_get', methods=['GET'])
@@ -165,7 +240,7 @@ def delete(id):
     return redirect(url_for('eisenhome_bp.index'))
 
 
-@eisenhome_bp.route('/cookie_set_dark', methods=['GET', 'POST'])
+@eisenhome_bp.route('/cookie_set_dark', methods=['GET'])
 def cookie_set_dark():
     """darkmode cookie
 
@@ -174,46 +249,29 @@ def cookie_set_dark():
     secure=True without external signed ssl certs will NOT rise security nor let disappear dev console errors in IEx
     """
     resp = make_response("Eisenkekse sind die besten")
-    resp.set_cookie('eisen-cookie', 'darkmode', max_age=60 * 60 * 24 * 365 * 2, secure=False, httponly=True)
+    resp.set_cookie(
+        'eisen-cookie',
+        'darkmode',
+        max_age=60 * 60 * 24 * 365 * 2,
+        httponly=True,
+        secure=False,
+        samesite='Strict'
+    )
     return resp
 
 
 @eisenhome_bp.route('/cookie_get_dark', methods=['GET'])
 def cookie_get_dark():
-    """return color style of startpage AND id of listener button if any"""
-    listener_id = None
-    for radio, listening in ghettoApi.listen_active_dict.items():
-        if listening:
-            for r_id, name in eisenApi.radio_id_name_dict.items():
-                if name == radio:
-                    listener_id = r_id
-                    break
+    """Return dark mode set or not."""
     mode = request.cookies.get('eisen-cookie', None)
-    return jsonify({"darkmode": mode,
-                    "listenerId": listener_id
-                    })
+    return jsonify({"darkmode": mode})
 
 
-@eisenhome_bp.route('/cookie_del_dark', methods=['POST'])
+@eisenhome_bp.route('/cookie_del_dark', methods=['GET'])
 def cookie_del_dark():
     resp = make_response("necesito nuevas cookies")
-    resp.set_cookie('eisen-cookie', max_age=0)
+    resp.set_cookie('eisen-cookie', max_age=0, samesite='Strict')
     return resp
-
-
-@eisenhome_bp.route('/station_get', methods=['GET'])
-def station_get():
-    """return json dict {radio: id}
-
-    curr_radio_listen() get button down name and id
-    rebuild console after page refresh
-    empty dict if no listen, else send name and db table id
-    """
-    listen_dict = {}
-    current_station, current_table_id = eis_home.curr_radio_listen()
-    if len(current_station) > 0:
-        listen_dict[current_station] = current_table_id
-    return jsonify({'stationGet': listen_dict})
 
 
 @eisenhome_bp.route('/streamer_get', methods=['GET'])
@@ -230,52 +288,6 @@ def streamer_get():
     return jsonify({'streamerGet': streamer_dict})
 
 
-@eisenhome_bp.route('/skipped_records_get', methods=['GET'])
-def skipped_records_get():
-    """return json list of all radios that skipped writing a record file due to the blacklist
-    empty dict if nothing skipped
-    """
-    skipped_records_list = []
-    eisenApi.init_radio_name_id_dict()
-    eisenApi.init_skipped_record_eisen_dict()
-
-    for radio in eisenApi.skipped_record_eisen_dict.keys():
-        if eisenApi.get_skipped_record(radio):
-            skipped_records_list.append(eisenApi.radio_name_id_dict[radio])
-
-    return jsonify({'skippedRecordsGet': skipped_records_list})
-
-
-@eisenhome_bp.route('/cookie_set_show_visuals', methods=['GET', 'POST'])
-def cookie_set_show_visuals():
-    """spectrum analyser cookie
-
-    standard cookie
-    """
-    resp = make_response("disable visualisation")
-    resp.set_cookie('eisen-cookie-visuals', 'show_visuals', max_age=60 * 60 * 24 * 365 * 2, secure=False, httponly=True)
-    eisenApi.init_show_analyser(False)
-    return resp
-
-
-@eisenhome_bp.route('/cookie_get_show_visuals', methods=['GET'])
-def cookie_get_show_visuals():
-    rv = request.cookies.get('eisen-cookie-visuals', None)
-
-    if rv == 'show_visuals':
-        return jsonify({'str_visuals': 'show_visuals'})
-    if not rv:
-        return jsonify({'str_visuals': '-empty-'})
-
-
-@eisenhome_bp.route('/cookie_del_show_visuals', methods=['POST'])
-def cookie_del_show_visuals():
-    resp = make_response("bye\neisen-cookie-visuals")
-    resp.set_cookie('eisen-cookie-visuals', max_age=-1)
-    eisenApi.init_show_analyser(True)
-    return resp
-
-
 @eisenhome_bp.route('/index_posts_combo', methods=['POST'])
 def index_posts_combo():
     """set hours for timer, return read val for test"""
@@ -289,37 +301,13 @@ def index_posts_percent():
     return jsonify({'result': eis_home.progress_master_percent})
 
 
-@eisenhome_bp.route('/display_info', methods=['GET'])
-def display_info():
-    """return a dict with radio {id: message},
-
-    message is either the currently played title in the radio or an error message
-    JS writes message to html element with radio id
-    updateDisplay() ajax call
+@eisenhome_bp.route('/svg_symbol_get', methods=['GET'])
+def svg_symbol_get():
     """
-    if request.method == "GET":
-        id_text_dict = {}
-        try:
-            for radio_name, radio_text in ghettoApi.current_song_dict.items():
-                for radio_db_id, radio_title in eisenApi.radio_id_name_dict.items():
-                    if radio_name == radio_title:
-                        if len(radio_text) > 0:
-                            id_text_dict[str(radio_db_id)] = str(radio_text)
-
-            for radio_name, radio_error in ghettoApi.ghetto_dict_error.items():
-                for radio_db_id, radio_title in eisenApi.radio_id_name_dict.items():
-                    if radio_name == radio_title:
-                        id_text_dict[str(radio_db_id)] = str(radio_error)
-        except Exception as error:
-            print(f'display_info(): {error}')
-
-        return jsonify({"updateDisplay": id_text_dict})
-
-
-@eisenhome_bp.route('/all_radio_table_ids_and_names_get', methods=['GET'])
-def all_radio_table_ids_and_names_get():
-    """returns a dict with all radio {id: name, id2: name2},
-
-    build js style instance for each radio
     """
-    return jsonify({"eisenRadioCreateStyleInstances": eisenApi.radio_id_name_dict})
+    svg_symbol = "svgImagesSymbol.svg"
+    this_module_dir = os.path.dirname(__file__)
+    symbol_folder = os.path.join(this_module_dir, "bp_home_static", "images", svg_symbol)
+    with open(symbol_folder, "rb") as reader:
+        svg_content = reader.read()
+    return svg_content

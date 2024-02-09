@@ -32,7 +32,7 @@ def tools_transparent_image_load():
     """ return list to JS div list maker, replace standard random pic with a translucent one """
     request_dict = request.form.to_dict()
     radio_name = request_dict['radioName']
-    eisenApi.init_radio_name_id_dict()
+    eisenApi.init_radio_name_id_dict()   # need db request if new radio was assigned or new in .radio_name_id_dict
     util_tools.radio_transparent_image_db(eisenApi.radio_name_id_dict[radio_name])
     msg_list = ["Radio got a beautiful transparent image."]
     return jsonify({"transparentImageLoad": msg_list})
@@ -167,7 +167,7 @@ def tools_radio_blacklist_set():
     enabled = mon_rec.feature_blacklist_switch_status(is_enabled)
     mon_rec.delete_all_blacklists(enabled)
     if enabled:
-        flash('Monitoring of records enabled.', 'success')
+        flash('Monitoring of records enabled. Please restart the app!', 'success')
     else:
         flash('Monitoring of records disabled', 'warning')
     return redirect(url_for('eisenhome_bp.index'))
@@ -219,7 +219,10 @@ def tools_blacklist_overview():
 
     for db_id, btn_pressed in eisenApi.rec_btn_dict.items():
         if btn_pressed:
-            streamer_name_list.append(view_dict[db_id])
+            try:
+                streamer_name_list.append(view_dict[db_id])
+            except KeyError:
+                pass
     for title_list in skip_title_dict.values():
         if title_list is not None:
             for _ in title_list:
@@ -326,11 +329,20 @@ def tools_upload_blacklists():
         return render_template('bp_util_flash.html')
 
 
+@eisenutil_bp.route('/blacklist_enabled_get', methods=['GET'])
+def blacklist_enabled_get():
+    """ Return status from DB row object. Blacklist enabled 0, 1.
+    Animate button or text.
+    """
+    blacklist_is_enabled = mon_rec.status_db_blacklist_get()
+    return jsonify({'blacklistEnableGet': blacklist_is_enabled[0]})
+
+
 @eisenutil_bp.route('/tools_delete_all', methods=['POST'])
 def tools_delete_all():
     """delete all radios from db, return flash if ok or not
 
-    used to restore from ini file with preferred radios and urls afterwards
+    used to restore from ini file with preferred radios and urls afterward
     """
     rv = util_tools.delete_all_radios()
     if rv:
@@ -408,7 +420,7 @@ def tools():
 
     balloon_on = config_html.tools_feature_on_off_state_in_db(html_balloon_row)
     balloon_check_box_checked = 'checked' if balloon_on else ' '
-    balloon_check_box_msg = "Deselect music animated air show." if balloon_on else "Check out a balloon animation."
+    balloon_check_box_msg = "Uncheck balloon show. (15% CPU load)" if balloon_on else "Check out a balloon animation."
 
     speaker_on = config_html.tools_feature_on_off_state_in_db(html_speaker_row)
     speaker_check_box_checked = 'checked' if speaker_on else ' '
@@ -423,7 +435,7 @@ def tools():
     blacklist_is_enabled = mon_rec.status_db_blacklist_get()
     blacklist = mon_rec.blacklist_enabled_button_outfit_get(blacklist_is_enabled)
     blacklist_button_label = ' ON' if blacklist else 'OFF'
-    blacklist_btn_msg = "OFF, erase blacklists." if blacklist else "ON, start monitoring."
+    blacklist_btn_msg = "Blacklist feat. is on. Off erases all lists." if blacklist else "Blacklist feat. is off"
     blacklist_check_box_info = blacklist_check_box_on if blacklist else blacklist_check_box_off
     export_path = util_tools.get_export_path()
     return render_template('bp_util_tools.html',
@@ -478,7 +490,10 @@ def about():
 
 @eisenutil_bp.route('/create', methods=('GET', 'POST'))
 def create():
-    """"render "New" radio page"""
+    """"render "New" radio page
+
+    todo eisenApi.radio_name_id_dict[radio_name] = db table id for new radio to assign transparent image
+    """
     if request.method == 'POST':
         rv_req = request.form['title']
 
@@ -545,7 +560,11 @@ def create():
 
 @eisenutil_bp.route('/save', methods=('GET', 'POST'))
 def save():
-    """render SAVE page, send fail flash message if db empty"""
+    """ Render SAVE page, send fail flash message if db empty
+
+    GET push folder name to HTML page
+    POST pull new path information from HTML page
+    """
     if request.method == 'GET':
         try:
             os.path.abspath(lib_eisdb.get_download_dir())
@@ -573,7 +592,7 @@ def save():
             conn = lib_eisdb.get_db_connection()
             records = conn.execute('select id from posts').fetchall()
             if not records:
-                flash('Noting in Database!', 'warning')
+                flash('Nothing in Database!', 'warning')
                 try:
                     return render_template('bp_util_save.html', save_to=os.path.abspath(lib_eisdb.get_download_dir()))
                 except TypeError:
@@ -661,13 +680,14 @@ def stream_watcher():
     return resp
 
 
-@eisenutil_bp.route('/header_info', methods=['GET'])
+@eisenutil_bp.route('/header_info', methods=['POST'])
 def header_info():
     """call header_data_read(),return a json list of radio stream header info  [name, bit rate, website, ...]"""
-    json_lists = request_info.header_data_read()
-    if len(json_lists) == 0:
-        json_lists = '-empty-'
-    return jsonify({"header_result": json_lists})
+    radio_name = request.form['name']
+    rv = request_info.header_data_read(radio_name)
+    if not rv:
+        rv = '-empty-'
+    return jsonify({"header_result": rv})
 
 
 @eisenutil_bp.route('/delete_info', methods=['GET'])
@@ -725,3 +745,15 @@ def blacklist_status_get():
     blacklist_enabled = config_html.tools_feature_on_off_state_in_db(html_blacklist_row)
     ret_val = "enabled" if blacklist_enabled else "false"
     return jsonify({"blacklistStatus": ret_val})
+
+
+@eisenutil_bp.route('/download_dir_get', methods=['GET'])
+def download_dir_get():
+    """return parent dir of downloads
+    """
+    try:
+        dl_dir = lib_eisdb.get_download_dir()
+        print(f"downloads: {dl_dir}")
+        return jsonify({"downloadDirGet": dl_dir})
+    except Exception as e:
+        print("download_dir_get error", e)
