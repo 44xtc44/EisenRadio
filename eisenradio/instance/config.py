@@ -4,7 +4,7 @@ Flask configuration Not in the version control
 import os
 
 this_script_dir = os.path.dirname(__file__)
-app_root = os. path.dirname(this_script_dir)
+app_root = os.path.dirname(this_script_dir)
 radio_db_dir = os.path.join(app_root, 'app_writeable', 'db')
 
 is_snap_device = 'SNAP' in os.environ
