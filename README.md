@@ -1,4 +1,4 @@
-# Eisenradio - a Web radio expandable collection
+# Eisenradio - Web radio DB / Media-player
 
    ![alt logo of eisenradio](https://github.com/44xtc44/EisenRadio/raw/dev/docs/source/aircraft_logo.png)
    ![Tests](https://github.com/44xtc44/eisenradio/actions/workflows/tests.yml/badge.svg?branch=dev)
@@ -48,7 +48,7 @@ Inkscape created SVG images are used everywhere in the app. No raster graphics i
 </table>
 
 * each instance stores the image, a list of its SVG tags as well as the current transformation status and position, ...
-* SVG path manipulation method with regex; next version goes for CSS style attributes
+* SVG path manipulation method with regex
 
 The functional principle can be transferred to Java on Android to create dynamic 2D game backgrounds.
 
@@ -135,7 +135,7 @@ You are compensated by a CPU icon that can change its color.
 Called and terminated GhettoRecorder threads for listen and record.
 
 This version suffers from the initial button press concept.
-Next version of EisenRadio will use the latest GhettoRecorder for easy-peasy switching and less threads per radio.
+Next version of EisenRadio will use the latest GhettoRecorder for easy-peasy internal switching.
 
 # Recorder blacklist feature
 
