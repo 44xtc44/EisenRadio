@@ -159,19 +159,8 @@ class PlayList {
     this.detachCustomTxt.style.display = "none";
   }
   drawButtons() {
-    /* Create buttons, style.
-     */
-    this.audioIcon.style.cursor = "pointer";
     this.nextBtn.style.display = "inline-block";
-    this.nextBtn.style.cursor = "pointer";
-    this.nextBtn.style.fontSize = "150%";
     this.prevBtn.style.display = "inline-block";
-    this.prevBtn.style.cursor = "pointer";
-    this.prevBtn.style.fontSize = "150%";
-    this.playBtn.style.cursor = "pointer";
-    this.playBtn.style.fontSize = "150%";
-    this.pauseBtn.style.cursor = "pointer";
-    this.pauseBtn.style.fontSize = "150%";
   }
   addListenerButtons() {
     /* Moving through playlist. */
