@@ -71,14 +71,14 @@
         </div>
         <div id="buoyMenu" onclick="toggleConsole();"></div>
         <div class="divPlayButtons">
-            <span class="playBtnClass audioBtnClass toggleIcon" id="playBtn"> &nbsp; ► &nbsp; </span>
-            <span class="pauseBtnClass audioBtnClass toggleIcon" id="pauseBtn"> &nbsp; || &nbsp; </span>
+            <span class="playBtnClass audioIcon  toggleIcon" id="playBtn"> &nbsp; &#9205; &nbsp; </span>
+            <span class="pauseBtnClass audioIcon  toggleIcon" id="pauseBtn"> &nbsp; &#9208; &nbsp; </span>
             <span> &nbsp;&nbsp;&nbsp;&nbsp;</span>
 
-            <span class="prevBtnClass toggleIcon" id="prevBtn"> &nbsp; |◄◄ &nbsp; </span>
-            <span class="nextBtnClass toggleIcon" id="nextBtn"> &nbsp; ►►| &nbsp; </span>
+            <span class="prevBtnClass audioIcon toggleIcon" id="prevBtn"> &nbsp; &#9198; &nbsp; </span>
+            <span class="nextBtnClass audioIcon toggleIcon" id="nextBtn"> &nbsp; &#9197; &nbsp; </span>
 
-            <span class="audioIcon audioBtnClass toggleIcon" id="audioIcon" onclick="toggleAudioControls();">
+            <span class="audioIcon toggleIcon" id="audioIcon" onclick="toggleAudioControls();">
                 &nbsp;&#128266;</span>
         </div>
 
@@ -167,11 +167,11 @@
                     <span class="spanX" onclick="toggleConsole();">&#10006;</span>
                 </p>
                 <p>
-                    <span class="emptySpace" onclick="changeColorScheme();">Mode</span>
+                    <span class="emptySpace boldText" onclick="changeColorScheme();">Mode</span>
                     <span id="darkModeIcon" class="darkModeIcon" onclick="changeColorScheme();">&#9728;</span>
-                    <span class="emptySpace">Theme</span>
+                    <span class="emptySpace boldText">Theme</span>
                     <span id="palmTreeIcon" class="darkModeIcon" onclick="themeInitSunset();">&#127796;</span>
-                    <span id="snowflakeIcon" class="darkModeIcon" onclick="themeInitArctic();">&#10052;</span>
+                    <span id="snowflakeIcon" class="darkModeIcon boldText" onclick="themeInitArctic();">&#10052;</span>
                     <span id="scissorIcon" class="darkModeIcon" onclick="themeInitCut();">&#9986;</span>
                 </p>
                 <hr>
@@ -268,7 +268,11 @@
             </div>
 
             <hr>
-            <div id="divRecordView" class="divRecorderList quickview">Recorder list update, click to stop.</div>
+            <div id="divRecordView" class="divRecorderList quickview">
+                <p id="recorderListHead">Recorder list update, click to stop.
+                    <span id="recorderListHeadIcon">&#128192;</span>
+                </p>
+            </div>
 
         </div>
         <div id="divAnimationContainer">

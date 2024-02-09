@@ -225,12 +225,12 @@ function disableRecorder(opt) {
 */
 function recorderGet() {
   let parent = document.getElementById("divRecordView");
-  let innerHTML = "\nRecorder list update, click to stop.";  // use as headline first div child
+  let innerHTML = "\nRecorder list update, click to stop. &#128192;";  // use as headline first div child
   let id = "activeRecorderHeader";
   let elemClass;
   removeDiv({ id: parent });  // clean up existing HTML display, all child div
   appendDiv({ parent: parent, id: id, innerHTML: innerHTML });
-  appendDiv({ parent: parent, id: "recordDot", innerHTML: "&#128192;" });  // set header txt, dvd icon
+  // appendDiv({ parent: parent, id: "recordDot", innerHTML: "&#128192;" });  // set header txt, dvd icon
 
   let req = $.ajax({
     type: 'GET',

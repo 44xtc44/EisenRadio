@@ -16,6 +16,7 @@ html {
 }
 body {
 /* measured by getBodyColor() */
+  color: magenta;
   background: var(--background-color);
   font-family: roboto, arial, sans-serif;
 }
@@ -249,7 +250,7 @@ body {
   position: absolute;
   z-index: 2;
   bottom: 30px;
-  left: 350px;
+  left: 355px;
 }
 #recordImage {
   width:75px;
@@ -278,6 +279,9 @@ body {
 .toggleIcon {
   cursor:pointer;
 }
+.boldText {
+  font-weight: 600;
+}
 #titleDisplay {
   color: var(--ghettoDataColor);
   font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -299,6 +303,7 @@ body {
   border: 2px solid rgba(255,255,255,0.1);
   box-shadow:30px 30px 35px rgba(0,0,0,0.25);
   z-index: 2000;
+  color: black;
 }
 #audioControls {
   display:none;
@@ -311,6 +316,7 @@ body {
   border-radius:.5em;
   border: 2px solid rgba(255,255,255,0.1);
   box-shadow:30px 30px 35px rgba(0,0,0,0.25);
+  color: black;
 }
 #audioSlider {
   bottom:0px;
@@ -341,6 +347,7 @@ body {
   border-radius:.5em;
   border: 2px solid rgba(255,255,255,0.1);
   box-shadow:30px 30px 35px rgba(0,0,0,0.25);
+  color: black;
 }
 #divMeasurementsUpper {
   display: block;
