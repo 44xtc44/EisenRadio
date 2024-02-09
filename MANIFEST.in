@@ -7,3 +7,4 @@ prune venv
 prune docs/build
 prune snap
 prune android
+prune eisenradio/app_writeable
