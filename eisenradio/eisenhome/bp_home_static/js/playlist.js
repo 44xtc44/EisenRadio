@@ -56,7 +56,7 @@ class PlayList {
     curTitleName.style.color = "Magenta";
     this.titleDisplay.innerHTML = this.playList[this.trackNumber].name;
     this.icyName.innerHTML = "Local Playlist";
-    this.request_icy_url.innerHTML = this.playList.length + " track(s)";
+    this.request_icy_url.innerHTML = this.playList.length + " tracks";
     this.request_suffix.innerHTML = "--";  // empty right panel
     this.request_icy_br.innerHTML = "--";
     this.request_time.innerHTML = "--";
