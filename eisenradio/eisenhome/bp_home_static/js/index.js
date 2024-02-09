@@ -44,38 +44,60 @@ window.analyserNodeOne = undefined;
 window.analyserNodeTwo = undefined;
 window.gainNode = undefined;
 
-var AnimationContainer = document.getElementsByClassName("divAnimationContainer");  // parachutes
-var htmlSettingsDictGlobal = {};  // mainly in svg-main.js, decide to run on degradation, Tools/config menu
-var streamerDictGlobal = {};      // stores all currently active streaming connections or rec style
+window.htmlSettingsDictGlobal = {};  // themes decide to run on degradation, Tools/config menu
+window.streamerDictGlobal = {};      // stores all currently active recorder connections, Android shows in notification
 
 window.activeListenId = "noId";    // animation, only call functions if listen is selected
 window.activeRadioName = "Eisen";
 window.downloadDir = "";           // download dir to show
+window.activeTheme = "";
+window.themeDict = {};  // {"Sunset": function() { mainSunsetAnimation(); },} svg-main calls key, activeTheme each frame
 
 /**
-* Event page loaded sets event listener and loads all SVG images into memory.
+* Event page loaded sets event listener and loads all SVG images/groups into memory.
 */
 window.addEventListener('load', function () {
 
-  paintPngTeaserToCanvas();  // convert svg to png exercise, now THE audio enabler we MUST have, else browser alert
-  document.body.style.overflowX = "hidden";  // get rid of x scroll bar at bottom
-  downloadDirGet();          // download dir to show if record pressed
+  paintPngToCanvas( {
+    canvasId: "pageCoverTeaser",
+    svgImage: "teaserImg"
+  } );  // paint "existing" PNG to canvas, now THE audio enabler we MUST have, else browser error, no user interaction
 
-  window.addEventListener('resize', function (event) {
-    glob.updateScreen();
-  }, true);
-  glob.updateScreen();  // check if we are on mobile on first load, todo resize evt not working on Android browser
+  /* SVG symbol grew too big for index.html, to edit in IDE. Outsource from HTML to server.
+  * Import. Steps how it works.
+  * (a) Load SVG symbol container from server.
+  * (b) Write symbol to div, make it public to the document. (as if it was inline before)
+  * (c) Load SVG groups and images from DOM into mem, create instances as image sources.
+  * (d) Use the img instances in the document as buttons and animations.
+  */
+  loadSvgSymbol().then(function(response) {
+    document.getElementById('divSvgImagesSymbol').innerHTML = response;
+  }).then(function(response) {
+    initSvgEnv();
+  }).then(function(response){
 
-  setInterval(recorderGet, 15003);  // collect active recorder and draw div elem with listener to click, disable
-  setInterval(headerInfo, 5004);  // show header of radio, Web URL, full name, content-type
-  setInterval(updateMasterProgress, 5002);  // timer to end the app
+    themeInitSunset();  // Need a default theme. fun registers itself as activeTheme.
+    document.body.style.overflowX = "hidden";  // get rid of x scroll bar at bottom
+    downloadDirGet();          // download dir to show if record pressed
+    window.addEventListener('resize', function (event) {
+      glob.updateScreen();
+    }, true);
+    glob.updateScreen();  // check if we are on mobile on first load, todo resize evt not working on Android browser
 
-  setEventListenerAudioBtn();
-  initSvgEnv();  // SVG image loader
-  blacklistEnableGet();  // after SVG image loader, animate blacklist button
-  configEisenradioHtmlSetting();  // create dict which animation is allowed; Tools/Config menu and CPU icon
-  window.paraDropper = new DomAirCraft();  // No canvas, last pure DOM animation, use the whole HTML page to fly around.
-  setColor("requestTheCookie");   // change document.body color, cookie exercise
+    setInterval(recorderGet, 5003);  // collect active recorder and draw div elem with listener to click, disable
+    setInterval(headerInfo, 5004);  // show header of radio, Web URL, full name, content-type
+    setInterval(updateMasterProgress, 5002);  // timer to end the app
+
+    setEventListenerAudioBtn();
+    // initSvgEnv();  // SVG image loader
+    blacklistEnableGet();  // after SVG image loader, animate blacklist button
+    configEisenradioHtmlSetting();  // create dict which animation is allowed; Tools/Config menu and CPU icon
+    window.paraDropper = new DomAirCraft();  // No canvas, last pure DOM animation, use the whole HTML page to fly around.
+    setColor("requestTheCookie");   // change document.body color, cookie exercise
+
+  }).catch(function (err) {
+    console.error("error caller loadSvgSymbol->", err.statusText);
+  });
 })
 ;
 /**
@@ -86,7 +108,7 @@ function removePageCover() {
   setAudioContextVisual();
 
   document.getElementById("radioContainer").style.display = "block";
-  svgAnimationMain();  // run the loop only if user interaction was fulfilled, see audio enable in browser
+  svgAnimationMain();
 }
 ;
 /**
@@ -340,95 +362,6 @@ function setEventListenerAudioBtn() {
 }
 ;
 /**
-* Create a <code>SvgToCanvas</code> class instance and load all SVG images to canvas and memory.
-* Create instances of classes where the images are used.
-* Commented out a test loop, which is showing if all images could be loaded.
-*/
-function initSvgEnv() {
-  //
-  window.svgTC = new SvgToCanvas({  // multi-image-loader and translation class
-    svg: svgList,  // see in constants.js; container SVGs; eisenradioSVG 100x100;
-    useSprite: true,  // use as multi image loader for stacked groups; a group can be a sprite [img,img] also
-    spriteList: spriteList  // in constants.js, We load non animated img also, assignments to canvas are fake.
-  });
-
-  // for(let i = 0; i <= spriteList.length - 1; i++) {
-  // // Let's see if we can write to canvas or fail early.
-  //   let instanceName = Object.keys(spriteList[i])[0];
-  //   svgTC.svgToCanvas( { dict: svgTC.imgDict[instanceName] } );
-  //   // let dct = {[svgTC.imgDict[instanceName].groupName]: { "fill": "#ffffff" }};  // broken state if key same regex
-  //   // svgTC.svgEditPath(dct, svgTC.imgDict[instanceName]);   // todo fix regex or go for CSS style completely
-  //   svgTC.imgDict[instanceName].ctx.clearRect(
-  //     0,
-  //     0,
-  //     svgTC.imgDict[instanceName].canvas.width,
-  //     svgTC.imgDict[instanceName].canvas.height);
-  // }
-  window.switchStarGuest = new SwitchStarGuest();  // declare after images are loaded; svg-frontMan.js
-  window.switchAnalyzer = new SwitchAnalyzer();  // toggle analyzer
-
-  window.satelliteOne = new ParticleStars({  // use x, y to drive the sat img
-    canvasId: "cSkyDecorTwo",
-    number: 1,
-    partSpeed: 0.1,
-    partSize: 0.01,
-  });
-  window.satelliteTwo = new ParticleStars({
-    canvasId: "cSkyDecorThree",
-    number: 1,
-    partSpeed: 0.12,
-    partSize: 0.01,
-  });
-
-  // svgTC.imgDict["speakerOne"].canX = 15;  // uncomment if data collector was optimized, high CPU if both online
-  // svgTC.imgDict["speakerOne"].canY = 75;
-  // svgTC.imgDict["speakerOne"].rotate = 345;  // 15 deg
-  svgTC.imgDict["speakerTwo"].canX = 600;
-  svgTC.imgDict["speakerTwo"].canY = 100;
-  svgTC.imgDict["speakerTwo"].rotate = 345;
-  svgTC.imgDict["speakerTwo"].imgScaleX = -1;  // reverse
-
-  initClouds();
-  window.foreBackGround = new ForeBackGround();
-  // connect empty image src with loaded SVG groups, images
-  document.getElementById('newRadioImage').src = svgTC.imgDict["newRadio"].image.src;
-  document.getElementById('saveRadioImage').src = svgTC.imgDict["saveRadio"].image.src;
-  document.getElementById('toolsRadioImage').src = svgTC.imgDict["toolsRadio"].image.src;
-  document.getElementById('aboutRadioImage').src = svgTC.imgDict["aboutRadio"].image.src;
-  document.getElementById('playRadioImage').src = svgTC.imgDict["playRadio"].image.src;
-  document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
-  document.getElementById('hamburgerImage').src = svgTC.imgDict["hamburgerImg"].image.src;
-  document.getElementById('recordImage').src = svgTC.imgDict["recordOn"].image.src;
-
-  window.redBurnerFlash = new Flash({
-    flashDayColor: "hsl(300, 100%, 50%)",
-    flashNightColor: "hsl(10, 100%, 50%)",
-    flashFrames: 20,
-    flashList: [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-  });
-  window.yellowBurnerFlash = new Flash({
-    flashDayColor: "hsl(200, 100%, 50%)",
-    flashNightColor: "hsl(100, 100%, 50%)",
-    flashFrames: 20,
-    flashList: [1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0],
-  });
-
-  window.buoyMenuFlash = new Flash({  // called by buoyMenu
-    flashDayColor: "hsl(300, 100%, 50%)",
-    flashNightColor: "hsl(10, 100%, 50%)",
-    flashFrames: 20,
-    flashList: [0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1],
-  });
-  window.buoyMenu = new Buoy({
-    dict: svgTC.imgDict["Buoy"],
-    x: 30, y: 450,
-    path: document.getElementById("buoySegmentVeryTopLight"),
-    flash: buoyMenuFlash,
-  });
-
-}
-;
-/**
 * Show or hide volume and gain slider.
 */
 function toggleAudioControls() {
@@ -558,6 +491,7 @@ function setAudioContextVisual() {
   audioSource = audioContext.createMediaElementSource(audio);
   audioSource.connect(analyserNodeOne).connect(gainNode).connect(audioContext.destination)
   audioSource.connect(analyserNodeTwo); // get the data copy for analyzer in foreground
+  window.infSpeaker = new PowerSwitch({ path: document.querySelectorAll("#gSvgSpeakerFlatWaves path") });// animate speaker dynamic fake waves
 }
 ;
 /**
@@ -759,10 +693,7 @@ function setColor(val) {
       bodyStyles.setProperty('--canvasMaster', 'rgba(26,26,26,0.85)');
 
       setDarkMode();    // cookie
-      let sunIcon = document.getElementsByClassName('darkModeIcon');
-      for (let i = 0; i <= sunIcon.length - 1; i++) {
-        sunIcon[i].innerHTML = sun;
-      }
+      let sunIcon = document.getElementById('darkModeIcon').innerHTML = sun;
     }
     if (color === 'white') {
       bodyStyles.setProperty('--background-color', '#ccc');
@@ -773,21 +704,28 @@ function setColor(val) {
       bodyStyles.setProperty('--ghettoDataColor', 'ivory');
       bodyStyles.setProperty('--customTxtColor', 'black');
       bodyStyles.setProperty('--canvasMaster', '#ccc');    // rgba(240, 240, 240, 0.85)
-      // del cookie
-      delDarkMode();
-      let moonIcon = document.getElementsByClassName('darkModeIcon');
-      for (let i = 0; i <= moonIcon.length - 1; i++) {
-        moonIcon[i].innerHTML = moon;
-      }
-      TuxIceFloeFrontPowerSwitch.applyOrgColor("tuxIceFoeFront");  // logName arg
+
+      delDarkMode(); // del cookie
+      document.getElementById('darkModeIcon').innerHTML = moon;
+
     }
 
-    switchModeCloudsIce();
+    switchModeThemes();
     switchModeSpeaker();
-    switchModeIceFloe();
-    switchModeSeaSky();
-    switchModeScrewHeads();
+    switchModeScrewHeads();  // DOM elem monitor screw heads
   });
+}
+;
+/**
+* Themes with dark mode switching.
+*/
+function switchModeThemes() {
+  if(activeTheme === "Arctic") {
+    foreBackGround.clearAll();
+    switchModeCloudsIce();
+    switchModeIceFloe();
+    switchModeSeaSky();   // called also in themeInitArctic
+  }
 }
 ;
 /**
@@ -941,6 +879,36 @@ function blacklistEnableGet() {
       svgTC.svgEditPath(blDct, svgTC.imgDict["blackList"]);
       document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
     }, 5);
+  });
+}
+;
+function loadSvgSymbol() {
+  return new Promise(function(resolve, reject) {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/svg_symbol_get');
+    xhr.onload = function () {
+      var data = xhr.responseText;  // or xhr.responseXML SVG is a subset XML
+      if (xhr.status === 200) {
+      // If successful, resolve the promise by passing back the request response
+        resolve(xhr.response);
+
+      } else {
+      // If it fails, reject the promise with a error message
+        cl("loadSvgSymbol failed onload")
+        reject(Error('Image didn\'t load successfully; error code:' + xhr.statusText));
+
+      }
+    };
+
+    xhr.onerror = function() {
+    // Also deal with the case when the entire request fails to begin with
+    // This is probably a network error, so reject the promise with an appropriate message
+        cl("loadSvgSymbol failed onerror")
+        reject(Error('There was a network error.'));
+    };
+
+    xhr.send();
   });
 }
 ;

@@ -122,6 +122,7 @@ function dayModeCloudsIce(opt) {
     }, opt.iceIList[idx]);
     svgTC.svgToCanvas( { dict: opt.iceIList[idx] } );
   }
+  TuxIceFloeFrontPowerSwitch.applyOrgColor("tuxIceFoeFront");  // logName arg
 }
 ;
 

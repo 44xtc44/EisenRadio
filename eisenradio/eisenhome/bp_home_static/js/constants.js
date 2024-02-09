@@ -1,7 +1,8 @@
 // constants.js
 "use strict";
 const svgList = [  // svg available inline
-  "theBigFloe",
+  "theBigFloe",  // theme bg
+  "theSunset",  // theme bg
   "aCircle",
   "theTux",
   "theCat",
@@ -15,10 +16,14 @@ const svgList = [  // svg available inline
 ]
 // all groups of all registered inline svg; better register path names with image name and num to avoid doubles
 // regex; all path must have "fill" and "fill-opacity" explicitly set , remove "style" from path; We do NOT use the DOM, we are fast.
-// style is CSS and takes precedence over normal fill attributes, todo fix regex to use style over attributes
+// style is CSS and takes precedence over normal fill attributes, not supported in Android yet
 // use "plain" SVG, never optimized; they kill the id, attributes are group attributes now and "optimize" path stuff ... :(
+// Stacked SVG groups fail if one member group fails to load. There is no error thrown.
+// WILL FAIL. SVG to canvas with blur and gradient. SVG to PNG.
 const spriteList = [
   // instance;       SVG group; canvas;  image dimensions |-> needs fun to reload if one img is missing; Our camp is clean!
+
+  // todo needs theme grouping
   { "foo1": { "grp": "testCircle", "cvs": "cSky", "w": "720", "h": "576" } },
   { "foo2": { "grp": "testCircle", "cvs": "cAnalyzer", "w": "100", "h": "100" } },  // bg analyzer
   { "TestCircle": { "grp": "testCircle", "cvs": "cSkyDecor", "w": "100", "h": "100" } },  // test write: svgTC.svgToCanvas({ dict: svgTC.imgDict["TestCircle"] });
@@ -26,7 +31,7 @@ const spriteList = [
   { "Sat2": { "grp": "gSat2", "cvs": "cSkyDecorThree", "w": "100", "h": "100" } },
   { "SeaNight": { "grp": "gSeaNight", "cvs": "cSea", "w": "720", "h": "576" } },
   { "SeaDay": { "grp": "gSeaDay", "cvs": "cSea", "w": "720", "h": "576" } },
-  { "landScape": { "grp": "gBigFloe", "cvs": "cSeaDecor", "w": "720", "h": "576" } }, // bg image
+  { "landScape": { "grp": "gBigFloe", "cvs": "cSeaDecor", "w": "720", "h": "576" } },
   { "teslaCoils": { "grp": "gTCoils", "cvs": "c_00", "w": "720", "h": "576" } },
   { "WaveRowOne": { "grp": "gWaveRowOne", "cvs": "c_01", "w": "100", "h": "50" } },  // for left AND right create group for w720,h576
   { "WaveRowTwo": { "grp": "gWaveRowTwo", "cvs": "c_02", "w": "100", "h": "50" } },
@@ -46,6 +51,7 @@ const spriteList = [
   { "doppelDecker": { "grp": "gAirOne", "cvs": "c_13", "w": "100", "h": "100" } },
   { "ultraLight": { "grp": "gUltraLight", "cvs": "c_13", "w": "100", "h": "100" } },
   { "iceFloe": { "grp": "gTuxIceFloeSTC", "cvs": "c_15", "w": "100", "h": "100" } },
+  { "lifebuoy": { "grp": "gLifebuoy", "cvs": "c_15", "w": "100", "h": "100" } },
   { "xtraAnalyzer": { "grp": "gSceneTransCake", "cvs": "cTV", "w": "100", "h": "100" } }, // choose analyzer
   { "portableHole": { "grp": "gPortableHole", "cvs": "c_16", "w": "100", "h": "120" } },  // swap hide SVG
   { "Tux": { "grp": "gTux", "cvs": "c_16", "w": "100", "h": "120" } },  // h120 gTux
@@ -66,8 +72,12 @@ const spriteList = [
   { "playRadio": { "grp": "gPlayLocal", "cvs": "c_20", "w": "100", "h": "100" } },  // pure image src instances have no impact on canvas, just to declare somewhere todo fix on special canvas or create an extra option
   { "recordOn": { "grp": "gRecordOn", "cvs": "c_20", "w": "100", "h": "50" } },
   { "transition": { "grp": "gSceneTransCake", "cvs": "c_21", "w": "100", "h": "100" } }, // last canvas should be reserved for scene change animation
+  { "SunsetForeGround": { "grp": "gSunsetFg", "cvs": "c_22", "w": "720", "h": "576" } },  // fg sunset gFoo! gNutsOne! gPalmTrees gSunsetSoil gPalmTreeRight gPalmTreeLeft
+
+  { "SunsetBackGround": { "grp": "gSunsetWaterReflect", "cvs": "c_21", "w": "720", "h": "576" } }, // bg image gSunsetWaterReflect gSunsetBackGround
+  // gMoo
 ]
-"CPU"
+
 const paletteArray = [
   ['#dc8665', '#138086', '#534666', '#cd7672', '#eeb462'],
   ['#e8a49c', '#3c4cad', '#240e8b', '#f04393', '#f9c449'],

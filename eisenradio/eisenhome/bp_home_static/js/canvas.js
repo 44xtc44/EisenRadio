@@ -154,10 +154,14 @@ function divCanMasterWrapHideHiddenBtn() {
 }
 ;
 
-function stageAnalyzerShow() {
+function stageAnalyzerShow(opt) {
   /* Draw the TV frame to show different analyzer
     and some educational broadcast.
   */
+  if(opt === undefined) opt = {};
+  if(opt.pxLeft === undefined) opt.pxLeft = "360px";
+  if(opt.pxTop === undefined) opt.pxTop = "200px";
+
   let canvas = document.getElementById("cTV");
   let ctx = canvas.getContext('2d');
   canvas.style.display = "inline-block";
@@ -167,8 +171,8 @@ function stageAnalyzerShow() {
   ctx.fillStyle = 'rgba(0,135,200,0.0)';  // test color, push alpha up
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  canvas.style.left = "360px";
-  canvas.style.top = "200px";
+  canvas.style.left = opt.pxLeft; // "360px";
+  canvas.style.top = opt.pxTop;  // "200px";
 
   canvas.style.border = '10px solid';
   canvas.style.borderColor = 'rgb(175, 238, 238)'

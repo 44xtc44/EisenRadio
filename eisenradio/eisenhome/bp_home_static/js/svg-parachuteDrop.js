@@ -209,7 +209,15 @@ window.a1AirCraftAniTimer = new AnimationTimer({
     a1AirCraftAniTimer.lastAngle = rnd;
   },
 });
-
+function hideParachutes() {
+  // A theme without paras can clean up the page. Else paras stuck on screen.
+  let childDivs = document.getElementById('divDragRopeA1AirCraft').getElementsByTagName('div');
+  for(let i=0; i< childDivs.length; i++ ) {
+   let childDiv = childDivs[i];
+   childDiv.style.display = "none";
+  }
+}
+;
 window.a1AirCraftFlash = new Flash({
   flashDayColor: "hsl(200, 100%, 50%)",    // required
   flashNightColor: "hsl(100, 100%, 50%)",  // required

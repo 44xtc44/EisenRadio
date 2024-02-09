@@ -1,8 +1,6 @@
 // svg-speaker.js
  "use strict";
 
-window.infSpeaker = new PowerSwitch({ path: document.querySelectorAll("#gSvgSpeakerFlatWaves path") });// animate speaker dynamic fake waves
-
 function dataDictsSpeaker(smoothVolume) {
   /* (a) calc color and visibility of DOM element and (b) switch DOM element.
     (b) is obsolete, we use canvas and edit SVG path tags.
@@ -20,7 +18,7 @@ function animateSpeaker(speakerImg) {
      {speakerFlatWavOne: 316.6666666666667, speakerFlatWavThree: 350, speakerFlatWavTwo: 333.3333333333333}
      svgEditPath({"pathFoo":{"fill": "#FF0023"}, "pathBar":{"fill": "%232300FF"}, "greyThree":{"fill": "#23aaFF"}})
   */
-  let ePwrDct = infSpeaker.ePowerDict;
+  let ePwrDct = infSpeaker.ePowerDict;  // infSpeaker instance in "setAudioContextVisual" get SVG paths after loading
   let eColDct = infSpeaker.eFillColorsDict;
 
   let pwrDct = {};
@@ -40,8 +38,10 @@ function animateSpeaker(speakerImg) {
       pwrDct[key] = 1;
     }
   }
+
   // get color
   for (let index = 0; index <= Object.keys(eColDct).length - 1; index++) {
+
     let key = Object.keys(eColDct)[index];
     let val = eColDct[key];
     let col;

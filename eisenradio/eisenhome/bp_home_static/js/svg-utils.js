@@ -237,25 +237,27 @@ class Shaker {
   }
 }
 ;
-function paintPngTeaserToCanvas() {
+function paintPngToCanvas(opt) {
   /* Teaser unlock screen.
-     Exercise png to canvas, other is svg to canvas as a separate script/module.
-     Canvas one can get overlay by canvas two paint effects on one, arrows, blinker ...
+     Exercise existing png to canvas.
   */
-  let canvas = document.getElementById('pageCoverTeaser')
+  if(opt === undefined) opt = {};
+  if(opt.canvasId === undefined) opt.canvasId = "pageCoverTeaser";
+  let canvas = document.getElementById(opt.canvasId)
   let windowWidth = window.innerWidth;
   let ctx = canvas.getContext("2d");
   // img instance
+  if(opt.svgImage === undefined) opt.svgImage = "teaserImg";
   let image = new Image(); // Using "optional" size for image; MDN docu
-  let rawImg = document.getElementById('teaserImg');
+  let rawImg = document.getElementById(opt.svgImage);
   image.src = rawImg.src;
   drawImageActualSize(); // Draw on image loaded; fun ref to instance method
 
   function drawImageActualSize() {
     // canvas.width = rawImg.naturalWidth;  // MDN docu
     // canvas.height = rawImg.naturalHeight;
-    let margin = 20;
-    windowWidth -= margin;
+    // let margin = 20;
+    // windowWidth -= margin;
     let ratioWH = rawImg.naturalWidth / rawImg.naturalHeight;
     image.height = windowWidth / ratioWH;
     image.width = windowWidth;
@@ -266,5 +268,21 @@ function paintPngTeaserToCanvas() {
     // ctx.drawImage(image, 0, 0, rawImg.width, rawImg.height);
     // ctx.drawImage(image, 0, 0,image.width,image.height);  // custom
   }
+}
+;
+/**
+* SVG to base64. (avoids PNG)
+* One shot conversion to paint complicated SVG content. Needs an animation "overlay". If any.
+* SVGtoCanvas class, on the other hand, can edit the paths without the need to convert to base64.
+* SVGtoCanvas direct draw. But fails to paint blur and gradients.
+* GhettoRecorder has Python base64 conversion for background image in browser.
+*/
+function svg2img64(opt){
+    let svg = document.getElementById(opt.svgId);
+    let xml = new XMLSerializer().serializeToString(svg);
+    let svg64 = btoa(unescape(encodeURIComponent(xml))); // utf8 , other use btoa(xml);
+    let head = 'data:image/svg+xml;base64,';
+    let image64 = head + svg64;
+    return image64;
 }
 ;

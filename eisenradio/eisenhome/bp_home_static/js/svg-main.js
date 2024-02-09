@@ -2,110 +2,108 @@
  "use strict";
 
 window.frameCount = 0;
-
 /**
-* All animations called from here.
-* An SVG group needs an own canvas in this setup.
+* Animations called from here.
 */
-
 function svgAnimationMain() {
-  let confAni = htmlSettingsDictGlobal["checkboxConfigAnimation"];   // disable all
-  let confBall = htmlSettingsDictGlobal["checkboxConfigBalloon"];  // balloons and paras
-  let confSpeak = htmlSettingsDictGlobal["checkboxConfigFlatSpeaker"];
-  let confFront = htmlSettingsDictGlobal["checkboxConfigFrontPigs"];  // tux, cat, bear
-  let confStyle = htmlSettingsDictGlobal["checkboxConfigStyle"];  // switched to a naked page, now same as "cpuUtilisation"
-  let cpuMax = htmlSettingsDictGlobal["cpuUtilisation"];  // only some low CPU animations
   let darkBody = getBodyColor();
-  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio visual engine
-  let powerLevelDict = powerLevelAnimation({ smoothVolume: smoothVolume });
 
-  dataDictsSpeaker(smoothVolume);  // ---> data collector for animateSpeaker(), todo put together?
-  dataDictsFrontPigs(darkBody, smoothVolume, powerLevelDict); //  ---> data collector powerLevelDict TUX, floe
-  if(confFront) {
-    animateIceFloe({ smoothVolume: smoothVolume, powerLevelDict: powerLevelDict });
-    animateFront({
+  // Audio normalizer for all themes.
+  let smoothVolume = smoothOutVolume(128, 0.04);  // smoothOutVolume() + getAverageVolume() = audio visual engine
+
+  /* Returns dict with custom key names { "midClassic": 1 } { "fullClassic": 1 } not used, so far.
+  * Calls animatedInstance.midClassic(); to fill dicts with style.display none, or inline-block
+  * Or {speakerFlatWavOne: 316.6666666666667, speakerFlatWavThree: 350, speakerFlatWavTwo: 333.3333333333333}
+  * returns colors of the 360 deg hue circle
+  */
+  let powerLevelDict = powerLevelAnimation({ smoothVolume: smoothVolume });
+  dataDictsSpeaker(smoothVolume);  // ---> data collector for animateSpeaker(),
+
+  // Call anonymous, theme fun from dict, set in index.js.
+  if(activeTheme.length > 0) {
+    themeDict[activeTheme]({
       smoothVolume: smoothVolume,
       powerLevelDict: powerLevelDict,
-      guestList: [ svgTC.imgDict["Tux"], svgTC.imgDict["Cat"], svgTC.imgDict["Bear"], svgTC.imgDict["portableHole"] ]
-    });
-  }
-
-  teslaCoils.animateTeslaTowerLights(svgTC.imgDict["teslaCoils"]);
-  teslaAnalyzerOne.clearScreen();
-  teslaAnalyzerOne.draw();
-  teslaAnalyzerTwo.draw();
-  // Analyzer are now integrated in the canvas scene, switchable but no more detachable.
-  animateAnalyzer();  // can be switched off at GUI
-  buoyMenu.update(darkBody);
-
-  seaWave.horizontal( {
-    waveList: [
-      svgTC.imgDict["WaveRowOne"],
-      svgTC.imgDict["WaveRowTwo"],
-      svgTC.imgDict["WaveRowThree"]
-    ]
-  } );
-
-  if(cpuMax) {
-
-    if(confSpeak) {
-      // animateSpeaker( svgTC.imgDict["speakerOne"] );
-      animateSpeaker( svgTC.imgDict["speakerTwo"] );
-    }
-    animateAirPlane([
-      svgTC.imgDict["doppelDecker"], // doppelDecker 1st, must colorize
-      svgTC.imgDict["ultraLight"],
-      ]);
-
-    if(confBall) {
-      paraDropper.update();
-      if(frameCount % 2 === 0) {
-        nightSky.update(darkBody);
-        animateSat(darkBody);
-      }
-
-      animateBalloon({
-        planeList:[
-          svgTC.imgDict["zeppelin"],   // same color, but different light values (doppelDecker)
-          svgTC.imgDict["checkered"],  // burner animation
-          svgTC.imgDict["lollipop"],   // change a logo if go left and right direction
-          ],
-        darkBody: darkBody
-        });
-
-      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyOne"] );
-      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyTwo"] );
-      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyThree"] );
-      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyFour"] );
-      canvasCloudsIceHorizontal( svgTC.imgDict["fluffyFive"] );
-      canvasCloudsIceHorizontal( svgTC.imgDict["iceBerg"] );
-
-    }
-    animateUfo( svgTC.imgDict["Ufo"] );
-
-  } else {  // clear
-    let lst = [
-      svgTC.imgDict["fluffyOne"],
-      svgTC.imgDict["fluffyTwo"],
-      svgTC.imgDict["fluffyThree"],
-      svgTC.imgDict["fluffyFour"],
-      svgTC.imgDict["fluffyFive"],
-      svgTC.imgDict["iceBerg"],
-      svgTC.imgDict["doppelDecker"],
-      svgTC.imgDict["ultraLight"],
-      svgTC.imgDict["checkered"],
-      svgTC.imgDict["lollipop"],
-      svgTC.imgDict["zeppelin"],
-      svgTC.imgDict["speakerOne"],
-      svgTC.imgDict["speakerTwo"],
-      svgTC.imgDict["Ufo"],
-      // svgTC.imgDict["xtraAnalyzer"]
-    ]
-    for(let i = 0; i <= lst.length - 1; i++) {
-      lst[i].ctx.clearRect(0, 0, lst[i].canvas.width, lst[i].canvas.height);
-    }
+      darkBody: darkBody
+  });
   }
   /* requestAnimationFrame; only one in an app. */
   frameCount = requestAnimationFrame(svgAnimationMain);
+}
+;
+/**
+* Create a "SvgToCanvas" class instance and load all SVG images to canvas and memory.
+* Create instances of classes where the images are used.
+* ``svg-foreBackGround.js`` class is shared by themes
+*/
+function initSvgEnv() {
+  //
+  window.svgTC = new SvgToCanvas({  // multi-image-loader and translation class
+    svg: svgList,  // see in constants.js; container SVGs; eisenradioSVG 100x100;
+    useSprite: true,  // use as multi image loader for stacked groups; a group can be a sprite [img,img] also
+    spriteList: spriteList  // in constants.js, We load non animated img also, assignments to canvas are fake.
+  });
+
+  window.switchStarGuest = new SwitchStarGuest();  // declare after SVG images are loaded; svg-frontMan.js
+  window.switchAnalyzer = new SwitchAnalyzer();  // toggle analyzer
+  window.foreBackGround = new ForeBackGround();  // Methods to load static SVG images as fore-, background on canvas
+
+  // connect empty image src with loaded SVG groups, valid for all themes
+  document.getElementById('newRadioImage').src = svgTC.imgDict["newRadio"].image.src;
+  document.getElementById('saveRadioImage').src = svgTC.imgDict["saveRadio"].image.src;
+  document.getElementById('toolsRadioImage').src = svgTC.imgDict["toolsRadio"].image.src;
+  document.getElementById('aboutRadioImage').src = svgTC.imgDict["aboutRadio"].image.src;
+  document.getElementById('playRadioImage').src = svgTC.imgDict["playRadio"].image.src;
+  document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
+  document.getElementById('hamburgerImage').src = svgTC.imgDict["hamburgerImg"].image.src;
+  document.getElementById('recordImage').src = svgTC.imgDict["recordOn"].image.src;
+
+  // Init instances, valid for all themes.
+
+  window.buoyMenuFlash = new Flash({  // called by buoyMenu
+    flashDayColor: "hsl(300, 100%, 50%)",
+    flashNightColor: "hsl(10, 100%, 50%)",
+    flashFrames: 20,
+    flashList: [0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1],
+  });
+  window.buoyMenu = new Buoy({
+    dict: svgTC.imgDict["Buoy"],
+    x: 30, y: 450,
+    path: document.getElementById("buoySegmentVeryTopLight"),
+    flash: buoyMenuFlash,
+  });
+  // svgTC.imgDict["speakerOne"].canX = 15;  // uncomment if data collector was optimized, high CPU if both online
+  // svgTC.imgDict["speakerOne"].canY = 75;
+  // svgTC.imgDict["speakerOne"].rotate = 345;  // 15 deg
+  svgTC.imgDict["speakerTwo"].canX = 600;
+  svgTC.imgDict["speakerTwo"].canY = 100;
+  svgTC.imgDict["speakerTwo"].rotate = 345;
+  svgTC.imgDict["speakerTwo"].imgScaleX = -1;  // reverse
+  // Checkered balloon burner animation.
+  window.redBurnerFlash = new Flash({
+    flashDayColor: "hsl(300, 100%, 50%)",
+    flashNightColor: "hsl(10, 100%, 50%)",
+    flashFrames: 20,
+    flashList: [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+  });
+  window.yellowBurnerFlash = new Flash({
+    flashDayColor: "hsl(200, 100%, 50%)",
+    flashNightColor: "hsl(100, 100%, 50%)",
+    flashFrames: 20,
+    flashList: [1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0],
+  });
+}
+;
+/**
+* * Test loop, which is showing if all images can be loaded. -> todo implement Jest
+*/
+function testSVGtoCanvas() {
+  // Let's see if we can write to canvas or fail early.
+  for(let i = 0; i <= spriteList.length - 1; i++) {  // spriteList in constants.js
+    let instanceName = Object.keys(spriteList[i])[0];
+    svgTC.svgToCanvas( { dict: svgTC.imgDict[instanceName] } );
+    // let dct = {[svgTC.imgDict[instanceName].groupName]: { "fill": "#ffffff" }};  // broken state if key same regex
+    // svgTC.svgEditPath(dct, svgTC.imgDict[instanceName]);
+  }
 }
 ;

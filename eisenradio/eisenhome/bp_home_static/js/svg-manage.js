@@ -188,6 +188,7 @@ class PowerSwitch{
            // console.log(document.querySelectorAll("#gSvgSpeakerFlatWaves path")[0].id);
            this.eFillColorsDict[this.elementsList[index].id] = new Object();
        }
+
     }
     initElementStrokeColorsDict(){
     /* ELEMENT stroke color: each element gets an empty object to store the hue color number */
@@ -369,6 +370,7 @@ class PowerSwitch{
     /* remember: first two values are min and max of selected piece on hue circle in deg, reason for methods
       {speakerFlatWavOne: 316.6666666666667, speakerFlatWavThree: 350, speakerFlatWavTwo: 333.3333333333333}
     */
+
         let start = 2;
         for(let index=start;index<=this.methodFillColorsDict[methodPower].length-1;index++){
             // transfer the method hue values to the element id's, actually names, to switch fill color
@@ -376,6 +378,7 @@ class PowerSwitch{
             this.eFillColorsDict[keyName]   = this.methodFillColorsDict[methodPower][index];
             this.eStrokeColorsDict[keyName] = this.methodStrokeColorsDict[methodPower][index];
         }
+
     }
     eAnimateFlashPower(powerState){
     /* just to remember, only path elements work with fill */
@@ -396,6 +399,7 @@ class PowerSwitch{
     }
     eAnimateColor(){
     /* svg element style */
+
         for(let index=0;index<=Object.keys(this.eFillColorsDict).length -1;index++){
             let keyName = Object.keys(this.eFillColorsDict)[index];
             let eFill = this.eFillColorsDict[keyName];
@@ -564,6 +568,7 @@ function powerLevelAnimation( {smoothVolume: smoothVolume,animatedInstance: anim
     } catch (error) {
        /* console.error(error); */
     }
+
     return powerDict;
 }
 ;

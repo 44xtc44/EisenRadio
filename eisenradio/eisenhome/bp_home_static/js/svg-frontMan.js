@@ -1,18 +1,6 @@
 // svg-frontMan.js
  "use strict";
 
-// https://copyprogramming.com/howto/javascript-how-to-overlay-a-canvas-on-video
-window.TuxIceFloeFrontPowerSwitch = new PowerSwitch({
-  path: document.querySelectorAll("#gTuxIceFloeSTC path"),  // if document.getElementsByClass no need to mention "path"
-  hue: getRandomIntInclusive(600, 800),
-  step: 1 / getRandomIntInclusive(4, 8),   // to get more or less color reaction, divider
-  max: 13,
-  maxCount: 6,
-  slider: 2,
-  dropShadow: "",
-  animatePower: false  // only color change, no on/off
-});
-
 class SwitchStarGuest {
 /* Init in index.js
   Browser must call switchStarGuest.update()
@@ -32,36 +20,42 @@ class SwitchStarGuest {
   }
 }
 
-function dataDictsFrontPigs(darkBody, smoothVolume, powerLevelDict) {
-  /* inflated (omg), scaled ANIMALS */
-  /* animal animation, use volume level to inflate */
+function dataDictsFrontPigs(smoothVolume) {
+  /* animal animation, use volume level to inflate
+  *
+  * todo now separate themes, instance should be neutral to the themes and deliver colors
+  */
+  try {
+    powerLevelAnimation({
+      smoothVolume: smoothVolume,
+      animatedInstance: TuxIceFloeFrontPowerSwitch
+    });
+  } catch(e) {}  // suppress log, known issue
 
-  // defaultFrontAnimation(smoothVolume, powerLevelDict);  todo ----------------refac-------------------+++++++
-  powerLevelAnimation({
-    smoothVolume: smoothVolume,
-    animatedInstance: TuxIceFloeFrontPowerSwitch
-  });
 }
 ;
 function animateFront(opt) {
   /* TUX
   */
   if (opt === undefined) opt = {};
+  if (opt.canX === undefined) opt.canX = 200;
+  if (opt.canY === undefined) opt.canY = 240;
+  if (opt.translateY === undefined) opt.translateY = 60;
   let fullPower = false;  // used to show different colors at very high volume; later used for space cat with pink hands and eyes
   let scaleUnifier = opt.powerLevelDict[Object.keys(opt.powerLevelDict)[0]];  // multiply with all volume val to get lower audio ranges up
   if (Object.keys(opt.powerLevelDict)[0] == "fullPower") { fullPower = true; }
   if (opt.smoothVolume < 1) { opt.smoothVolume = 1; }
 
-  let currentImg = opt.guestList[switchStarGuest.guestListIdx];
-  currentImg.canX = 200;
-  currentImg.canY = 240 + yTransUpDown.update();  // sea wave up down
+  let currentImg = opt.guestList[switchStarGuest.guestListIdx];  // tux, cat or bear from list
+  currentImg.canX = opt.canX;
+  currentImg.canY = opt.canY + yTransUpDown.update();  // sea wave up down
   currentImg.rotate = zRotationUpDown.update();   // sea rolling
-  currentImg.translateY = 60;
+  currentImg.translateY = opt.translateY;
   currentImg.imgScaleX = currentImg.imgScaleY = opt.smoothVolume;  // inflate
   svgTC.svgToCanvas( {dict: currentImg } );
 }
 ;
-function animateIceFloe(opt) {
+function animateStage(opt) {
   /*
     Derived from "defaultFrontAnimation()" animation, can be switched off in tools menu config
 
@@ -77,32 +71,33 @@ function animateIceFloe(opt) {
     restore()
   */
   if (opt === undefined) opt = {};
-
+  if (opt.svgImg === undefined) opt.svgImg = "iceFloe";
+  if (opt.canX === undefined) opt.canX = 200;
+  if (opt.canY === undefined) opt.canY = 300;
+  if (opt.imgScaleX === undefined) opt.imgScaleX = 1.4;
   let darkBody = getBodyColor();
   let fullPower = false;  // used to show different colors at very high volume; later used for space cat with pink hands and eyes
   let scaleUnifier = opt.powerLevelDict[Object.keys(opt.powerLevelDict)[0]];  // multiply with all volume val to get lower audio ranges up
   if (Object.keys(opt.powerLevelDict)[0] == "fullPower") { fullPower = true; }
   if (opt.smoothVolume < 1) { opt.smoothVolume = 1; }
 
-  svgTC.imgDict["iceFloe"].canX = 200;
-  svgTC.imgDict["iceFloe"].canY = 300 + yTransUpDown.update();
-  svgTC.imgDict["iceFloe"].imgScaleX = 1.4;
-  svgTC.imgDict["iceFloe"].rotate = zRotationUpDown.update();
-  if (darkBody) {
-    colorizeIceFloe();
-  }
-  svgTC.svgToCanvas( {dict: svgTC.imgDict["iceFloe"] } );  // write canvas dict is img instance with .src
+  svgTC.imgDict[opt.svgImg].canX = opt.canX;
+  svgTC.imgDict[opt.svgImg].canY = opt.canY + yTransUpDown.update();
+  svgTC.imgDict[opt.svgImg].imgScaleX = opt.imgScaleX;
+  svgTC.imgDict[opt.svgImg].rotate = zRotationUpDown.update();
+  svgTC.svgToCanvas( {dict: svgTC.imgDict[opt.svgImg] } );  // write canvas dict is img instance with .src
 }
 ;
 function colorizeIceFloe() {
-  /* PowerSwitch class,
+  /* PowerSwitch class feeds color for SVG path edit,
      applyOrgColor() method recovers all DOM queryElement members (tags <path or <circle) saved in to list, id compared against color list
      But now we can simply reload the original image with our SvgToCanvas iceFloe.serializeImg( {svg:"TuxIceFloe"]} ) on dark mode change
   */
   let orgColDct = TuxIceFloeFrontPowerSwitch.elementsList;
   // we apply CANVAS color not DOM
   let eColDct = TuxIceFloeFrontPowerSwitch.eFillColorsDict;
-  // cl(eColDct);
+
+  // cl("colorizeIceFloe->", TuxIceFloeFrontPowerSwitch.eFillColorsDict)
   let colDct = {};
   let Front_01_ = "tuxIceFloeFront_01_part";  // order red out from dict
   let Front_02_ = "TuxIceFloeFront_02_part";

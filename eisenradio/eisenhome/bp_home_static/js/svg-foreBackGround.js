@@ -13,6 +13,43 @@ class ForeBackGround {
     this.cSea = document.getElementById("c_01");
     this.seaCtx = this.cSky.getContext("2d");
   }
+  /**
+  * Cut has no background image and no animations.
+  */
+  cutTheme() {
+    this.clearAll();
+    // menu
+    svgTC.imgDict["Buoy"].canX = 30;
+    svgTC.imgDict["Buoy"].canY = 450;
+    stageAnalyzerShow();
+  }
+  /**
+  * Sunset needs two images.
+  * First background to PNG and second with groups for foreground and water reflections to animate.
+  */
+  sunset() {
+    this.clearAll();
+    svgTC.svgToCanvas( {dict: svgTC.imgDict["SunsetForeGround"] } );
+    // Background has blur and gradient. SVG to canvas fails. Must convert to something else.
+    let base64Img = svg2img64( { svgId: "theSunset"} );
+    let img = new Image();
+    let canvas = document.getElementById("c_00")
+    let ctx = canvas.getContext("2d");
+    img.onload = function() {
+      ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+    }
+    img.src = base64Img;
+    // menu
+    svgTC.imgDict["Buoy"].canX = 30;
+    svgTC.imgDict["Buoy"].canY = 450;
+
+    svgTC.svgToCanvas( {dict: svgTC.imgDict["lifebuoy"] } );
+
+    stageAnalyzerShow( {
+      pxLeft: "350px",
+      pxTop: "320px"
+    } );
+  }
   arcticDay() {
   /* stop day sky  rgba(34,152,200,100); start day sky  rgba(232,251,255,100)
      stop day sea  rgba(37,110,152,100); start day sea  rgba(1,168,230,100)
