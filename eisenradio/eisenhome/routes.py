@@ -1,3 +1,4 @@
+import os
 import threading
 import time
 from flask import Blueprint, render_template, request, flash, redirect, url_for, make_response, jsonify
@@ -298,3 +299,15 @@ def index_posts_combo():
 def index_posts_percent():
     """return percent of timer to js"""
     return jsonify({'result': eis_home.progress_master_percent})
+
+
+@eisenhome_bp.route('/svg_symbol_get', methods=['GET'])
+def svg_symbol_get():
+    """
+    """
+    svg_symbol = "svgImagesSymbol.svg"
+    this_module_dir = os.path.dirname(__file__)
+    symbol_folder = os.path.join(this_module_dir, "bp_home_static", "images", svg_symbol)
+    with open(symbol_folder, "rb") as reader:
+        svg_content = reader.read()
+    return svg_content
