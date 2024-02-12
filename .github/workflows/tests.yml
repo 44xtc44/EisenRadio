@@ -30,6 +30,6 @@ jobs:
       - name: Test with tox
         run: tox
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Run Jest JavaScript tester local use npm over yarn
+        run: yarn install
+      - name: Run Jest JavaScript tester local use npm over yarn.
         run: yarn test
