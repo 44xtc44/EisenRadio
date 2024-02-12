@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "displayName": "Jest EisenR",
+    "globals": {
+      "PROJECT_NAME": "EisenRadio"
+    },
+    "bail": 20,
+    "verbose": true
+  }
+}
