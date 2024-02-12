@@ -20,6 +20,10 @@ function animateSpeaker(speakerImg) {
   */
   let ePwrDct = infSpeaker.ePowerDict;  // infSpeaker instance in "setAudioContextVisual" get SVG paths after loading
   let eColDct = infSpeaker.eFillColorsDict;
+  let oKeysPwr = Object.keys(ePwrDct);
+  let oKeysCol = Object.keys(eColDct);
+
+  if(oKeysPwr.length === 0 || oKeysCol.length === 0) return;
 
   let pwrDct = {};
   let colDct = {};

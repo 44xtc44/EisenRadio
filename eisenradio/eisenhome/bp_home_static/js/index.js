@@ -63,12 +63,12 @@ window.addEventListener('load', function () {
     svgImage: "teaserImg"
   } );  // paint "existing" PNG to canvas, now THE audio enabler we MUST have, else browser error, no user interaction
 
-  /* SVG symbol grew too big for index.html, to edit in IDE. Outsource from HTML to server.
+  /* SVG symbol grew too big for index.html, to edit in IDE. Outsource from index HTML to server.
   * Import. Steps how it works.
   * (a) Load SVG symbol container from server.
-  * (b) Write symbol to div, make it public to the document. (as if it was inline before)
-  * (c) Load SVG groups and images from DOM into mem, create instances as image sources.
-  * (d) Use the img instances in the document as buttons and animations.
+  * (b) Write symbol to div, make it public to the document, DOM. (as if it was inline before, "some" div is ok)
+  * (c) Load SVG groups and images from DOM into mem, create instances as image sources. (svg-toCanvas.js)
+  * (d) Use the img instances in the document as buttons and animations. (edit paths during runtime in svg-toCanvas.js)
   */
   loadSvgSymbol().then(function(response) {
     document.getElementById('divSvgImagesSymbol').innerHTML = response;
@@ -112,9 +112,10 @@ function removePageCover() {
 }
 ;
 /**
-* Playlist of local sound files, played in the browser.
-* Creates a <code>fresh</code> instance for each new HTML call.
-* Display is right beside monitor if there is space. Else below.
+* Playlist of local sound files, played in/by the browser.
+* Creates a "fresh" instance on each new HTML button call.
+* Else reuse of the instance introduces more of the "bind" hell. (Help appreciated! Switch radio to playlist back and forth.)
+* Display is located right beside the stage "monitor" if there is space. Else below.
 */
 function runLocalSound() {
   document.getElementById('divFrameRight').style.display = "block";
@@ -221,17 +222,9 @@ function disableRecorder(opt) {
 ;
 /**
 * Collect active recorder threads from Flask endpoint.
-* Build div elem stack of active recorder names with listener to click and disable.
+* Build div elem stack of active recorder names with listener to click and disable rec.
 */
 function recorderGet() {
-  let parent = document.getElementById("divRecordView");
-  let innerHTML = "\nRecorder list update, click to stop. &#128192;";  // use as headline first div child
-  let id = "activeRecorderHeader";
-  let elemClass;
-  removeDiv({ id: parent });  // clean up existing HTML display, all child div
-  appendDiv({ parent: parent, id: id, innerHTML: innerHTML });
-  // appendDiv({ parent: parent, id: "recordDot", innerHTML: "&#128192;" });  // set header txt, dvd icon
-
   let req = $.ajax({
     type: 'GET',
     url: "/streamer_get",
@@ -242,30 +235,73 @@ function recorderGet() {
       streamerDictGlobal = {};
       streamerDictGlobal = data.streamerGet;
       let oKeysList = Object.keys(streamerDictGlobal);
-      // enable recorder image
-      if(oKeysList.length > 0) {
-        document.getElementById('recorderIsOn').style.display = "inline-block";
-        if(activeRadioName === "Playlist") {
-          document.getElementById('recorderIsOn').style.opacity = "0.1";
-        }else {
-          document.getElementById('recorderIsOn').style.opacity = "1";
-        }
-      } else {
-        document.getElementById('recorderIsOn').style.display = "none";
-      }
+      let recorderList = [];
 
-      // create a div for every recorder name and set a listener to later click/disable recorder
-      for (let i = 0; i < oKeysList.length; ++i) {
-        let name = oKeysList[i];  // DOM needs unique id
-        let dbId = streamerDictGlobal[name];
-        id = "div::" + name + "::" + dbId;  // play save
-        elemClass = "divRecorderList";
-        innerHTML = "&#8226; " + name;
-        appendDiv({ parent: parent, id: id, elemClass: elemClass, innerHTML: innerHTML });
-        setEventListenerRecord({ id: id });
+      recorderInfoImg(oKeysList);
+      recorderList = recorderNewList(oKeysList)
+      if(!recorderList) {
+        return;
+      }else {
+        glob.activeRecorderList = recorderList;
+        recorderNewView(recorderList);
       }
     }
   });
+}
+;
+function recorderInfoImg(oKeysList) {
+  // enable recorder info image
+  if(oKeysList.length > 0) {
+    document.getElementById('recorderIsOn').style.display = "inline-block";
+    if(activeRadioName === "Playlist") {
+      document.getElementById('recorderIsOn').style.opacity = "0.1";  // better view at playlist buttons
+    }else {
+      document.getElementById('recorderIsOn').style.opacity = "1";
+    }
+  } else {
+    document.getElementById('recorderIsOn').style.display = "none";
+  }
+}
+;
+function recorderNewView(recorderList) {
+  // draw a div list stack of active recorder names
+  let parent = document.getElementById("divRecordView");
+  let innerHTML = "";
+  let id = "";
+  let elemClass = "";
+  removeDiv({ id: parent });  // clean up existing HTML display, all child div
+  // create a div for every recorder name and set a listener to later click/disable recorder
+  for (let i = 0; i < recorderList.length; ++i) {
+    let name = recorderList[i];  // DOM needs unique id
+    let dbId = streamerDictGlobal[name];
+    id = "div::" + name + "::" + dbId;  // play save
+    elemClass = "divRecorderList";
+    innerHTML = "&#8226; " + name;
+    appendDiv({ parent: parent, id: id, elemClass: elemClass, innerHTML: innerHTML });
+    setEventListenerRecord({ id: id });
+  }
+}
+;
+function recorderNewList(oKeysList) {
+  // Return a list of active recorder on status change. Check delivery for new items
+  let recorderList = [];
+  let allInStore = true;
+  let outGoing = false;
+  for (let i = 0; i < oKeysList.length; ++i) {  // Check delivery for new items
+    let recName = oKeysList[i];
+    recorderList.push(recName);
+    if(! glob.activeRecorderList.includes(recName)) allInStore = false;
+  }
+
+  for (let i = 0; i < glob.activeRecorderList.length; ++i) {  // cross check items removed from stock
+    let recName = glob.activeRecorderList[i];
+    if(! recorderList.includes(recName)) outGoing = true;
+  }
+  if(allInStore && !outGoing) {
+    return false;  // no change
+  }else {
+    return recorderList;
+  }
 }
 ;
 /**
@@ -294,6 +330,7 @@ function setEventListenerRecord(opt) {
 */
 function appendDiv(opt) {
   /* Reusable fun to stack div and use the stack as a list.  */
+  if(opt.id === null || opt.id === undefined) return;
   let div = document.createElement('div');
   div.id = opt.id;
   if (opt.elemClass === undefined) opt.elemClass = "foo";
@@ -307,6 +344,7 @@ function appendDiv(opt) {
 * @param {String} id - id of parent div
 */
 function removeDiv(opt) {
+  if(opt.id === null || opt.id === undefined) return;
   while (opt.id.firstChild) {
     opt.id.removeChild(opt.id.lastChild);
   }
@@ -383,6 +421,22 @@ function toggleAudioControls() {
 /**
 * Show or hide the pop up console window.
 */
+function toggleRecordView() {
+  let console = document.getElementById("wrapRecordView");
+  let isShown = "";
+
+  if (glob.recordViewShow === 1) {
+    isShown = "inline-block";
+    glob.recordViewShow = 0;  // global
+  } else {
+    isShown = "none";
+    glob.recordViewShow = 1;
+  }
+  setTimeout(function () {
+    console.style.display = isShown;
+  }, 50);
+}
+;
 function toggleConsole(divId) {
   let console = document.getElementById("console");
   let isShown = "";
@@ -406,6 +460,8 @@ class Glob {
   constructor() {
     this.audioControlShow = 1;
     this.consoleShow = 1;
+    this.recordViewShow = 1;
+    this.activeRecorderList = [];
   }
   numberRange(start, end) {  // simulate range() of Python
     return new Array(end - start).fill().map((d, i) => i + start);
@@ -570,18 +626,27 @@ function updateMasterProgress() {
     let percent = '';
     let runner = document.getElementById("progressbarTimerRuner")
     percent = data.result;
+
     if (percent === 0) {
       runner.style.width = "25%";
-      runner.innerHTML = "Timer Off";
+      runner.innerHTML = "Off";
     }
     if (percent !== 0) {
       runner.style.width = percent + "%";
-      runner.innerHTML = "active";
+      let timeLeft = timerEndGet( {percent: percent, hours: data.timer} );
+      runner.innerHTML = "<span style='font-family: Roboto, Helvetica, Arial;'>" + timeLeft + "<span>";
       if (percent >= 100) {
         window.location.href = "/page_flash";
       }
     }
   });
+}
+;
+function timerEndGet(opt) {
+  const hoursLeft = opt.hours - ((opt.percent / 100) * opt.hours);
+  let n = new Date(0,0);
+  n.setSeconds(+hoursLeft * 60 * 60);
+  return n.toTimeString().slice(0, 8)
 }
 ;
 /**

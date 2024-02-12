@@ -21,7 +21,9 @@ class ForeBackGround {
     // menu
     svgTC.imgDict["Buoy"].canX = 30;
     svgTC.imgDict["Buoy"].canY = 450;
-    stageAnalyzerShow();
+    analyzerCanvas.pxLeft = "360px";
+    analyzerCanvas.pxTop = "200px";
+    analyzerCanvas.stageAnalyzerShow();
   }
   /**
   * Sunset needs two images.
@@ -31,7 +33,7 @@ class ForeBackGround {
     this.clearAll();
     svgTC.svgToCanvas( {dict: svgTC.imgDict["SunsetForeGround"] } );
     // Background has blur and gradient. SVG to canvas fails. Must convert to something else.
-    let base64Img = svg2img64( { svgId: "theSunset"} );
+    let base64Img = svg2img64( { svgId: "theSunsetBackground"} );  // Must be Inkscape; theSunset , theSunsetBackground
     let img = new Image();
     let canvas = document.getElementById("c_00")
     let ctx = canvas.getContext("2d");
@@ -39,16 +41,17 @@ class ForeBackGround {
       ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
     }
     img.src = base64Img;
+    svgTC.svgToCanvas( {dict: svgTC.imgDict["sunsetWaterReflect"] } );  // overlay "c_01" to animate reflections paths
+
     // menu
     svgTC.imgDict["Buoy"].canX = 30;
     svgTC.imgDict["Buoy"].canY = 450;
-
     svgTC.svgToCanvas( {dict: svgTC.imgDict["lifebuoy"] } );
 
-    stageAnalyzerShow( {
-      pxLeft: "350px",
-      pxTop: "320px"
-    } );
+    analyzerCanvas.pxLeft = "350px";
+    analyzerCanvas.pxTop = "320px";
+    analyzerCanvas.stageAnalyzerShow();
+
   }
   arcticDay() {
   /* stop day sky  rgba(34,152,200,100); start day sky  rgba(232,251,255,100)
@@ -60,7 +63,10 @@ class ForeBackGround {
     this.clearAll();
     svgTC.svgToCanvas( {dict: svgTC.imgDict["landScape"] } );
     svgTC.svgToCanvas( {dict: svgTC.imgDict["teslaCoils"] } );
-    stageAnalyzerShow();
+    analyzerCanvas.pxLeft = "360px";
+    analyzerCanvas.pxTop = "200px";
+    analyzerCanvas.stageAnalyzerShow();
+
     svgTC.imgDict["Buoy"].canX = 30;
     svgTC.imgDict["Buoy"].canY = 450;
     svgTC.svgToCanvas( {dict: svgTC.imgDict["Buoy"] } );
@@ -83,7 +89,10 @@ class ForeBackGround {
     this.clearAll();
     svgTC.svgToCanvas( {dict: svgTC.imgDict["landScape"] } );
     svgTC.svgToCanvas( {dict: svgTC.imgDict["teslaCoils"] } );
-    stageAnalyzerShow();
+    analyzerCanvas.pxLeft = "360px";
+    analyzerCanvas.pxTop = "200px";
+    analyzerCanvas.stageAnalyzerShow();
+
     svgTC.imgDict["Buoy"].canX = 30;
     svgTC.imgDict["Buoy"].canY = 450;
     svgTC.svgToCanvas( {dict: svgTC.imgDict["Buoy"] } );

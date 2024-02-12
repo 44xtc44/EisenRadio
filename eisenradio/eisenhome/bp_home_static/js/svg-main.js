@@ -49,11 +49,11 @@ function initSvgEnv() {
   window.foreBackGround = new ForeBackGround();  // Methods to load static SVG images as fore-, background on canvas
 
   // connect empty image src with loaded SVG groups, valid for all themes
-  document.getElementById('newRadioImage').src = svgTC.imgDict["newRadio"].image.src;
-  document.getElementById('saveRadioImage').src = svgTC.imgDict["saveRadio"].image.src;
-  document.getElementById('toolsRadioImage').src = svgTC.imgDict["toolsRadio"].image.src;
-  document.getElementById('aboutRadioImage').src = svgTC.imgDict["aboutRadio"].image.src;
-  document.getElementById('playRadioImage').src = svgTC.imgDict["playRadio"].image.src;
+  // document.getElementById('newRadioImage').src = svgTC.imgDict["newRadio"].image.src;  // remove from symbol
+  // document.getElementById('saveRadioImage').src = svgTC.imgDict["saveRadio"].image.src;
+  // document.getElementById('toolsRadioImage').src = svgTC.imgDict["toolsRadio"].image.src;
+  // document.getElementById('aboutRadioImage').src = svgTC.imgDict["aboutRadio"].image.src;
+  // document.getElementById('playRadioImage').src = svgTC.imgDict["playRadio"].image.src;
   document.getElementById('blacklistImage').src = svgTC.imgDict["blackList"].image.src;
   document.getElementById('hamburgerImage').src = svgTC.imgDict["hamburgerImg"].image.src;
   document.getElementById('recordImage').src = svgTC.imgDict["recordOn"].image.src;

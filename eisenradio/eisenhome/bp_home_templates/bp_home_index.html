@@ -163,24 +163,12 @@
 
         <div id="console" class="barWrapSecondaryAction">
             <div class="wrapCenter">
-                <p class="pElemX">
-                    <span class="spanX" onclick="toggleConsole();">&#10006;</span>
-                </p>
-                <p>
-                    <span class="emptySpace boldText" onclick="changeColorScheme();">Mode</span>
-                    <span id="darkModeIcon" class="darkModeIcon" onclick="changeColorScheme();">&#9728;</span>
-                    <span class="emptySpace boldText">Theme</span>
-                    <span id="palmTreeIcon" class="darkModeIcon" onclick="themeInitSunset();">&#127796;</span>
-                    <span id="snowflakeIcon" class="darkModeIcon boldText" onclick="themeInitArctic();">&#10052;</span>
-                    <span id="scissorIcon" class="darkModeIcon" onclick="themeInitCut();">&#9986;</span>
-                </p>
-                <hr>
 
                 <div class="boxSecondaryAction">
                     <label for="quickListen">
-                        <select class="form-control quickView" id="quickListen"
+                        <select class="quickView select-css" id="quickListen"
                             onChange="enableSoundEndpoint({value:this.value});quickListen.selectedIndex = 0;">
-                            <option class="quickView" id="radioChoiceOne" value="choiceHeader;">LISTEN Radio</option>
+                            <option class="quickView" id="radioChoiceOne" value="choiceHeader;"> &#127911; LISTEN</option>
                             {% for post in posts%}
                             <option class="quickView" id="radioChoice_{{ post['id'] }}"
                                 value="{{ post['id'] }};{{ post['title'] }}">{{ post['title'] }}
@@ -191,10 +179,72 @@
                 </div>
 
                 <div class="boxSecondaryAction">
+                    <label for="quickRecord">
+                        <select class="quickView select-css" id="quickRecord"
+                            onChange="enableRecorder({value:this.value});quickRecord.selectedIndex = 0;">
+                            <option class="quickView" id="radioRecordOne" value="choiceHeader;">&#128192; RECORD </option>
+                            {% for post in posts%}
+                            <option class="quickView" value="{{ post['id'] }};{{ post['title'] }}">{{ post['title'] }}
+                            </option>
+                            {% endfor%}
+                        </select>
+                    </label>
+                </div>
+
+                <div class="divFlex fontSize150">
+                    <div>
+                        <span class="flex-item"
+                              onclick="document.getElementById('fileUpload').click();">
+                            Playlist
+                        </span>
+                        <label for="checkboxShuffle" class="toggleIcon">
+                            <input type="checkbox" id="checkboxShuffle" class="toggleIcon"
+                                   name="checkboxShuffle"
+                                   checked> Shuffle
+                        </label>
+                        <span class="flex-item" onclick="toggleRecordView();">Recorder</span>
+                    </div>
+                </div>
+
+                <br>
+
+                <div id="divThemes" class="divFlex fontSize200">
+                    <p class="pElemX">
+                        <span class="spanX" onclick="toggleConsole();">&#10006;</span>
+                    </p>
+                    <div><span id="darkModeIcon" class="flex-item" onclick="changeColorScheme();">&#9728;</span></div>
+                    <div><span class="flex-item" onclick="themeInitSunset();">&#127796;</span></div>
+                    <div><span class="flex-item" onclick="themeInitArctic();">&#10052;</span></div>
+                    <div><span class="flex-item" onclick="themeInitCut();">&#9986;</span></div>
+                </div>
+
+                <div class="divFlex fontSize150">
+                    <p class="pElemX">
+                        <span class="spanX" onclick="toggleConsole();">&#10006;</span>
+                    </p>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.create')}}'">New
+                        </span>
+                    </div>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.save')}}'">Save
+                        </span>
+                    </div>
+                    <div><span class="flex-item boldText"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.tools')}}'">Tools
+                        </span>
+                    </div>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.about')}}'">About
+                        </span>
+                    </div>
+                </div>
+
+                <div class="boxSecondaryAction">
                     <label for="quickEdit">
-                        <select class="form-control quickView" id="quickEdit"
+                        <select class="quickView select-css" id="quickEdit"
                             onChange="location = this.value;quickEdit.options[0].selected = true;">
-                            <option class="quickView" id="radioEditOne" value="choiceHeader;">EDIT Database</option>
+                            <option class="quickView" id="radioEditOne" value="choiceHeader;">&#9998; EDIT</option>
                             {% for post in posts%}
                             <option class="quickView" value="{{ post['id'] }}">{{ post['title'] }}
                             </option>
@@ -204,28 +254,13 @@
                 </div>
 
                 <div class="boxSecondaryAction">
-                    <label for="quickRecord">
-                        <select class="form-control quickView" id="quickRecord"
-                            onChange="enableRecorder({value:this.value});quickRecord.selectedIndex = 0;">
-                            <option class="quickView" id="radioRecordOne" value="choiceHeader;">RECORD</option>
-                            {% for post in posts%}
-                            <option class="quickView" value="{{ post['id'] }};{{ post['title'] }}">{{ post['title'] }}
-                            </option>
-                            {% endfor%}
-                        </select>
-                    </label>
-                </div>
-
-            </div>
-            <div id="timer">
-                <div class="timeRecordSelectAll box_secondary_action">
-
                     <label for="timeRecordSelectAll">
-                        <select class="form-control quickView" aria-label="Timer select" name="timeRecordSelectAll"
+                        <select class="quickView select-css" name="timeRecordSelectAll"
                             id="timeRecordSelectAll" onchange="setTimer(value);timeRecordSelectAll.selectedIndex = 0;">
 
-                            <option class="quickView" value="0">Timer</option>
-                            <option class="quickView" value="-1"> Stop!</option>
+                            <option class="quickView">&#8987; Timer</option>
+                            <option class="quickView" value="0">Timer off</option>
+                            <option class="quickView" value="-1"> Stop now with recorder file cleanup!</option>
                             <option class="quickView" value="1"> 1</option>
                             <option class="quickView" value="2"> 2</option>
                             <option class="quickView" value="4"> 4</option>
@@ -235,46 +270,26 @@
                             <option class="quickView" value="24"> 24</option>
                         </select>
                     </label>
-                </div>
                 <div id="progressbarTimer">
                     <div id="progressbarTimerRuner"></div>
                 </div>
-            </div>
-
-            <div class="divMenuIcons" id="divMenuIcons">
-                <div class="barWrapSecondaryAction">
-                    <div class="wrapCenter toggleIcon">
-                        <hr>
-                        <img id="newRadioImage" src="" height="50"
-                            onclick="javascript:location.href='{{url_for('eisenutil_bp.create')}}'">
-                        <img id="editRadioImage" src="" height="50">
-                        <img id="saveRadioImage" src="" height="50" alt="save to new folder"
-                            onclick="javascript:location.href='{{url_for('eisenutil_bp.save')}}'">
-                        <img id="toolsRadioImage" src="" height="50" alt="database tools"
-                            onclick="javascript:location.href='{{url_for('eisenutil_bp.tools')}}'">
-                        <img id="aboutRadioImage" src="" height="50" alt="about app"
-                            onclick="javascript:location.href='{{url_for('eisenutil_bp.about')}}'">
-                        <img id="playRadioImage" src="" height="50" alt="play local sound files"
-                            onclick="document.getElementById('fileUpload').click();">
-                        <label for="checkboxShuffle">
-                            <input type="checkbox" id="checkboxShuffle" name="checkboxShuffle"
-                                class="box_secondary_action" checked> Shuffle
-                        </label>
-                        <img id="cpuImage" src="" width="40%" alt="cpu load" onclick="degradeAnimationsSet();">
-                        <img id="blacklistImage" src="" width="40%" alt="blacklists"
-                            onclick="javascript:location.href='{{url_for('eisenutil_bp.tools_blacklist_overview')}}'">
-                    </div>
                 </div>
             </div>
 
-            <hr>
-            <div id="divRecordView" class="divRecorderList quickview">
-                <p id="recorderListHead">Recorder list update, click to stop.
-                    <span id="recorderListHeadIcon">&#128192;</span>
-                </p>
+            <div class="divFlex">
+                <div class="flex-item"><img id="cpuImage" src="" width="25%" alt="cpu load" onclick="degradeAnimationsSet();"></div>
+                <div class="flex-item"><img id="blacklistImage" src="" width="25%" alt="blacklists"
+                        onclick="javascript:location.href='{{url_for('eisenutil_bp.tools_blacklist_overview')}}'"></div>
             </div>
 
+            <div id="wrapRecordView">
+                <p class="pElemX">
+                    <span id="spanRecordView" class="spanX" onclick="toggleRecordView();">&#10006;</span>
+                </p>
+                <div id="divRecordView" class="divRecorderList fontSize125"></div>
+            </div>
         </div>
+
         <div id="divAnimationContainer">
             <div>
                 <div id="divA1AirCraft">
@@ -353,11 +368,11 @@
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-teslaCoils.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-seaWaves.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-balloons.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/canvas.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-parachuteDrop.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/svg-birds.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/theme-cut.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/theme-arctic.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/theme-sunset.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('eisenhome_bp.static', filename='/js/theme-cut.js') }}"></script>
 <!--
 
 

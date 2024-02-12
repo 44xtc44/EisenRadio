@@ -50,10 +50,10 @@ function toggleAnalyzer() {
   /* Show analyzer canvas. */
   if (switchAnalyzer.stageAnalyzerShow) {
     switchAnalyzer.stageAnalyzerShow = false;
-    stageAnalyzerHide();
+    analyzerCanvas.stageAnalyzerHide();
   } else {
     switchAnalyzer.stageAnalyzerShow = true;
-    stageAnalyzerShow();
+    analyzerCanvas.stageAnalyzerShow();
   }
 }
 ;
@@ -418,3 +418,46 @@ window.stageCircling = new StageCircling({
   offCenter: 30,  // Radius of movement circle. Around an imaginary point.
   speed: 0.5,
 })
+
+/**
+* StageAnalyzer stores properties related to analyzer and canvas.
+*/
+class StageAnalyzerCanvas{
+  constructor(opt) {
+    this.pxLeft = 0;
+    this.pxTop = 0;
+    this.canvas = document.getElementById(opt.canvasId);  // "cTV"
+    this.ctx = this.canvas.getContext('2d');
+    // default canvas decoration and transform
+    this.border = '10px solid';
+    this.borderColor = 'rgb(175, 238, 238)'
+    this.borderRadius = '1em';
+    this.scale = "scale(0.8, 0.8)";
+    this.skew = "skew(0deg, 10deg)";
+    this.rotateX = "rotateX(0deg)";
+  }
+  /**
+  * Draw the TV frame to show different analyzer
+  * and some educational broadcast.
+  */
+  stageAnalyzerShow( opt ) {
+    this.canvas.style.display = "inline-block";
+    this.ctx.fillStyle = 'rgba(0,135,200,0.0)';  // test color, push alpha up
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.canvas.style.left = this.pxLeft; // "360px";
+    this.canvas.style.top = this.pxTop;  // "200px";
+
+    this.canvas.style.border = this.border;
+    this.canvas.style.borderColor = this.borderColor;
+    this.canvas.style.borderRadius = this.borderRadius;
+
+    this.canvas.style.transform = this.scale;
+    this.canvas.style.transform += this.skew;
+    this.canvas.style.transform += this.rotateX;
+  }
+  stageAnalyzerHide() {
+    this.canvas.style.display = "none";
+  }
+}
+  window.analyzerCanvas = new StageAnalyzerCanvas( {canvasId: "cTV"} );

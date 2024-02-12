@@ -3,6 +3,7 @@
 const svgList = [  // svg available inline
   "theBigFloe",  // theme bg
   "theSunset",  // theme bg
+  "theSunsetBackground",
   "aCircle",
   "theTux",
   "theCat",
@@ -32,13 +33,15 @@ const spriteList = [
   { "SeaNight": { "grp": "gSeaNight", "cvs": "cSea", "w": "720", "h": "576" } },
   { "SeaDay": { "grp": "gSeaDay", "cvs": "cSea", "w": "720", "h": "576" } },
   { "landScape": { "grp": "gBigFloe", "cvs": "cSeaDecor", "w": "720", "h": "576" } },
-  { "teslaCoils": { "grp": "gTCoils", "cvs": "c_00", "w": "720", "h": "576" } },
+  { "teslaCoils": { "grp": "gTCoils", "cvs": "c_00", "w": "720", "h": "576" } },  //
+  { "sunsetWaterReflect": { "grp": "gSunsetWaterReflect", "cvs": "c_01", "w": "720", "h": "576" } }, // bg image gSunsetWaterReflect gSunsetBackGround
   { "WaveRowOne": { "grp": "gWaveRowOne", "cvs": "c_01", "w": "100", "h": "50" } },  // for left AND right create group for w720,h576
   { "WaveRowTwo": { "grp": "gWaveRowTwo", "cvs": "c_02", "w": "100", "h": "50" } },
   { "WaveRowThree": { "grp": "gWaveRowThree", "cvs": "c_03", "w": "100", "h": "50" } },
   { "Stage": { "grp": "gTuxStage", "cvs": "c_03", "w": "100", "h": "100" } },
   { "p2": { "grp": "gPortableHole", "cvs": "c_03", "w": "100", "h": "100" } },  // swap hide SVG
   { "Ufo": { "grp": "gUfo", "cvs": "c_06", "w": "100", "h": "100" } },
+  { "Tweety": { "grp": "gBlackBird", "cvs": "c_06", "w": "100", "h": "100" } },
   { "fluffyOne": { "grp": "gTuxClOne", "cvs": "c_07", "w": "100", "h": "100" } },
   { "fluffyTwo": { "grp": "gTuxClTwo", "cvs": "c_08", "w": "100", "h": "100" } },
   { "checkered": { "grp": "gB1", "cvs": "c_balloon", "w": "100", "h": "100" } },
@@ -73,9 +76,6 @@ const spriteList = [
   { "recordOn": { "grp": "gRecordOn", "cvs": "c_20", "w": "100", "h": "50" } },
   { "transition": { "grp": "gSceneTransCake", "cvs": "c_21", "w": "100", "h": "100" } }, // last canvas should be reserved for scene change animation
   { "SunsetForeGround": { "grp": "gSunsetFg", "cvs": "c_22", "w": "720", "h": "576" } },  // fg sunset gFoo! gNutsOne! gPalmTrees gSunsetSoil gPalmTreeRight gPalmTreeLeft
-
-  { "SunsetBackGround": { "grp": "gSunsetWaterReflect", "cvs": "c_21", "w": "720", "h": "576" } }, // bg image gSunsetWaterReflect gSunsetBackGround
-  // gMoo
 ]
 
 const paletteArray = [

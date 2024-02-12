@@ -298,7 +298,7 @@ def index_posts_combo():
 @eisenhome_bp.route('/index_posts_percent', methods=['GET'])
 def index_posts_percent():
     """return percent of timer to js"""
-    return jsonify({'result': eis_home.progress_master_percent})
+    return jsonify({'result': eis_home.progress_master_percent, "timer": eis_home.combo_master_timer})
 
 
 @eisenhome_bp.route('/svg_symbol_get', methods=['GET'])
