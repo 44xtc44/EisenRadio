@@ -852,7 +852,10 @@ function unifyGenre(searchString) {
   return outString.trim();
 }
 ;
-module.exports = {unifyGenre: unifyGenre};
+if (typeof module === 'object') {
+  // not using "if" will bother your production code: index.js:855 Uncaught ReferenceError: module is not defined
+    module.exports = {unifyGenre: unifyGenre};  // definitely need this for Jest
+}
 /**
 * Base function to request the current color scheme, dark mode preferred.
 * @return true if dark ``rgb(26, 26, 26)``, hsl(0,0%,10%) ``10% light``
