@@ -77,7 +77,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'EisenRadio'
-copyright = '2022, René Horn'
+copyright = '2023, René Horn'
 author = 'René Horn'
 # release = '2.1'
 
