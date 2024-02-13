@@ -60,12 +60,12 @@ function themeInitSunset() {
   setColor("black");  // night theme
 
   window.blackBird = new BirdSideView({
-    start: 100, end: 700,
-    waitTime: getRandomIntInclusive(150, 400),
-    speed: 10,
+    start: getRandomIntInclusive(-100,200), end: getRandomIntInclusive(600, 900),
+    waitTime: getRandomIntInclusive(400, 800),
+    speed: getRandomIntInclusive(8, 16),
     itemVisible: true,  // clearRect() canvas
     sizer: [0.0, 1, 0.001],
-    updownY: [-30, 30, 0.1],
+    updownY: [-50, 50, 0.1],
     svgInstanceDict: svgTC.imgDict["Tweety"],  // which canvas num to use
     svgGroup: "gBlackBird",  // SVG group to show paths
     skipFlapFrames: 10,
@@ -74,7 +74,7 @@ function themeInitSunset() {
   window.sunsetReflect = new SunsetReflect({
     svgInstanceDict: svgTC.imgDict["sunsetWaterReflect"],  // which canvas num to use
     svgGroup: "gSunsetWaterReflect",  // SVG group to show paths
-    skipFrames: 246,
+    skipFrames: 300,
     maxReflections: 12,
   });
 }
@@ -106,7 +106,7 @@ class SunsetReflect{
   }
   init() {
    this.equipRefList();
-   this.preLoadPathDict();
+   this.loadPathDict();
    this.preLoadCheckOutDict();
   }
   equipRefList() {
@@ -124,7 +124,7 @@ class SunsetReflect{
     }
     return array;
   }
-  preLoadPathDict() {
+  loadPathDict() {
     for(let i = 0; i <= this.pathIdList.length - 1; i++) {
       this.pathDict[this.pathIdList[i]] = 0;
     }
@@ -136,8 +136,8 @@ class SunsetReflect{
   }
   /**
   * checkOutDict keys are SVG path names, value is (frame) counter.
-  * Counter reach max, del key from dict, add new key (path) with counter zero.
-  * Edit SVG path in checkOutDict to opacity 1 (show). Deleted SVG path is set back to opacity 0.
+  * Frame counter reaches max, we del key from dict, add new key (path) with frame counter zero to dict.
+  * Edit new SVG path in checkOutDict to opacity 1 (show). Deleted  "exitCandidates" SVG path is set back to opacity 0.
   * checkOutDict dict is faster and less CPU consuming than reorganizing a list at each frame.
   */
   animate() {
@@ -148,7 +148,7 @@ class SunsetReflect{
       this.checkOutDict[oKeysList[i]] += 1;  // until max skipFrames
 
       if(this.checkOutDict[oKeysList[i]] > this.skipFrames) {
-         exitCandidates.push(oKeysList[i]);  // exitCandidate set its opacity back to zero in edit mode
+         exitCandidates.push(oKeysList[i]);  // exitCandidate sets its opacity back to zero in edit mode
          delete this.checkOutDict[oKeysList[i]];  // del exitCandidate path from dict
       }
     }
