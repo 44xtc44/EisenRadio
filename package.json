@@ -10,11 +10,15 @@
     "test": "jest"
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "displayName": "Jest EisenR",
     "globals": {
       "PROJECT_NAME": "EisenRadio"
     },
-    "bail": 20,
+    "bail": true,
     "verbose": true
+  },
+  "dependencies": {
+    "jest-environment-jsdom": "^29.7.0"
   }
 }

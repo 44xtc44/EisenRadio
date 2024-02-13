@@ -24,18 +24,13 @@
 * @see license MIT
 */
 
-const cl = console.log;
-const requestAnimationFrame =
-  window.requestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.msRequestAnimationFrame;
+/* "JEST"
+* needs to have any tested "function foo(){};" exported like so: "module.exports = {foo: foo};"
+*/
 
-const cancelAnimationFrame =
-  window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+const cl = console.log;
 
 const audio = document.getElementById("audioWithControls");
-audio.volume = 0.75;
 const audioVolumeController = document.getElementById("audioVolumeController");
 const audioGainController = document.getElementById("audioGainController");
 window.audioContext = undefined;
@@ -46,12 +41,11 @@ window.gainNode = undefined;
 
 window.htmlSettingsDictGlobal = {};  // themes decide to run on degradation, Tools/config menu
 window.streamerDictGlobal = {};      // stores all currently active recorder connections, Android shows in notification
-
 window.activeListenId = "noId";    // animation, only call functions if listen is selected
 window.activeRadioName = "Eisen";
 window.downloadDir = "";           // download dir to show
 window.activeTheme = "";
-window.themeDict = {};  // {"Sunset": function() { mainSunsetAnimation(); },} svg-main calls key, activeTheme each frame
+window.themeDict = {};  // themeDict[activeTheme] = (opt) => { mainSunsetAnimation( opt ); }; svg-main calls key, activeTheme each frame
 
 /**
 * Event page loaded sets event listener and loads all SVG images/groups into memory.
@@ -63,8 +57,8 @@ window.addEventListener('load', function () {
     svgImage: "teaserImg"
   } );  // paint "existing" PNG to canvas, now THE audio enabler we MUST have, else browser error, no user interaction
 
-  /* SVG symbol grew too big for index.html, to edit in IDE. Outsource from index HTML to server.
-  * Import. Steps how it works.
+  /* SVG symbol grew too big for index.html, to edit it in the IDE. Outsourced from index HTML to server.
+  * Now import. Steps how it works.
   * (a) Load SVG symbol container from server.
   * (b) Write symbol to div, make it public to the document, DOM. (as if it was inline before, "some" div is ok)
   * (c) Load SVG groups and images from DOM into mem, create instances as image sources. (svg-toCanvas.js)
@@ -76,7 +70,7 @@ window.addEventListener('load', function () {
     initSvgEnv();
   }).then(function(response){
 
-    themeInitSunset();  // Need a default theme. fun registers itself as activeTheme.
+    themeInitSunset();  // Start a default theme. fun registers itself as activeTheme.
     document.body.style.overflowX = "hidden";  // get rid of x scroll bar at bottom
     downloadDirGet();          // download dir to show if record pressed
     window.addEventListener('resize', function (event) {
@@ -545,6 +539,7 @@ function setAudioContextVisual() {
   /* if parallel animation must calculate different fftSize */
   analyserNodeTwo = audioContext.createAnalyser();
   audioSource = audioContext.createMediaElementSource(audio);
+  audio.volume = 0.75;
   audioSource.connect(analyserNodeOne).connect(gainNode).connect(audioContext.destination)
   audioSource.connect(analyserNodeTwo); // get the data copy for analyzer in foreground
   window.infSpeaker = new PowerSwitch({ path: document.querySelectorAll("#gSvgSpeakerFlatWaves path") });// animate speaker dynamic fake waves
@@ -817,22 +812,24 @@ function headerInfo() {
       let response_time = headerDict["request_time"];
       let suffix = headerDict["request_suffix"];
       let genre = headerDict["request_icy_genre"];
-      let station_name = headerDict["request_icy_name"];
-      let station_id = headerDict["request_icy_view"];
-      let bit_rate = headerDict["request_icy_br"];
-      let icy_url = headerDict["request_icy_url"];
+      let stationName = headerDict["request_icy_name"];
+      let stationId = headerDict["request_icy_view"];
+      let bitRate = headerDict["request_icy_br"];
+      let icyUrl = headerDict["request_icy_url"];
       let current_song = headerDict["current_song"];
 
       document.getElementById('request_time').innerText = "" + response_time + " ms";
       document.getElementById('request_suffix').innerText = "" + suffix;
-      document.getElementById('request_icy_br').innerText = "" + bit_rate + " kB/s";
-      document.getElementById('icy_name').innerText = "" + station_name;
-      document.getElementById('request_icy_url').innerText = "" + icy_url;
+      document.getElementById('request_icy_br').innerText = "" + bitRate + " kB/s";
+      let modGenre = unifyGenre(genre);  // white space replace \n 
+      // concat name and genre
+      let headerName = stationName + " / Genre: " + modGenre;
+      document.getElementById('icy_name').innerText = "" + headerName;
       // need a value for url to click
-      document.getElementById('request_icy_url').value = "" + icy_url;
+      document.getElementById('request_icy_url').value = "" + icyUrl;
+      document.getElementById('request_icy_url').innerText = "" + icyUrl;
+      // title
       document.getElementById('titleDisplay').innerText = "" + current_song;
-      // let modGenre = unifyGenre(genre);  // white space replace \n   // where to put genre now?
-      // document.getElementById('request_icy_genre').innerHTML = modGenre.replace(/ /g, "\n");
     }
   });
 }
@@ -843,16 +840,19 @@ function headerInfo() {
 * @return string of maximum three strings
 */
 function unifyGenre(searchString) {
-  let str = searchString.replace(/,/g, ' ').replace(/-/g, ' ');
-  let splitList3 = str.split(' ');
+  // max three words to keep display clean
+  let str = searchString.replace(/,/g, '').replace(/-/g, ' ');
+  let removeDoubleLst = [...new Set(str.split(' '))];  // set can host only one of a kind
+  let splitList3 = removeDoubleLst;
   let outString = '';
   for (let index = 0; index <= splitList3.length - 1; index++) {
     outString += splitList3[index] + ' ';
     if (index > 2) break;
   }
-  return outString;
+  return outString.trim();
 }
 ;
+module.exports = {unifyGenre: unifyGenre};
 /**
 * Base function to request the current color scheme, dark mode preferred.
 * @return true if dark ``rgb(26, 26, 26)``, hsl(0,0%,10%) ``10% light``
