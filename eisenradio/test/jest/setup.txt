@@ -1,0 +1,30 @@
+npm install --save-dev jest
+npm install jest-environment-jsdom
+npm run test
+
+package.json
+{
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "displayName": "Jest EisenR",
+    "globals": {
+      "PROJECT_NAME": "EisenRadio"
+    },
+    "bail": 20,
+    "verbose": true
+  }
+}
+https://kinsta.com/de/blog/jest/
+https://dev.to/dstrekelj/series/13799
+https://dev.to/dstrekelj/how-to-test-classes-with-jest-jif
+https://www.meticulous.ai/blog/mocking-a-javascript-class-with-jest-two-ways-to-make-it-easier
+
+ESlint support - Learned they can only work on one file, no var support of others, useless for a bigger project!
+npm install --save-dev eslint
+npm init @eslint/config
+npx eslint eisenradio/eisenhome/bp_home_static/js/index.js

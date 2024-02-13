@@ -1,5 +1,7 @@
+// [unifyGenre].test.js
+"use strict";
 
-const { unifyGenre } = require('./index.js')
+const { unifyGenre } = require('../../eisenhome/bp_home_static/js/index.js');
 
 describe("Unify the genre string of all radio stations, also if they do mistakes and write too many strings.", () => {
   test("remove comma, hyphen and limit output to 3 strings", () => {

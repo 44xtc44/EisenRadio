@@ -20,7 +20,8 @@ class CountUpDown{
  *   count up and down for alternating direction or color fade in out, step is per frame;
  *   starts a rotation clockwise to keep it simple, for ("counter" clockwise) prefix the return value negative;
  *   let animalZRotationUpDown = new CountUpDown(-7.5, 7.5, 0.0075);
- * only if's used
+ *
+ * JS floating point round gives error. Use parseFloat("123.456").toFixed(2); if needed.
 */
   constructor(minValue,maxValue,step){
     this.minValue = minValue;
@@ -39,7 +40,7 @@ class CountUpDown{
 
     if (this.curValue > this.maxValue) this.direction = 0;
     if (this.curValue < this.minValue) this.direction = 1;
-    return this.curValue;
+    return this.curValue;  // Use if JS floating point round gives error, parseFloat("123.456").toFixed(2);
   }
 }
 ;

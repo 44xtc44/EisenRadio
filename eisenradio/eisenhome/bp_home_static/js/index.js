@@ -25,7 +25,12 @@
 */
 
 /* "JEST"
-* needs to have any tested "function foo(){};" exported like so: "module.exports = {foo: foo};"
+* needs to have any tested "function foo(){};" exported like so: "module.exports = {foo: foo, bar: bar};"
+* if (typeof module === 'object') {
+*   // not using "if" will bother your production code: index.js:855 Uncaught ReferenceError: module is not defined
+*   cl("typeof module-> This msg is not shown in the browser log");
+*   module.exports = {unifyGenre: unifyGenre};  // definitely need this for Jest
+* }
 */
 
 const cl = console.log;
@@ -680,6 +685,7 @@ function downloadDirGet() {
   });
   req.done(function (data) {
     downloadDir = data.downloadDirGet;
+    return downloadDir;
   });
 }
 ;
@@ -816,20 +822,20 @@ function headerInfo() {
       let stationId = headerDict["request_icy_view"];
       let bitRate = headerDict["request_icy_br"];
       let icyUrl = headerDict["request_icy_url"];
-      let current_song = headerDict["current_song"];
+      let currentSong = headerDict["current_song"];
 
       document.getElementById('request_time').innerText = "" + response_time + " ms";
       document.getElementById('request_suffix').innerText = "" + suffix;
       document.getElementById('request_icy_br').innerText = "" + bitRate + " kB/s";
-      let modGenre = unifyGenre(genre);  // white space replace \n 
+      let modGenre = unifyGenre(genre);
       // concat name and genre
-      let headerName = stationName + " / Genre: " + modGenre;
+      let headerName = stationName + " [" + modGenre + "]";
       document.getElementById('icy_name').innerText = "" + headerName;
       // need a value for url to click
       document.getElementById('request_icy_url').value = "" + icyUrl;
       document.getElementById('request_icy_url').innerText = "" + icyUrl;
       // title
-      document.getElementById('titleDisplay').innerText = "" + current_song;
+      document.getElementById('titleDisplay').innerText = "" + currentSong;
     }
   });
 }
@@ -840,22 +846,19 @@ function headerInfo() {
 * @return string of maximum three strings
 */
 function unifyGenre(searchString) {
-  // max three words to keep display clean
-  let str = searchString.replace(/,/g, '').replace(/-/g, ' ');
-  let removeDoubleLst = [...new Set(str.split(' '))];  // set can host only one of a kind
-  let splitList3 = removeDoubleLst;
-  let outString = '';
+  if(searchString === null || searchString === undefined) return "---";
+  let str = searchString.replace(/,/g, "").replace(/-/g, " ");
+  let splitList3 = [...new Set(str.split(' '))];  // set can host only one of a kind
+  let outString = "";
   for (let index = 0; index <= splitList3.length - 1; index++) {
-    outString += splitList3[index] + ' ';
-    if (index > 2) break;
+    outString += splitList3[index] + " ";
+    if (index >= 2) break;
   }
   return outString.trim();
 }
 ;
-if (typeof module === 'object') {
-  // not using "if" will bother your production code: index.js:855 Uncaught ReferenceError: module is not defined
-    module.exports = {unifyGenre: unifyGenre};  // definitely need this for Jest
-}
+if (typeof module === "object") module.exports = {unifyGenre: unifyGenre};  // Jest
+
 /**
 * Base function to request the current color scheme, dark mode preferred.
 * @return true if dark ``rgb(26, 26, 26)``, hsl(0,0%,10%) ``10% light``
