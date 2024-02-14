@@ -1,32 +1,25 @@
 {% extends 'bp_util_base.html' %}
 
 {% block content %}
-<h3>{% block title %} Blacklists {% endblock %}</h3>
+<h3 xmlns="http://www.w3.org/1999/html">{% block title %} Blacklists {% endblock %}</h3>
 <p>Enable blacklists in "Tools".</p>
 <p>A blacklist is a list of title "names". The recorder refuses to write if the title name is found in the list.</p>
 <p>Delete a title name from the list to record a file again.</p>
 <p>Skip count is the number of title writes skipped by the recorder during an app session.</p>
 <hr>
 <div class="blacklist_div">
-    <div>
-        Skip count: {{skip_count}}
-        <hr>
-        {% for radio in radios_dict.values()%}
-        {% if radio in streamer_name_list %}
-        {% set btn_color='btn btn-success btn-sm' %}
-        {% else -%}
-        {% set btn_color='btn btn-warning btn-sm' %}
-        {% endif -%}
-        <span class="radioAllBlacklistsBtnHeader">{{radio}} </span> {{radio_blacklist_count[radio]}}
-        <form action="{{ url_for('eisenutil_bp.tools_radio_blacklist', radio_name=radio) }}">
-            <button type="submit" class="{{btn_color}}">Blacklist</button>
-        </form>
-        <p></p>
+    <div><span class="flex-item">Skip count: {{skip_count}}</span></div>
+    <hr>
+    <div class="divFlex">
+            {% for radio in radios_dict.values()%}
+        <div class="divItemWrap"
+             onclick="javascript:location.href='{{url_for('eisenutil_bp.tools_radio_blacklist', radio_name=radio) }}'">
+            <span>
+                {{radio}} {{radio_blacklist_count[radio]}}
+            </span>
+        </div>
         {% endfor %}
-
     </div>
 </div>
-
-<hr>
 {% endblock %}
 
