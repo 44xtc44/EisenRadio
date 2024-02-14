@@ -767,4 +767,3 @@ def download_dir_get():
         return jsonify({"downloadDirGet": dl_dir})
     except Exception as e:
         print("download_dir_get error", e)
-
