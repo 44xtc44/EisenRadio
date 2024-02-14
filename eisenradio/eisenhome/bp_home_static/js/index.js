@@ -685,8 +685,19 @@ function downloadDirGet() {
   });
   req.done(function (data) {
     downloadDir = data.downloadDirGet;
+    showDownloadDir();
     return downloadDir;
   });
+}
+;
+function showDownloadDir() {
+  let idx = getRandomIntInclusive(0, hintList.length - 1)
+  document.getElementById("icy_name").innerText = hintList[idx];
+  document.getElementById("titleDisplay").innerText = "files: " + downloadDir;
+  setTimeout(function () {
+    document.getElementById("icy_name").innerText = "";
+    document.getElementById("titleDisplay").innerText = "";
+  }, 10000);
 }
 ;
 /**
