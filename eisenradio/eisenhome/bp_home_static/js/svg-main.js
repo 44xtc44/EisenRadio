@@ -107,3 +107,9 @@ function testSVGtoCanvas() {
   }
 }
 ;
+function clearListedCanvas(imgList) {
+  for(let i = 0; i <= imgList.length - 1; i++) {
+    imgList[i].ctx.clearRect(0, 0, imgList[i].canvas.width, imgList[i].canvas.height);
+  }
+}
+;

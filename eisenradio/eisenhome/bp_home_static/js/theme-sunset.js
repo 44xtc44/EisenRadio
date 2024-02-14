@@ -20,15 +20,7 @@ function mainSunsetAnimation(opt) {
   animateAnalyzer();  // TV
   buoyMenu.update(darkBody);
   blackBird.animate();
-  sunsetReflect.animate();
   // Constrains
-  if(cpuMax) {
-    paraDropper.update();
-    if(confSpeak) {
-      // animateSpeaker( svgTC.imgDict["speakerOne"] );
-      animateSpeaker( svgTC.imgDict["speakerTwo"] );
-    }
-  }
   if(confFront) {
     animateStage({
       svgImg: "lifebuoy",
@@ -47,7 +39,26 @@ function mainSunsetAnimation(opt) {
       canY: 330,
       translateY: 60,
     });
+  }else {
+    let imgList = [svgTC.imgDict["lifebuoy"]]
+    clearListedCanvas(imgList);
   }
+  if(cpuMax) {
+    sunsetReflect.animate();
+    paraDropper.update();
+    if(confSpeak) {
+      // animateSpeaker( svgTC.imgDict["speakerOne"] );
+      animateSpeaker( svgTC.imgDict["speakerTwo"] );
+    }
+  }else {
+    let imgList = [
+      svgTC.imgDict["speakerOne"],
+      svgTC.imgDict["speakerTwo"],
+      svgTC.imgDict["lifebuoy"],
+    ]
+    clearListedCanvas(imgList);
+  }
+
 }
 ;
 /**
