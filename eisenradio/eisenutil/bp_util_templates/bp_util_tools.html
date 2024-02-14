@@ -96,7 +96,7 @@
 
                 <div class="divBookMarkRight">
                     <div class="infoText">
-                        <p class="pBookMark">Enhancement for the record button.</p>
+                        <p class="pBookMark">Enhancement for the recorder.</p>
                         <p class="pBookMark">&#{{blacklist_check_box_info}}; delete unwanted titles once<br>
                                              &#{{blacklist_check_box_info}}; show rate of occurrence<br>
                         </p>
@@ -104,16 +104,6 @@
                 </div>
             </div>
         </div>
-
-        <form action="{{ url_for('eisenutil_bp.tools_radio_blacklist_set') }}">
-            <div class="form-group">
-                <input class="{{btn_color}}"
-                       type="submit"
-                       id="blackListSetButton"
-                       value="{{button_label}}"
-                       style="display:none;">
-            </div>
-        </form>
 
         <div class="divBookMarkBar">
             <div class="divBookMarkLeft270deg">
@@ -125,35 +115,13 @@
                     {% endif -%}
                     <div class="btn-{{btn_color}}"
                          id="caller_divConfirmDialog_BlackListEnable"
-                         onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'block');">{{button_label}}
+                         onclick="blackListEnable();">{{button_label}}
                     </div>
-
+                    <div id="confirmBlackListEnable"></div>
                     <span class="spanBookMark">{{button_message}}</span>
                 </div>
             </div>
         </div>
-
-         <div class="divConfirmDialogAliasButton">
-             <div class="divConfirmDialog" id="divConfirmDialogBlackListSet">
-                 <h3 class="toolsSubHeadlines" >Confirm Switch</h3>
-                 <div class="divCenterConfirmationItems">
-                     <div class="btn-green"
-                         id="caller_blackListSetButton_Switch"
-                         onclick="autoClickButton('caller_blackListSetButton_.');callLoaderAnimation();">OK
-                     </div>
-                     <div class="btn-red"
-                         id="confirmDialogBlackListSet"
-                         onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'none');">Cancel
-                     </div>
-                 </div>
-             </div>
-
-             <button class="{{btn_color}}"
-                     id="caller_blackListSetButton_."
-                     onclick="divConfirmDialog('divConfirmDialogBlackListSet', 'block');"
-                     style="display:none;">{{button_label}}
-             </button>
-         </div>
 
          <form action="{{ url_for('eisenutil_bp.tools_blacklist_overview') }}">
              <button type="submit"
@@ -554,48 +522,29 @@
                     <div class="divBookMarkActionButtons">
                         <div class="btn-light-blue"
                             id="caller_delAllRadiosButton_."
-                            onclick="divConfirmDialog('divConfirmDialogDeleteAll', 'block');">Delete
+                            onclick="delRadios();">Delete Radios
                         </div>
-                    </div>
-                </div>
-                <div class="divBookMarkBar">
-                    <div class="divExtendedToolsInfoWrapper">
+                        <div id="confirmDelRadios"></div>
                         <div class="divExtendedToolsInfo">
-                            <p>Delete all Radios. (confirmation dialog)</p>
-                            <p style="color:red;">Then restart the app.</p>
-                            <svg width="400px" height="400px"><use href=#gParachuteOne transform="scale(3,3)"></use></svg>
+                            <p>Delete all Radios. (confirmation) <span style="color:red;">Then restart the app.</span></p>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <form id="del_all_radios_form" action="{{ url_for('eisenutil_bp.tools_delete_all') }}" method="post">
-                    <input class="btn btn-primary btn-sm"
-                           type="submit"
-                           id="delAllRadiosButton"
-                           value="Delete"
-                           name="post_delete_all_radios" style="display:none;">
-                    <label for="delAllRadiosButton">
-                    </label>
-            </form>
-
-            <div>
-                <div class="divConfirmDialog" id="divConfirmDialogDeleteAll">
-                    <h3 class="toolsSubHeadlines" >Confirm Deletion</h3>
-
-                    <div class="divCenterConfirmationItems">
-                        <div class="btn-green"
-                            id="caller_delAllRadiosButton_Delete"
-                            onclick="autoClickButton('caller_delAllRadiosButton_.');callLoaderAnimation();">OK
+                        <div class="btn-light-blue"
+                            id="caller_delDatabase_."
+                            onclick="delDB();">Delete Database
                         </div>
-                        <div class="btn-red"
-                            id="confirmDialogDelAllCancel"
-                            onclick="divConfirmDialog('divConfirmDialogDeleteAll', 'none');">Cancel
+                        <div id="confirmDelDatabase"></div>
+                        <div class="divExtendedToolsInfo">
+                            <p>Delete the Database. (confirmation)
+                                <span style="color:red;">Restart the app to get a new Database or install a new app version.</span>
+                            </p>
                         </div>
+
                     </div>
                 </div>
 
             </div>
+
             <hr>
             <div class="push-up"
                  id="scroll_bottom">
@@ -604,5 +553,9 @@
 </section>
 
 <hr>
+<div id="divConfirmDialog">
+    <p id="pConfirmDialogText"></p>
+    <div id="btnConfirm"></div>
+</div>
 
 {% endblock %}

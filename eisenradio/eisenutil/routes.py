@@ -166,11 +166,8 @@ def tools_radio_blacklist_set():
     is_enabled = mon_rec.status_db_blacklist_get()
     enabled = mon_rec.feature_blacklist_switch_status(is_enabled)
     mon_rec.delete_all_blacklists(enabled)
-    if enabled:
-        flash('Monitoring of records enabled. Please restart the app!', 'success')
-    else:
-        flash('Monitoring of records disabled', 'warning')
-    return redirect(url_for('eisenhome_bp.index'))
+    rv = {"enabled": True} if enabled else {"enabled": False}
+    return rv
 
 
 @eisenutil_bp.route('/<string:radio_name>/tools_blacklist_skipped', methods=['GET'])
@@ -338,19 +335,32 @@ def blacklist_enabled_get():
     return jsonify({'blacklistEnableGet': blacklist_is_enabled[0]})
 
 
-@eisenutil_bp.route('/tools_delete_all', methods=['POST'])
+@eisenutil_bp.route('/tools_delete_all', methods=['GET'])
 def tools_delete_all():
     """delete all radios from db, return flash if ok or not
 
     used to restore from ini file with preferred radios and urls afterward
     """
     rv = util_tools.delete_all_radios()
-    if rv:
-        flash('Successfully deleted! Restart App', 'success')
-        return render_template('bp_util_flash.html')
-    else:
-        flash('Some were not deleted! Restart App', 'warning')
-        return render_template('bp_util_flash.html')
+    is_deleted = {"removed": True} if rv else {"removed": False}
+    return is_deleted
+
+
+@eisenutil_bp.route('/tools_database_delete', methods=['GET'])
+def tools_database_delete():
+    """return *ok*
+    """
+    is_deleted = {"removed": True}
+    try:
+        os.remove(api.config['DATABASE'])
+        print("% s removed successfully" % api.config['DATABASE'])
+    except OSError as error:
+        print(error)
+        print("% s error file not found." % api.config['DATABASE'])
+        is_deleted = {"removed": False}
+
+    print("foo")
+    return is_deleted
 
 
 @eisenutil_bp.route('/tools_export_ini', methods=['POST'])
@@ -757,3 +767,4 @@ def download_dir_get():
         return jsonify({"downloadDirGet": dl_dir})
     except Exception as e:
         print("download_dir_get error", e)
+

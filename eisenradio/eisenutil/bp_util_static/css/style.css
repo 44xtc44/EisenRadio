@@ -256,14 +256,6 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
         margin: .0em 0.2em .0em 0.2em;
         color: IndianRed;
     }
-
-    .blacklist_div {
-        left:0;
-        right:0;
-        text-align: left;font-family: Roboto, arial, sans-serif;
-    }
-
-
     label {
         font-family: Roboto, arial, sans-serif;
     }
@@ -845,4 +837,50 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
 }
 .toggleIcon {
   cursor:pointer;
+}
+
+.divFlex {
+  /* We first create a flex layout context */
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-item {
+
+}
+.divItemWrap {
+  background: tomato;
+  padding: 6px;
+  margin: 6px;
+  width:20%;
+  color: lightYellow;
+  font-family: Roboto, Helvetica, Arial;
+  font-weight: bold;
+  text-align: center;
+  cursor:pointer;
+  border: 1px solid #aaa;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+}
+#divConfirmDialog{
+  display:none;
+}
+#pConfirmDialogText{
+  font-family: Roboto, Helvetica, Arial;
+  font-weight: bold;
+  text-align: center;
+}
+.btnConfirm{
+  margin:20px;
+  color: lightYellow;
+  font-family: Roboto, Helvetica, Arial;
+  font-weight: bold;
+  text-align: center;
+  cursor:pointer;
+  border: 1px solid #aaa;
+  box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+}
+#btnOK{
+  background-color:green;
+}
+#btnCancel{
+  background-color:red;
 }
