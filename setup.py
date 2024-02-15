@@ -20,8 +20,6 @@ setuptools.setup(
             'ghettorecorder==2.4.7',
             'flask>=2.3.2',
             'Werkzeug>=2.2.3',
-            'certifi',
-            'configparser>=5.0.2',
             'pytest>=6.2.5',
             'python-dotenv>=0.19.2',
             'waitress',
