@@ -700,6 +700,13 @@ def header_info():
     return jsonify({"header_result": rv})
 
 
+@eisenutil_bp.route('/recorder_info_get', methods=['POST'])
+def recorder_info_get():
+    """ Return a list with active recorder header data dictionaries. """
+    r_lst = [request_info.header_data_read(radio) for radio in request.form.getlist('name_list[]')]
+    return jsonify({"info_result": r_lst})
+
+
 @eisenutil_bp.route('/delete_info', methods=['GET'])
 def delete_info():
     """call inactive_id_read(), return a json list of all inactive radio ids to clean html page

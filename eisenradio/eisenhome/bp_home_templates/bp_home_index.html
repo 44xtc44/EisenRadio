@@ -129,7 +129,7 @@
                 </svg>
             </div>
             <span id="recorderIsOn">
-                <img id="recordImage" src="" alt="recorder online">
+                <img id="recordImage" src="" alt="recorder online" onclick="toggleRecordDetails();">
             </span>
 
         </div>
@@ -286,10 +286,19 @@
                 <p class="pElemX">
                     <span id="spanRecordView" class="spanX" onclick="toggleRecordView();">&#10006;</span>
                 </p>
+                <p class="pDivDescription">Click to stop recorder.</p>
                 <div id="divRecordView" class="divRecorderList fontSize125"></div>
             </div>
+
         </div>
 
+        <div id="wrapRecordDetails">
+            <p class="pElemX">
+                <span id="spanRecordDetails" class="spanX" onclick="toggleRecordDetails();">&#10006;</span>
+            </p>
+            <p class="pDivDescription">Recorder switch off in popup menu.</p>
+            <div id="divRecordDetails" class="divRecorderList fontSize125" onclick="toggleRecordDetails();"></div>
+        </div>
         <div id="divAnimationContainer">
             <div>
                 <div id="divA1AirCraft">

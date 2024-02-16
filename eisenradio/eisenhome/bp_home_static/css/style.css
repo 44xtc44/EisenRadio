@@ -251,6 +251,7 @@ body {
   z-index: 2;
   bottom: 30px;
   left: 355px;
+  cursor:pointer;
 }
 #recordImage {
   width:75px;
@@ -369,6 +370,25 @@ body {
 #spanRecordView {
   background-color:ivory;
 }
+#spanRecordDetails {
+  background-color:ivory;
+}
+.pDivDescription {
+  padding-left:1em;
+}
+#wrapRecordDetails {
+  display:none;
+  position:absolute;
+  top:60px;
+  left:0.5em;
+  width:80%;
+  border-radius:.5em;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow:30px 30px 35px rgba(0,0,0,0.25);
+  color: black;
+  background-color:ivory;
+  min-width:1em;
+}
 #divMeasurementsUpper {
   display: block;
   position: absolute;
@@ -418,6 +438,15 @@ body {
 .divRecorderList {
   margin:0.5em;
   font-size:110%;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  border-radius:.5em;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow:30px 30px 35px rgba(0,0,0,0.25);
+  background-color:ivory;
+}
+.divRecorderDetails {
+  margin:0.5em;
+  font-size:90%;
   font-family: Roboto, Helvetica, Arial, sans-serif;
   border-radius:.5em;
   border: 2px solid rgba(255,255,255,0.1);

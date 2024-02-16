@@ -219,6 +219,51 @@ function disableRecorder(opt) {
   });
 }
 ;
+function recorderInfoGet() {
+  let req = $.ajax({
+    type: 'POST',
+    url: "/recorder_info_get",
+    cache: false,
+    data: { "name_list": glob.activeRecorderList }  // Flask needs array sign: request.form.getlist('name_list[]')
+  });
+  req.done(function (data) {
+    if (data.info_result) {
+      recorderNewInfo(data.info_result);
+    }
+  });
+}
+;
+function recorderNewInfo(flaskList) {
+  // INFO draw a div list stack of active recorder header info
+  let parent = document.getElementById("divRecordDetails");
+  let innerHTML = "";
+  let id = "";
+  let elemClass = "";
+  removeDiv({ id: parent });  // clean up existing HTML display, all child div
+  // div for every recorder header dictionary
+  for (let i = 0; i < flaskList.length; ++i) {
+    let oKeysList = Object.keys(flaskList[i]);  // {"current_song": "hefxthoth - jazzman chills the thrill", ...  }
+    let name = i;
+    id = "div--" + name + "-flaskList";  // DOM unique id for div
+    elemClass = "divRecorderDetails";
+    let headerDict = flaskList[i];
+    let responseTime = headerDict["request_time"];
+    let suffix = headerDict["request_suffix"];
+    let stationName = headerDict["request_icy_name"];
+    let bitRate = headerDict["request_icy_br"];
+    let currentSong = headerDict["current_song"];
+    let infoCard = stationName
+      + "<ul>"
+      + "<li>" + currentSong + "</li>"
+      + "<li>" + bitRate + " kB/s" + "</li>"
+      + "<li>" + suffix + "</li>"
+      + "<li>" + responseTime + " ms" + "</li>"
+      + "</ul>"
+    innerHTML = infoCard;
+    appendDiv({ parent: parent, id: id, elemClass: elemClass, innerHTML: innerHTML });
+  }
+}
+;
 /**
 * Collect active recorder threads from Flask endpoint.
 * Build div elem stack of active recorder names with listener to click and disable rec.
@@ -263,7 +308,7 @@ function recorderInfoImg(oKeysList) {
 }
 ;
 function recorderNewView(recorderList) {
-  // draw a div list stack of active recorder names
+  // DELETE Event listener per recorder; draw a div list stack of active recorder names
   let parent = document.getElementById("divRecordView");
   let innerHTML = "";
   let id = "";
@@ -347,6 +392,26 @@ function removeDiv(opt) {
   while (opt.id.firstChild) {
     opt.id.removeChild(opt.id.lastChild);
   }
+}
+;
+/**
+* Show or hide the active recorder details window.
+*/
+function toggleRecordDetails() {
+  let console = document.getElementById("wrapRecordDetails");
+  let isShown = "";
+
+  if (glob.recordDetailsShow === 1) {
+    isShown = "inline-block";
+    glob.recordDetailsShow = 0;  // global
+    recorderInfoGet();  // ajax
+  } else {
+    isShown = "none";
+    glob.recordDetailsShow = 1;
+  }
+  setTimeout(function () {
+    console.style.display = isShown;
+  }, 50);
 }
 ;
 /**
@@ -460,6 +525,7 @@ class Glob {
     this.audioControlShow = 1;
     this.consoleShow = 1;
     this.recordViewShow = 1;
+    this.recordDetailsShow = 1;
     this.activeRecorderList = [];
   }
   numberRange(start, end) {  // simulate range() of Python

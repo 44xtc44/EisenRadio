@@ -227,4 +227,6 @@ const hintList = [
   "Extended error messages can be seen in the terminal window.",
   "The terminal app can be closed graceful \nby using Control-C, (us Ctrl+C), (ger Strg+C)",
   "Audio icon has a 'Gain' slider. \nWorks with bluetooth. May distort.",
+  "Playing sound file types depends on the browser type and version.",
+  "Active Recorder label (at bottom) shows current details.",
 ]
