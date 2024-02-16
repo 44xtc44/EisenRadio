@@ -52,7 +52,7 @@ to show difference in blueprint routes, a background image and a 'blue' favicon 
         background: var(--background-color);
         padding: 0em;
         margin: 10px;
-        font-family: roboto, arial, sans-serif;
+        font-family: Roboto, Helvetica, Arial;
     }
 
     .wrapper {

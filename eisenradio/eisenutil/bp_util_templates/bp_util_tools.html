@@ -117,8 +117,8 @@
                          id="caller_divConfirmDialog_BlackListEnable"
                          onclick="blackListEnable();">{{button_label}}
                     </div>
-                    <div id="confirmBlackListEnable"></div>
                     <span class="spanBookMark">{{button_message}}</span>
+                    <div id="confirmBlackListEnable"></div>
                 </div>
             </div>
         </div>
@@ -245,10 +245,8 @@
                         </div>
                         <div class="divBookMarkRight">
                             <div class="infoText">
-
-                                <p class="pBookMark">Backup Radio Names and URLs</p>
-                                <p class="pBookMark">Export BlackLists, merge with other devices</p>
-
+                                <p class="pBookMark">&#8226; Backup Radio Names and URLs
+                                    <br>&#8226; Export BlackLists, merge with other devices</p>
                             </div>
                         </div>
                     </div>
@@ -339,8 +337,9 @@
                         </div>
                         <div class="divBookMarkRight">
                             <div class="infoText">
-                                <p class="pBookMark">Import (restore or append) Radio Names and URLs.</p>
-                                <p class="pBookMark">Restore, merge Lists with titles to ignore.</p>
+                                <p class="pBookMark">&#8226; Import (restore or append) Radio Names and URLs.
+                                    <br>&#8226; Restore, merge Lists with titles to ignore.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -511,7 +510,9 @@
                     </div>
                     <div class="divBookMarkRight">
                         <div class="infoText">
-                            <p class="pBookMark">Deletes all of the radios from the database.</p>
+                            <p class="pBookMark">&#8226; Get a new app version radio database
+                                <br>&#8226; Delete Radios
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -526,7 +527,9 @@
                         </div>
                         <div id="confirmDelRadios"></div>
                         <div class="divExtendedToolsInfo">
-                            <p>Delete all Radios. (confirmation) <span style="color:red;">Then restart the app.</span></p>
+                            <p>Delete all Radios. (confirm) <span style="color:red;">Restart the app.</span>
+                                <br>Restore from exported radio settings file.
+                            </p>
                         </div>
 
                         <div class="btn-light-blue"
@@ -535,11 +538,18 @@
                         </div>
                         <div id="confirmDelDatabase"></div>
                         <div class="divExtendedToolsInfo">
-                            <p>Delete the Database. (confirmation)
-                                <span style="color:red;">Restart the app to get a new Database or install a new app version.</span>
-                            </p>
+                            <p>Delete the Database. (confirm) The database will be rewritten on app start.</p>
+                            <details>
+                                <dl>
+                                    <dt>Delete DB</dt>
+                                    <dd>
+                                        Get the (old) default Database (DB), or get the
+                                        <br>fresh DB of a new installed app version.
+                                        <br>A new app version has always working radio URLs.
+                                    </dd>
+                                </dl>
+                            </details>
                         </div>
-
                     </div>
                 </div>
 
