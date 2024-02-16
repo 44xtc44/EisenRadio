@@ -1,6 +1,6 @@
 ---
 name: eisenradio
-version: '2.2.3'
+version: '2.4.1'
 summary: Radio collection
 description: |
   Web radio expandable collection with advanced features.
@@ -11,26 +11,18 @@ description: |
 
 grade: stable          # devel stable
 confinement: strict    # 'classic', 'devmode', 'strict'
-base: core18
+base: core20           # Use Ubuntu20 as workstation VM OS to package easy-peasy!
+# lxd is not working on Ub22 out of the box. https://www.cyberciti.biz/faq/install-lxd-on-ubuntu-22-04-lts-using-apt-snap/
 compression: lzo
 
 apps:
   eisenradio:
-    command: usr/bin/python3 -m eisenradio.wsgi
-    plugs:
-      - home
-      - network
-      - network-status
-      - network-bind
-      - desktop
-      - desktop-legacy
-      - wayland
-      - unity7
+    command: bin/eisenradio  # core20 wants bin/, 'eisenradio' is binary from [project.scripts] in pyproject.toml
+    plugs: [home, network, network-bind, removable-media, desktop, desktop-legacy, wayland, unity7]
 
 parts:
   eisenradio:
     plugin: python
-    python-version: python3
-    source: .
+    source: https://github.com/44xtc44/EisenRadio.git
     python-packages:
-    - eisenradio==2.2.3
+    - git+https://github.com/44xtc44/EisenRadio.git
