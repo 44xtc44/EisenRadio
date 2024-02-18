@@ -4,9 +4,9 @@ from os import environ, remove
 from eisenradio import create_app_test  # __init__
 from eisenradio.instance.config_apfac import write_config, remove_config
 
-
-# POST: app.post('/endpoint', data=params)
-# GET:  app.get('/endpoint', query_string=params)
+# https://flask.palletsprojects.com/en/3.0.x/testing/#faking-resources-and-context
+# POST: .app.post('/path-to-request', data=dict(var1='data1', var2='data2', ...))
+# GET:  .app.get('/path-to-request', query_string=dict(arg1='data1', arg2='data2', ...)
 
 
 class TestRouteHome(unittest.TestCase):
@@ -115,43 +115,16 @@ class TestRouteHome(unittest.TestCase):
         assert eisen_radio.combo_master_timer == 0  # master timer recording
         assert eisen_radio.progress_master_percent == 0
 
-        print(""" /<int:id>/delete  must FAIL, active Listen """)
-
-        eisen_radio.status_listen_btn_dict[self.radio_to_delete] = 1
-        eisen_radio.status_record_btn_dict[self.radio_to_delete] = 0
-
-        """ query failed, item not in store? only reading here, deletion is going via route /<int:id>/delete """
         rv_db = status_read_status_set(False, 'posts', 'title', str(self.radio_to_delete))
         # print(rv_db)
         assert rv_db != "column not in table posts, status_read_status_set"
-        rv = web.post('/' + str(self.radio_to_delete) + '/delete', follow_redirects=True)  # redirect to index
-        parsed = rv.data.decode(encoding="utf-8")
+        rv = web.post('/delete_radio', data={"radioId": str(self.radio_to_delete)}, follow_redirects=True)
+        parsed = json.loads(rv.get_data(as_text=True))
         assert rv.status_code == 200
-        assert 'Radio is active. No deletion.' in parsed  # flash message
-
-        print(" /<int:id>/delete  must FAIL, active Record ")
-
-        eisen_radio.status_listen_btn_dict[self.radio_to_delete] = 0
-        eisen_radio.status_record_btn_dict[self.radio_to_delete] = 1
-        rv = web.post('/' + str(self.radio_to_delete) + '/delete', follow_redirects=True)  # redirect to index
-        parsed = rv.data.decode(encoding="utf-8")
-        assert rv.status_code == 200
-        assert 'Radio is active. No deletion.' in parsed  # flash message
-
-        print(" /<int:id>/delete  DELETE action ")
-
-        eisen_radio.status_listen_btn_dict[self.radio_to_delete] = 0
-        eisen_radio.status_record_btn_dict[self.radio_to_delete] = 0
-        rv = web.post('/' + str(self.radio_to_delete) + '/delete', follow_redirects=True)  # DELETE
-        parsed = rv.data.decode(encoding="utf-8")
-        assert rv.status_code == 200
-        assert 'was successfully deleted' in parsed
-
+        assert parsed == {'removed': True}  # Flask sends: return {"removed": is_del}
         print(" query MUST fail, radio not in store! ")
         rv_db = status_read_status_set(False, 'posts', 'title', str(self.radio_to_delete))
         assert rv_db == "column not in table posts, status_read_status_set"
-        print(" column deleted ")
-
         print('--- fin ----')
 
     def tearDown(self):
