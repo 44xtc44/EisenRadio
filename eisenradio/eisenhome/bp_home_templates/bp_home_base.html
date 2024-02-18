@@ -31,6 +31,10 @@
         <li class="toggleIcon" onclick="javascript:location.href='{{url_for('eisenutil_bp.create')}}'">New
         {% endblock %}</li>
 
+        {% block edit_radio %}
+        <li class="toggleIcon" onclick="javascript:location.href='{{url_for('eisenutil_bp.edit_all')}}'">Edit
+        {% endblock %}</li>
+
         {% block save_radio %}
         <li class="toggleIcon" onclick="javascript:location.href='{{url_for('eisenutil_bp.save')}}'">Save
         {% endblock %}</li>
