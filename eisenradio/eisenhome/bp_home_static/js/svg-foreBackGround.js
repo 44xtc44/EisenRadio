@@ -48,8 +48,8 @@ class ForeBackGround {
     svgTC.imgDict["Buoy"].canY = 450;
     svgTC.svgToCanvas( {dict: svgTC.imgDict["lifebuoy"] } );
 
-    analyzerCanvas.pxLeft = "350px";
-    analyzerCanvas.pxTop = "320px";
+    analyzerCanvas.pxLeft = "340px";  // "350px";
+    analyzerCanvas.pxTop = "320px";  // "320px";
     analyzerCanvas.stageAnalyzerShow();
 
   }
@@ -63,6 +63,7 @@ class ForeBackGround {
     this.clearAll();
     svgTC.svgToCanvas( {dict: svgTC.imgDict["landScape"] } );
     svgTC.svgToCanvas( {dict: svgTC.imgDict["teslaCoils"] } );
+
     analyzerCanvas.pxLeft = "360px";
     analyzerCanvas.pxTop = "200px";
     analyzerCanvas.stageAnalyzerShow();
@@ -89,6 +90,7 @@ class ForeBackGround {
     this.clearAll();
     svgTC.svgToCanvas( {dict: svgTC.imgDict["landScape"] } );
     svgTC.svgToCanvas( {dict: svgTC.imgDict["teslaCoils"] } );
+
     analyzerCanvas.pxLeft = "360px";
     analyzerCanvas.pxTop = "200px";
     analyzerCanvas.stageAnalyzerShow();

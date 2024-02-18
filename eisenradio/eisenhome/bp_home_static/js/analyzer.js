@@ -429,10 +429,10 @@ class StageAnalyzerCanvas{
     this.canvas = document.getElementById(opt.canvasId);  // "cTV"
     this.ctx = this.canvas.getContext('2d');
     // default canvas decoration and transform
-    this.border = '10px solid';
+    this.border = '8px solid';
     this.borderColor = 'rgb(175, 238, 238)'
     this.borderRadius = '1em';
-    this.scale = "scale(0.8, 0.8)";
+    this.scale = "scale(1.0, 1.0)";
     this.skew = "skew(0deg, 10deg)";
     this.rotateX = "rotateX(0deg)";
   }

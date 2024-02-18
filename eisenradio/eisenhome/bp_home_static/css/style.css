@@ -388,6 +388,7 @@ body {
   color: black;
   background-color:ivory;
   min-width:1em;
+  z-index:30000;
 }
 #divMeasurementsUpper {
   display: block;

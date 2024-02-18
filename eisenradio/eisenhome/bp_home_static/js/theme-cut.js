@@ -35,6 +35,12 @@ function mainCutAnimation(opt) {
       // animateSpeaker( svgTC.imgDict["speakerOne"] );
       animateSpeaker( svgTC.imgDict["speakerTwo"] );
     }
+  }else {
+    let imgList = [
+      svgTC.imgDict["speakerOne"],
+      svgTC.imgDict["speakerTwo"],
+    ]
+    clearListedCanvas(imgList);
   }
 }
 ;

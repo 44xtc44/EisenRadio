@@ -763,7 +763,7 @@ function showDownloadDir() {
   setTimeout(function () {
     document.getElementById("icy_name").innerText = "";
     document.getElementById("titleDisplay").innerText = "";
-  }, 10000);
+  }, 15000);
 }
 ;
 /**

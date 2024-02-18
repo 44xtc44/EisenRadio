@@ -4,12 +4,11 @@
 /*
 * Simulate movement of flying animals.
 * PNG uses sprites, we use SVG stacked paths and change opacity bit here.
-* Constraint is the need of one canvas for each instance. Instance name and canvas id in constants.js.
+* Constraint is the need of one canvas for each bird instance. Instance name and canvas id in constants.js.
 */
 
 /**
 * Move x axis.
-* Most methods stolen from Ufo plus integration of the animation fun.
 * Class is dependent on other class instances like CountUpDown and SvgToCanvas.
 * This should be the class where we can easily create multiple instances for a swarm.
 * We need the SVG img instance name and the group name.
@@ -47,9 +46,13 @@ class BirdSideView {
     this.itemVisible = options.itemVisible;
     this.itemSize = 0.1 * getRandomIntInclusive(4, 10);  // 0.5 - 1
     this.enableUpdown = getRandomIntInclusive(0, 1);  // item changes direction only sometimes
+    this.colorList = ["#e6e6e6", "#000000", "#ab201a", "#8a2b0c"];
+    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
+
     // SVG img instance dict and group of paths
     this.svgIDct = options.svgInstanceDict;  // svgTC.imgDict["Tweety"]
     this.svgGrp = options.svgGroup;  // "gBlackBird" got path_01_, path_02_, ...
+
     // external instances
       // CountUpDown class, new CountUpDown(0.0, 1, 0.001); min, max, step
     this.sizer = new CountUpDown(
@@ -58,15 +61,22 @@ class BirdSideView {
     this.updownY = new CountUpDown(
       options.updownY[0], options.updownY[1], options.updownY[2]
     );  // small correction during flight for imperfection
+
     // flapping
     this.flapIdx = 0;
     this.flapList = [];
     this.skipFrames = options.skipFlapFrames;  // set 6 to skip 6 frames
     this.skipped = 0;  // counter to reset on this.skipFrames
+
+    this.init();
+  }
+  init() {
     this.equipFlapList();
+    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
+    this.colorize();
   }
   reset() {
-
+    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
     this.enableUpdown = getRandomIntInclusive(0, 1);
     this.itemSize = 0.1 * getRandomIntInclusive(5, 7);
     this.y = getRandomIntInclusive(75, 150);
@@ -154,28 +164,38 @@ class BirdSideView {
       this.flapWings();
     }
   }
+  colorize() {
+    // At begin and at reset. Keep color for the full cycle. Just edit.
+    let dct = {};
+    for(let i = 0; i <= this.flapList.length - 1; i++) {
+      dct[[this.flapList[i]]] = {"fill-opacity": "1", "fill": this.color};  // hidden and color
+    }
+    svgTC.svgEditPath( dct, this.svgIDct );
+  }
   /**
   * Show/hide stacked paths to simulate flapping.
-  * Stolen from doppelDecker "scarf" and integrated as method.
+  * Taken from doppelDecker "scarf" and integrated as method.
   */
   flapWings() {
     /* List of paths red from the SVG group and sort ascending into the list.
-    * Option? (A) timeout can be set for a custom path to simulate gliding or headwind.
+    * todo Option
+    * (A) timeout can be set for a custom path index to simulate gliding or
+    * (B) headwind rotateX and z
     */
     this.flapIdx += 1;
     if (this.flapIdx > this.flapList.length - 1) { this.flapIdx = 0; }
     let dct = {}
     // create dict for path editing with regex  { []: {}, []: {} } variable index notation [], else no key from list member
     for(let i = 0; i <= this.flapList.length - 1; i++) {
-      dct[[this.flapList[i]]] = {"fill-opacity": "0", "fill": "#000000"};   // "#CC1100"
+      dct[[this.flapList[i]]] = {"fill-opacity": "0"};   // {"fill-opacity": "0", "fill": this.color}
     }
-    // overwrite current idx key to enable opacity for one in the list
-    dct[[this.flapList[this.flapIdx]]] = {"fill-opacity": "1", "fill": "#000000"};  // "#FF0000"
+    // overwrite current idx key to enable opacity for next in the list
+    dct[[this.flapList[this.flapIdx]]] = {"fill-opacity": "1"};
     svgTC.svgEditPath( dct, this.svgIDct );  // second arg ultraImg "SvgToCanvas" image dict
     svgTC.svgToCanvas( { dict: this.svgIDct } );
   }
   equipFlapList() {
-    let lst = document.querySelectorAll("#" +  this.svgGrp + " path");
+    let lst = document.querySelectorAll("#" + this.svgGrp + " path");
     let idLst = [];
     for(let i = 0; i <= lst.length - 1; i++) {
       idLst.push(lst[i].id);
