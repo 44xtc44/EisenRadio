@@ -50,7 +50,7 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('PARTY-VIBE-RADIO',
+        ('PARTY-VIBE',
          'http://94.130.242.5:8010/stream',
          save_parent_folder,
          'https://www.partyvibe.com/ \n'
@@ -65,6 +65,18 @@ def make_db_from_schema(db_path):
          'pop, psychedelic trance, rap, reggae, rock and techno music.\n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-black_120x200.png"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('anima_goa',
+         'https://amoris.sknt.ru/goa',
+         save_parent_folder,
+         'Multiple channels \n\n'
+         'High quality aac streams. \n'
+         'You can use "Edit" database to go to their Web site. \n',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
@@ -95,16 +107,12 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('radio_pan_america',
-         'http://51.222.8.101:8000/stream',
+        ('123VALLENATO',
+         'https://radiolatina.info:10903',
          save_parent_folder,
-         'Radio Panamericana, Lima - Peru \n'
+         'Bogota \n'
          'Salsa \n'
-         ' \n'
-         'Big Web site. \n'
-         'You can use "Edit" database to go to their Web site. \n'
-         ' \n'
-         'They have a user limit. \n',
+         '\n',
          "image/jpeg",
          convert_ascii(static_images + "mixer-reload.jpg"))
         )
@@ -116,9 +124,6 @@ def make_db_from_schema(db_path):
          save_parent_folder,
          'Yeah Mon Radio \n'
          'Reggae, Soca, Afrobeats, RnB, Hip Hop, Pop \n'
-         ' \n'
-         'yeahmonradio@gmail.com \n'
-         'Tel 678-778-3401 \n'
          ' \n'
          'Republic of Vanuatu, island country in Melanesia,\n'
          'located in the South Pacific Ocean.\n',
@@ -146,16 +151,14 @@ def make_db_from_schema(db_path):
          save_parent_folder,
          'Nachtflug, Germany \n'
          'Goth, Industrial, Electronic \n'
-         ' \n'
-         'They have a broadcast schedule and you can request a song. \n'
-         'You can use "Edit" database to go to their Web site. \n',
+         '\n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-violet_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('hm',
+        ('hirschmilch',
          'https://hirschmilch.de:7001/prog-house.mp3',
          save_parent_folder,
          'Hirschmilch Radio - hirschmilch.de \n'
@@ -189,10 +192,19 @@ def make_db_from_schema(db_path):
          'Berlin /Germany \n'
          'Schlager \n'
          ' \n'
-         'You can use "Edit" database to go to their Web site. \n'
          'Some advertising. \n',
          "image/png",
          convert_ascii(static_images + "radio3d-style-white-brown_120x200.png"))
+        )
+    cur.execute(
+        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
+        "?, ?, ?)",
+        ('B2',
+         'https://radiob2-national.cast.addradio.de/radiob2/national/mp3/high/stream.mp3?ar-distributor=ffa0',
+         save_parent_folder,
+         'German "Schlager", some advertising. \n\n',
+         "image/png",
+         convert_ascii(static_images + "radio3d-style-white-neongreen_120x200.png"))
         )
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
