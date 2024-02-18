@@ -563,112 +563,13 @@ function transparentImageLoad() {
     });
 }
 ;
-/**
-* Reusable confirmation dialog.
-* Append the styled dialog div to a custom div id below the user button.
-* Problem is the event listener. We must get rid of it, if action is done or canceled.
-* Inject and remove a button element with a listener. Event listener is gone.
-*
-* Hardcoded <div id="divConfirmDialog"><p id="pConfirmDialogText"></p></div>
-* Styles are in styles.css.
-*
-*     <div id="divConfirmDialog">
-*         <p id="pConfirmDialogText"></p>
-*         <div id="btnConfirm">
-*             <div id="btnOK" class="btnOK"></div>
-*             <div id="btnCancel" class="btnCancel"></div>
-*         </div>
-*     </div>
-* window.confirm = new ConfirmDialog();
-* confirm.btnOrder(ajaxDelDB, confirm);
-* confirm.dialogText("Confirm to remove the DB!");
-* confirm.dialogShowUnder("divDelDatabase");
-*/
-class ConfirmDialog{
-  constructor() {
-    this.isEventSet = false;
-    this.ok = undefined;
-    this.cancel = undefined;
-    this.customParent = undefined;
-    this.dialog = document.getElementById("divConfirmDialog");
-    this.btnDiv = document.getElementById("btnConfirm");
-    this.textShow = document.getElementById("pConfirmDialogText");
-    this.btnOK = "btnOK";
-    this.btnCancel = "btnCancel";
-    this.btnClass = "btnConfirm";
-    this.drawButtons();
-  }
-  drawButtons() {
-    this.appendDiv( {
-      id: this.btnOK,
-      elemClass: this.btnClass,
-      parent: this.btnDiv,
-      innerHTML: "OK"
-    } );
-    this.appendDiv( {
-      id: this.btnCancel,
-      elemClass: this.btnClass,
-      parent: this.btnDiv,
-      innerHTML: "Cancel"
-    } );
-    this.ok = document.getElementById(this.btnOK);
-    this.cancel = document.getElementById(this.btnCancel);
-  }
-  dialogShowUnder(customParentDiv) {
-    let div = document.getElementById(customParentDiv);
-    div.appendChild(this.dialog);
-    this.dialog.style.display = "block";
-  }
-  btnHide() {
-    this.removeDiv( {id: this.btnDiv} );  // del button divs with event listener
-  }
-  dialogHide() {
-    this.dialog.style.display = "none";
-  }
-  dialogText(text) {
-    this.textShow.innerText = text;
-  }
-  btnOrder(ref, callback) {
-    if(this.isEventSet) return;  // else could set multiple listener
-    this.ok.addEventListener("click", (e) => {
-      setTimeout( () => {
-        ref(callback);  // btnOrder = delDatabase; fun reference; run delDatabase()
-        this.btnHide();
-      }, 10);
-    });
-    this.cancel.addEventListener("click", (e) => {
-      setTimeout( () => {
-        this.btnHide();
-        this.dialogHide();
-      }, 10);
-    });
-    this.isEventSet = true;
-  }
-  appendDiv(opt) {
-    /* Reusable fun to stack div and use the stack as a list.  */
-    if(opt.id === null || opt.id === undefined) return;
-    if (opt.elemClass === undefined) opt.elemClass = "foo";
-    if (opt.innerHTML === undefined) opt.innerHTML = "";
-    let div = document.createElement('div');
-    div.id = opt.id;
-    div.classList.add(opt.elemClass);
-    div.innerHTML = opt.innerHTML;
-    opt.parent.appendChild(div);  // parent is full path document.getElem...
-  }
-  removeDiv(opt) {
-    if(opt.id === null || opt.id === undefined) return;
-    while (opt.id.firstChild) {
-      opt.id.removeChild(opt.id.lastChild);
-    }
-  }
-}
-
 function blackListEnable() {
   const confirm = new ConfirmDialog();
   confirm.btnOrder(ajaxBlackListEnable, confirm);
   confirm.dialogText("Switch Blacklist feature? The page will reload automatically.");
-  confirm.dialogShowUnder("confirmBlackListEnable");
+  confirm.dialogShowUnder("blackListEnableButton");
 }
+;
 /**
 * Delete all radios in DB.
 */
@@ -694,7 +595,7 @@ function delRadios() {
   const confirm = new ConfirmDialog();
   confirm.btnOrder(ajaxDelRadios, confirm);
   confirm.dialogText("Confirm to delete all radios from DB!");
-  confirm.dialogShowUnder("confirmDelRadios");
+  confirm.dialogShowUnder("delAllRadiosButton");  // delAllRadiosButton confirmDelRadios
 }
 /**
 * Delete all radios in DB.
@@ -715,7 +616,7 @@ function delDB() {
   const confirm = new ConfirmDialog();
   confirm.btnOrder(ajaxDelDB, confirm);
   confirm.dialogText("Confirm to remove the DB!");
-  confirm.dialogShowUnder("confirmDelDatabase");
+  confirm.dialogShowUnder("delDatabaseButton");
 }
 /**
 * Delete the entire database file.
@@ -733,6 +634,32 @@ function ajaxDelDB(callback) {
       callback.dialogText("Done. Restart or reinstall app.");
     }else {
       callback.dialogText("Database not found.");
+    }
+  });
+}
+;
+
+function delRadio(radioId) {
+  const confirm = new ConfirmDialog();
+  confirm.btnOrder(ajaxDelRadio, confirm, radioId);
+  confirm.dialogText("Confirm to delete!");
+  confirm.dialogShowUnder("radioTerminator");
+}
+/**
+* Delete a radio.
+*/
+function ajaxDelRadio(radioId, callback) {
+  let req = $.ajax({
+    type: 'POST',
+    url: "/delete_radio",
+    cache: false,
+    data: {radioId: radioId}
+  });
+  req.done(function (data) {
+    if(data.removed) {
+      callback.dialogText("Deleted");
+    }else {
+      callback.dialogText("Error Deletion");  // test case, user will never see
     }
   });
 }

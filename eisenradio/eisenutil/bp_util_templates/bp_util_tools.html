@@ -114,11 +114,10 @@
                     {% set btn_color='grey' %}
                     {% endif -%}
                     <div class="btn-{{btn_color}}"
-                         id="caller_divConfirmDialog_BlackListEnable"
+                         id="blackListEnableButton"
                          onclick="blackListEnable();">{{button_label}}
                     </div>
                     <span class="spanBookMark">{{button_message}}</span>
-                    <div id="confirmBlackListEnable"></div>
                 </div>
             </div>
         </div>
@@ -522,7 +521,7 @@
                 <div class="divBookMarkBar">
                     <div class="divBookMarkActionButtons">
                         <div class="btn-light-blue"
-                            id="caller_delAllRadiosButton_."
+                            id="delAllRadiosButton"
                             onclick="delRadios();">Delete Radios
                         </div>
                         <div id="confirmDelRadios"></div>
@@ -533,7 +532,7 @@
                         </div>
 
                         <div class="btn-light-blue"
-                            id="caller_delDatabase_."
+                            id="delDatabaseButton"
                             onclick="delDB();">Delete Database
                         </div>
                         <div id="confirmDelDatabase"></div>
@@ -563,9 +562,4 @@
 </section>
 
 <hr>
-<div id="divConfirmDialog">
-    <p id="pConfirmDialogText"></p>
-    <div id="btnConfirm"></div>
-</div>
-
 {% endblock %}

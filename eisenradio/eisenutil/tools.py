@@ -19,6 +19,16 @@ from os import path, remove, listdir
 from eisenradio.eisenutil.eisutil import is_in_db_view
 
 
+def delete_one_radio(radio_id):
+    """ Return True if radio was deleted. """
+    eisen_db.delete_radio(radio_id)
+    posts = get_radios()
+    tbl_id = 0
+    id_lst = [row[tbl_id] for row in posts if row["id"]]
+    rv = False if radio_id in id_lst else True
+    return rv
+
+
 def delete_all_radios():
     """delete all radios from db, return True if db is empty"""
     posts = get_radios()

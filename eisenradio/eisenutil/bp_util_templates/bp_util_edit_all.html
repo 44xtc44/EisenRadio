@@ -1,0 +1,17 @@
+{% extends 'bp_util_base.html' %}
+
+{% block content %}
+<h4>Delete or edit radios.</h4>
+
+<div class="blacklist_div">
+    <div class="divFlex">
+            {% for radio_id, radio in radios_dict.items()%}
+        <div class="divItemWrap"
+             onclick="javascript:location.href='{{url_for('eisenutil_bp.edit_radio', radio_id=radio_id) }}'">
+            <span>{{radio}} id: {{radio_id}}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

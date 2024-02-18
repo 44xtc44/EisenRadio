@@ -1,24 +1,38 @@
 {% extends 'bp_util_base.html' %}
 
 {% block content %}
-<h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
-<span class="badge badge-primary">{{ post['created'] }}</span>
-<p>Go to Radio Website:
-    <a href="{{ url_port }}">{{ url_port }}</a>
-    <span>(works if radio is ShoutCast or IceCast)</span>
-</p>
-<hr>
+ <div class="divFadeIn">
 
+    <div class="divBarToolsBg">
+        <div class="divToolsBgColor">
+            <div class="divToolsBodyText">
 
-<div class="divBookMarkActionButtons">
-   <p class="pEditRadioSettings" onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">
-       Edit Radio {{ post['title'] }} &#128395;
-   </p>
-    <div class="btn-orange"
-         id="divEditRadioSettings"
-         onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', id=post['id']) }}'">Edit
+                <div class="btn-teal"
+                    onclick="javascript:location.href='{{url_for('eisenutil_bp.edit_all')}}'">&#9166; return
+                </div>
+
+                <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
+                <span class="badge badge-primary">created {{ post['created'] }}</span>
+                <p>Go to the Radio's (technical) Website:
+                    <a id="aTechnicalWeb" href="{{ url_port }}">{{ url_port }}</a>
+                    <br><span>Works if the radio is ShoutCast or IceCast</span>
+                </p>
+                <hr>
+
+                <div class="btn-orange"
+                     id="divEditRadioSettings"
+                     onclick="javascript:location.href='{{ url_for('eisenutil_bp.edit', radio_id=post['id']) }}'">Edit {{ post['title'] }}
+                </div>
+                <hr>
+
+                <div class="btn-light-blue"
+                    id="radioTerminator"
+                    onclick="delRadio( {{post['id']}} );">Delete {{ post['title'] }}
+                </div>
+
+            </div>
+        </div>
     </div>
-
-</div>
+ </div>
 
 {% endblock %}

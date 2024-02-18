@@ -359,7 +359,6 @@ def tools_database_delete():
         print("% s error file not found." % api.config['DATABASE'])
         is_deleted = {"removed": False}
 
-    print("foo")
     return is_deleted
 
 
@@ -619,10 +618,10 @@ def save():
         return render_template('bp_util_save.html', save_to=os.path.abspath(lib_eisdb.get_download_dir()))
 
 
-@eisenutil_bp.route('/<int:id>/edit', methods=('GET', 'POST'))
-def edit(id):
+@eisenutil_bp.route('/<int:radio_id>/edit', methods=('GET', 'POST'))
+def edit(radio_id):
     """render Edit page"""
-    post = lib_eisdb.get_post(id)
+    post = lib_eisdb.get_post(radio_id)
 
     if request.method == 'POST':
         rv_req = request.form['title']
@@ -660,10 +659,10 @@ def edit(id):
         if image:
             conn.execute('UPDATE posts SET title = ?, content = ?, pic_data = ?, pic_content_type = ?, '
                          'pic_comment = ? WHERE id = ?',
-                         (title, content, image, content_type, text, id))
+                         (title, content, image, content_type, text, radio_id))
         else:
             conn.execute('UPDATE posts SET title = ?, content = ?, pic_comment = ?  WHERE id = ?',
-                         (title, content, text, id))
+                         (title, content, text, radio_id))
 
         conn.commit()
         conn.close()
@@ -672,15 +671,63 @@ def edit(id):
     return render_template('bp_util_edit.html', post=post)
 
 
-@eisenutil_bp.route('/<int:post_id>')
-def post(post_id):
-    """draw a page (after clicked on radio picture) to go to radio directory (shout-/icecast) if possible"""
-    post = lib_eisdb.get_post(post_id)
-    url_port = eis_util.parse_url_simple_url(post["content"])
-    pass
+@eisenutil_bp.route('/<int:radio_id>/edit_radio', methods=['GET'])
+def edit_radio(radio_id):
+    """Edit or delete one radio dispatcher site. Render HTML page."""
+    tbl_id = lib_eisdb.get_post(radio_id)
+    url_port = eis_util.parse_url_simple_url(tbl_id["content"])
     return render_template('bp_util_post.html',
-                           post=post,
+                           post=lib_eisdb.get_post(radio_id),
                            url_port=url_port)
+
+
+@eisenutil_bp.route('/delete_radio', methods=['POST'])
+def delete_radio():
+    """ Return True if radio was deleted. """
+    is_del = util_tools.delete_one_radio(int(request.form['radioId']))
+    return {"removed": is_del}
+
+
+@eisenutil_bp.route('/edit_all', methods=['GET'])
+def edit_all():
+    """creates a html page with buttons for every radio to go to the blacklists edit page, returns vars for page build
+
+    vars
+    radios_dict - all radios loaded if start page is drawn ghettoApi.radio_id_name_dict
+    streamer_name_list - change btn color for radios with active rec
+    skip_count - user info how often titles of this radio were skipped during session because of using blacklist feature
+    radio_blacklist_count = shows the count of blacklisted titles
+    """
+
+    skip_count = 0
+    view_dict = eisenApi.radio_id_name_dict  # key db id: val name
+    skip_title_dict = ghettoApi.skipped_in_session_dict  # key radio: val title list
+    blacklist_dict = ghettoApi.all_blacklists_dict
+    streamer_name_list = []
+    radio_blacklist_count = {}
+
+    for db_id, btn_pressed in eisenApi.rec_btn_dict.items():
+        if btn_pressed:
+            try:
+                streamer_name_list.append(view_dict[db_id])
+            except KeyError:
+                pass
+    for title_list in skip_title_dict.values():
+        if title_list is not None:
+            for _ in title_list:
+                skip_count += 1
+    for radio, title in blacklist_dict.items():
+        blacklist_count = 0
+        if title is not None:
+            for _ in title:
+                blacklist_count += 1
+            radio_blacklist_count[radio] = blacklist_count
+
+    return render_template('bp_util_edit_all.html',
+                           radios_dict=view_dict,
+                           streamer_name_list=streamer_name_list,
+                           skip_count=skip_count,
+                           radio_blacklist_count=radio_blacklist_count)
 
 
 @eisenutil_bp.route('/sw')

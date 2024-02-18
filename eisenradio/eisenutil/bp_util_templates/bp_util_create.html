@@ -10,54 +10,51 @@
         <div class="divToolsBgColor">
             <div class="divToolsBodyText">
             <p>Add as many radios as you want.</p>
-
-            <form action="{{ url_for('eisenutil_bp.create') }}" method="POST" enctype="multipart/form-data">
-
-            <p>Your Radio name is used as the folder name. Spaces will be removed.</p>
-
                 <hr>
-                <div class="form-group">
-                    <label for="title">Name (no spaces)
-                    <input type="text"
-                           name="title"
-                           id="title"
-                           placeholder="StarFM1"
-                           class="form-control"
-                           value="{{ request.form['title'] }}"
-                           required size="100">
-                    </label>
-                </div>
-                <!-- URL -->
-                <hr>
-                <div class="form-group">
-                    <label for="content">URL (web address)
-                    <input type="text"
+                <form action="{{ url_for('eisenutil_bp.create') }}" method="POST" enctype="multipart/form-data">
+
+                    <p>Your Radio name is used as the folder name. Spaces will be removed.</p>
+                    <div class="form-group">
+                        <label for="title">Name
+                            <input type="text"
+                                name="title"
+                                id="title"
+                                placeholder="StarFM1"
+                                class="form-control"
+                                value="{{ request.form['title'] }}"
+                                required size="50">
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="content">URL
+                            <input type="text"
                               name="content"
                               placeholder="http://mega.radio.fm:80/stream"
                               class="form-control"
                               id="content"
-                              required size="100">{{ request.form['content'] }}
-                     </label>
-                </div>
+                              required size="50">{{ request.form['content'] }}
+                        </label>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="inputFile">Image input (jpg, png, bmp, gif, svg)</label>
+                        <input class="form-control-file" type="file" name="inputFile" id="inputFile">
+                    </div>
 
-                <!-- Image Upload-->
-                <hr>
-                <div class="form-group">
-                    <label for="inputFile">Image input (jpg, png, bmp, gif, svg)</label>
-                    <input class="form-control-file" type="file" name="inputFile" id="inputFile">
-                </div>
+                    <hr>
+                    <div class="form-group">
+                        <label for="text">Write Text</label>
+                        <textarea class="form-control" name="text" id="text"
+                                rows="10"
+                                cols="50"
+                                placeholder="Add a Description"></textarea>
+                    </div>
 
-                <!-- Text description -->
-                <hr>
-                <div class="form-group">
-                    <label for="text">Write Text</label>
-                    <textarea class="form-control" name="text" id="text" rows="5" placeholder="Add a Description"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
