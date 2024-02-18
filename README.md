@@ -195,26 +195,11 @@ The app is available as
 
 # Command line
 
-EisenRadio GUI supported by Flask server.::
+EisenRadio GUI supported by Flask server.
 
     $ eisenradio  # executable script in Python Path
     $ python3 -m eisenradio.gui  # runs package if Python path is defective or the SNAP pkg installer knows eisenradio
 
-WSGI server *Waitress* on a random port.::
-
-    $ eisenradio-wsgi
-    $ python3 -m eisenradio.wsgi
-
-GhettoRecorder on command line.::
-
-    $ eisenradio-cmd
-    $ python3 -m eisenradio.cmd
-
-GhettoRecorder stores recorded files in the package folder by default.::
-
-    /home/osboxes/.local/lib/python3.6/site-packages/ghettorecorder/radios
-
-You can change the folder via the menu options
 
 # Export / Import of GhettoRecorder in- and output files
 
