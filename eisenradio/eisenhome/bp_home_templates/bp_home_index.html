@@ -162,8 +162,8 @@
         </div>
 
         <div id="console" class="barWrapSecondaryAction">
+            <p class="pElemX"><span class="spanX" onclick="toggleConsole();">&#10006;</span></p>
             <div class="wrapCenter">
-
                 <div class="boxSecondaryAction">
                     <label for="quickListen">
                         <select class="quickView select-css" id="quickListen"
@@ -191,7 +191,7 @@
                     </label>
                 </div>
 
-                <div class="divFlex fontSize150">
+                <div class="divFlex fontSize125">
                     <div>
                         <span class="flex-item"
                               onclick="document.getElementById('fileUpload').click();">
@@ -205,52 +205,35 @@
                         <span class="flex-item" onclick="toggleRecordView();">Recorder</span>
                     </div>
                 </div>
-
                 <br>
-
                 <div id="divThemes" class="divFlex fontSize200">
-                    <p class="pElemX">
-                        <span class="spanX" onclick="toggleConsole();">&#10006;</span>
-                    </p>
                     <div><span id="darkModeIcon" class="flex-item" onclick="changeColorScheme();">&#9728;</span></div>
                     <div><span class="flex-item" onclick="themeInitSunset();">&#127796;</span></div>
                     <div><span class="flex-item" onclick="themeInitArctic();">&#10052;</span></div>
                     <div><span class="flex-item" onclick="themeInitCut();">&#9986;</span></div>
                 </div>
-
-                <div class="divFlex fontSize150">
-                    <p class="pElemX">
-                        <span class="spanX" onclick="toggleConsole();">&#10006;</span>
-                    </p>
-                    <div><span class="flex-item"
-                               onclick="javascript:location.href='{{url_for('eisenutil_bp.create')}}'">New
-                        </span>
-                    </div>
-                    <div><span class="flex-item"
-                               onclick="javascript:location.href='{{url_for('eisenutil_bp.save')}}'">Save
-                        </span>
-                    </div>
-                    <div><span class="flex-item boldText"
-                               onclick="javascript:location.href='{{url_for('eisenutil_bp.tools')}}'">Tools
-                        </span>
-                    </div>
-                    <div><span class="flex-item"
-                               onclick="javascript:location.href='{{url_for('eisenutil_bp.about')}}'">About
-                        </span>
-                    </div>
+                <br>
+                <div class="divFlex">
+                    <div class="flex-item"><img id="cpuImage" src="" width="20%" alt="cpu load" onclick="degradeAnimationsSet();"></div>
+                    <div class="flex-item"><img id="blacklistImage" src="" width="20%" alt="blacklists"
+                            onclick="javascript:location.href='{{url_for('eisenutil_bp.tools_blacklist_overview')}}'"></div>
                 </div>
 
-                <div class="boxSecondaryAction">
-                    <label for="quickEdit">
-                        <select class="quickView select-css" id="quickEdit"
-                            onChange="location = this.value;quickEdit.options[0].selected = true;">
-                            <option class="quickView" id="radioEditOne" value="choiceHeader;">&#9998; EDIT</option>
-                            {% for post in posts%}
-                            <option class="quickView" value="{{ post['id'] }}">{{ post['title'] }}
-                            </option>
-                            {% endfor%}
-                        </select>
-                    </label>
+                <div class="divFlex fontSize125">
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.create')}}'">New</span>
+                    </div>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.edit_all')}}'">Edit</span></div>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.save')}}'">Save</span>
+                    </div>
+                    <div><span class="flex-item boldText"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.tools')}}'">Tools</span>
+                    </div>
+                    <div><span class="flex-item"
+                               onclick="javascript:location.href='{{url_for('eisenutil_bp.about')}}'">About</span>
+                    </div>
                 </div>
 
                 <div class="boxSecondaryAction">
@@ -276,17 +259,11 @@
                 </div>
             </div>
 
-            <div class="divFlex">
-                <div class="flex-item"><img id="cpuImage" src="" width="25%" alt="cpu load" onclick="degradeAnimationsSet();"></div>
-                <div class="flex-item"><img id="blacklistImage" src="" width="25%" alt="blacklists"
-                        onclick="javascript:location.href='{{url_for('eisenutil_bp.tools_blacklist_overview')}}'"></div>
-            </div>
-
             <div id="wrapRecordView">
                 <p class="pElemX">
                     <span id="spanRecordView" class="spanX" onclick="toggleRecordView();">&#10006;</span>
                 </p>
-                <p class="pDivDescription">Click to stop recorder.</p>
+                <p class="pDivDescription">Click stops. Info icon at bottom.</p>
                 <div id="divRecordView" class="divRecorderList fontSize125"></div>
             </div>
 
@@ -296,7 +273,7 @@
             <p class="pElemX">
                 <span id="spanRecordDetails" class="spanX" onclick="toggleRecordDetails();">&#10006;</span>
             </p>
-            <p class="pDivDescription">Recorder switch off in popup menu.</p>
+            <p class="pDivDescription">Meta data.</p>
             <div id="divRecordDetails" class="divRecorderList fontSize125" onclick="toggleRecordDetails();"></div>
         </div>
         <div id="divAnimationContainer">
