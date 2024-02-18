@@ -57,8 +57,8 @@ def status_read_status_set(set_status, table, column, table_id):
 
         conn.commit()
         conn.close()
-
-    return col_value[0]
+    rv = col_value[0]  # test
+    return rv
 
 
 def get_download_dir():

@@ -1,10 +1,10 @@
 import os
 import threading
 import time
-from flask import Blueprint, render_template, request, flash, redirect, url_for, make_response, jsonify
+from flask import Blueprint, render_template, request, flash, make_response, jsonify
 from eisenradio.eisenutil import config_html
 import eisenradio.eisenhome.eishome as eis_home
-from eisenradio.lib.eisdb import get_post, delete_radio, enum_radios, get_db_connection
+from eisenradio.lib.eisdb import enum_radios, get_db_connection
 from ghettorecorder import ghettoApi
 from eisenradio.api import eisenApi
 import ghettorecorder.ghetto_recorder as ghetto
@@ -222,22 +222,6 @@ def page_flash():
 
     flash('Count down timer ended all activities. App restart recommended!', 'success')
     return render_template('bp_home_page_flash.html')
-
-
-@eisenhome_bp.route('/<int:id>/delete', methods=['POST'])
-def delete(id):
-    """delete a radio only if it is not active, return a flash of ok or not, redirect to start page"""
-    if eis_home.status_listen_btn_dict[id] or eis_home.status_record_btn_dict[id]:
-        flash('Radio is active. No deletion.', 'warning')
-        return redirect(url_for('eisenhome_bp.index'))
-
-    post = get_post(id)
-    rv = delete_radio(id)
-    if rv:
-        flash('"{}" was successfully deleted!'.format(post['title']), 'success')
-    if not rv:
-        flash('"{}" was not deleted!'.format(post['title']), 'warning')
-    return redirect(url_for('eisenhome_bp.index'))
 
 
 @eisenhome_bp.route('/cookie_set_dark', methods=['GET'])
