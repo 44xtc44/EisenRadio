@@ -107,18 +107,6 @@ def make_db_from_schema(db_path):
     cur.execute(
         "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
         "?, ?, ?)",
-        ('123VALLENATO',
-         'https://radiolatina.info:10903',
-         save_parent_folder,
-         'Bogota \n'
-         'Salsa \n'
-         '\n',
-         "image/jpeg",
-         convert_ascii(static_images + "mixer-reload.jpg"))
-        )
-    cur.execute(
-        "INSERT INTO posts (title, content, download_path, pic_comment, pic_content_type, pic_data) VALUES (?, ?, ?, "
-        "?, ?, ?)",
         ('YeahMon',
          'http://c3.radioboss.fm:8095/autodj',
          save_parent_folder,
