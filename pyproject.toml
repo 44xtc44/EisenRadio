@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = 'eisenradio'
-version = "2.4.1"
+version = "2.4.2"
 description = "Play radio. Style your App."
 keywords = ['eisenradio', 'aac repair']
 license = {file = "LICENSE.rst"}
@@ -39,8 +39,6 @@ documentation = "https://eisenradio.readthedocs.io/"
 repository = "https://github.com/44xtc44/EisenRadio"
 
 [project.scripts]
-eisenradio-cmd = "eisenradio.cmd:main"
-eisenradio-wsgi = "eisenradio.wsgi:main"
 eisenradio = "eisenradio.gui:main"
 
 [tool.pytest.ini_options]

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eisenradio",
-    version="2.4.1",
+    version="2.4.2",
     author="René Horn",
     author_email="rene_horn@gmx.net",
     description="Play radio. Style your App.",
