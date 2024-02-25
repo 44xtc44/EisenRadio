@@ -72,11 +72,10 @@ class BirdSideView {
   }
   init() {
     this.equipFlapList();
-    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
     this.colorize();
   }
   reset() {
-    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
+    this.colorize();
     this.enableUpdown = getRandomIntInclusive(0, 1);
     this.itemSize = 0.1 * getRandomIntInclusive(5, 7);
     this.y = getRandomIntInclusive(75, 150);
@@ -166,6 +165,7 @@ class BirdSideView {
   }
   colorize() {
     // At begin and at reset. Keep color for the full cycle. Just edit.
+    this.color = this.colorList[getRandomIntInclusive(0, this.colorList.length - 1)];
     let dct = {};
     for(let i = 0; i <= this.flapList.length - 1; i++) {
       dct[[this.flapList[i]]] = {"fill-opacity": "1", "fill": this.color};  // hidden and color
